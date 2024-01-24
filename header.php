@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="style-main.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet" />
     <link defer rel="stylesheet" type="text/css" media="screen" href="assets/css/animate.css" />
+    <script src="assets/js/simple-datatables.js"></script>
     <script src="assets/js/perfect-scrollbar.min.js"></script>
     <script defer src="assets/js/popper.min.js"></script>
     <script defer src="assets/js/tippy-bundle.umd.min.js"></script>
@@ -65,7 +66,7 @@
     </div>
 
     <!-- start theme customizer section -->
-    <div x-data="customizer">
+    <!-- <div x-data="customizer">
         <div class="fixed inset-0 z-[51] hidden bg-[black]/60 px-4 transition-[display]"
             :class="{'!block': showCustomizer}" @click="showCustomizer = false"></div>
 
@@ -260,7 +261,7 @@
                 </div>
             </div>
         </nav>
-    </div>
+    </div> -->
     <!-- end theme customizer section -->
 
     <div class="main-container min-h-screen text-black dark:text-white-dark" :class="[$store.app.navbar]">
@@ -588,7 +589,7 @@
                                     </svg>
                                 </button>
                             </div>
-                            <div>
+                            <!-- <div>
                                 <a href="javascript:;" x-cloak x-show="$store.app.theme === 'light'" href="javascript:;"
                                     class="flex items-center rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary dark:bg-dark/40 dark:hover:bg-dark/60"
                                     @click="$store.app.toggleTheme('dark')">
@@ -638,7 +639,7 @@
                                             stroke-linecap="round" />
                                     </svg>
                                 </a>
-                            </div>
+                            </div> -->
 
                             <div class="dropdown" x-data="dropdown" @click.outside="open = false">
                                 <a href="javascript:;"
