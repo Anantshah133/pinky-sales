@@ -641,7 +641,7 @@
                                 </a>
                             </div> -->
 
-                            <div class="dropdown" x-data="dropdown" @click.outside="open = false">
+                            <!-- <div class="dropdown" x-data="dropdown" @click.outside="open = false">
                                 <a href="javascript:;"
                                     class="block rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary dark:bg-dark/40 dark:hover:bg-dark/60"
                                     @click="toggle">
@@ -731,7 +731,7 @@
                                         </li>
                                     </template>
                                 </ul>
-                            </div>
+                            </div> -->
                             <div class="dropdown" x-data="dropdown" @click.outside="open = false">
                                 <a href="javascript:;"
                                     class="relative block rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary dark:bg-dark/40 dark:hover:bg-dark/60"

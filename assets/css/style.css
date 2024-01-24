@@ -1348,7 +1348,7 @@ table.table-compact thead tr th {
 
 .dataTable-dropdown .dataTable-selector,
 .dataTable-search .dataTable-input {
-    width: 450px;
+    width: 300px;
     background-color: #fff;
     color: #0e1726;
     border-color: #e0e6ed;
