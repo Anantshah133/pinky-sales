@@ -1,6 +1,8 @@
 <?php
 include "header.php";
 ?>
+
+<h1>Hello</h1>
 <main class='p-6'>
     <h1 class='text-2xl font-bold'>Dashboard ( <?php echo date('d-m-Y') ?> )</h1>
     <div class="pt-5">
