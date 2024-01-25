@@ -6,13 +6,10 @@ include "header.php";
         <div class="mb-5 flex items-center justify-between">
             <h5 class="text-xl text-primary font-semibold dark:text-white-light">State Area</h5>
         </div>
-        <form method="post">
         <div class="mb-5">
         <div class="mb-5 flex items-center gap-2">
-
-            <button type="submit" class="btn btn-primary mb-5 " formaction="add-area.php">
+            <button type="button" class="btn btn-primary mb-5 ">
                 <i class="ri-add-line"></i>Add Service Area
-
             </button>
 
             <div class="dataTable-search">
@@ -23,10 +20,8 @@ include "header.php";
             <button type="button" class="btn btn-primary mb-5 ">
                 <i class="ri-file-3-line"></i> Export into CSV
             </button>
-
 </div>
 </div>
-</form>
 </div>
             <div class="table-responsive">
                 <table class='table-bordered table-hover'>
