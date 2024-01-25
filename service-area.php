@@ -2,102 +2,103 @@
 include "header.php";
 ?>
 
-<div class="panel border shadow-md shadow-slate-200">
-        <div class="mb-5 flex items-center justify-between">
-            <h5 class="text-xl text-primary font-semibold dark:text-white-light">State Area</h5>
-        </div>
-        <form method="post">
-        <div class="mb-5">
-        <div class="mb-5 flex items-center gap-2">
-
-            <button type="submit" class="btn btn-primary mb-5 " formaction="add-area.php">
-                <i class="ri-add-line"></i>Add Service Area
-
-            </button>
-
-            <div class="dataTable-search">
-            <div class="mb-5 flex items-center gap-2">   
-            <button type="button" class="btn btn-primary mb-5 ">
-                <i class="ri-printer-line"></i> Print
-            </button>
-            <button type="button" class="btn btn-primary mb-5 ">
-                <i class="ri-file-3-line"></i> Export into CSV
-            </button>
-
-</div>
-</div>
-</form>
-</div>
-            <div class="table-responsive">
-                <table class='table-bordered table-hover'>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th class="!text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody x-data='complaint'>
-                        <template x-for="data in tableData" :key="data.id">
-                            <tr class='text-lg'>
-                                <td x-text='data.id'></td>
-                                <td x-text="data.name" class="whitespace-nowrap"></td>
-                                <td class="text-center">
-                                    <ul class="flex items-center justify-center gap-6">
-                                        <li>
-                                            <a href="javascript:;" class='text-xl' x-tooltip="View">
-                                                <i class="ri-eye-line text-primary"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;" class='text-xl' x-tooltip="Edit">
-                                                <i class="ri-pencil-line text text-success"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;" class='text-xl' x-tooltip="Delete">
-                                                <i class="ri-delete-bin-line text-danger"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                        </template>
-                    </tbody>
-                </table>
+<div class='p-6' x-data='exportTable'>
+    <div class="panel mt-6">
+        <div class='flex items-center justify-between mb-3'>
+            <h1 class='text-primary text-2xl font-bold'>State Area</h1>
+            
+            <div class="flex flex-wrap items-center">
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add-area.php'">
+                    <i class="ri-add-line"></i>Add Service Area 
+                </button>
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
+                    <i class="ri-printer-line mr-1"></i> PRINT
+                </button>
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="exportTable('csv')">
+                    <i class="ri-file-line mr-1"></i> CSV
+                </button>
             </div>
         </div>
+        <table id="myTable" class="table-hover whitespace-nowrap"></table>
     </div>
-
+</div>
     <!-- script -->
     <script>
-    document.addEventListener("alpine:init", () => {
-        Alpine.data("complaint", () => ({
-            tableData: [{
-                id: 1,
-                name: 'test state',
-            },
-            {
-                id: 2,
-                name: 'gujarat',
-            },
-            {
-                id: 3,
-                name: 'bhayander',
-            },
-            {
-                id: 4,
-                name: 'vasai',
-            },
-            {
-                id: 5,
-                name: 'thane',
-            },
-        ]
-        }));
-    });
-    </script>
+document.addEventListener('alpine:init', () => {
+    Alpine.data('exportTable', () => ({
+        datatable: null,
+        init() {
+            console.log('Initalizing datatable')
+            this.datatable = new simpleDatatables.DataTable('#myTable', {
+                data: {
+                    headings: ['Sr.No.', 'Name', 'Action'],
+                    data: [
+                        [1,'Test Area' , '' ],
+                        [2,'Gujarat' , '' ],
+                        [3,'Bhayander' , '' ],
+                        [4,'Vasai' , '' ],
+                        [5,'Thane', '' ],
+                    ],
+                },
+                perPage: 10,
+                perPageSelect: [10, 20, 30, 50, 100],
+                columns: [{
+                        select: 0,
+                        sort: 'asc',
+                    },
+                    // {
+                    //     select: 4,
+                    //     render: (data, cell, row) => {
+                    //         return this.formatDate(data);
+                    //     },
+                    // },
+                ],
+                firstLast: true,
+                firstText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M13 19L7 12L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M16.9998 19L10.9998 12L16.9998 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                lastText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M11 19L17 12L11 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M6.99976 19L12.9998 12L6.99976 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                prevText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M15 5L9 12L15 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                nextText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M9 5L15 12L9 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                labels: {
+                    perPage: '{select}',
+                },
+                layout: {
+                    top: '{search}',
+                    bottom: '{info}{select}{pager}',
+                },
+            });
+        },
 
+        exportTable(eType) {
+            var data = {
+                type: eType,
+                filename: 'table',
+                download: true,
+            };
+
+            if (data.type === 'csv') {
+                data.lineDelimiter = '\n';
+                data.columnDelimiter = ';';
+            }
+            this.datatable.export(data);
+        },
+
+        printTable() {
+            this.datatable.print();
+        },
+
+        formatDate(date) {
+            if (date) {
+                const dt = new Date(date);
+                const month = dt.getMonth() + 1 < 10 ? '0' + (dt.getMonth() + 1) : dt.getMonth() +
+                    1;
+                const day = dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate();
+                return day + '/' + month + '/' + dt.getFullYear();
+            }
+            return '';
+        },
+    }));
+})
+</script>
 
 <?php
 include "footer.php";
