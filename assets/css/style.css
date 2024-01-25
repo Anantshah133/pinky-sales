@@ -1337,18 +1337,18 @@ table.table-compact thead tr th {
     border-top-color: rgb(67 97 238/var(--tw-border-opacity));
     opacity: 1
 }
-
+/* 
 .ltr .dataTable-search {
     margin-left: auto
 }
 
 .rtl .dataTable-search {
     margin-right: auto
-}
+} */
 
 .dataTable-dropdown .dataTable-selector,
 .dataTable-search .dataTable-input {
-    width: auto;
+    width: 300px;
     background-color: #fff;
     color: #0e1726;
     border-color: #e0e6ed;
@@ -1357,6 +1357,7 @@ table.table-compact thead tr th {
     font-size: 14px;
     line-height: 20px;
     font-weight: 600;
+    margin-bottom: 8px;
     border-width: 1px;
     outline: none !important
 }
