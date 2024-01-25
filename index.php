@@ -1,7 +1,7 @@
 <?php
 include "header.php";
 ?>
-<main class='p-6'>
+<main class='p-6' x-data="sales">
     <h1 class='text-2xl font-bold'>Dashboard ( <?php echo date('d-m-Y') ?> )</h1>
     <div class="pt-5">
         <div class="mb-6 grid grid-cols-1 gap-6 text-white sm:grid-cols-2 xl:grid-cols-4">
@@ -98,32 +98,248 @@ include "header.php";
             </div>
         </div>
     </div>
-</main>
-<!-- 
-<div class='p-6'>
-    <div class="panel">
-        <div class="mb-5 flex items-center justify-between">
-            <h5 class="text-lg font-semibold dark:text-white-light">Checkboxes</h5>
+    <div class='mb-6 grid gap-6 xl:grid-cols-3'>
+        <div class="panel h-full xl:col-span-2 shadow-md">
+            <div class="mb-5 flex items-center">
+                <h5 class="text-2xl text-primary font-bold dark:text-white-light">
+                    Daily Calls
+                </h5>
+                <!-- <span class="block text-sm font-normal text-white-dark">Go to columns for details.</span> -->
+                <div class="relative ltr:ml-auto rtl:mr-auto">
+                    <div
+                        class="grid h-11 w-11 place-content-center rounded-full bg-[#ffeccb] text-warning dark:bg-warning dark:text-[#ffeccb]">
+                        <i class="ri-phone-line text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="overflow-hidden">
+                <div x-ref="dailySales" class="rounded-lg bg-white dark:bg-black">
+                    <!-- loader -->
+                    <div
+                        class="grid min-h-[175px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08]">
+                        <span
+                            class="inline-flex h-5 w-5 animate-spin rounded-full border-2 border-black !border-l-transparent dark:border-white"></span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="mb-5">
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Date</th>
-                            <th>Sale</th>
-                            <th class="!text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-    
-                    </tbody>
-                </table>
+        <div class="panel h-full shadow-md">
+            <div class="mb-5 flex items-center">
+                <h5 class="text-2xl text-primary font-bold dark:text-white-light">Calls Data</h5>
+            </div>
+            <div class="overflow-hidden">
+                <div x-ref="salesByCategory" class="rounded-lg bg-white dark:bg-black">
+                    <!-- loader -->
+                    <div
+                        class="grid min-h-[353px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08]">
+                        <span
+                            class="inline-flex h-5 w-5 animate-spin rounded-full border-2 border-black !border-l-transparent dark:border-white"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div> -->
+</main>
+
+<script>
+document.addEventListener('alpine:init', () => {
+    Alpine.data('sales', () => ({
+        init() {
+            isDark = this.$store.app.theme === 'dark' || this.$store.app.isDarkMode ? true : false;
+            isRtl = this.$store.app.rtlClass === 'rtl' ? true : false;
+
+            const revenueChart = null;
+            const salesByCategory = null;
+            const dailySales = null;
+            const totalOrders = null;
+
+            // revenue
+            setTimeout(() => {
+                this.salesByCategory = new ApexCharts(this.$refs.salesByCategory, this
+                    .salesByCategoryOptions);
+                this.$refs.salesByCategory.innerHTML = '';
+                this.salesByCategory.render();
+
+                // daily sales
+                this.dailySales = new ApexCharts(this.$refs.dailySales, this
+                    .dailySalesOptions);
+                this.$refs.dailySales.innerHTML = '';
+                this.dailySales.render();
+            }, 300);
+
+            this.$watch('$store.app.theme', () => {
+                isDark = this.$store.app.theme === 'dark' || this.$store.app.isDarkMode ?
+                    true : false;
+                this.dailySales.updateOptions(this.dailySalesOptions);
+                this.salesByCategory.updateOptions(this.salesByCategoryOptions);
+            });
+        },
+
+        get salesByCategoryOptions() {
+            return {
+                series: [20, 138, 70, 126],
+                chart: {
+                    type: 'donut',
+                    height: 400,
+                    fontFamily: 'Nunito, sans-serif',
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                stroke: {
+                    show: true,
+                    width: 25,
+                    colors: isDark ? '#0e1726' : '#fff',
+                },
+                colors: isDark ? ['#5c1ac3', '#e2a03f', '#e7515a', '#e2a03f'] : ['#e2a03f',
+                    '#5c1ac3', '#e7515a', '#2eb384'
+                ],
+                legend: {
+                    position: 'bottom',
+                    horizontalAlign: 'center',
+                    fontSize: '14px',
+                    markers: {
+                        width: 10,
+                        height: 10,
+                        offsetX: -2,
+                    },
+                    height: 50,
+                    offsetY: 20,
+                },
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            size: '65%',
+                            background: 'transparent',
+                            labels: {
+                                show: true,
+                                name: {
+                                    show: true,
+                                    fontSize: '25px',
+                                    offsetY: -10,
+                                },
+                                value: {
+                                    show: true,
+                                    fontSize: '26px',
+                                    color: isDark ? '#bfc9d4' : undefined,
+                                    offsetY: 16,
+                                    formatter: (val) => {
+                                        return val;
+                                    },
+                                },
+                                total: {
+                                    show: true,
+                                    label: 'Total',
+                                    color: '#888ea8',
+                                    fontSize: '22px',
+                                    formatter: (w) => {
+                                        return w.globals.seriesTotals.reduce(function(a,
+                                            b) {
+                                            return a + b;
+                                        }, 0);
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                labels: ['New Call', 'Allocated Call', 'Pending Call', 'Closed Call'],
+                states: {
+                    hover: {
+                        filter: {
+                            type: 'none',
+                            value: 0.15,
+                        },
+                    },
+                    active: {
+                        filter: {
+                            type: 'none',
+                            value: 0.15,
+                        },
+                    },
+                },
+            };
+        },
+
+        get dailySalesOptions() {
+            return {
+                series: [{
+                        name: 'Calls',
+                        data: [44, 55, 41, 67, 22, 43, 21],
+                    },
+                    {
+                        name: 'Last Week',
+                        data: [13, 23, 20, 33, 13, 27, 33],
+                    },
+                ],
+                chart: {
+                    height: 250,
+                    type: 'bar',
+                    fontFamily: 'Nunito, sans-serif',
+                    toolbar: {
+                        show: false,
+                    },
+                    stacked: true,
+                    stackType: '100%',
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                stroke: {
+                    show: true,
+                    width: 1,
+                },
+                colors: ['#2eb384', '#e0e6ed'],
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        legend: {
+                            position: 'bottom',
+                            offsetX: -10,
+                            offsetY: 0,
+                        },
+                    },
+                }, ],
+                xaxis: {
+                    labels: {
+                        show: false,
+                    },
+                    categories: ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
+                },
+                yaxis: {
+                    show: false,
+                },
+                fill: {
+                    opacity: 1,
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '25%',
+                    },
+                },
+                legend: {
+                    show: false,
+                },
+                grid: {
+                    show: false,
+                    xaxis: {
+                        lines: {
+                            show: false,
+                        },
+                    },
+                    padding: {
+                        top: 10,
+                        right: -20,
+                        bottom: -20,
+                        left: -20,
+                    },
+                },
+            };
+        },
+    }));
+})
+</script>
 
 <?php
 include "footer.php";
