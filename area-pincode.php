@@ -9,7 +9,7 @@ include "header.php";
             
             <div class="flex flex-wrap items-center">
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add-areapincode.php'">
-                    <i class="ri-add-line"></i>Add Service Area 
+                    <i class="ri-add-line"></i>Add Area Pincode 
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT

@@ -4,7 +4,7 @@ include "header.php";
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
-            <h5 class="text-lg font-semibold dark:text-white-light">Service Area- Add</h5>
+            <h5 class="text-lg font-semibold dark:text-white-light">Area Pincode- Add</h5>
 </div>                              
 <div class="mb-5">
 <form class="space-y-5">
@@ -16,7 +16,7 @@ include "header.php";
                 <option>Test state</option>
                 <option>Gujarat</option>
                 <option>Bhayander</option>
-                <option>Vasai</option>
+                <option>VIRAR NSP VASAI</option>
                 <option>Thane</option>
             </select>
     </div>

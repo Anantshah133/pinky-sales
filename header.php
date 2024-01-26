@@ -334,7 +334,7 @@
                             </a>
                         </li>
                         <li class="menu nav-item">
-                            <a href="index.php" class="nav-link group">
+                            <a href="call-allocation.php" class="nav-link group">
                                 <div class="flex items-center">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
