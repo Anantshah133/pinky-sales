@@ -6,7 +6,7 @@ include "header.php";
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
             <h1 class='text-primary text-2xl font-bold'>Service Type</h1>
-            
+
             <div class="flex flex-wrap items-center">
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add-servicetype.php'">
                     <i class="ri-add-line mr-1"></i> Add Service Type
@@ -22,8 +22,28 @@ include "header.php";
         <table id="myTable" class="table-hover whitespace-nowrap"></table>
     </div>
 </div>
-    <!-- script -->
-    <script>
+<!-- script -->
+<script>
+function getActions() {
+    return `<ul class="flex items-center gap-4">
+        <li>
+            <a href="javascript:;" class='text-xl' x-tooltip="View">
+                <i class="ri-eye-line text-primary"></i>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class='text-xl' x-tooltip="Edit">
+                <i class="ri-pencil-line text text-success"></i>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete">
+                <i class="ri-delete-bin-line text-danger"></i>
+            </a>
+        </li>
+    </ul>`
+}
+
 document.addEventListener('alpine:init', () => {
     Alpine.data('exportTable', () => ({
         datatable: null,
@@ -33,11 +53,11 @@ document.addEventListener('alpine:init', () => {
                 data: {
                     headings: ['Sr.No.', 'Name', 'Action'],
                     data: [
-                        [1,'Test Area' , '' ],
-                        [2,'Gujarat' , '' ],
-                        [3,'Bhayander' , '' ],
-                        [4,'VIRAR NSP VASAI' , '' ],
-                        [5,'Thane', '' ],
+                        [1, 'Test Area', getActions()],
+                        [2, 'Gujarat', getActions()],
+                        [3, 'Bhayander', getActions()],
+                        [4, 'VIRAR NSP VASAI', getActions()],
+                        [5, 'Thane', getActions()],
                     ],
                 },
                 perPage: 10,
