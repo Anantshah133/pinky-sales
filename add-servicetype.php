@@ -29,12 +29,11 @@ include "header.php";
                     <button type="button" class="btn btn-primary !mt-6">Save & Edit</button>
                     <button type="button" class="btn btn-primary !mt-6">Return</button>
                 </div>
+            </form>
         </div>
     </div>
 </div>
-</div>
 
-</form>
 <?php
 include "footer.php";
 ?>

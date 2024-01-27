@@ -103,14 +103,13 @@ include "header.php";
             </div>
 
             <div class="relative inline-flex align-middle">
-                <button type="button" class="btn btn-primary">Save 
-                    </button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-primary">Save
+                </button>&nbsp;&nbsp;
                 <button type="button" class="btn  btn-warning ">Close</button>
             </div>
         </form>
-
-
     </div>
+</div>
 
 
 
@@ -120,7 +119,6 @@ include "header.php";
 
 
 
-
-    <?php
+<?php
 include "footer.php";
 ?>
