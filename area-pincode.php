@@ -5,11 +5,11 @@ include "header.php";
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
-            <h1 class='text-primary text-2xl font-bold'>State Area</h1>
+            <h1 class='text-primary text-2xl font-bold'>Area Pincode</h1>
             
             <div class="flex flex-wrap items-center">
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add-area.php'">
-                    <i class="ri-add-line"></i>Add Service Area 
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add-areapincode.php'">
+                    <i class="ri-add-line"></i>Add Area Pincode 
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
@@ -31,13 +31,18 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.No.', 'Name', 'Action'],
+                    headings: ['Sr.No.', 'Service Area Id','pincode', 'Action'],
                     data: [
-                        [1,'Test Area' , '' ],
-                        [2,'Gujarat' , '' ],
-                        [3,'Bhayander' , '' ],
-                        [4,'VIRAR NSP VASAI' , '' ],
-                        [5,'Thane', '' ],
+                        [1,'Gujarat' ,'396350', '' ],
+                        [2,'Gujarat' ,'396320', '' ],
+                        [3,'' ,'222222', '' ],
+                        [4,'Test State' ,'111111', '' ],
+                        [5,'Vasai','13245', '' ],
+                        [6,'Vasai' ,'734342', '' ],
+                        [7,'Gujarat' ,'395607', '' ],
+                        [8,'Gujarat' ,'346893', '' ],
+                        [9,'Gujarat' ,'467753','' ],
+                        [10,'Gujarat','125674','' ],
                     ],
                 },
                 perPage: 10,
