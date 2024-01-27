@@ -40,7 +40,7 @@ include "header.php";
     <!-- Service Center - Add form -->
     <div class="panel border shadow-md shadow-slate-200">
         <div class="mb-5 flex items-center justify-between">
-            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Service Center Add</h5>
+            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Technician Add</h5>
         </div>
 
         <form class="space-y-5">
@@ -56,30 +56,22 @@ include "header.php";
                 <label for="groupFname">Contact</label>
                 <input id="groupFname" type="text" placeholder="" class="form-input" />
             </div>
-
             <div>
-                <label for="gridAddress1">Address</label>
-                <input id="gridAddress1" type="text" placeholder="Enter Address" value="" class="form-input" />
+                <label for="groupFname"> Service Center</label>
+
+                <select class="form-select text-white-dark">
+                    <option>-none-</option>
+                    <option>MIRA BHAYANDER</option>
+                    <option>N H SERVICE</option>
+                    <option>NO SERVICE</option>
+                    <option>PALGHAR</option>
+                    <option>Test Service center</option>
+                    <option>VIRAR NSP VASAI</option>
+                </select>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                <div>
-                    <label for="gridState">State</label>
-                    <select id="gridState" class="form-select text-white-dark">
-                        <option>Choose...</option>
-                        <option>...</option>
-                    </select>
-                </div>
-                <div class="md:col-span-2">
-                    <label for="gridCity">City</label>
-                    <input id="gridCity" type="text" placeholder="Enter City" class="form-input" />
-                </div>
 
-                <div>
-                    <label for="gridZip">Zip</label>
-                    <input id="gridZip" type="text" placeholder="Enter Zip" class="form-input" />
-                </div>
-            </div>
+
             <div>
                 <label for="gridUID">Userid</label>
                 <input type="text" placeholder="" class="form-input" required />
@@ -87,6 +79,15 @@ include "header.php";
             <div>
                 <label for="gridpass">Password</label>
                 <input type="password" placeholder="Enter Password" class="form-input" required />
+            </div>
+            <div>
+                <label for="gridproof">Id Proof</label>
+                <div class="relative inline-flex align-middle">
+                    <button type="button" class="btn  ltr:rounded-r-none rtl:rounded-l-none">No Image</button>
+
+                    <button type="button" class="btn btn-success ltr:rounded-l-none rtl:rounded-r-none"><a href=""><i
+                                class="ri-upload-2-fill"></i></a>&nbsp;&nbsp;Add Image</button>
+                </div>
             </div>
 
             <div>
