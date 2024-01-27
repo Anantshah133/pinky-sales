@@ -43,7 +43,7 @@ include "header.php";
         </div>
         <div class=" container flex justify-between items-center  ">
             <div class="">
-                <a href="technician-add.php"> <button type="button" class="btn btn-primary mb-5 ">
+                <a href="Add-technician.php"> <button type="button" class="btn btn-primary mb-5 ">
                         <i class="ri-add-line"></i>&nbsp;Add
                     </button></a>
             </div>

@@ -49,7 +49,7 @@ include "header.php";
 
 
 
-                <button type="button" class="btn btn-primary" onclick="window.location='service-center-add.php'"> <i
+                <button type="button" class="btn btn-primary" onclick="window.location='add-service-center.php'"> <i
                         class="ri-add-line"></i>&nbsp;Add</button>
 
             </div>
