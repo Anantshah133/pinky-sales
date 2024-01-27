@@ -29,6 +29,26 @@ include "header.php";
 <!-- script -->
 
 <script>
+function getActions() {
+    return `<ul class="flex items-center justify-center gap-4">
+        <li>
+            <a href="javascript:;" class='text-xl' x-tooltip="View">
+                <i class="ri-eye-line text-primary"></i>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class='text-xl' x-tooltip="Edit">
+                <i class="ri-pencil-line text text-success"></i>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete">
+                <i class="ri-delete-bin-line text-danger"></i>
+            </a>
+        </li>
+    </ul>`
+}
+
 document.addEventListener('alpine:init', () => {
     Alpine.data('exportTable', () => ({
         datatable: null,
@@ -42,26 +62,25 @@ document.addEventListener('alpine:init', () => {
                     ],
                     data: [
                         [1, 'Santosh', 'Nikam', '8483808528', 'Virar nsp vasai',
-                            '401209',
-                            'ORP2401240005', 'Complaint', 'COOLER', '2024-01-24', 'new',
-                            ''
+                            '401209', 'ORP2401240005', 'Complaint', 'COOLER',
+                            '2024-01-24', 'new',
+                            `${getActions()}`
                         ],
                         [2, 'Silky', 'Singh', '9702098111', 'Thane', '401105',
                             'ORP2401240004', 'Demo / Installation', 'LED TV',
-                            '2024-01-24', 'Allocated', ''
+                            '2024-01-24', 'Allocated', `${getActions()}`
                         ],
                         [3, 'Kalpesh', 'Parab', '9356775146', 'Virar nsp vasai',
-                            '401203',
-                            'ORP2401240003', 'Demo / Installation', 'LED TV',
-                            '	2024-01-24', 'Allocated', ''
+                            '401203', 'ORP2401240003', 'Demo / Installation', 'LED TV',
+                            '2024-01-24', 'Allocated', `${getActions()}`
                         ],
                         [4, 'Vinod', 'Yadav', '9284792648', 'Virar nsp vasai', '401203',
                             'ORP2401240002', 'Complaint', 'LED TV', '2024-01-24',
-                            'Allocated', ''
+                            'Allocated', `${getActions()}`
                         ],
                         [5, 'Addie', 'Luna', '8483808528', 'Virar nsp vasai', '401209',
                             'ORP2401240005', 'Complaint', 'COOLER', '2024-01-24', 'new',
-                            ''
+                            `${getActions()}`
                         ],
                     ],
                 },
