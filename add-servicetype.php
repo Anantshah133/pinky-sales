@@ -10,8 +10,19 @@ include "header.php";
 <form class="space-y-5">
     <div>
         <label for="groupFname"> Name</label>
-        <input id="groupFname" type="text" placeholder="Enter First Name" class="form-input" />
+        <input id="groupFname" type="text" class="form-input" />
     </div>
+    <div>
+                <label for="gridStatus">Status</label>
+                <label class="inline-flex">
+                    <input type="radio" name="default_radio" class="form-radio" checked />
+                    <span>Enable</span>
+                </label>
+                <label class="inline-flex">
+                    <input type="radio" name="default_radio" class="form-radio text-danger" />
+                    <span>Disable</span>
+                </label>
+            </div>
     <div class="mb-2 flex items-center gap-2 pl-1">
     <button type="button" class="btn btn-primary !mt-6 ">Save & Return</button>
     <button type="button" class="btn btn-primary !mt-6">Save & New</button>
