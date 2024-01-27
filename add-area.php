@@ -11,18 +11,16 @@ include "header.php";
                 <div>
                     <label for="groupFname"> Name</label>
                     <input id="groupFname" type="text" class="form-input" />
-                    <div class="relative inline-flex align-middle">
-                        <button type="button" class="btn btn-primary">Save
-                        </button>&nbsp;&nbsp;
+                    <div class="relative inline-flex align-middle gap-3 mt-4">
+                        <button type="button" class="btn btn-primary">Save </button>
                         <button type="button" class="btn  btn-warning ">Close</button>
                     </div>
                 </div>
-</form>
+            </form>
         </div>
     </div>
 </div>
 
-</form>
 <?php
 include "footer.php";
 ?>

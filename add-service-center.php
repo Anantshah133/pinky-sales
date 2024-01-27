@@ -3,12 +3,11 @@ include "header.php";
 ?>
 
 <div class='p-6'>
-    
+
     <div class="panel border shadow-md shadow-slate-200">
         <div class="mb-5 flex items-center justify-between">
             <h5 class="text-xl text-primary font-semibold dark:text-white-light">Service Center Add</h5>
         </div>
-
         <form class="space-y-5">
             <div>
                 <label for="groupFname"> Name</label>
@@ -68,24 +67,15 @@ include "header.php";
             </div>
 
             <div class="relative inline-flex align-middle">
-                <button type="button" class="btn btn-primary">Save 
-                    </button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-primary">Save
+                </button>&nbsp;&nbsp;
                 <button type="button" class="btn  btn-warning ">Close</button>
             </div>
         </form>
 
 
     </div>
-
-
-
-
-
-
-
-
 </div>
-
-    <?php
+<?php
 include "footer.php";
 ?>
