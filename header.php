@@ -370,8 +370,7 @@
                                             fill="currentColor"></path>
                                     </svg>
                                     <span
-                                        class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Service
-                                        Area</span>
+                                        class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">State Area </span>
                                 </div>
                             </a>
                         </li>

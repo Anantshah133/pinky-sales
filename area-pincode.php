@@ -6,10 +6,11 @@ include "header.php";
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
             <h1 class='text-primary text-2xl font-bold'>Area Pincode</h1>
-            
+
             <div class="flex flex-wrap items-center">
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add-areapincode.php'">
-                    <i class="ri-add-line"></i>Add Area Pincode 
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1"
+                    onclick="location.href='add-areapincode.php'">
+                    <i class="ri-add-line"></i>Add Area Pincode
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
@@ -22,8 +23,30 @@ include "header.php";
         <table id="myTable" class="table-hover whitespace-nowrap"></table>
     </div>
 </div>
-    <!-- script -->
-    <script>
+
+
+<!-- script -->
+<script>
+function getActions() {
+    return `<ul class="flex items-center gap-4">
+        <li>
+            <a href="javascript:;" class='text-xl' x-tooltip="View">
+                <i class="ri-eye-line text-primary"></i>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class='text-xl' x-tooltip="Edit">
+                <i class="ri-pencil-line text text-success"></i>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete">
+                <i class="ri-delete-bin-line text-danger"></i>
+            </a>
+        </li>
+    </ul>`
+}
+
 document.addEventListener('alpine:init', () => {
     Alpine.data('exportTable', () => ({
         datatable: null,
@@ -31,18 +54,18 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.No.', 'Service Area Id','pincode', 'Action'],
+                    headings: ['Sr.No.', 'Service Area Id', 'pincode', 'Action'],
                     data: [
-                        [1,'Gujarat' ,'396350', '' ],
-                        [2,'Gujarat' ,'396320', '' ],
-                        [3,'' ,'222222', '' ],
-                        [4,'Test State' ,'111111', '' ],
-                        [5,'Vasai','13245', '' ],
-                        [6,'Vasai' ,'734342', '' ],
-                        [7,'Gujarat' ,'395607', '' ],
-                        [8,'Gujarat' ,'346893', '' ],
-                        [9,'Gujarat' ,'467753','' ],
-                        [10,'Gujarat','125674','' ],
+                        [1, 'Gujarat', '396350', getActions()],
+                        [2, 'Gujarat', '396320', getActions()],
+                        [3, '', '222222', getActions()],
+                        [4, 'Test State', '111111', getActions()],
+                        [5, 'Vasai', '13245', getActions()],
+                        [6, 'Vasai', '734342', getActions()],
+                        [7, 'Gujarat', '395607', getActions()],
+                        [8, 'Gujarat', '346893', getActions()],
+                        [9, 'Gujarat', '467753', getActions()],
+                        [10, 'Gujarat', '125674', getActions()],
                     ],
                 },
                 perPage: 10,
