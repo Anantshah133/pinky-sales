@@ -97,7 +97,7 @@ include "header.php";
                     <span>Enable</span>
                 </label>
                 <label class="">
-                    <input type="radio" name="default_radio" class="form-radio text-success" />
+                    <input type="radio" name="default_radio" class="form-radio text-danger" />
                     <span>Disable</span>
                 </label>
             </div>

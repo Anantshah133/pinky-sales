@@ -8,8 +8,9 @@ include "header.php";
             <h1 class='text-primary text-2xl font-bold'>Call Allocation</h1>
 
             <div class="flex flex-wrap items-center">
-            <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add-callallocation.php'">
-                    <i class="ri-add-line"></i>Add  
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1"
+                    onclick="location.href='add-callallocation.php'">
+                    <i class="ri-add-line mr-1"></i> Add
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
@@ -26,6 +27,27 @@ include "header.php";
 <!-- script -->
 
 <script>
+function getActions() {
+    return `<ul class="flex items-center justify-center gap-4">
+        <li>
+            <a href="javascript:;" class='text-xl' x-tooltip="View">
+                <i class="ri-eye-line text-primary"></i>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class='text-xl' x-tooltip="Edit">
+                <i class="ri-pencil-line text text-success"></i>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete">
+                <i class="ri-delete-bin-line text-danger"></i>
+            </a>
+        </li>
+    </ul>`
+}
+
+
 document.addEventListener('alpine:init', () => {
     Alpine.data('exportTable', () => ({
         datatable: null,
@@ -33,62 +55,15 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.No.', 'Complaint No.', 'Service Center', 'Technician','Allocation Date', 'Allocation Time', 'Status',
-                        'Reason', 'Customer Name',
-                        'Customer Contact', 'Address', 'product Catagory', 'Action'
+                    headings: ['Sr.No.', 'Complaint No.', 'Service Center', 'Technician',
+                        'Allocation Date', 'Status','Customer Name',
+                        'Customer Contact', 'product Catagory', 'Action'
                     ],
                     data: [
-                        [1, 'ORP2501240003', 'VIRAR NSP VASAI', 'SANJAY SINGH', '26.01.2024',
-                            '04:24 pm',
-                            'allocated', '', 'mrintunjay', '9137989561','kalkai Apt C/203 nagindas pada nr machhi…' ,'LED TV',
-                            ''
+                        [1, 'ORP2501240003', 'VIRAR NSP VASAI', 'SANJAY SINGH',
+                            '23-5-23', 'Allocated','Anant shah',
+                            '992929012', 'qwqwqw', getActions()
                         ],
-                        [2, 'ORP2601240005', 'PALGHAR', '', '',
-                            '',
-                            'new', '', 'PRASANT', '9766381436','404, A wing, lotus Building, Parasnath Nagri,…' ,'LED TV',
-                            ''
-                        ],
-                        [3, 'ORP2601240004', 'N H SERVICE', 'Waris', '26.01.2024',
-                            '03:00 pm',
-                            'allocated', '', 'Shailesh', '9723726159','Ekta Complex, Khanvel, near petrol pump ' ,'LED TV',
-                            ''
-                        ],
-                        [4, 'ORP2601240003', 'VIRAR NSP VASAI', 'SANJAY SINGH', '26.01.2024',
-                            '12:26 pm',
-                            'allocated', '', 'riba', '7709480428','flat n. 209 Shabana apt nr Batul nasr nalasopara…' ,'LED TV',
-                            ''
-                        ],
-                        [5, 'ORP2601240002', 'VIRAR NSP VASAI', 'SANJAY SINGH', '26.01.2024',
-                            '04:24 pm',
-                            'allocated', '', 'tejas', '9168833983','204 dhurvi appt ganpati mandir vs marg virar e' ,'LED TV',
-                            ''
-                        ],
-                        [6, 'ORP2601240001', 'VIRAR NSP VASAI', 'Kadam', '26.01.2024',
-                            '10:57 am',
-                            'allocated', '', 'RAM TEK', '7058570751','near Sai Baba mandir khairpada waliv naka vasai…' ,'COLLER',
-                            ''
-                        ],
-                        [7, 'ORP2501240003', 'VIRAR NSP VASAI', 'SANJAY SINGH', '25.01.2024',
-                            '07:23 pm',
-                            'allocated', '', 'dinesh', '7977681353','room 07 shree sai apt moregaon nsp e nr rajiv…' ,'LED TV',
-                            ''
-                        ],
-                        [8, 'ORP2501240002', 'N H SERVICE', 'Waris', '26.01.2024',
-                            '02:25 pm',
-                            'closed', 'normal setting ok', 'Amin ', '8511672523','Samarvani School Faliya Silvassa' ,'LED TV',
-                            ''
-                        ],
-                        [9, 'ORP2501240001', 'PALGHAR', 'RANAPRATAP', '26.01.2024',
-                            '11:58 am',
-                            'allocated', '', 'swpnil', '9356169177','aambheghar kasa tel dahanu dist palghar ' ,'HOME THEATER',
-                            ''
-                        ],
-                        [10, 'ORP2401240005', 'VIRAR NSP VASAI', 'Kadam', '26.01.2024',
-                            '11:58 am',
-                            'allocated', '', 'Santosh', '8483808528','Room - 305, Sai Prerna society, Alkapuri, Achole…' ,'COLLER',
-                            ''
-                        ],
-                        
                     ],
                 },
                 perPage: 10,
