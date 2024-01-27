@@ -10,7 +10,7 @@ include "header.php";
 <form class="space-y-5">
     <div>
         <label for="groupFname"> Name</label>
-        <input id="groupFname" type="text" placeholder="Enter First Name" class="form-input" />
+        <input id="groupFname" type="text"  class="form-input" />
     </div>
     <div class="mb-2 flex items-center gap-2 pl-1">
     <button type="button" class="btn btn-primary !mt-6 ">Save & Return</button>
