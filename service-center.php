@@ -121,8 +121,7 @@ include "header.php";
                                 progress: '40%',
                                 position: 'Developer',
                                 office: 'London'
-                            },
-                            ......
+                            },]
                         }));
                 });
     </script>
