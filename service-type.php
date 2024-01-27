@@ -9,7 +9,7 @@ include "header.php";
             
             <div class="flex flex-wrap items-center">
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add-servicetype.php'">
-                    <i class="ri-add-line"></i>Add Service Type
+                    <i class="ri-add-line mr-1"></i> Add Service Type
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
