@@ -49,19 +49,19 @@ include "header.php";
 
 
 
-                <button type="button" class="btn btn-primary" onclick="window.location='service_center_add.php'"> <i
-                        class="ri-add-line"></i>Add</button>
+                <button type="button" class="btn btn-primary" onclick="window.location='service-center-add.php'"> <i
+                        class="ri-add-line"></i>&nbsp;Add</button>
 
             </div>
             <div class="flex  space-x-4  ">
                 <div class="">
                     <button type="button" class="btn btn-primary mb-5 ">
-                        <i class="ri-printer-line"></i> Print
+                        <i class="ri-printer-line"></i>&nbsp;Print
                     </button>
                 </div>
                 <div class="">
                     <button type="button" class="btn btn-primary mb-5 ">
-                        <i class="ri-file-3-line"></i> Export into CSV
+                        <i class="ri-file-3-line"></i>&nbsp;Export into CSV
                     </button>
                 </div>
             </div>
