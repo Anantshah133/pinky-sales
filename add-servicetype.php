@@ -1,5 +1,39 @@
 <?php
 include "header.php";
+if(isset($_REQUEST['save']))
+{
+ 
+  $name = $_REQUEST['name'];
+  $status = $_REQUEST['default_radio'];
+ 
+  try
+  {
+    $stmt = $obj->con1->prepare("INSERT INTO `service_type`(`name`,`status`) VALUES (?,?)");
+    $stmt->bind_param("ss",$name,$status);
+    $Resp=$stmt->execute();
+    if(!$Resp)
+    {
+      throw new Exception("Problem in adding! ". strtok($obj->con1-> error,  '('));
+    }
+    $stmt->close();
+    
+  }
+  catch(\Exception  $e) {
+    setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
+  }
+
+
+  if($Resp)
+  {
+    setcookie("msg", "data",time()+3600,"/");
+      header("location:add-servicetype.php");
+  }
+  else
+  {
+    setcookie("msg", "fail",time()+3600,"/");
+      header("location:add-servicetype.php");
+  }
+}
 ?>
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-6">
@@ -7,24 +41,24 @@ include "header.php";
             <h5 class="text-lg font-semibold dark:text-white-light">Service Type- Add</h5>
         </div>
         <div class="mb-5">
-            <form class="space-y-5">
+            <form class="space-y-5" method="post">
                 <div>
                     <label for="groupFname"> Name</label>
-                    <input id="groupFname" type="text" class="form-input" />
+                    <input id="groupFname" name="name" type="text" class="form-input" require/>
                 </div>
                 <div>
                     <label for="gridStatus">Status</label>
                     <label class="inline-flex">
-                        <input type="radio" name="default_radio" class="form-radio" checked />
+                        <input type="radio" name="default_radio" value="enable" class="form-radio" checked required />
                         <span>Enable</span>
                     </label>
                     <label class="inline-flex">
-                        <input type="radio" name="default_radio" class="form-radio text-danger" />
+                        <input type="radio" name="default_radio" value="disable" class="form-radio text-danger" required />
                         <span>Disable</span>
                     </label>
                 </div>
                     <div class="relative inline-flex align-middle gap-3 mt-4">
-                        <button type="button" class="btn btn-primary">Save </button>
+                        <button type="submit" name="save" id="save" class="btn btn-primary">Save </button>
                         <button type="button" class="btn  btn-warning ">Close</button>
                     </div>
             </form>
