@@ -80,13 +80,13 @@ include "header.php";
                 <div>
                     <label for="groupFname"> Reason </label>
                     <input id="groupFname" type="text" class="form-input" />
-                    <div class="relative inline-flex align-middle">
-                        <button type="button" class="btn btn-primary">Save
-                        </button>&nbsp;&nbsp;
+                    <div class="relative inline-flex align-middle gap-3 mt-4">
+                        <button type="button" class="btn btn-primary">Save </button>
                         <button type="button" class="btn  btn-warning ">Close</button>
                     </div>
                 </div>
         </div>
+        </form>
     </div>
 </div>
 
