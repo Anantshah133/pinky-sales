@@ -5,11 +5,12 @@ include "header.php";
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
-            <h1 class='text-primary text-2xl font-bold'>State Area</h1>
+            <h1 class='text-primary text-2xl font-bold'>Product-Service</h1>
 
             <div class="flex flex-wrap items-center">
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add-area.php'">
-                    <i class="ri-add-line mr-1"></i> Add Service Area
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1"
+                    onclick="location.href='add-productservice.php'">
+                    <i class="ri-add-line"></i>Add
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
@@ -43,6 +44,7 @@ function getActions() {
         </li>
     </ul>`
 }
+
 document.addEventListener('alpine:init', () => {
     Alpine.data('exportTable', () => ({
         datatable: null,
@@ -50,13 +52,12 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.No.', 'Name', 'Action'],
+                    headings: ['Sr.No.', 'Product','Service', 'Status','Action'],
                     data: [
-                        [1, 'Test Area', getActions()],
-                        [2, 'Gujarat', getActions()],
-                        [3, 'Bhayander', getActions()],
-                        [4, 'VIRAR NSP VASAI', getActions()],
-                        [5, 'Thane', getActions()],
+                        [1, 'COOLER','','', getActions()],
+                        [2, 'HOME THEATER','','', getActions()],
+                        [3, 'WASHING MACHINE','','', getActions()],
+                        [4, 'LED TV','','', getActions()],
                     ],
                 },
                 perPage: 10,
