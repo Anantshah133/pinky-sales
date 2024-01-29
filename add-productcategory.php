@@ -7,7 +7,7 @@ if(isset($_REQUEST['save']))
  
   try
   {
-    $stmt = $obj->con1->prepare("INSERT INTO `service_area`(`name`) VALUES (?)");
+    $stmt = $obj->con1->prepare("INSERT INTO `product_category`(`name`) VALUES (?)");
     $stmt->bind_param("s",$name);
     $Resp=$stmt->execute();
     if(!$Resp)

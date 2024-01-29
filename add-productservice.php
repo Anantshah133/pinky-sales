@@ -1,5 +1,39 @@
 <?php
 include "header.php";
+if(isset($_REQUEST['save']))
+{
+ 
+  $service_area_id = $_REQUEST['area_id'];
+  $pincode = $_REQUEST['pincode'];
+ 
+  try
+  {
+    $stmt = $obj->con1->prepare("INSERT INTO `product_service`(`service_area_id`,`pincode`) VALUES (?,?)");
+    $stmt->bind_param("is",$service_area_id,$pincode);
+    $Resp=$stmt->execute();
+    if(!$Resp)
+    {
+      throw new Exception("Problem in adding! ". strtok($obj->con1-> error,  '('));
+    }
+    $stmt->close();
+    
+  }
+  catch(\Exception  $e) {
+    setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
+  }
+
+
+  if($Resp)
+  {
+    setcookie("msg", "data",time()+3600,"/");
+      header("location:add-areapincode.php");
+  }
+  else
+  {
+    setcookie("msg", "fail",time()+3600,"/");
+      header("location:add-areapincode.php");
+  }
+}
 ?>
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-6">
