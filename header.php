@@ -1,3 +1,7 @@
+<?php
+ include "db-connect.php";
+ $obj=new DB_Connect();
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
