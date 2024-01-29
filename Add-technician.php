@@ -102,9 +102,9 @@ include "header.php";
                 </label>
             </div>
 
-            <div class="relative inline-flex align-middle">
+            <div class="relative inline-flex align-middle gap-3 mt-4">
                 <button type="button" class="btn btn-primary">Save
-                </button>&nbsp;&nbsp;
+                </button>
                 <button type="button" class="btn  btn-warning ">Close</button>
             </div>
         </form>

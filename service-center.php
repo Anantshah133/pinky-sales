@@ -1,7 +1,7 @@
 <?php
 include "header.php";
-?>
 
+?>
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
@@ -9,7 +9,7 @@ include "header.php";
 
             <div class="flex flex-wrap items-center">
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1"
-                    onclick="location.href='add-callallocation.php'">
+                    onclick="location.href='add-service-center.php'">
                     <i class="ri-add-line mr-1"></i> Add
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
