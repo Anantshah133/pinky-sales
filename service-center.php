@@ -2,132 +2,130 @@
 include "header.php";
 ?>
 
-<div class='p-6'>
-    <!-- <div>
-        <div class="mb-5 flex items-center justify-between">
-            <h5 class="text-lg font-semibold dark:text-white-light">Progress Table</h5>
-        </div>
-    </div>
-    <div class="table-responsive border mb-5">
-        <table>
-            <thead class='border-b'>
-                <tr class=''>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th class="text-center">Action</th>
-                </tr>
-            </thead>
-            <tbody x-data='complaint'>
-                <template x-for="item in tableData" :key="item.id">
-                    <tr class='bg-white'>
-                        <td x-text="item.id"></td>
-                        <td x-text="item.name" class="whitespace-nowrap"></td>
-                        <td class="p-3 border-b border-[#ebedf2] dark:border-[#191e3a] text-center">
-                            <button type="button" x-tooltip="Edit">
-                                <i class="ri-pencil-line"></i>
-                            </button>
-                            <button type="button" x-tooltip="Delete">
-                                <i class="ri-delete-bin-line"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </template>
-            </tbody>
-   
-        </table>
-    </div> -->
+<div class='p-6' x-data='exportTable'>
+    <div class="panel mt-6">
+        <div class='flex items-center justify-between mb-3'>
+            <h1 class='text-primary text-2xl font-bold'>Service Center</h1>
 
-    <!-- service-center table -->
-
-    <div class="panel border shadow-md shadow-slate-200">
-        <div class="mb-5 flex items-center justify-between">
-            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Service Center</h5>
-        </div>
-
-        <div class=" container flex justify-between items-center  ">
-            <div class="">
-
-
-
-                <button type="button" class="btn btn-primary" onclick="window.location='add-service-center.php'"> <i
-                        class="ri-add-line"></i>&nbsp;Add</button>
-
-            </div>
-            <div class="flex  space-x-4  ">
-                <div class="">
-                    <button type="button" class="btn btn-primary mb-5 ">
-                        <i class="ri-printer-line"></i>&nbsp;Print
-                    </button>
-                </div>
-                <div class="">
-                    <button type="button" class="btn btn-primary mb-5 ">
-                        <i class="ri-file-3-line"></i>&nbsp;Export into CSV
-                    </button>
-                </div>
+            <div class="flex flex-wrap items-center">
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1"
+                    onclick="location.href='add-callallocation.php'">
+                    <i class="ri-add-line mr-1"></i> Add
+                </button>
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
+                    <i class="ri-printer-line mr-1"></i> PRINT
+                </button>
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="exportTable('csv')">
+                    <i class="ri-file-line mr-1"></i> CSV
+                </button>
             </div>
         </div>
-
-        <div class="table-responsive">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Contact</th>
-                        <th>Adress</th>
-                        <th class="text-center">Area</th>
-                        <th>Status</th>
-                        <th>Date Time</th>
-                        <th class="text-center">Action </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <template x-for="data in tableData" :key="data.id">
-                        <tr>
-                            <td x-text="data.name" class="whitespace-nowrap"></td>
-                            <td x-text="data.date"></td>
-                            <td x-text="data.sale"></td>
-                            <td class="text-center whitespace-nowrap"
-                                :class="{'text-success': data.status === 'Complete', 'text-secondary': data.status === 'Pending', 'text-info': data.status === 'In Progress', 'text-danger': data.status === 'Canceled'}"
-                                x-text="data.status"></td>
-                            <td class="text-center">
-                                <button type="button" x-tooltip="Delete">
-                                    <svg> ... </svg>
-                                </button>
-                            </td>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
-        </div>
-
+        <table id="myTable" class="table-hover whitespace-nowrap"></table>
     </div>
+</div>
+
+<!-- script -->
+
+<script>
+function getActions() {
+    return `<ul class="flex items-center justify-center gap-4">
+        <li>
+            <a href="javascript:;" class='text-xl' x-tooltip="View">
+                <i class="ri-eye-line text-primary"></i>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class='text-xl' x-tooltip="Edit">
+                <i class="ri-pencil-line text text-success"></i>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete">
+                <i class="ri-delete-bin-line text-danger"></i>
+            </a>
+        </li>
+    </ul>`
+}
 
 
+document.addEventListener('alpine:init', () => {
+    Alpine.data('exportTable', () => ({
+        datatable: null,
+        init() {
+            console.log('Initalizing datatable')
+            this.datatable = new simpleDatatables.DataTable('#myTable', {
+                data: {
+                    headings: ['Sr.No.', 'Name', '	Email', '	Contact',
+                        'Adress','Area', 'Status','Date Time',
+                        'Action'
+                    ],
+                    data: [
+                        [1, 'xyz', 'sanjaysingh@gmail.com', '	7040318884',
+                            'VIRAR NSP VASAI','Gujrat', 'Enable','04.02.2022 05:23 am',
+                             getActions()
+                        ],
+                    ],
+                },
+                perPage: 10,
+                perPageSelect: [10, 20, 30, 50, 100],
+                columns: [{
+                        select: 0,
+                        sort: 'asc',
+                    },
+                    // {
+                    //     select: 4,
+                    //     render: (data, cell, row) => {
+                    //         return this.formatDate(data);
+                    //     },
+                    // },
+                ],
+                firstLast: true,
+                firstText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M13 19L7 12L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M16.9998 19L10.9998 12L16.9998 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                lastText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M11 19L17 12L11 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M6.99976 19L12.9998 12L6.99976 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                prevText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M15 5L9 12L15 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                nextText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M9 5L15 12L9 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                labels: {
+                    perPage: '{select}',
+                },
+                layout: {
+                    top: '{search}',
+                    bottom: '{info}{select}{pager}',
+                },
+            });
+        },
 
+        exportTable(eType) {
+            var data = {
+                type: eType,
+                filename: 'table',
+                download: true,
+            };
 
-    <!-- script -->
-    <script>
-    document.addEventListener("alpine:init", () => {
-                Alpine.data("form", () => ({
-                        tableData: [{
-                                id: 1,
-                                name: 'John Doe',
-                                email: 'johndoe@yahoo.com',
-                                date: '10/08/2020',
-                                sale: 120,
-                                status: 'Complete',
-                                register: '5 min ago',
-                                progress: '40%',
-                                position: 'Developer',
-                                office: 'London'
-                            },]
-                        }));
-                });
-    </script>
+            if (data.type === 'csv') {
+                data.lineDelimiter = '\n';
+                data.columnDelimiter = ';';
+            }
+            this.datatable.export(data);
+        },
 
+        printTable() {
+            this.datatable.print();
+        },
 
+        formatDate(date) {
+            if (date) {
+                const dt = new Date(date);
+                const month = dt.getMonth() + 1 < 10 ? '0' + (dt.getMonth() + 1) : dt.getMonth() +
+                    1;
+                const day = dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate();
+                return day + '/' + month + '/' + dt.getFullYear();
+            }
+            return '';
+        },
+    }));
+})
+</script>
 
-    <?php
+<?php
 include "footer.php";
 ?>
