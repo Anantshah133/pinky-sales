@@ -1,30 +1,29 @@
 <?php
 ob_start();
-class DB_Connect {
-  public  $con1;
+class DB_Connect
+{
+    public $con1;
     // constructor
-    function __construct() {
-$this->connect();
+    function __construct()
+    {
+        $this->connect();
     }
- 
-   
- 
-    // Connecting to database
-    public function connect() {
-       
-$con = mysqli_connect("localhost","root","","onlife_db") or die("Connection Failed...!");
 
-if (!$con)
-  {
-  die("Connection error: " . mysqli_connect_errno());
-  }
-mysqli_autocommit($con, true);
-     
-$this->con1=$con;
- 
+    // Connecting to database
+    public function connect()
+    {
+        ($con = mysqli_connect("localhost", "root", "", "onelife_db")) or
+            die("Connection Failed...!");
+
+        if (!$con) {
+            die("Connection error: " . mysqli_connect_errno());
+        }
+        mysqli_autocommit($con, true);
+
+        $this->con1 = $con;
+
         // return database handler
         return $con;
     }
-
 }
 ?>
