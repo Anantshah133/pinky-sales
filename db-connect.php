@@ -1,14 +1,14 @@
 <?php
 ob_start();
-class DB_Connect {
-  public  $con1;
+class DB_Connect
+{
+    public $con1;
     // constructor
-    function __construct() {
-$this->connect();
+    function __construct()
+    {
+        $this->connect();
     }
- 
-   
- 
+
     // Connecting to database
     public function connect() {
        
@@ -25,6 +25,5 @@ $this->con1=$con;
         // return database handler
         return $con;
     }
-
 }
 ?>

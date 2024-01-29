@@ -8,8 +8,8 @@ include "header.php";
             <h1 class='text-primary text-2xl font-bold'>State Area</h1>
 
             <div class="flex flex-wrap items-center">
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add-area.php'">
-                    <i class="ri-add-line"></i>Add Service Area
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add-statearea.php'">
+                    <i class="ri-add-line"></i>Add State Area
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
