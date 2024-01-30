@@ -11,11 +11,12 @@ if(isset($_REQUEST['save']))
   $user_id = $_REQUEST['userid'];
   $pass = $_REQUEST['password']; 
   $status = $_REQUEST['default_radio'];
+  $address=$_REQUEST['address'];
 
   try
   {
-$stmt = $obj->con1->prepare("INSERT INTO `service_center`(`name`,`email`,`contact`,`userid`,`password`,`status`) VALUES (?,?,?,?,?,?)");
-$stmt->bind_param("ssssss",$name,$email,$contact,$user_id,$pass,$status);
+$stmt = $obj->con1->prepare("INSERT INTO `service_center`(`name`,`email`,`contact`,`userid`,`password`,`status`,`address`) VALUES (?,?,?,?,?,?,?)");
+$stmt->bind_param("sssssss",$name,$email,$contact,$user_id,$pass,$status,$address);
 $Resp=$stmt->execute();
 
     if(!$Resp)
@@ -66,7 +67,7 @@ $Resp=$stmt->execute();
 
             <div>
                 <label for="gridAddress1">Address</label>
-                <input id="gridAddress1" type="text" placeholder="Enter Address" value="" class="form-input" />
+                <input id="gridAddress1" type="text" name="address" placeholder="Enter Address" value="" class="form-input" />
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">

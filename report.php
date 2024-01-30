@@ -46,11 +46,11 @@ include "header.php";
         <form x-data="form" class="space-y-5">
             <div class="flex">
                 <div class="w-6/12 px-2">
-                    <lable for="basic">Start Date</lable>
+                    <label for="groupFname">Start Date</label>
                     <input id="basic" x-model="date1" class="form-input" />
                 </div>
                 <div class="w-6/12 px-2">
-                    <lable for="basic">End Date</lable>
+                    <label for="groupFnamec">End Date</label>
                     <input id="basic" x-model="date1" class="form-input" />
                 </div>
             </div>
