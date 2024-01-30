@@ -1,5 +1,47 @@
 <?php
 include "header.php";
+Insert:
+
+if(isset($_REQUEST['btnsubmit']))
+{
+ echo "hi";
+  $name = $_REQUEST['name'];
+  $email = $_REQUEST['email'];
+  $contact = $_REQUEST['contact'];
+  $user_id = $_SESSION['userid'];
+  $pass = $_SESSION['password']; 
+  $status = $_SESSION['status'];
+
+  try
+  {
+$stmt = $obj->con1->prepare("INSERT INTO `collection_time`(`name`,`email`,`contact`,`userid`,`password`,`status`) VALUES (?,?,?,?,?)");
+$stmt->bind_param("sssss",$start_time,$end_time,$status,$user_id);
+$Resp=$stmt->execute();
+    if(!$Resp)
+    {
+      throw new Exception("Problem in adding! ". strtok($obj->con1-> error,  '('));
+    }
+    $stmt->close();
+  }
+  catch(\Exception  $e) {
+    setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
+  }
+
+
+//   if($Resp)
+//   {
+//  setcookie("msg", "data",time()+3600,"/");
+//       header("location:collection_time.php");
+//   }
+//   else
+//   {
+//  setcookie("msg", "fail",time()+3600,"/");
+//       header("location:collection_time.php");
+//   }
+ }
+
+
+?>
 ?>
 
 <div class='p-6'>
@@ -66,9 +108,9 @@ include "header.php";
                 </label>
             </div>
 
-            <div class="relative inline-flex align-middle">
-                <button type="button" class="btn btn-primary">Save
-                </button>&nbsp;&nbsp;
+            <div class="relative inline-flex align-middle gap-3 mt-4">
+                <button type="submit" class="btn btn-primary" name="btnsubmit" >Save
+                </button>
                 <button type="button" class="btn  btn-warning ">Close</button>
             </div>
         </form>
