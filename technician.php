@@ -9,7 +9,7 @@ include "header.php";
 
             <div class="flex flex-wrap items-center">
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1"
-                    onclick="location.href='Add-technician.php'">
+                    onclick="location.href='add-technician.php'">
                     <i class="ri-add-line mr-1"></i> Add
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
