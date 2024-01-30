@@ -16,7 +16,7 @@ error_reporting(E_ALL);
     }
 ?>
 
-<div class='p-6' x-data='exportTable'>
+<div class='p-6'>
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-5'>
             <h5 class="text-2xl text-primary font-semibold dark:text-white-light">Add - Call Allocation</h5>
@@ -33,7 +33,7 @@ error_reporting(E_ALL);
                             <label for="service_center">Service Center</label>
                             <select name="service_center" class="form-select text-white-dark" required>
                                 <option value=''>-none-</option>
-                        <?php
+                                <?php
                             $stmt = $obj->con1->prepare(
                                 "SELECT * FROM `service_center` WHERE status='enable'"
                             );
@@ -43,8 +43,8 @@ error_reporting(E_ALL);
 
                             while ($result = mysqli_fetch_array($Resp)) { 
                         ?>
-                            <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
-                        <?php 
+                                <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                                <?php 
                             } 
                         ?>
                             </select>
@@ -56,8 +56,11 @@ error_reporting(E_ALL);
                         <div>
                             <label for="srno_img">Serial NO. Image</label>
                             <input name="srno_img" type="file"
-                                class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 rtl:file:ml-5 file:text-white file:hover:bg-primary"
-                                required />
+                                class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
+                                required onchange="readURL(this, 'srNoImg', 'errSrNoImg')" />
+
+                            <img src="" class="mt-8 hidden w-80" alt="" id="srNoImg">
+                            <h6 id='errSrNoImg' class='error-elem'></h6>
                         </div>
                         <div>
                             <label for="product_modal"> Product Model </label>
@@ -66,20 +69,26 @@ error_reporting(E_ALL);
                         <div>
                             <label for="product_modal_img"> Product Model Image </label>
                             <input name="product_modal_img" type="file"
-                                class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 rtl:file:ml-5 file:text-white file:hover:bg-primary"
-                                required />
+                                class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
+                                required onchange="readURL(this, 'previewModalImage', 'errModalImg')" />
+
+                            <img src="" class="mt-8 hidden w-72" alt="" id="previewModalImage">
+                            <h6 id='errModalImg' class='error-elem'></h6>
                         </div>
                     </div>
                     <div class="w-6/12 px-3 space-y-5">
-                        <div>
+                        <div x-data="purchaseDate">
                             <label for="purchase_date"> Purchase Date </label>
-                            <input name="purchase_date" type="text" class="form-input" required />
+                            <input id="purchase_date" x-model="date1" name="purchase_date" class="form-input" />
                         </div>
                         <div>
                             <label for="purchase_date_img">Purchase Date Image</label>
                             <input id="purchase_date_img" type="file"
-                                class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 rtl:file:ml-5 file:text-white file:hover:bg-primary"
-                                required />
+                                class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
+                                required onchange="readURL(this, 'purDateImg', 'errPurDateImg')" />
+
+                            <img src="" class="mt-8 hidden w-80" alt="" id="purDateImg">
+                            <h6 id='errPurDateImg' class='error-elem'></h6>
                         </div>
                         <div>
                             <label for="technician_name"> Technician </label>
@@ -121,6 +130,59 @@ error_reporting(E_ALL);
         </div>
     </div>
 </div>
+
+<script src="assets/js/flatpickr.js"></script>
+<script>
+document.addEventListener("alpine:init", () => {
+    let todayDate = new Date();
+    let formattedToday = todayDate.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+    }).split('/').join('-')
+
+
+    Alpine.data("purchaseDate", () => ({
+        date1: formattedToday,
+        init() {
+            console.log('Alpine Intialized !!');
+            flatpickr(document.getElementById('purchase_date'), {
+                dateFormat: 'd-m-Y',
+                defaultDate: this.date1,
+            })
+        }
+    }));
+});
+
+
+function readURL(input, preview, errElement) {
+    if (input.files && input.files[0]) {
+        var filename = input.files[0].name;
+        var reader = new FileReader();
+        var extn = filename.split('.').pop().toLowerCase();
+        var allowedExtns = ["jpg", "jpeg", "png", "bmp", "webp"];
+
+        console.log(filename, reader, extn)
+
+        if (allowedExtns.includes(extn)) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                document.querySelector('#' + preview).src = e.target.result;
+                document.getElementById(preview).style.display = "block";
+            };
+
+            reader.readAsDataURL(input.files[0]);
+            document.getElementById(errElement).innerHTML = "";
+            document.getElementById('save_btn').disabled = false;
+        } else {
+            document.getElementById(preview).style.display = "none";
+            document.getElementById(errElement).innerHTML = "Please Select Image Only";
+            document.getElementById('save_btn').disabled = true;
+        }
+    }
+}
+</script>
 
 <?php 
 include "footer.php";
