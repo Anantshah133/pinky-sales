@@ -54,10 +54,23 @@ document.addEventListener('alpine:init', () => {
                 data: {
                     headings: ['Sr.No.', 'Name', 'Action'],
                     data: [
-                        [1, 'COOLER', getActions()],
-                        [2, 'HOME THEATER', getActions()],
-                        [3, 'WASHING MACHINE', getActions()],
-                        [4, 'LED TV', getActions()],
+                        <?php 
+                            $stmt = $obj->con1->prepare("SELECT * FROM `product_category`");
+                            $stmt->execute();
+                            $Resp=$stmt->get_result();
+                                    $i=1;
+                            while($row = mysqli_fetch_array($Resp)){
+                        ?>
+                        [<?php echo $i ?>, '<?php echo $row['name'] ?>', getActions()],
+
+                        // [1, 'COOLER', getActions()],
+                        // [2, 'HOME THEATER', getActions()],
+                        // [3, 'WASHING MACHINE', getActions()],
+                        // [4, 'LED TV', getActions()],
+                       
+                        <?php $i++;
+                        } ?>
+                        
                     ],
                 },
                 perPage: 10,

@@ -10,7 +10,7 @@ if(isset($_REQUEST['save']))
   try
   {
     $stmt = $obj->con1->prepare("INSERT INTO `city`(`ctnm`,`stnm`,`status`) VALUES (?,?,?)");
-    $stmt->bind_param("iis",$city_name,$state_name,$status);
+    $stmt->bind_param("sis",$city_name,$state_name,$status);
     $Resp=$stmt->execute();
     if(!$Resp)
     {

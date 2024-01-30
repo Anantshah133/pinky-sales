@@ -5,11 +5,11 @@ include "header.php";
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
-            <h1 class='text-primary text-2xl font-bold'>State</h1>
+            <h1 class='text-primary text-2xl font-bold'>State Area</h1>
 
             <div class="flex flex-wrap items-center">
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add-state.php'">
-                    <i class="ri-add-line"></i>Add 
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add-statearea.php'">
+                    <i class="ri-add-line"></i>Add State Area
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
@@ -52,20 +52,11 @@ document.addEventListener('alpine:init', () => {
                 data: {
                     headings: ['Sr.No.', 'Name', 'Action'],
                     data: [
-            <?php 
-                $stmt = $obj->con1->prepare("SELECT * FROM `service_area`");
-                $stmt->execute();
-                $Resp=$stmt->get_result();
-                        $i=1;
-                while($row = mysqli_fetch_array($Resp)){
-            ?>
-                        [<?php echo $i ?>, '<?php echo $row['name'] ?>', getActions()],
-                        // [2, 'Gujarat', getActions()],
-                        // [3, 'Bhayander', getActions()],
-                        // [4, 'VIRAR NSP VASAI', getActions()],
-                        // [5, 'Thane', getActions()],
-            <?php $i++;
-            } ?>
+                        [1, 'Test Area', getActions()],
+                        [2, 'Gujarat', getActions()],
+                        [3, 'Bhayander', getActions()],
+                        [4, 'VIRAR NSP VASAI', getActions()],
+                        [5, 'Thane', getActions()],
                     ],
                 },
                 perPage: 10,

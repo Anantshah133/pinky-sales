@@ -54,10 +54,22 @@ document.addEventListener('alpine:init', () => {
                 data: {
                     headings: ['Sr.No.', 'Product','Service', 'Status','Action'],
                     data: [
-                        [1, 'COOLER','','', getActions()],
-                        [2, 'HOME THEATER','','', getActions()],
-                        [3, 'WASHING MACHINE','','', getActions()],
-                        [4, 'LED TV','','', getActions()],
+                        <?php 
+                            $stmt = $obj->con1->prepare("SELECT ps1.*,p1.name as product,s1.name as service FROM `product_service` ps1, `product_category` p1,`service_type` s1 WHERE ps1.pid=p1.id AND ps1.sid=s1.id;");
+                            $stmt->execute();
+                            $Resp=$stmt->get_result();
+                                    $i=1;
+                            while($row = mysqli_fetch_array($Resp)){
+                        ?>
+                        [<?php echo $i ?>, '<?php echo $row['product'] ?>','<?php echo $row['service'] ?>','<?php echo $row['status'] ?>', getActions()],
+                        // [1, 'COOLER','','', getActions()],
+                        // [2, 'HOME THEATER','','', getActions()],
+                        // [3, 'WASHING MACHINE','','', getActions()],
+                        // [4, 'LED TV','','', getActions()],
+                       
+                        <?php $i++;
+                        } ?>
+                        
                     ],
                 },
                 perPage: 10,

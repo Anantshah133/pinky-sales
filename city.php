@@ -52,10 +52,20 @@ document.addEventListener('alpine:init', () => {
                 data: {
                     headings: ['Sr.No.', 'City Name','State Name', 'Status','Action'],
                     data: [
-                        [1, 'COOLER','','', getActions()],
-                        [2, 'HOME THEATER','','', getActions()],
-                        [3, 'WASHING MACHINE','','', getActions()],
-                        [4, 'LED TV','','', getActions()],
+                        <?php 
+                            $stmt = $obj->con1->prepare("SELECT c1.*,s1.name FROM `city` c1, `service_area` s1 WHERE c1.stnm=s1.id;");
+                            $stmt->execute();
+                            $Resp=$stmt->get_result();
+                                    $i=1;
+                            while($row = mysqli_fetch_array($Resp)){
+                        ?>
+                        [<?php echo $i ?>, '<?php echo $row['ctnm'] ?>','<?php echo $row['name'] ?>','<?php echo $row['status'] ?>', getActions()],
+                        // [1, 'COOLER','','', getActions()],
+                        // [2, 'HOME THEATER','','', getActions()],
+                        // [3, 'WASHING MACHINE','','', getActions()],
+                        // [4, 'LED TV','','', getActions()],
+                        <?php $i++;
+                        } ?>
                     ],
                 },
                 perPage: 10,

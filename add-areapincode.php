@@ -2,14 +2,14 @@
 include "header.php";
 if(isset($_REQUEST['save']))
 {
- 
-  $service_area_id = $_REQUEST['area_id'];
+  $state_name = $_REQUEST['State_id'];
+  $city_name = $_REQUEST['area_id'];
   $pincode = $_REQUEST['pincode'];
  
   try
   {
-    $stmt = $obj->con1->prepare("INSERT INTO `area_pincode`(`service_area_id`,`pincode`) VALUES (?,?)");
-    $stmt->bind_param("is",$service_area_id,$pincode);
+    $stmt = $obj->con1->prepare("INSERT INTO `area_pincode`(`state_id`,`city_id`,`pincode`) VALUES (?,?,?)");
+    $stmt->bind_param("iis",$state_name,$city_name,$pincode);
     $Resp=$stmt->execute();
     if(!$Resp)
     {
@@ -44,9 +44,9 @@ if(isset($_REQUEST['save']))
             <form class="space-y-5" method="post">
                 <div>
                     
-                    <label for="groupFname"> Service Area Id</label>
+                    <label for="groupFname"> State Name</label>
 
-                    <select class="form-select text-white-dark" name="area_id">
+                    <select class="form-select text-white-dark" name="State_id">
                         <option>-none-</option>
                     <?php 
                         $stmt = $obj->con1->prepare("SELECT * FROM `service_area`");
@@ -57,6 +57,28 @@ if(isset($_REQUEST['save']))
                         while($result = mysqli_fetch_array($Resp)){
                     ?>
                         <option value="<?php echo $result['id'] ?>"><?php echo $result['name'] ?></option>
+                        <!-- <option>Gujarat</option>
+                        <option>Bhayander</option>
+                        <option>VIRAR NSP VASAI</option>
+                        <option>Thane</option> -->
+                    <?php } ?>
+                    </select>
+                </div>
+                <div>
+                    
+                    <label for="groupFname">  City Name</label>
+
+                    <select class="form-select text-white-dark" name="area_id">
+                        <option>-none-</option>
+                    <?php 
+                        $stmt = $obj->con1->prepare("SELECT * FROM `city`");
+                        $stmt->execute();
+                        $Resp=$stmt->get_result();
+                        $stmt->close();
+
+                        while($result = mysqli_fetch_array($Resp)){
+                    ?>
+                        <option value="<?php echo $result['srno'] ?>"><?php echo $result['ctnm'] ?></option>
                         <!-- <option>Gujarat</option>
                         <option>Bhayander</option>
                         <option>VIRAR NSP VASAI</option>

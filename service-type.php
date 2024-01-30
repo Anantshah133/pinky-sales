@@ -51,13 +51,25 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.No.', 'Name', 'Action'],
-                    data: [
-                        [1, 'Test Area', getActions()],
-                        [2, 'Gujarat', getActions()],
-                        [3, 'Bhayander', getActions()],
-                        [4, 'VIRAR NSP VASAI', getActions()],
-                        [5, 'Thane', getActions()],
+                    headings: ['Sr.No.', 'Name','Status', 'Action'],
+                    data: [ 
+                        <?php 
+                            $stmt = $obj->con1->prepare("SELECT * FROM `service_type`");
+                            $stmt->execute();
+                            $Resp=$stmt->get_result();
+                                    $i=1;
+                            while($row = mysqli_fetch_array($Resp)){
+                        ?>
+                        [<?php echo $i ?>, '<?php echo $row['name'] ?>','<?php echo $row['status'] ?>', getActions()],
+
+                        // [1, 'Test Area', getActions()],
+                        // [2, 'Gujarat', getActions()],
+                        // [3, 'Bhayander', getActions()],
+                        // [4, 'VIRAR NSP VASAI', getActions()],
+                        // [5, 'Thane', getActions()],
+
+                        <?php $i++;
+                         } ?>
                     ],
                 },
                 perPage: 10,
