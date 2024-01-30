@@ -1,5 +1,47 @@
 <?php
 include "header.php";
+
+Insert:
+
+if(isset($_REQUEST['save']))
+{
+ 
+  $name = $_REQUEST['name'];
+  $email = $_REQUEST['email'];
+  $contact = $_REQUEST['contact'];
+  $user_id = $_REQUEST['userid'];
+  $pass = $_REQUEST['password']; 
+  $status = $_REQUEST['default_radio'];
+
+  try
+  {  
+$stmt = $obj->con1->prepare("INSERT INTO `technician`(`name`,`email`,`contact`,`userid`,`password`,`status`) VALUES (?,?,?,?,?,?)");
+$stmt->bind_param("ssssss",$name,$email,$contact,$user_id,$pass,$status);
+$Resp=$stmt->execute();
+
+    if(!$Resp)
+    {
+      throw new Exception("Problem in adding! ". strtok($obj->con1-> error,  '('));
+    }
+    $stmt->close();
+  }
+  catch(\Exception  $e) {
+    setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
+  }
+
+
+  if($Resp)
+  {
+ setcookie("msg", "data",time()+3600,"/");
+      header("location:add-technician.php");
+  }
+  else
+  {
+ setcookie("msg", "fail",time()+3600,"/");
+     header("location:add-technician.php");
+  }
+ }
+
 ?>
 
 <div class='p-6'>
@@ -43,18 +85,18 @@ include "header.php";
             <h5 class="text-xl text-primary font-semibold dark:text-white-light">Technician Add</h5>
         </div>
 
-        <form class="space-y-5">
+        <form class="space-y-5" method="post">
             <div>
                 <label for="groupFname"> Name</label>
-                <input id="groupFname" type="text" placeholder="Enter First Name" class="form-input" />
+                <input id="groupFname" type="text" name="name" placeholder="Enter First Name" class="form-input" />
             </div>
             <div>
                 <label for="ctnEmail">Email address</label>
-                <input id="ctnEmail" type="email" placeholder="name@example.com" class="form-input" required />
+                <input id="ctnEmail" type="email" name="email" placeholder="name@example.com" class="form-input" required />
             </div>
             <div>
                 <label for="groupFname">Contact</label>
-                <input id="groupFname" type="text" placeholder="" class="form-input" />
+                <input id="groupFname" type="text" name="contact" placeholder="" class="form-input" />
             </div>
             <div>
                 <label for="groupFname"> Service Center</label>
@@ -74,11 +116,11 @@ include "header.php";
 
             <div>
                 <label for="gridUID">Userid</label>
-                <input type="text" placeholder="" class="form-input" required />
+                <input type="text" placeholder="" name="userid" class="form-input" required />
             </div>
             <div>
                 <label for="gridpass">Password</label>
-                <input type="password" placeholder="Enter Password" class="form-input" required />
+                <input type="password" placeholder="Enter Password" name="password" class="form-input" required />
             </div>
             <div>
                 <label for="gridproof">Id Proof</label>
@@ -103,7 +145,7 @@ include "header.php";
             </div>
 
             <div class="relative inline-flex align-middle gap-3 mt-4">
-                <button type="button" class="btn btn-primary">Save
+                <button type="submit" class="btn btn-primary" name="save" id="save">Save
                 </button>
                 <button type="button" class="btn  btn-warning ">Close</button>
             </div>
