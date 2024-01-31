@@ -6,7 +6,6 @@ if(isset($_REQUEST['save']))
     $city_name = $_REQUEST['city_id'];
     $state_name = $_REQUEST['state_id'];
     $status = $_REQUEST['default_radio'];
- 
   try
   {
     $stmt = $obj->con1->prepare("INSERT INTO `city`(`ctnm`,`stnm`,`status`) VALUES (?,?,?)");

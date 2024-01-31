@@ -100,11 +100,11 @@ $Resp=$stmt->execute();
             <div>
                 <label for="gridStatus">Status</label>
                 <label class="inline-flex">
-                    <input type="radio" name="default_radio" class="form-radio text-success" checked />
+                    <input type="radio" name="default_radio" class="form-radio text-success"  value="enable" checked />
                     <span>Enable</span>
                 </label>
                 <label class="">
-                    <input type="radio" name="default_radio" class="form-radio text-danger" />
+                    <input type="radio" name="default_radio" class="form-radio text-danger"  value="disable" />
                     <span>Disable</span>
                 </label>
             </div>

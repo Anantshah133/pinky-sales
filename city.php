@@ -8,7 +8,7 @@ include "header.php";
             <h1 class='text-primary text-2xl font-bold'>City</h1>
 
             <div class="flex flex-wrap items-center">
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add-city.php'">
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_city.php'">
                     <i class="ri-add-line"></i>Add 
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
