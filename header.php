@@ -1,6 +1,6 @@
 <?php
- include "db_connect.php";
- $obj=new DB_Connect();
+    include "db_connect.php";
+    $obj=new DB_Connect();
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
