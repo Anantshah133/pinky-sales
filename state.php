@@ -1,5 +1,33 @@
 <?php
 include "header.php";
+
+if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
+{
+  try
+  {
+    $stmt_del = $obj->con1->prepare("delete from service_area where id='".$_REQUEST["n_stateid"]."'");
+    $Resp=$stmt_del->execute();
+    if(!$Resp)
+    {
+      if(strtok($obj->con1-> error,  ':')=="Cannot delete or update a parent row")
+      {
+        // throw new Exception("City is already in use!");
+      }
+    }
+    $stmt_del->close();
+  }
+  catch(\Exception  $e) {
+    // setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
+  }
+
+  if($Resp)
+  {
+    // setcookie("msg", "data_del",time()+3600,"/");
+    echo "this data is deleted";
+  }
+    header("location:state.php");
+}
+
 ?>
 
 <div class='p-6' x-data='exportTable'>
@@ -24,7 +52,7 @@ include "header.php";
 </div>
 <!-- script -->
 <script>
-function getActions() {
+function getActions(id) {
     return `<ul class="flex items-center gap-4">
         <li>
             <a href="javascript:;" class='text-xl' x-tooltip="View">
@@ -37,7 +65,7 @@ function getActions() {
             </a>
         </li>
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert()">
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(` + id + `)">
                 <i class="ri-delete-bin-line text-danger"></i>
             </a>
         </li>
@@ -58,7 +86,7 @@ document.addEventListener('alpine:init', () => {
                 $Resp=$stmt->get_result();
                         $i=1;
                 while($row = mysqli_fetch_array($Resp)){
-            ?>[<?php echo $i ?>, '<?php echo $row['name'] ?>', getActions()],
+            ?>[<?php echo $i ?>, '<?php echo $row['name'] ?>', getActions(<?php echo $row['id'] ?>)],
                         <?php $i++; } ?>
                     ],
                 },
@@ -121,7 +149,7 @@ document.addEventListener('alpine:init', () => {
     }));
 })
 
-async function showAlert() {
+async function showAlert(id) {
     new window.Swal({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -130,8 +158,10 @@ async function showAlert() {
         padding: '2em',
     }).then((result) => {
         console.log(result)
-        if(result.isConfirmed){
-            coloredToast('success')
+        if (result.isConfirmed) {
+            var loc = "state.php?flg=del&n_stateid=" + id;
+            window.location = loc;
+            // coloredToast('success')
         }
     });
 }
