@@ -9,6 +9,7 @@ if(isset($_REQUEST['save']))
   $name = $_REQUEST['name'];
   $email = $_REQUEST['email'];
   $contact = $_REQUEST['contact'];
+  $serviceCenterId = $_REQUEST['service_center'];
   $user_id = $_REQUEST['userid'];
   $pass = $_REQUEST['password']; 
   $status = $_REQUEST['default_radio'];
@@ -21,8 +22,8 @@ if(isset($_REQUEST['save']))
 
   try
   {  
-$stmt = $obj->con1->prepare("INSERT INTO `technician`(`name`,`email`,`contact`,`userid`,`password`,`id_proof`,`status`) VALUES (?,?,?,?,?,?,?)");
-$stmt->bind_param("sssssss",$name,$email,$contact,$user_id,$pass,$nm,$status);
+$stmt = $obj->con1->prepare("INSERT INTO `technician`(`name`,`email`,`contact`,'service_center',`userid`,`password`,`id_proof`,`status`) VALUES (?,?,?,?,?,?,?,?)");
+$stmt->bind_param("ssssssss",$name,$email,$contact,$serviceCenterId ,$user_id,$pass,$nm,$status);
 $Resp=$stmt->execute();
 
     if(!$Resp)
@@ -125,12 +126,20 @@ $Resp=$stmt->execute();
 
                 <select class="form-select text-white-dark">
                     <option>-none-</option>
-                    <option>MIRA BHAYANDER</option>
-                    <option>N H SERVICE</option>
-                    <option>NO SERVICE</option>
-                    <option>PALGHAR</option>
-                    <option>Test Service center</option>
-                    <option>VIRAR NSP VASAI</option>
+                    <?php
+                            $stmt = $obj->con1->prepare(
+                                "SELECT * FROM `service_center` WHERE status='enable'"
+                            );
+                            $stmt->execute();
+                            $Res = $stmt->get_result();
+                          //  $stmt->close();
+
+                            while ($result = mysqli_fetch_assoc($Res)) { 
+                        ?>
+                                <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                                <?php 
+                            } 
+                        ?>
                 </select>
             </div>
 
@@ -160,11 +169,11 @@ $Resp=$stmt->execute();
             <div>
                 <label for="gridStatus">Status</label>
                 <label class="inline-flex">
-                    <input type="radio" name="default_radio" class="form-radio" checked />
+                    <input type="radio" name="default_radio" class="form-radio" checked  value="enable"/>
                     <span>Enable</span>
                 </label>
                 <label class="">
-                    <input type="radio" name="default_radio" class="form-radio text-danger" />
+                    <input type="radio" name="default_radio" class="form-radio text-danger" value="disable" />
                     <span>Disable</span>
                 </label>
             </div>

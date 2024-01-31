@@ -121,9 +121,7 @@ error_reporting(E_ALL);
                                 required>
                                 <option value=''>-none-</option>
                                 <?php
-                            $stmt = $obj->con1->prepare(
-                                "SELECT * FROM `service_center` WHERE status='enable'"
-                            );
+                            $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE status='enable'");
                             $stmt->execute();
                             $Resp = $stmt->get_result();
                             $stmt->close();

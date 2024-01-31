@@ -12,11 +12,12 @@ if(isset($_REQUEST['save']))
   $pass = $_REQUEST['password']; 
   $status = $_REQUEST['default_radio'];
   $address=$_REQUEST['address'];
+  $state = $_REQUEST['state'];
 
   try
   {
-$stmt = $obj->con1->prepare("INSERT INTO `service_center`(`name`,`email`,`contact`,`userid`,`password`,`status`,`address`) VALUES (?,?,?,?,?,?,?)");
-$stmt->bind_param("sssssss",$name,$email,$contact,$user_id,$pass,$status,$address);
+$stmt = $obj->con1->prepare("INSERT INTO `service_center`(`name`,`email`,`contact`,`userid`,`password`,`status`,`address`,`state`) VALUES (?,?,?,?,?,?,?,?)");
+$stmt->bind_param("ssssssss",$name,$email,$contact,$user_id,$pass,$status,$address,$state);
 $Resp=$stmt->execute();
 
     if(!$Resp)
@@ -73,14 +74,30 @@ $Resp=$stmt->execute();
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 <div>
                     <label for="gridState">State</label>
-                    <select id="gridState" class="form-select text-white-dark">
+                    <select id="gridState" class="form-select text-white-dark"  onchange="loadCities(this.value)">
                         <option>Choose...</option>
-                        <option>...</option>
+                        <?php
+                            $stmt = $obj->con1->prepare(
+                                "SELECT * FROM `service_area` "
+                            );
+                            $stmt->execute();
+                            $Res = $stmt->get_result();
+                          //  $stmt->close();
+
+                            while ($result = mysqli_fetch_assoc($Res)) { 
+                        ?>
+                                <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                                <?php 
+                            } 
+                        ?>
                     </select>
                 </div>
                 <div class="md:col-span-2">
                     <label for="gridCity">City</label>
-                    <input id="gridCity" type="text" placeholder="Enter City" class="form-input" />
+                    <select id="gridcity" class="form-select text-white-dark" >
+                        <option>Choose...</option>
+                        
+                    </select>
                 </div>
 
                 <div>
@@ -122,3 +139,22 @@ $Resp=$stmt->execute();
 <?php
 include "footer.php";
 ?>
+
+<script>
+    function loadCities(stid) 
+	{
+		
+		// alert(stid);
+  		const xhttp = new XMLHttpRequest();
+  		
+  		xhttp.open("GET","getcities.php?sid="+stid);
+  		xhttp.send();
+		xhttp.onload = function()
+		{
+   			 document.getElementById("gridcity").innerHTML = xhttp.responseText;
+           
+		}
+       
+	}
+
+</script>
