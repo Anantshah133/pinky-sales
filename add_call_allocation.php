@@ -40,9 +40,9 @@ error_reporting(E_ALL);
             //     }
             // } 
 
-            $serialNumImg = uploadImage('srno_img', 'serial_no_img');
-            $productModelImg = uploadImage('product_model_img', 'product_model_img');
-            $purchaseDateImg = uploadImage('purchase_date_img', 'purchase_date_img');
+            $serialNumImg = uploadImage('srno_img', 'images/serial_no_img');
+            $productModelImg = uploadImage('product_model_img', 'images/product_model_img');
+            $purchaseDateImg = uploadImage('purchase_date_img', 'images/purchase_date_img');
             
             $stmt = $obj->con1->prepare("INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `serial_no_img`, `product_model`, `product_model_img`, `purchase_date`, `purchase_date_img`, `technician`, `allocation_date`, `allocation_time`, `status`, `reason`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
@@ -60,11 +60,11 @@ error_reporting(E_ALL);
         }
     
         if($Resp) {
-            move_uploaded_file($_FILES['srno_img']['tmp_name'], "serial_no_img/".$serialNumImg);
+            move_uploaded_file($_FILES['srno_img']['tmp_name'], "images/serial_no_img/".$serialNumImg);
 
-            move_uploaded_file($_FILES['product_model_img']['tmp_name'], "product_model_img/".$productModelImg);
+            move_uploaded_file($_FILES['product_model_img']['tmp_name'], "images/product_model_img/".$productModelImg);
 
-            move_uploaded_file($_FILES['purchase_date_img']['tmp_name'], "purchase_date_img/".$purchaseDateImg);
+            move_uploaded_file($_FILES['purchase_date_img']['tmp_name'], "images/purchase_date_img/".$purchaseDateImg);
 
             setcookie("msg", "data",time()+3600,"/");
             header("location:call_allocation.php");
