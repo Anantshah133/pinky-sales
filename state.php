@@ -9,7 +9,7 @@ include "header.php";
 
             <div class="flex flex-wrap items-center">
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_state.php'">
-                    <i class="ri-add-line"></i>Add 
+                    <i class="ri-add-line"></i>Add
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
@@ -37,7 +37,7 @@ function getActions() {
             </a>
         </li>
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Delete">
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert()">
                 <i class="ri-delete-bin-line text-danger"></i>
             </a>
         </li>
@@ -52,15 +52,14 @@ document.addEventListener('alpine:init', () => {
                 data: {
                     headings: ['Sr.No.', 'Name', 'Action'],
                     data: [
-            <?php 
+                        <?php 
                 $stmt = $obj->con1->prepare("SELECT * FROM `service_area`");
                 $stmt->execute();
                 $Resp=$stmt->get_result();
                         $i=1;
                 while($row = mysqli_fetch_array($Resp)){
-            ?>
-                [<?php echo $i ?>, '<?php echo $row['name'] ?>', getActions()],
-            <?php $i++; } ?>
+            ?>[<?php echo $i ?>, '<?php echo $row['name'] ?>', getActions()],
+                        <?php $i++; } ?>
                     ],
                 },
                 perPage: 10,
@@ -121,6 +120,39 @@ document.addEventListener('alpine:init', () => {
         },
     }));
 })
+
+async function showAlert() {
+    new window.Swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        showCancelButton: true,
+        confirmButtonText: 'Delete',
+        padding: '2em',
+    }).then((result) => {
+        console.log(result)
+        if(result.isConfirmed){
+            coloredToast('success')
+        }
+    });
+}
+
+coloredToast = (color) => {
+    const toast = window.Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        showCloseButton: true,
+        // animation: true,
+        customClass: {
+            popup: `color-${color}`
+        },
+        // target: document.getElementById(color + '-toast')
+    });
+    toast.fire({
+        title: 'Record Deleted Successfully.',
+    });
+};
 </script>
 
 <?php

@@ -467,7 +467,7 @@
 }
 
 .swal2-popup .swal2-styled.swal2-confirm {
-    background-color: #4361ee
+    background-color: #e7515a
 }
 
 .swal2-popup .swal2-styled.swal2-confirm:focus {
@@ -475,13 +475,14 @@
 }
 
 .swal2-popup .swal2-html-container {
-    margin: 0 !important;
+    margin: 0;
+    margin-top: 10px;
     color: #e95f2b;
     font-weight: 300
 }
 
 :is([dir=ltr] .swal2-popup .swal2-html-container) {
-    padding-right: 2.5rem !important
+    /* padding-right: 2.5rem !important */
 }
 
 :is([dir=rtl] .swal2-popup .swal2-html-container) {
