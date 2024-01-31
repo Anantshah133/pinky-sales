@@ -1,5 +1,5 @@
 <?php
- include "db-connect.php";
+ include "db_connect.php";
  $obj=new DB_Connect();
 ?>
 <!DOCTYPE html>
