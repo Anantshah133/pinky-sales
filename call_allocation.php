@@ -2,11 +2,10 @@
 include "header.php";
 ?>
 
-<div class='p-6' x-data='exportTable'>
+<div class='p-6' x-data='callAllocationTable'>
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
             <h1 class='text-primary text-2xl font-bold'>Call Allocation</h1>
-
             <div class="flex flex-wrap items-center">
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1"
                     onclick="location.href='add_call_allocation.php'">
@@ -20,7 +19,7 @@ include "header.php";
                 </button>
             </div>
         </div>
-        <table id="myTable" class="table-hover whitespace-nowrap"></table>
+        <table id="call-table" class="table-hover whitespace-nowrap"></table>
     </div>
 </div>
 
@@ -49,21 +48,41 @@ function getActions() {
 
 
 document.addEventListener('alpine:init', () => {
-    Alpine.data('exportTable', () => ({
+    Alpine.data('callAllocationTable', () => ({
         datatable: null,
         init() {
             console.log('Initalizing datatable')
-            this.datatable = new simpleDatatables.DataTable('#myTable', {
+            this.datatable = new simpleDatatables.DataTable('#call-table', {
                 data: {
                     headings: ['Sr.No.', 'Complaint No.', 'Service Center', 'Technician',
-                        'Allocation Date', 'Status','Customer Name',
-                        'Customer Contact', 'product Catagory', 'Action'
+                        'Allocation Date', 'Status', 'Allocation Time',
+                        'Reason', 'Customer Name', 'Customer Contact',
+                        'Product Category', 'Action'
                     ],
                     data: [
-                        [1, 'ORP2501240003', 'VIRAR NSP VASAI', 'SANJAY SINGH',
-                            '23-5-23', 'Allocated','Anant shah',
-                            '992929012', 'qwqwqw', getActions()
-                        ],
+                        <?php 
+                            $stmt = $obj->con1->prepare("SELECT * FROM `call_allocation`");
+                            $stmt->execute();
+                            $Resp=$stmt->get_result();
+                            $i = 1;
+                            while($row = mysqli_fetch_array($Resp)){
+                        ?>
+                            [
+                                '<?php echo $i ?>', '<?php echo $row['complaint_no'] ?>',
+                                '<?php echo $row['service_center_id'] ?>',
+                                '<?php echo $row['technician'] ?>',
+                                '<?php echo $row['allocation_date'] ?>',
+                                '<?php echo $row['status'] ?>',
+                                '<?php echo $row['allocation_time'] ?>',
+                                '<?php echo $row['reason'] ?>',
+                                '<?php echo $row['complaint_no'] ?>',
+                                '<?php echo $row['complaint_no'] ?>',
+                                '<?php echo $row['complaint_no'] ?>', getActions()
+                            ],
+                        <?php
+                            $i++;
+                        } 
+                        ?>
                     ],
                 },
                 perPage: 10,
