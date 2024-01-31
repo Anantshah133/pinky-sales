@@ -16,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/perfect-scrollbar.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/quill.snow.css">
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet" />
     <link defer rel="stylesheet" type="text/css" media="screen" href="assets/css/animate.css" />

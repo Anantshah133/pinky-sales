@@ -1,5 +1,6 @@
 <?php
 include "header.php";
+
 ?>
 
 <div class='p-6' x-data='exportTable'>
@@ -9,7 +10,7 @@ include "header.php";
 
             <div class="flex flex-wrap items-center">
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1"
-                    onclick="location.href='add-technician.php'">
+                    onclick="location.href='add_technician.php'">
                     <i class="ri-add-line mr-1"></i> Add
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
@@ -20,7 +21,10 @@ include "header.php";
                 </button>
             </div>
         </div>
-        <table id="myTable" class="table-hover whitespace-nowrap"></table>
+        <table id="myTable" class="table-hover whitespace-nowrap">
+
+    
+        </table>
     </div>
 </div>
 
@@ -60,10 +64,24 @@ document.addEventListener('alpine:init', () => {
                         'Action'
                     ],
                     data: [
-                        [1, 'xyz', 'sanjaysingh@gmail.com', '	7040318884',
-                            'VIRAR NSP VASAI', 'Enable','04.02.2022 05:23 am',
-                             getActions()
-                        ],
+                        <?php
+                          
+                            $stmt =  $obj->con1->prepare("SELECT * FROM  `technician`");
+                            $stmt->execute();
+                            $res_stmt=$stmt->get_result();
+                            $stmt->close();
+                            
+                            $id=0;
+                            while($row=mysqli_fetch_array($res_stmt)){
+                               
+                                           
+                        ?>
+                     
+                     ['<?php echo $id ?>','<?php echo $row["name"] ?>', '<?php echo $row["email"] ?>', '<?php echo $row["contact"] ?>','<?php echo $row["service_center"] ?>',' <?php echo $row["status"] ?>',' <?php echo $row["date_time"] ?>', getActions()],
+                        <?php 
+                        $id++;	
+                            }
+                        ?>
                     ],
                 },
                 perPage: 10,
