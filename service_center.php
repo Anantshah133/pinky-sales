@@ -20,7 +20,9 @@ include "header.php";
                 </button>
             </div>
         </div>
-        <table id="myTable" class="table-hover whitespace-nowrap"></table>
+        <table id="myTable" class="table-hover whitespace-nowrap">
+
+        </table>
     </div>
 </div>
 
@@ -56,15 +58,31 @@ document.addEventListener('alpine:init', () => {
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
                     headings: ['Sr.No.', 'Name', '	Email', '	Contact',
-                        'Adress','Area', 'Status','Date Time',
+                        'Adress', 'Area', 'Status', 'Date Time',
                         'Action'
                     ],
                     data: [
-                        [1, 'xyz', 'sanjaysingh@gmail.com', '	7040318884',
-                            'VIRAR NSP VASAI','Gujrat', 'Enable','04.02.2022 05:23 am',
-                             getActions()
+                        <?php
+                          
+                            $stmt =  $obj->con1->prepare("SELECT * FROM  `service_center`");
+                            $stmt->execute();
+                            $res_stmt=$stmt->get_result();
+                            $stmt->close();
+                            
+                            $id=0;
+                            while($row=mysqli_fetch_array($res_stmt)){
+                               
+                                           
+                        ?>
+                     
+                     ['<?php echo $id ?>','<?php echo $row["name"] ?>', '<?php echo $row["email"] ?>', '<?php echo $row["contact"] ?>','<?php echo $row["address"] ?>','<?php echo $row["area"] ?>',' <?php echo $row["status"] ?>',' <?php echo $row["date_time"] ?>', getActions()],
+                        <?php 
+                        $id++;	
+                            }
+                        ?>
                         ],
-                    ],
+                        
+                 
                 },
                 perPage: 10,
                 perPageSelect: [10, 20, 30, 50, 100],
