@@ -70,205 +70,6 @@
         </template>
     </div>
 
-    <!-- start theme customizer section -->
-    <!-- <div x-data="customizer">
-        <div class="fixed inset-0 z-[51] hidden bg-[black]/60 px-4 transition-[display]"
-            :class="{'!block': showCustomizer}" @click="showCustomizer = false"></div>
-
-        <nav class="fixed top-0 bottom-0 z-[51] w-full max-w-[400px] bg-white p-4 shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] transition-[right] duration-300 ltr:-right-[400px] rtl:-left-[400px] dark:bg-[#0e1726]"
-            :class="{'ltr:!right-0 rtl:!left-0' : showCustomizer}">
-            <a href="javascript:;"
-                class="absolute top-0 bottom-0 my-auto flex h-10 w-12 cursor-pointer items-center justify-center bg-primary text-white ltr:-left-12 ltr:rounded-tl-full ltr:rounded-bl-full rtl:-right-12 rtl:rounded-tr-full rtl:rounded-br-full"
-                @click="showCustomizer = !showCustomizer">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5 animate-[spin_3s_linear_infinite]">
-                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" />
-                    <path opacity="0.5"
-                        d="M13.7654 2.15224C13.3978 2 12.9319 2 12 2C11.0681 2 10.6022 2 10.2346 2.15224C9.74457 2.35523 9.35522 2.74458 9.15223 3.23463C9.05957 3.45834 9.0233 3.7185 9.00911 4.09799C8.98826 4.65568 8.70226 5.17189 8.21894 5.45093C7.73564 5.72996 7.14559 5.71954 6.65219 5.45876C6.31645 5.2813 6.07301 5.18262 5.83294 5.15102C5.30704 5.08178 4.77518 5.22429 4.35436 5.5472C4.03874 5.78938 3.80577 6.1929 3.33983 6.99993C2.87389 7.80697 2.64092 8.21048 2.58899 8.60491C2.51976 9.1308 2.66227 9.66266 2.98518 10.0835C3.13256 10.2756 3.3397 10.437 3.66119 10.639C4.1338 10.936 4.43789 11.4419 4.43786 12C4.43783 12.5581 4.13375 13.0639 3.66118 13.3608C3.33965 13.5629 3.13248 13.7244 2.98508 13.9165C2.66217 14.3373 2.51966 14.8691 2.5889 15.395C2.64082 15.7894 2.87379 16.193 3.33973 17C3.80568 17.807 4.03865 18.2106 4.35426 18.4527C4.77508 18.7756 5.30694 18.9181 5.83284 18.8489C6.07289 18.8173 6.31632 18.7186 6.65204 18.5412C7.14547 18.2804 7.73556 18.27 8.2189 18.549C8.70224 18.8281 8.98826 19.3443 9.00911 19.9021C9.02331 20.2815 9.05957 20.5417 9.15223 20.7654C9.35522 21.2554 9.74457 21.6448 10.2346 21.8478C10.6022 22 11.0681 22 12 22C12.9319 22 13.3978 22 13.7654 21.8478C14.2554 21.6448 14.6448 21.2554 14.8477 20.7654C14.9404 20.5417 14.9767 20.2815 14.9909 19.902C15.0117 19.3443 15.2977 18.8281 15.781 18.549C16.2643 18.2699 16.8544 18.2804 17.3479 18.5412C17.6836 18.7186 17.927 18.8172 18.167 18.8488C18.6929 18.9181 19.2248 18.7756 19.6456 18.4527C19.9612 18.2105 20.1942 17.807 20.6601 16.9999C21.1261 16.1929 21.3591 15.7894 21.411 15.395C21.4802 14.8691 21.3377 14.3372 21.0148 13.9164C20.8674 13.7243 20.6602 13.5628 20.3387 13.3608C19.8662 13.0639 19.5621 12.558 19.5621 11.9999C19.5621 11.4418 19.8662 10.9361 20.3387 10.6392C20.6603 10.4371 20.8675 10.2757 21.0149 10.0835C21.3378 9.66273 21.4803 9.13087 21.4111 8.60497C21.3592 8.21055 21.1262 7.80703 20.6602 7C20.1943 6.19297 19.9613 5.78945 19.6457 5.54727C19.2249 5.22436 18.693 5.08185 18.1671 5.15109C17.9271 5.18269 17.6837 5.28136 17.3479 5.4588C16.8545 5.71959 16.2644 5.73002 15.7811 5.45096C15.2977 5.17191 15.0117 4.65566 14.9909 4.09794C14.9767 3.71848 14.9404 3.45833 14.8477 3.23463C14.6448 2.74458 14.2554 2.35523 13.7654 2.15224Z"
-                        stroke="currentColor" stroke-width="1.5" />
-                </svg>
-            </a>
-            <div class="perfect-scrollbar h-full overflow-y-auto overflow-x-hidden">
-                <div class="relative pb-5 text-center">
-                    <a href="javascript:;"
-                        class="absolute top-0 opacity-30 hover:opacity-100 ltr:right-0 rtl:left-0 dark:text-white"
-                        @click="showCustomizer = false">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                            stroke-linejoin="round" class="h-5 w-5">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </a>
-                    <h4 class="mb-1 dark:text-white">TEMPLATE CUSTOMIZER</h4>
-                    <p class="text-white-dark">Set preferences that will be cookied for your live preview demonstration.
-                    </p>
-                </div>
-                <div class="mb-3 rounded-md border border-dashed border-[#e0e6ed] p-3 dark:border-[#1b2e4b]">
-                    <h5 class="mb-1 text-base leading-none dark:text-white">Color Scheme</h5>
-                    <p class="text-xs text-white-dark">Overall light or dark presentation.</p>
-                    <div class="mt-3 grid grid-cols-3 gap-2">
-                        <button type="button" class="btn"
-                            :class="[$store.app.theme === 'light' ? 'btn-primary' :'btn-outline-primary']"
-                            @click="$store.app.toggleTheme('light')">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 ltr:mr-2 rtl:ml-2">
-                                <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5"></circle>
-                                <path d="M12 2V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                                </path>
-                                <path d="M12 20V22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                                </path>
-                                <path d="M4 12L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                                </path>
-                                <path d="M22 12L20 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                                </path>
-                                <path opacity="0.5" d="M19.7778 4.22266L17.5558 6.25424" stroke="currentColor"
-                                    stroke-width="1.5" stroke-linecap="round"></path>
-                                <path opacity="0.5" d="M4.22217 4.22266L6.44418 6.25424" stroke="currentColor"
-                                    stroke-width="1.5" stroke-linecap="round"></path>
-                                <path opacity="0.5" d="M6.44434 17.5557L4.22211 19.7779" stroke="currentColor"
-                                    stroke-width="1.5" stroke-linecap="round"></path>
-                                <path opacity="0.5" d="M19.7778 19.7773L17.5558 17.5551" stroke="currentColor"
-                                    stroke-width="1.5" stroke-linecap="round"></path>
-                            </svg>
-                            Light
-                        </button>
-                        <button type="button" class="btn"
-                            :class="[$store.app.theme === 'dark' ? 'btn-primary' :'btn-outline-primary']"
-                            @click="$store.app.toggleTheme('dark')">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 ltr:mr-2 rtl:ml-2">
-                                <path
-                                    d="M21.0672 11.8568L20.4253 11.469L21.0672 11.8568ZM12.1432 2.93276L11.7553 2.29085V2.29085L12.1432 2.93276ZM21.25 12C21.25 17.1086 17.1086 21.25 12 21.25V22.75C17.9371 22.75 22.75 17.9371 22.75 12H21.25ZM12 21.25C6.89137 21.25 2.75 17.1086 2.75 12H1.25C1.25 17.9371 6.06294 22.75 12 22.75V21.25ZM2.75 12C2.75 6.89137 6.89137 2.75 12 2.75V1.25C6.06294 1.25 1.25 6.06294 1.25 12H2.75ZM15.5 14.25C12.3244 14.25 9.75 11.6756 9.75 8.5H8.25C8.25 12.5041 11.4959 15.75 15.5 15.75V14.25ZM20.4253 11.469C19.4172 13.1373 17.5882 14.25 15.5 14.25V15.75C18.1349 15.75 20.4407 14.3439 21.7092 12.2447L20.4253 11.469ZM9.75 8.5C9.75 6.41182 10.8627 4.5828 12.531 3.57467L11.7553 2.29085C9.65609 3.5593 8.25 5.86509 8.25 8.5H9.75ZM12 2.75C11.9115 2.75 11.8077 2.71008 11.7324 2.63168C11.6686 2.56527 11.6538 2.50244 11.6503 2.47703C11.6461 2.44587 11.6482 2.35557 11.7553 2.29085L12.531 3.57467C13.0342 3.27065 13.196 2.71398 13.1368 2.27627C13.0754 1.82126 12.7166 1.25 12 1.25V2.75ZM21.7092 12.2447C21.6444 12.3518 21.5541 12.3539 21.523 12.3497C21.4976 12.3462 21.4347 12.3314 21.3683 12.2676C21.2899 12.1923 21.25 12.0885 21.25 12H22.75C22.75 11.2834 22.1787 10.9246 21.7237 10.8632C21.286 10.804 20.7293 10.9658 20.4253 11.469L21.7092 12.2447Z"
-                                    fill="currentColor"></path>
-                            </svg>
-                            Dark
-                        </button>
-                        <button type="button" class="btn"
-                            :class="[$store.app.theme === 'system' ? 'btn-primary' :'btn-outline-primary']"
-                            @click="$store.app.toggleTheme('system')">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 ltr:mr-2 rtl:ml-2">
-                                <path
-                                    d="M3 9C3 6.17157 3 4.75736 3.87868 3.87868C4.75736 3 6.17157 3 9 3H15C17.8284 3 19.2426 3 20.1213 3.87868C21 4.75736 21 6.17157 21 9V14C21 15.8856 21 16.8284 20.4142 17.4142C19.8284 18 18.8856 18 17 18H7C5.11438 18 4.17157 18 3.58579 17.4142C3 16.8284 3 15.8856 3 14V9Z"
-                                    stroke="currentColor" stroke-width="1.5"></path>
-                                <path opacity="0.5" d="M22 21H2" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round"></path>
-                                <path opacity="0.5" d="M15 15H9" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round"></path>
-                            </svg>
-                            System
-                        </button>
-                    </div>
-                </div>
-
-                <div class="mb-3 rounded-md border border-dashed border-[#e0e6ed] p-3 dark:border-[#1b2e4b]">
-                    <h5 class="mb-1 text-base leading-none dark:text-white">Navigation Position</h5>
-                    <p class="text-xs text-white-dark">Select the primary navigation paradigm for your app.</p>
-                    <div class="mt-3 grid grid-cols-3 gap-2">
-                        <button type="button" class="btn"
-                            :class="[$store.app.menu === 'horizontal' ? 'btn-primary' :'btn-outline-primary']"
-                            @click="$store.app.toggleMenu('horizontal')">
-                            Horizontal
-                        </button>
-                        <button type="button" class="btn"
-                            :class="[$store.app.menu === 'vertical' ? 'btn-primary' :'btn-outline-primary']"
-                            @click="$store.app.toggleMenu('vertical')">
-                            Vertical
-                        </button>
-                        <button type="button" class="btn"
-                            :class="[$store.app.menu === 'collapsible-vertical' ? 'btn-primary' :'btn-outline-primary']"
-                            @click="$store.app.toggleMenu('collapsible-vertical')">
-                            Collapsible
-                        </button>
-                    </div>
-                    <div class="mt-5 text-primary">
-                        <label class="mb-0 inline-flex">
-                            <input x-model="$store.app.semidark" type="checkbox" :value="true" class="form-checkbox"
-                                @change="$store.app.toggleSemidark()" />
-                            <span>Semi Dark (Sidebar & Header)</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="mb-3 rounded-md border border-dashed border-[#e0e6ed] p-3 dark:border-[#1b2e4b]">
-                    <h5 class="mb-1 text-base leading-none dark:text-white">Layout Style</h5>
-                    <p class="text-xs text-white-dark">Select the primary layout style for your app.</p>
-                    <div class="mt-3 flex gap-2">
-                        <button type="button" class="btn flex-auto"
-                            :class="[$store.app.layout === 'boxed-layout' ? 'btn-primary' :'btn-outline-primary']"
-                            @click="$store.app.toggleLayout('boxed-layout')">
-                            Box
-                        </button>
-                        <button type="button" class="btn flex-auto"
-                            :class="[$store.app.layout === 'full' ? 'btn-primary' :'btn-outline-primary']"
-                            @click="$store.app.toggleLayout('full')">
-                            Full
-                        </button>
-                    </div>
-                </div>
-                <div class="mb-3 rounded-md border border-dashed border-[#e0e6ed] p-3 dark:border-[#1b2e4b]">
-                    <h5 class="mb-1 text-base leading-none dark:text-white">Direction</h5>
-                    <p class="text-xs text-white-dark">Select the direction for your app.</p>
-                    <div class="mt-3 flex gap-2">
-                        <button type="button" class="btn flex-auto"
-                            :class="[$store.app.rtlClass === 'ltr' ? 'btn-primary' :'btn-outline-primary']"
-                            @click="$store.app.toggleRTL('ltr')">
-                            LTR
-                        </button>
-                        <button type="button" class="btn flex-auto"
-                            :class="[$store.app.rtlClass === 'rtl' ? 'btn-primary' :'btn-outline-primary']"
-                            @click="$store.app.toggleRTL('rtl')">
-                            RTL
-                        </button>
-                    </div>
-                </div>
-
-                <div class="mb-3 rounded-md border border-dashed border-[#e0e6ed] p-3 dark:border-[#1b2e4b]">
-                    <h5 class="mb-1 text-base leading-none dark:text-white">Navbar Type</h5>
-                    <p class="text-xs text-white-dark">Sticky or Floating.</p>
-                    <div class="mt-3 flex items-center gap-3 text-primary">
-                        <label class="mb-0 inline-flex">
-                            <input x-model="$store.app.navbar" type="radio" value="navbar-sticky" class="form-radio"
-                                @change="$store.app.toggleNavbar()" />
-                            <span>Sticky</span>
-                        </label>
-                        <label class="mb-0 inline-flex">
-                            <input x-model="$store.app.navbar" type="radio" value="navbar-floating" class="form-radio"
-                                @change="$store.app.toggleNavbar()" />
-                            <span>Floating</span>
-                        </label>
-                        <label class="mb-0 inline-flex">
-                            <input x-model="$store.app.navbar" type="radio" value="navbar-static" class="form-radio"
-                                @change="$store.app.toggleNavbar()" />
-                            <span>Static</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="mb-3 rounded-md border border-dashed border-[#e0e6ed] p-3 dark:border-[#1b2e4b]">
-                    <h5 class="mb-1 text-base leading-none dark:text-white">Router Transition</h5>
-                    <p class="text-xs text-white-dark">Animation of main content.</p>
-                    <div class="mt-3">
-                        <select x-model="$store.app.animation" class="form-select border-primary text-primary"
-                            @change="$store.app.toggleAnimation()">
-                            <option value="">None</option>
-                            <option value="animate__fadeIn">Fade</option>
-                            <option value="animate__fadeInDown">Fade Down</option>
-                            <option value="animate__fadeInUp">Fade Up</option>
-                            <option value="animate__fadeInLeft">Fade Left</option>
-                            <option value="animate__fadeInRight">Fade Right</option>
-                            <option value="animate__slideInDown">Slide Down</option>
-                            <option value="animate__slideInLeft">Slide Left</option>
-                            <option value="animate__slideInRight">Slide Right</option>
-                            <option value="animate__zoomIn">Zoom In</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </div> -->
-    <!-- end theme customizer section -->
-
     <div class="main-container min-h-screen text-black dark:text-white-dark" :class="[$store.app.navbar]">
         <!-- start sidebar section -->
         <div :class="{'dark text-white-dark' : $store.app.semidark}">
@@ -323,7 +124,7 @@
                             Complaint And Calls
                         </h2>
                         <li class="menu nav-item">
-                            <a href="complaint-demo.php" class="nav-link group">
+                            <a href="complaint_demo.php" class="nav-link group">
                                 <div class="flex items-center">
                                     <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
                                         viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -340,7 +141,7 @@
                             </a>
                         </li>
                         <li class="menu nav-item">
-                            <a href="call-allocation.php" class="nav-link group">
+                            <a href="call_allocation.php" class="nav-link group">
                                 <div class="flex items-center">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -397,7 +198,7 @@
                             </a>
                         </li>
                         <li class="menu nav-item">
-                            <a href="service-type.php" class="nav-link group">
+                            <a href="service_type.php" class="nav-link group">
                                 <div class="flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none">
@@ -415,7 +216,7 @@
                             </a>
                         </li>
                         <li class="menu nav-item">
-                            <a href="area-pincode.php" class="nav-link group">
+                            <a href="area_pincode.php" class="nav-link group">
                                 <div class="flex items-center">
                                     <svg class="shrink-0 group-hover:!text-primary" width="20" height="20"
                                         viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -433,7 +234,7 @@
                             </a>
                         </li>
                         <li class="menu nav-item">
-                            <a href="service-center.php" class="nav-link group">
+                            <a href="service_center.php" class="nav-link group">
                                 <div class="flex items-center">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -485,7 +286,7 @@
                             Products / Policy
                         </h2>
                         <li class="menu nav-item">
-                            <a href="product-category.php" class="nav-link group">
+                            <a href="product_category.php" class="nav-link group">
                                 <div class="flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none">
@@ -506,7 +307,7 @@
                             </a>
                         </li>
                         <li class="menu nav-item">
-                            <a href="product-service.php" class="nav-link group">
+                            <a href="product_service.php" class="nav-link group">
                                 <div class="flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none">
@@ -544,7 +345,7 @@
                             </a>
                         </li>
                         <li class="menu nav-item">
-                            <a href="privacy-policy.php" class="nav-link group">
+                            <a href="privacy_policy.php" class="nav-link group">
                                 <div class="flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none">
@@ -651,149 +452,6 @@
                                     </svg>
                                 </button>
                             </div>
-                            <!-- <div>
-                                <a href="javascript:;" x-cloak x-show="$store.app.theme === 'light'" href="javascript:;"
-                                    class="flex items-center rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary dark:bg-dark/40 dark:hover:bg-dark/60"
-                                    @click="$store.app.toggleTheme('dark')">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5" />
-                                        <path d="M12 2V4" stroke="currentColor" stroke-width="1.5"
-                                            stroke-linecap="round" />
-                                        <path d="M12 20V22" stroke="currentColor" stroke-width="1.5"
-                                            stroke-linecap="round" />
-                                        <path d="M4 12L2 12" stroke="currentColor" stroke-width="1.5"
-                                            stroke-linecap="round" />
-                                        <path d="M22 12L20 12" stroke="currentColor" stroke-width="1.5"
-                                            stroke-linecap="round" />
-                                        <path opacity="0.5" d="M19.7778 4.22266L17.5558 6.25424" stroke="currentColor"
-                                            stroke-width="1.5" stroke-linecap="round" />
-                                        <path opacity="0.5" d="M4.22217 4.22266L6.44418 6.25424" stroke="currentColor"
-                                            stroke-width="1.5" stroke-linecap="round" />
-                                        <path opacity="0.5" d="M6.44434 17.5557L4.22211 19.7779" stroke="currentColor"
-                                            stroke-width="1.5" stroke-linecap="round" />
-                                        <path opacity="0.5" d="M19.7778 19.7773L17.5558 17.5551" stroke="currentColor"
-                                            stroke-width="1.5" stroke-linecap="round" />
-                                    </svg>
-                                </a>
-                                <a href="javascript:;" x-cloak x-show="$store.app.theme === 'dark'" href="javascript:;"
-                                    class="flex items-center rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary dark:bg-dark/40 dark:hover:bg-dark/60"
-                                    @click="$store.app.toggleTheme('system')">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M21.0672 11.8568L20.4253 11.469L21.0672 11.8568ZM12.1432 2.93276L11.7553 2.29085V2.29085L12.1432 2.93276ZM21.25 12C21.25 17.1086 17.1086 21.25 12 21.25V22.75C17.9371 22.75 22.75 17.9371 22.75 12H21.25ZM12 21.25C6.89137 21.25 2.75 17.1086 2.75 12H1.25C1.25 17.9371 6.06294 22.75 12 22.75V21.25ZM2.75 12C2.75 6.89137 6.89137 2.75 12 2.75V1.25C6.06294 1.25 1.25 6.06294 1.25 12H2.75ZM15.5 14.25C12.3244 14.25 9.75 11.6756 9.75 8.5H8.25C8.25 12.5041 11.4959 15.75 15.5 15.75V14.25ZM20.4253 11.469C19.4172 13.1373 17.5882 14.25 15.5 14.25V15.75C18.1349 15.75 20.4407 14.3439 21.7092 12.2447L20.4253 11.469ZM9.75 8.5C9.75 6.41182 10.8627 4.5828 12.531 3.57467L11.7553 2.29085C9.65609 3.5593 8.25 5.86509 8.25 8.5H9.75ZM12 2.75C11.9115 2.75 11.8077 2.71008 11.7324 2.63168C11.6686 2.56527 11.6538 2.50244 11.6503 2.47703C11.6461 2.44587 11.6482 2.35557 11.7553 2.29085L12.531 3.57467C13.0342 3.27065 13.196 2.71398 13.1368 2.27627C13.0754 1.82126 12.7166 1.25 12 1.25V2.75ZM21.7092 12.2447C21.6444 12.3518 21.5541 12.3539 21.523 12.3497C21.4976 12.3462 21.4347 12.3314 21.3683 12.2676C21.2899 12.1923 21.25 12.0885 21.25 12H22.75C22.75 11.2834 22.1787 10.9246 21.7237 10.8632C21.286 10.804 20.7293 10.9658 20.4253 11.469L21.7092 12.2447Z"
-                                            fill="currentColor" />
-                                    </svg>
-                                </a>
-                                <a href="javascript:;" x-cloak x-show="$store.app.theme === 'system'"
-                                    href="javascript:;"
-                                    class="flex items-center rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary dark:bg-dark/40 dark:hover:bg-dark/60"
-                                    @click="$store.app.toggleTheme('light')">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M3 9C3 6.17157 3 4.75736 3.87868 3.87868C4.75736 3 6.17157 3 9 3H15C17.8284 3 19.2426 3 20.1213 3.87868C21 4.75736 21 6.17157 21 9V14C21 15.8856 21 16.8284 20.4142 17.4142C19.8284 18 18.8856 18 17 18H7C5.11438 18 4.17157 18 3.58579 17.4142C3 16.8284 3 15.8856 3 14V9Z"
-                                            stroke="currentColor" stroke-width="1.5" />
-                                        <path opacity="0.5" d="M22 21H2" stroke="currentColor" stroke-width="1.5"
-                                            stroke-linecap="round" />
-                                        <path opacity="0.5" d="M15 15H9" stroke="currentColor" stroke-width="1.5"
-                                            stroke-linecap="round" />
-                                    </svg>
-                                </a>
-                            </div> -->
-
-                            <!-- <div class="dropdown" x-data="dropdown" @click.outside="open = false">
-                                <a href="javascript:;"
-                                    class="block rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary dark:bg-dark/40 dark:hover:bg-dark/60"
-                                    @click="toggle">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M22 10C22.0185 10.7271 22 11.0542 22 12C22 15.7712 22 17.6569 20.8284 18.8284C19.6569 20 17.7712 20 14 20H10C6.22876 20 4.34315 20 3.17157 18.8284C2 17.6569 2 15.7712 2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H13"
-                                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                        <path
-                                            d="M6 8L8.1589 9.79908C9.99553 11.3296 10.9139 12.0949 12 12.0949C13.0861 12.0949 14.0045 11.3296 15.8411 9.79908"
-                                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                        <circle cx="19" cy="5" r="3" stroke="currentColor" stroke-width="1.5" />
-                                    </svg>
-                                </a>
-                                <ul x-cloak x-show="open" x-transition x-transition.duration.300ms
-                                    class="top-11 w-[300px] !py-0 text-xs text-dark ltr:-right-16 rtl:-left-16 dark:text-white-dark sm:w-[375px] sm:ltr:-right-2 sm:rtl:-left-2">
-                                    <li class="mb-5">
-                                        <div class="relative overflow-hidden rounded-t-md !p-5 text-white">
-                                            <div
-                                                class="absolute inset-0 h-full w-full bg-[url('../images/menu-heade.jpg')] bg-cover bg-center bg-no-repeat">
-                                            </div>
-                                            <h4 class="relative z-10 text-lg font-semibold">Messages</h4>
-                                        </div>
-                                    </li>
-                                    <template x-for="msg in messages">
-                                        <li>
-                                            <div class="flex items-center px-5 py-3" @click.self="toggle">
-                                                <div x-html="msg.image"></div>
-                                                <span class="px-3 dark:text-gray-500">
-                                                    <div class="text-sm font-semibold dark:text-white-light/90"
-                                                        x-text="msg.title"></div>
-                                                    <div x-text="msg.message"></div>
-                                                </span>
-                                                <span
-                                                    class="whitespace-pre rounded bg-white-dark/20 px-1 font-semibold text-dark/60 ltr:ml-auto ltr:mr-2 rtl:mr-auto rtl:ml-2 dark:text-white-dark"
-                                                    x-text="msg.time"></span>
-                                                <button type="button" class="text-neutral-300 hover:text-danger"
-                                                    @click="removeMessage(msg.id)">
-                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <circle opacity="0.5" cx="12" cy="12" r="10"
-                                                            stroke="currentColor" stroke-width="1.5" />
-                                                        <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5"
-                                                            stroke="currentColor" stroke-width="1.5"
-                                                            stroke-linecap="round" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </li>
-                                    </template>
-                                    <template x-if="messages.length">
-                                        <li class="mt-5 border-t border-white-light text-center dark:border-white/10">
-                                            <div class="group flex cursor-pointer items-center justify-center px-4 py-4 font-semibold text-primary dark:text-gray-400"
-                                                @click="toggle">
-                                                <span class="group-hover:underline ltr:mr-1 rtl:ml-1">VIEW ALL
-                                                    ACTIVITIES</span>
-                                                <svg class="h-4 w-4 transition duration-300 group-hover:translate-x-1 ltr:ml-1 rtl:mr-1"
-                                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M4 12H20M20 12L14 6M20 12L14 18" stroke="currentColor"
-                                                        stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                </svg>
-                                            </div>
-                                        </li>
-                                    </template>
-                                    <template x-if="!messages.length">
-                                        <li class="mb-5">
-                                            <div
-                                                class="!grid min-h-[200px] place-content-center text-lg hover:!bg-transparent">
-                                                <div
-                                                    class="mx-auto mb-4 rounded-full text-primary ring-4 ring-primary/30">
-                                                    <svg width="40" height="40" viewBox="0 0 20 20" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path opacity="0.5"
-                                                            d="M20 10C20 4.47715 15.5228 0 10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20C15.5228 20 20 15.5228 20 10Z"
-                                                            fill="currentColor" />
-                                                        <path
-                                                            d="M10 4.25C10.4142 4.25 10.75 4.58579 10.75 5V11C10.75 11.4142 10.4142 11.75 10 11.75C9.58579 11.75 9.25 11.4142 9.25 11V5C9.25 4.58579 9.58579 4.25 10 4.25Z"
-                                                            fill="currentColor" />
-                                                        <path
-                                                            d="M10 15C10.5523 15 11 14.5523 11 14C11 13.4477 10.5523 13 10 13C9.44772 13 9 13.4477 9 14C9 14.5523 9.44772 15 10 15Z"
-                                                            fill="currentColor" />
-                                                    </svg>
-                                                </div>
-                                                No data available.
-                                            </div>
-                                        </li>
-                                    </template>
-                                </ul>
-                            </div> -->
                             <div class="dropdown" x-data="dropdown" @click.outside="open = false">
                                 <a href="javascript:;"
                                     class="relative block rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary dark:bg-dark/40 dark:hover:bg-dark/60"
@@ -923,7 +581,7 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <a href="users-profile.html" class="dark:hover:text-white" @click="toggle">
+                                        <a href="users_profile.html" class="dark:hover:text-white" @click="toggle">
                                             <svg class="h-4.5 w-4.5 shrink-0 ltr:mr-2 rtl:ml-2" width="18" height="18"
                                                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <circle cx="12" cy="6" r="4" stroke="currentColor" stroke-width="1.5" />
@@ -934,7 +592,7 @@
                                             Profile</a>
                                     </li>
                                     <li>
-                                        <a href="apps-mailbox.html" class="dark:hover:text-white" @click="toggle">
+                                        <a href="javascript:;" class="dark:hover:text-white" @click="toggle">
                                             <svg class="h-4.5 w-4.5 shrink-0 ltr:mr-2 rtl:ml-2" width="18" height="18"
                                                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path opacity="0.5"
@@ -947,7 +605,7 @@
                                             Inbox</a>
                                     </li>
                                     <li>
-                                        <a href="auth-boxed-lockscreen.html" class="dark:hover:text-white"
+                                        <a href="" class="dark:hover:text-white"
                                             @click="toggle">
                                             <svg class="h-4.5 w-4.5 shrink-0 ltr:mr-2 rtl:ml-2" width="18" height="18"
                                                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -972,7 +630,7 @@
                                             Lock Screen</a>
                                     </li>
                                     <li class="border-t border-white-light dark:border-white-light/10">
-                                        <a href="auth-boxed-signin.html" class="!py-3 text-danger" @click="toggle">
+                                        <a href="" class="!py-3 text-danger" @click="toggle">
                                             <svg class="h-4.5 w-4.5 shrink-0 rotate-90 ltr:mr-2 rtl:ml-2" width="18"
                                                 height="18" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
