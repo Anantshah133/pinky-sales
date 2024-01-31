@@ -8,7 +8,7 @@ include "header.php";
             <h1 class='text-primary text-2xl font-bold'>State</h1>
 
             <div class="flex flex-wrap items-center">
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add-state.php'">
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_state.php'">
                     <i class="ri-add-line"></i>Add 
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
@@ -59,13 +59,8 @@ document.addEventListener('alpine:init', () => {
                         $i=1;
                 while($row = mysqli_fetch_array($Resp)){
             ?>
-                        [<?php echo $i ?>, '<?php echo $row['name'] ?>', getActions()],
-                        // [2, 'Gujarat', getActions()],
-                        // [3, 'Bhayander', getActions()],
-                        // [4, 'VIRAR NSP VASAI', getActions()],
-                        // [5, 'Thane', getActions()],
-            <?php $i++;
-            } ?>
+                [<?php echo $i ?>, '<?php echo $row['name'] ?>', getActions()],
+            <?php $i++; } ?>
                     ],
                 },
                 perPage: 10,

@@ -72,7 +72,7 @@ error_reporting(E_ALL);
                                 class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
                                 required onchange="readURL(this, 'previewModalImage', 'errModalImg')" />
 
-                            <img src="" class="mt-8 hidden w-72" alt="" id="previewModalImage">
+                            <img src="" class="mt-8 hidden w-80" alt="" id="previewModalImage">
                             <h6 id='errModalImg' class='error-elem'></h6>
                         </div>
                     </div>

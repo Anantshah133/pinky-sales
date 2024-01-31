@@ -33,12 +33,12 @@ $Resp=$stmt->execute();
   if($Resp)
   {
  setcookie("msg", "data",time()+3600,"/");
-    //   header("location:add-service-center.php");
+      header("location:service_center.php");
   }
   else
   {
  setcookie("msg", "fail",time()+3600,"/");
-    //   header("location:add-service-center.php");
+      header("location:service_center.php");
   }
  }
 
@@ -100,11 +100,11 @@ $Resp=$stmt->execute();
             <div>
                 <label for="gridStatus">Status</label>
                 <label class="inline-flex">
-                    <input type="radio" name="default_radio" class="form-radio" checked />
+                    <input type="radio" name="default_radio" class="form-radio text-success" checked />
                     <span>Enable</span>
                 </label>
                 <label class="">
-                    <input type="radio" name="default_radio" class="form-radio text-success" />
+                    <input type="radio" name="default_radio" class="form-radio text-danger" />
                     <span>Disable</span>
                 </label>
             </div>
@@ -112,7 +112,7 @@ $Resp=$stmt->execute();
             <div class="relative inline-flex align-middle gap-3 mt-4">
                 <button type="submit" class="btn btn-primary" name="save" id="save" >Save
                 </button>
-                <button type="button" class="btn  btn-warning ">Close</button>
+                <button type="button" class="btn btn-warning ">Close</button>
             </div>
         </form>
 
