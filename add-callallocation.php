@@ -27,11 +27,11 @@ error_reporting(E_ALL);
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
                             <label for="complaint_num"> Complaint No. </label>
-                            <input name="complaint_num" type="text" class="form-input" required />
+                            <input name="complaint_num" id="complaint_num" type="text" class="form-input" required />
                         </div>
                         <div>
                             <label for="service_center">Service Center</label>
-                            <select name="service_center" class="form-select text-white-dark" required>
+                            <select name="service_center" id="service_center" class="form-select text-white-dark" required>
                                 <option value=''>-none-</option>
                                 <?php
                             $stmt = $obj->con1->prepare(
@@ -51,11 +51,11 @@ error_reporting(E_ALL);
                         </div>
                         <div>
                             <label for="product_srno"> Product Serial NO. </label>
-                            <input name="product_srno" type="text" class="form-input" required />
+                            <input name="product_srno" id="product_srno" type="text" class="form-input" required />
                         </div>
                         <div>
                             <label for="srno_img">Serial NO. Image</label>
-                            <input name="srno_img" type="file"
+                            <input name="srno_img" id="srno_img" type="file"
                                 class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
                                 required onchange="readURL(this, 'srNoImg', 'errSrNoImg')" />
 
@@ -64,11 +64,11 @@ error_reporting(E_ALL);
                         </div>
                         <div>
                             <label for="product_modal"> Product Model </label>
-                            <input name="product_modal" type="text" class="form-input" required />
+                            <input name="product_modal" id="product_modal" type="text" class="form-input" required />
                         </div>
                         <div>
                             <label for="product_modal_img"> Product Model Image </label>
-                            <input name="product_modal_img" type="file"
+                            <input name="product_modal_img" id="product_modal_img" type="file"
                                 class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
                                 required onchange="readURL(this, 'previewModalImage', 'errModalImg')" />
 
@@ -79,7 +79,7 @@ error_reporting(E_ALL);
                     <div class="w-6/12 px-3 space-y-5">
                         <div x-data="purchaseDate">
                             <label for="purchase_date"> Purchase Date </label>
-                            <input id="purchase_date" x-model="date1" name="purchase_date" class="form-input" />
+                            <input x-model="date1" name="purchase_date" id="purchase_date" class="form-input" />
                         </div>
                         <div>
                             <label for="purchase_date_img">Purchase Date Image</label>
@@ -92,7 +92,7 @@ error_reporting(E_ALL);
                         </div>
                         <div>
                             <label for="technician_name"> Technician </label>
-                            <select name="technician_name" class="form-select text-white-dark" required>
+                            <select name="technician_name" id="technician_name" class="form-select text-white-dark" required>
                                 <option value=''>-none-</option>
                                 <option>Deepak Kumar</option>
                                 <option>Kadam</option>
@@ -107,7 +107,7 @@ error_reporting(E_ALL);
                         </div>
                         <div>
                             <label for="call_status"> Status</label>
-                            <select name="call_status" class="form-select text-white-dark" required>
+                            <select name="call_status" id="call_status" class="form-select text-white-dark" required>
                                 <option value=''>-none-</option>
                                 <option>New</option>
                                 <option>Pending</option>
