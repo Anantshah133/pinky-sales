@@ -159,7 +159,7 @@ function uploadImage($inputName, $uploadDirectory)
             </div>
             <div class="relative inline-flex align-middle gap-3 mt-4">
                 <button type="submit" class="btn btn-success" name="save" id="save">Save</button>
-                <button type="button" class="btn btn-danger" onclick="resetForm(call_form)">Close</button>
+                <button type="button" class="btn btn-danger" onclick="location.href='technician.php'">Close</button>
             </div>
     </div>
 

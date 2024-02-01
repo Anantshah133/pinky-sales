@@ -81,12 +81,13 @@ document.addEventListener('alpine:init', () => {
                     headings: ['Sr.No.', 'Name', 'Action'],
                     data: [
                         <?php 
-                $stmt = $obj->con1->prepare("SELECT * FROM `service_area`");
-                $stmt->execute();
-                $Resp=$stmt->get_result();
-                        $i=1;
-                while($row = mysqli_fetch_array($Resp)){
-            ?>[<?php echo $i ?>, '<?php echo $row['name'] ?>', getActions(<?php echo $row['id'] ?>)],
+                            $stmt = $obj->con1->prepare("SELECT * FROM `service_area`");
+                            $stmt->execute();
+                            $Resp=$stmt->get_result();
+                            $i=1;
+                            while($row = mysqli_fetch_array($Resp)){
+                        ?>
+                        [<?php echo $i ?>, '<?php echo $row['name'] ?>', getActions(<?php echo $row['id'] ?>)],
                         <?php $i++; } ?>
                     ],
                 },

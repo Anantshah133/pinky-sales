@@ -59,32 +59,42 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.No.', 'Firstname', 'Lname', 'Contact', 'Area', 'Zipcode',
-                        'Complaint No.', 'Service Type',
-                        'Product Category', 'Date', 'Status', 'Action'
+                    headings: ['Sr.No.', 'Firstname', 'Lname', 'Email', 'Contact', 'Area', 'Zipcode',
+                        'Complaint No.', 'Service Type', 'Product Category', 'Dealer Name', 'Date', 'Time', 'Status', 'Action'
                     ],
                     data: [
-                        [1, 'Santosh', 'Nikam', '8483808528', 'Virar nsp vasai',
-                            '401209', 'ORP2401240005', 'Complaint', 'COOLER',
-                            '2024-01-24', 'new',
-                            `${getActions()}`
-                        ],
-                        [2, 'Silky', 'Singh', '9702098111', 'Thane', '401105',
-                            'ORP2401240004', 'Demo / Installation', 'LED TV',
-                            '2024-01-24', 'Allocated', `${getActions()}`
-                        ],
-                        [3, 'Kalpesh', 'Parab', '9356775146', 'Virar nsp vasai',
-                            '401203', 'ORP2401240003', 'Demo / Installation', 'LED TV',
-                            '2024-01-24', 'Allocated', `${getActions()}`
-                        ],
-                        [4, 'Vinod', 'Yadav', '9284792648', 'Virar nsp vasai', '401203',
-                            'ORP2401240002', 'Complaint', 'LED TV', '2024-01-24',
-                            'Allocated', `${getActions()}`
-                        ],
-                        [5, 'Addie', 'Luna', '8483808528', 'Virar nsp vasai', '401209',
-                            'ORP2401240005', 'Complaint', 'COOLER', '2024-01-24', 'new',
-                            `${getActions()}`
-                        ],
+                        // [1, 'Santosh', 'Nikam', '8483808528', 'Virar nsp vasai',
+                        //     '401209', 'ORP2401240005', 'Complaint', 'COOLER',
+                        //     '2024-01-24', 'new',
+                        //     `${getActions()}`
+                        // ],
+                        <?php 
+                            $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg`");
+                            $stmt->execute();
+                            $Resp=$stmt->get_result();
+                            $id=1;
+                            while($row = mysqli_fetch_array($Resp)){
+                        ?>
+                            [
+                                <?php echo $id ?>,
+                                '<?php echo $row['fname'] ?>',
+                                '<?php echo $row['lname'] ?>',
+                                '<?php echo $row['email'] ?>',
+                                '<?php echo $row['contact'] ?>',
+                                '<?php echo $row['area'] ?>',
+                                '<?php echo $row['zipcode'] ?>',
+                                '<?php echo $row['complaint_no'] ?>',
+                                '<?php echo $row['service_type'] ?>',
+                                '<?php echo $row['product_category'] ?>',
+                                '<?php echo $row['dealer_name'] ?>',
+                                '<?php echo $row['date'] ?>',
+                                '<?php echo $row['time'] ?>',
+                                'New',
+                                getActions()
+                            ],
+                        <?php
+                            }
+                        ?>
                     ],
                 },
                 perPage: 10,
