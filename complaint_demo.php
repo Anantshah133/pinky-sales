@@ -8,7 +8,7 @@ include "header.php";
             <h1 class='text-primary text-2xl font-bold'>Complaint / Demo</h1>
 
             <div class="flex flex-wrap items-center">
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1">
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_complaint_demo.php'">
                     <i class="ri-add-line mr-1"></i> Add Complaint
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="exportTable('csv')">

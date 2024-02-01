@@ -220,14 +220,14 @@ error_reporting(E_ALL);
                 <div class="relative inline-flex align-middle gap-3 mt-10">
                     <button type="submit" id="save_btn" name="save_btn" class="btn btn-success">Save</button>
                     <button type="button" id="close_btn" name="close_btn" class="btn btn-danger"
-                        onclick="resetForm(call_form)">Cancel</button>
+                        onclick="window.location=`call_allocation.php`">Cancel</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<script src="assets/js/flatpickr.js"></script>
+
 <script>
 document.addEventListener("alpine:init", () => {
     let todayDate = new Date();
