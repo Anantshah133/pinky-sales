@@ -85,40 +85,6 @@ function uploadImage($inputName, $uploadDirectory)
 
 
 <div class='p-6'>
-    <!-- <div>
-        <div class="mb-5 flex items-center justify-between">
-            <h5 class="text-lg font-semibold dark:text-white-light">Progress Table</h5>
-        </div>
-    </div>
-    <div class="table-responsive border mb-5">
-        <table>
-            <thead class='border-b'>
-                <tr class=''>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th class="text-center">Action</th>
-                </tr>
-            </thead>
-            <tbody x-data='complaint'>
-                <template x-for="item in tableData" :key="item.id">
-                    <tr class='bg-white'>
-                        <td x-text="item.id"></td>
-                        <td x-text="item.name" class="whitespace-nowrap"></td>
-                        <td class="p-3 border-b border-[#ebedf2] dark:border-[#191e3a] text-center">
-                            <button type="button" x-tooltip="Edit">
-                                <i class="ri-pencil-line"></i>
-                            </button>
-                            <button type="button" x-tooltip="Delete">
-                                <i class="ri-delete-bin-line"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </template>
-            </tbody>
-   
-        </table>
-    </div> -->
-
     <!-- Service Center - Add form -->
     <div class="panel border shadow-md shadow-slate-200">
         <div class="mb-5 flex items-center justify-between">
@@ -128,7 +94,7 @@ function uploadImage($inputName, $uploadDirectory)
         <form class="space-y-5" method="post" enctype="multipart/form-data">
             <div>
                 <label for="groupFname"> Name</label>
-                <input id="groupFname" type="text" name="name" placeholder="Enter First Name" class="form-input" />
+                <input id="groupFname" type="text" name="name" placeholder="Enter First Name" class="form-input" required />
             </div>
             <div>
                 <label for="ctnEmail">Email address</label>
@@ -137,13 +103,13 @@ function uploadImage($inputName, $uploadDirectory)
             </div>
             <div>
                 <label for="groupFname">Contact</label>
-                <input id="groupFname" type="text" name="contact" placeholder="" class="form-input" />
+                <input id="groupFname" type="text" name="contact" placeholder="" class="form-input" required />
             </div>
             <div>
                 <label for="groupFname"> Service Center</label>
 
-                <select class="form-select text-white-dark" name="service_center">
-                    <option>-none-</option>
+                <select class="form-select text-white-dark" name="service_center" required >
+                    <option value="">-none-</option>
                     <?php
                             $stmt = $obj->con1->prepare(
                                 "SELECT * FROM `service_center` WHERE status='enable'"
@@ -180,25 +146,24 @@ function uploadImage($inputName, $uploadDirectory)
                 <img src="" class="mt-8 hidden w-80 preview-img" alt="" id="previewModalImage">
                 <h6 id='errModalImg' class='error-elem'></h6>
             </div>
+            <div>
+                <label for="gridStatus">Status</label>
+                <label class="inline-flex py-2">
+                    <input type="radio" name="default_radio" class="form-radio" checked value="enable" required />
+                    <span>Enable</span>
+                </label>
+                <label class="">
+                    <input type="radio" name="default_radio" class="form-radio text-danger" value="disable" required />
+                    <span>Disable</span>
+                </label>
+            </div>
+            <div class="relative inline-flex align-middle gap-3 mt-4">
+                <button type="submit" class="btn btn-success" name="save" id="save">Save</button>
+                <button type="button" class="btn btn-danger" onclick="resetForm(call_form)">Close</button>
+            </div>
     </div>
 
-    <div>
-        <label for="gridStatus">Status</label>
-        <label class="inline-flex">
-            <input type="radio" name="default_radio" class="form-radio" checked value="enable" />
-            <span>Enable</span>
-        </label>
-        <label class="">
-            <input type="radio" name="default_radio" class="form-radio text-danger" value="disable" />
-            <span>Disable</span>
-        </label>
-    </div>
 
-    <div class="relative inline-flex align-middle gap-3 mt-4">
-        <button type="submit" class="btn btn-success" name="save" id="save">Save
-        </button>
-        <button type="button" class="btn  btn-danger"  onclick="resetForm(call_form)">Close</button>
-    </div>
     </form>
 </div>
 </div>
