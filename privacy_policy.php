@@ -58,10 +58,24 @@ document.addEventListener('alpine:init', () => {
                         'Date Time', 'Action'
                     ],
                     data: [
-                        [1, 'Orpel Apps do collects user information from you…',
-                            '	User', '02/23/2021 04:47 PM',
-                            `${getActions()}`
-                        ],
+                        <?php
+                          
+                          $stmt =  $obj->con1->prepare("SELECT * FROM  `privacy_policy`");
+                          $stmt->execute();
+                          $res_stmt=$stmt->get_result();
+                          $stmt->close();
+                          
+                          $id=1;
+                          while($row=mysqli_fetch_array($res_stmt)){
+                             
+                                         
+                      ?>
+                   
+                   ['<?php echo $id ?>','<?php echo $row["detail"] ?>', '<?php echo $row["type"] ?>',' <?php echo $row["date_time"] ?>', getActions()],
+                      <?php 
+                      $id++;	
+                          }
+                      ?>
 
                     ],
                 },
