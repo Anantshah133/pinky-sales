@@ -71,7 +71,7 @@ document.addEventListener('alpine:init', () => {
                             $res_stmt=$stmt->get_result();
                             $stmt->close();
                             
-                            $id=0;
+                            $id=1;
                             while($row=mysqli_fetch_array($res_stmt)){
                                
                                            
