@@ -9,7 +9,7 @@ include "header.php";
 
             <div class="flex flex-wrap items-center">
                 <a href="add_privacy.php"> <button type="button" class="p-2 btn btn-primary btn-sm m-1">
-                        <i class="ri-add-line mr-1"></i> Add Complaint
+                        <i class="ri-add-line mr-1"></i> Add 
                     </button></a>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="exportTable('csv')">
                     <i class="ri-file-line mr-1"></i> CSV
