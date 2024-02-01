@@ -16,9 +16,10 @@ if(isset($_REQUEST['save']))
 
   try
   {
-$stmt = $obj->con1->prepare("INSERT INTO `service_center`(`name`,`email`,`contact`,`userid`,`password`,`status`,`address`,`state`) VALUES (?,?,?,?,?,?,?,?)");
-$stmt->bind_param("ssssssss",$name,$email,$contact,$user_id,$pass,$status,$address,$state);
-$Resp=$stmt->execute();
+    // echo "INSERT INTO `service_center`(`name`,`email`,`contact`,`userid`,`password`,`status`,`address`,`area`) VALUES ($name,$email,$contact,$user_id,$pass,$status,$address,$state)";
+    $stmt = $obj->con1->prepare("INSERT INTO `service_center`(`name`,`email`,`contact`,`userid`,`password`,`status`,`address`,`area`) VALUES (?,?,?,?,?,?,?,?)");
+    $stmt->bind_param("sssssssi",$name,$email,$contact,$user_id,$pass,$status,$address,$state);
+    $Resp=$stmt->execute();
 
     if(!$Resp)
     {
@@ -74,7 +75,7 @@ $Resp=$stmt->execute();
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 <div>
                     <label for="gridState">State</label>
-                    <select id="gridState" class="form-select text-white-dark"  onchange="loadCities(this.value)">
+                    <select id="gridState" class="form-select text-white-dark"  name="state" onchange="loadCities(this.value)">
                         <option>Choose...</option>
                         <?php
                             $stmt = $obj->con1->prepare(
@@ -154,7 +155,6 @@ include "footer.php";
    			 document.getElementById("gridcity").innerHTML = xhttp.responseText;
            
 		}
-       
 	}
 
 </script>

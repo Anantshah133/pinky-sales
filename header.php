@@ -26,7 +26,7 @@
     <script src="assets/js/perfect-scrollbar.min.js"></script>
     <script defer src="assets/js/popper.min.js"></script>
     <script defer src="assets/js/tippy-bundle.umd.min.js"></script>
-    <script defer src="assets/js/sweetalert.min.js"></script>
+    <script src="assets/js/sweetalert.min.js"></script>
 </head>
 
 <body x-data="main" class="relative overflow-x-hidden font-nunito text-sm font-normal antialiased"

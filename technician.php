@@ -1,6 +1,33 @@
 <?php
 include "header.php";
 
+if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
+{
+  try
+  {
+   
+    $stmt_del = $obj->con1->prepare("delete from technician where id='".$_REQUEST["id"]."'");
+    $Resp=$stmt_del->execute();
+    if(!$Resp)
+    {
+      if(strtok($obj->con1-> error,  ':')=="Cannot delete or update a parent row")
+      {
+        // throw new Exception("City is already in use!");
+      }
+    }
+    $stmt_del->close();
+  }
+  catch(\Exception  $e) {
+    // setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
+  }
+
+  if($Resp)
+  {
+    // setcookie("msg", "data_del",time()+3600,"/");
+    echo "this data is deleted";
+  }
+    header("location:technician.php");
+}
 ?>
 
 <div class='p-6' x-data='exportTable'>
@@ -44,7 +71,7 @@ function getActions() {
             </a>
         </li>
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Delete">
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete"  @click="showAlert(` + id + `)">
                 <i class="ri-delete-bin-line text-danger"></i>
             </a>
         </li>
@@ -77,7 +104,7 @@ document.addEventListener('alpine:init', () => {
                                            
                         ?>
                      
-                     ['<?php echo $id ?>','<?php echo $row["name"] ?>', '<?php echo $row["email"] ?>', '<?php echo $row["contact"] ?>','<?php echo $row["service_center"] ?>',' <?php echo $row["status"] ?>',' <?php echo $row["date_time"] ?>', getActions()],
+                     ['<?php echo $id ?>','<?php echo $row["name"] ?>', '<?php echo $row["email"] ?>', '<?php echo $row["contact"] ?>','<?php echo $row["service_center"] ?>',' <?php echo $row["status"] ?>',' <?php echo $row["date_time"] ?>', getActions(('<?php echo $row['id'] ?>'))],
                         <?php 
                         $id++;	
                             }
@@ -142,6 +169,51 @@ document.addEventListener('alpine:init', () => {
         },
     }));
 })
+
+async function showAlert(id) {
+    new window.Swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        showCancelButton: true,
+        confirmButtonText: 'Delete',
+        padding: '2em',
+    }).then((result) => {
+        console.log(result)
+        if (result.isConfirmed) {
+            var loc = "service_center.php?flg=del&id=" + id;
+            window.location = loc;
+           
+            // coloredToast('success')
+        }
+    });
+    }
+
+coloredToast = (color) => {
+    const toast = window.Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        showCloseButton: true,
+        // animation: true,
+        customClass: {
+            popup: `color-${color}`
+        },
+        // target: document.getElementById(color + '-toast')
+    });
+    toast.fire({
+        title: 'Record Deleted Successfully.',
+    });
+};
+
+
+function deleteRecord(id){
+    $.ajax({
+        async: true,
+        type: "POST",
+        url: 'ajax.php?action=deleteData'
+    })
+}
 </script>
 
 <?php

@@ -4,25 +4,27 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
 {
   try
   {
-    $stmt_del = $obj->con1->prepare("delete from service_center where id='".$_REQUEST[""]."'");
+   
+    $stmt_del = $obj->con1->prepare("delete from service_center where id='".$_REQUEST["id"]."'");
     $Resp=$stmt_del->execute();
     if(!$Resp)
     {
       if(strtok($obj->con1-> error,  ':')=="Cannot delete or update a parent row")
       {
-        // throw new Exception("City is already in use!");
+        throw new Exception("City is already in use!");
       }
     }
     $stmt_del->close();
   }
   catch(\Exception  $e) {
-    // setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
+    setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
   }
 
   if($Resp)
   {
-    // setcookie("msg", "data_del",time()+3600,"/");
-    echo "this data is deleted";
+    setcookie("msg", "data_del",time()+3600,"/");
+    // echo "this data is deleted";
+    // echo "<script type='text/javascript'>coloredToast('success')</script>";
   }
     header("location:service_center.php");
 }
@@ -53,10 +55,66 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
 </div>
 
 <!-- script -->
-
 <script>
+function createCookie(name, value, days) {
+    var expires;
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toGMTString();
+    } else {
+        expires = "";
+    }
+    document.cookie = (name) + "=" + String(value) + expires + ";path=/ ";
+
+}
+
+function readCookie(name) {
+    var nameEQ = (name) + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return (c.substring(nameEQ.length, c.length));
+    }
+    return null;
+}
+
+function eraseCookie(name) {
+    createCookie(name, "", -1);
+}
+coloredToast = (color) => {
+    const toast = window.Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        showCloseButton: true,
+        customClass: {
+            popup: `color-${color}`
+        },
+    });
+    toast.fire({
+        title: 'Record Deleted Successfully.',
+        onClose: () => {
+            document.cookie = "msg=data_del; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        }
+    });
+};
+
+if (readCookie("msg") == "data_del") {
+    coloredToast("success");
+    eraseCookie("msg")
+}
+
+// let x = document.cookie;
+// console.log(x)
+// if (x == "msg=data_del") {
+//     coloredToast('success')
+// }
+
 function getActions(id) {
-    
+
     return `<ul class="flex items-center justify-center gap-4">
         <li>
             <a href="javascript:;" class='text-xl' x-tooltip="View">
@@ -101,15 +159,22 @@ document.addEventListener('alpine:init', () => {
                                
                                            
                         ?>
-                     
-                     ['<?php echo $id ?>','<?php echo $row["name"] ?>', '<?php echo $row["email"] ?>', '<?php echo $row["contact"] ?>','<?php echo $row["address"] ?>','<?php echo $row["area"] ?>',' <?php echo $row["status"] ?>',' <?php echo $row["date_time"] ?>', getActions()],
+
+                        ['<?php echo $id ?>', '<?php echo $row["name"] ?>',
+                            '<?php echo $row["email"] ?>',
+                            '<?php echo $row["contact"] ?>',
+                            '<?php echo $row["address"] ?>',
+                            '<?php echo $row["area"] ?>',
+                            ' <?php echo $row["status"] ?>',
+                            ' <?php echo $row["date_time"] ?>', getActions((
+                                '<?php echo $row['id'] ?>'))],
                         <?php 
                         $id++;	
                             }
                         ?>
-                        ],
-                        
-                 
+                    ],
+
+
                 },
                 perPage: 10,
                 perPageSelect: [10, 20, 30, 50, 100],
@@ -181,31 +246,13 @@ async function showAlert(id) {
     }).then((result) => {
         console.log(result)
         if (result.isConfirmed) {
-            var loc = "service_center.php?flg=del&" + id;
+            var loc = "service_center.php?flg=del&id=" + id;
             window.location = loc;
-           
+
             // coloredToast('success')
         }
     });
-    }
-
-coloredToast = (color) => {
-    const toast = window.Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        showCloseButton: true,
-        // animation: true,
-        customClass: {
-            popup: `color-${color}`
-        },
-        // target: document.getElementById(color + '-toast')
-    });
-    toast.fire({
-        title: 'Record Deleted Successfully.',
-    });
-};
+}
 </script>
 
 <?php
