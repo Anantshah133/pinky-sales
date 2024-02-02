@@ -47,11 +47,11 @@ include "header.php";
             <div class="flex">
                 <div class="w-6/12 px-2">
                     <label for="groupFname">Start Date</label>
-                    <input id="basic" x-model="date1" class="form-input" />
+                    <input id="st_dt" x-model="date1" class="form-input" />
                 </div>
                 <div class="w-6/12 px-2">
                     <label for="groupFnamec">End Date</label>
-                    <input id="basic" x-model="date1" class="form-input" />
+                    <input id="en_dt" x-model="date2" class="form-input" />
                 </div>
             </div>
 
@@ -59,29 +59,45 @@ include "header.php";
                 <div class="w-6/12 px-2">
                     <label for="groupFname"> Service Center</label>
 
-                    <select class="form-select text-white-dark">
-                        <option>-none-</option>
-                        <option>MIRA BHAYANDER</option>
-                        <option>N H SERVICE</option>
-                        <option>NO SERVICE</option>
-                        <option>PALGHAR</option>
-                        <option>Test Service center</option>
-                        <option>VIRAR NSP VASAI</option>
-                    </select>
+                    <select class="form-select text-white-dark" name="service_center" required >
+                    <option value="">Choose...</option>
+                    <?php
+                            $stmt = $obj->con1->prepare(
+                                "SELECT * FROM `service_center` WHERE status='enable'"
+                            );
+                            $stmt->execute();
+                            $Res = $stmt->get_result();
+                            $stmt->close();
+
+                            while ($result = mysqli_fetch_assoc($Res)) { 
+                        ?>
+                    <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                    <?php 
+                            } 
+                        ?>
+                </select>
                 </div>
 
                 <div class="w-6/12 px-2">
                     <label for="groupFname"> Technician</label>
 
-                    <select class="form-select text-white-dark">
-                        <option>-none-</option>
-                        <option>MIRA BHAYANDER</option>
-                        <option>N H SERVICE</option>
-                        <option>NO SERVICE</option>
-                        <option>PALGHAR</option>
-                        <option>Test Service center</option>
-                        <option>VIRAR NSP VASAI</option>
-                    </select>
+                    <select class="form-select text-white-dark" name="" required >
+                    <option value="">Choose...</option>
+                    <?php
+                            $stmt = $obj->con1->prepare(
+                                "SELECT * FROM `technician` WHERE status='enable'"
+                            );
+                            $stmt->execute();
+                            $Res = $stmt->get_result();
+                            $stmt->close();
+
+                            while ($result = mysqli_fetch_assoc($Res)) { 
+                        ?>
+                    <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                    <?php 
+                            } 
+                        ?>
+                </select>
                 </div>
             </div>
 
@@ -118,29 +134,45 @@ include "header.php";
                 <div class="w-6/12 px-2">
                     <label for="groupFname"> Complaint No</label>
 
-                    <select class="form-select text-white-dark">
-                        <option>-none-</option>
-                        <option>MIRA BHAYANDER</option>
-                        <option>N H SERVICE</option>
-                        <option>NO SERVICE</option>
-                        <option>PALGHAR</option>
-                        <option>Test Service center</option>
-                        <option>VIRAR NSP VASAI</option>
-                    </select>
+                    <select class="form-select text-white-dark" name="" required >
+                    <option value="">Choose...</option>
+                    <?php
+                            $stmt = $obj->con1->prepare(
+                                "SELECT * FROM `complaint` "
+                            );
+                            $stmt->execute();
+                            $Res = $stmt->get_result();
+                            $stmt->close();
+
+                            while ($result = mysqli_fetch_assoc($Res)) { 
+                        ?>
+                    <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                    <?php 
+                            } 
+                        ?>
+                </select>
                 </div>
 
                 <div class="w-6/12 px-2">
                     <label for="groupFname"> Contact No</label>
 
-                    <select class="form-select text-white-dark">
-                        <option>-none-</option>
-                        <option>MIRA BHAYANDER</option>
-                        <option>N H SERVICE</option>
-                        <option>NO SERVICE</option>
-                        <option>PALGHAR</option>
-                        <option>Test Service center</option>
-                        <option>VIRAR NSP VASAI</option>
-                    </select>
+                    <select class="form-select text-white-dark" name="" required >
+                    <option value="">Choose...</option>
+                    <?php
+                            $stmt = $obj->con1->prepare(
+                                "SELECT * FROM `contact` "
+                            );
+                            $stmt->execute();
+                            $Res = $stmt->get_result();
+                            $stmt->close();
+
+                            while ($result = mysqli_fetch_assoc($Res)) { 
+                        ?>
+                    <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                    <?php 
+                            } 
+                        ?>
+                </select>
                 </div>
             </div>
             <button type="button" class="btn btn-primary">Submit</button>
@@ -154,9 +186,14 @@ include "header.php";
 document.addEventListener("alpine:init", () => {
     Alpine.data("form", () => ({
         date1: '2022-07-05',
+        date2:'2024-02-02',
         init() {
-            console.log('jsdjfsdfhkjḍ')
-            flatpickr(document.getElementById('basic'), {
+        
+            flatpickr(document.getElementById('st_dt'), {
+                dateFormat: 'Y-m-d',
+                defaultDate: this.date1,
+            });
+            flatpickr(document.getElementById('en_dt'), {
                 dateFormat: 'Y-m-d',
                 defaultDate: this.date1,
             })

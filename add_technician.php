@@ -51,7 +51,7 @@ if (isset($_REQUEST["save"])) {
             // echo "Sorry the file name is already in use!";
         } else {
             setcookie("msg", "fail", time() + 3600, "/");
-            header("location:add_technician.php");
+            header("location:technician.php");
         }
     }
 }
@@ -109,7 +109,7 @@ function uploadImage($inputName, $uploadDirectory)
                 <label for="groupFname"> Service Center</label>
 
                 <select class="form-select text-white-dark" name="service_center" required >
-                    <option value="">-none-</option>
+                    <option value="">Choose...</option>
                     <?php
                             $stmt = $obj->con1->prepare(
                                 "SELECT * FROM `service_center` WHERE status='enable'"
