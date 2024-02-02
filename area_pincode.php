@@ -36,7 +36,7 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
             <div class="flex flex-wrap items-center">
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1"
                     onclick="location.href='add_area_pincode.php'">
-                    <i class="ri-add-line"></i>Add 
+                    <i class="ri-add-line mr-1"></i>Add Pincode
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
@@ -80,7 +80,7 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.No.', 'state','city', 'pincode', 'Action'],
+                    headings: ['Sr.No.', 'state', 'city', 'pincode', 'Action'],
                     data: [
                         <?php 
                             $stmt = $obj->con1->prepare("SELECT ap1.*, c1.ctnm, s1.name FROM `area_pincode` ap1,`state` s1,`city` c1 WHERE ap1.city_id = c1.srno AND ap1.state_id=s1.id;");
@@ -88,23 +88,14 @@ document.addEventListener('alpine:init', () => {
                             $Resp=$stmt->get_result();
                                     $i=1;
                             while($row = mysqli_fetch_array($Resp)){
-                        ?>
-                        [<?php echo $i ?>, '<?php echo $row['name'] ?>','<?php echo $row['ctnm'] ?>','<?php echo $row['pincode'] ?>', getActions('<?php echo $row['id'] ?>')],
+                        ?>[<?php echo $i ?>, '<?php echo $row['name'] ?>', '<?php echo $row['ctnm'] ?>',
+                            '<?php echo $row['pincode'] ?>', getActions(
+                                '<?php echo $row['id'] ?>')],
+                        <?php 
+                        $i++;
+                         } 
+                         ?>
 
-                        // [1, 'Gujarat', '396350', getActions()],
-                        // [2, 'Gujarat', '396320', getActions()],
-                        // [3, '', '222222', getActions()],
-                        // [4, 'Test State', '111111', getActions()],
-                        // [5, 'Vasai', '13245', getActions()],
-                        // [6, 'Vasai', '734342', getActions()],
-                        // [7, 'Gujarat', '395607', getActions()],
-                        // [8, 'Gujarat', '346893', getActions()],
-                        // [9, 'Gujarat', '467753', getActions()],
-                        // [10, 'Gujarat', '125674', getActions()],
-
-                        <?php $i++;
-                         } ?>
-                        
                     ],
                 },
                 perPage: 10,
@@ -177,11 +168,11 @@ async function showAlert(id) {
         if (result.isConfirmed) {
             var loc = "area_pincode.php?flg=del&n_pincodeid=" + id;
             window.location = loc;
-           
+
             // coloredToast('success')
         }
     });
-    }
+}
 
 coloredToast = (color) => {
     const toast = window.Swal.mixin({

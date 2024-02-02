@@ -36,7 +36,7 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
 
             <div class="flex flex-wrap items-center">
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_city.php'">
-                    <i class="ri-add-line"></i>Add 
+                    <i class="ri-add-line mr-1"></i> Add City
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT

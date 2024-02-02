@@ -87,13 +87,6 @@ document.addEventListener('alpine:init', () => {
                             while($row = mysqli_fetch_array($Resp)){
                         ?>
                         [<?php echo $i ?>, '<?php echo $row['name'] ?>','<?php echo $row['status'] ?>', getActions('<?php echo $row['id'] ?>')],
-
-                        // [1, 'Test Area', getActions()],
-                        // [2, 'Gujarat', getActions()],
-                        // [3, 'Bhayander', getActions()],
-                        // [4, 'VIRAR NSP VASAI', getActions()],
-                        // [5, 'Thane', getActions()],
-
                         <?php $i++;
                          } ?>
                     ],

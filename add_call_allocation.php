@@ -220,7 +220,7 @@ error_reporting(E_ALL);
                 <div class="relative inline-flex align-middle gap-3 mt-10">
                     <button type="submit" id="save_btn" name="save_btn" class="btn btn-success">Save</button>
                     <button type="button" id="close_btn" name="close_btn" class="btn btn-danger"
-                        onclick="window.location=`call_allocation.php`">Cancel</button>
+                        onclick="window.location=`call_allocation.php`">Close</button>
                 </div>
             </form>
         </div>

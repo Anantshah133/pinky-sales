@@ -126,7 +126,7 @@
                 <div class="relative inline-flex align-middle gap-3 mt-10">
                     <button type="submit" id="save_btn" name="save_btn" class="btn btn-success">Save</button>
                     <button type="button" id="close_btn" name="close_btn" class="btn btn-danger"
-                        onclick="window.location='complaint_demo.php'">Cancel</button>
+                        onclick="window.location='complaint_demo.php'">Close</button>
                 </div>
                 <!------ Hidden Inputs ------>
                 <input type="hidden" name="map_location" id="map_location">

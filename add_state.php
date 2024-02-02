@@ -37,16 +37,17 @@ if(isset($_REQUEST['save']))
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
-            <h5 class="text-lg font-semibold dark:text-white-light">State - Add</h5>
+            <h5 class="text-2xl text-primary font-semibold dark:text-white-light">State - Add</h5>
         </div>
         <div class="mb-5">
             <form class="space-y-5" method="post">
                 <div>
-                    <label for="groupFname"> Name</label>
+                    <label for="groupFname">Name </label>
                     <input id="groupFname" name="name" type="text" class="form-input" required/>
                     <div class="relative inline-flex align-middle gap-3 mt-4">
-                        <button type="submit" name="save" id="save"class="btn btn-primary">Save</button>
-                        <button type="button" class="btn  btn-warning ">Close</button>
+                        <button type="submit" name="save" id="save"class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-danger" 
+                        onclick="window.location='state.php'">Close</button>
                     </div>
                 </div>
             </form>

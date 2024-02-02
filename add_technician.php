@@ -94,7 +94,7 @@ function uploadImage($inputName, $uploadDirectory)
         <form class="space-y-5" method="post" enctype="multipart/form-data">
             <div>
                 <label for="groupFname"> Name</label>
-                <input id="groupFname" type="text" name="name" placeholder="Enter First Name" class="form-input" required />
+                <input id="groupFname" type="text" name="name" placeholder="Enter Name" class="form-input" required />
             </div>
             <div>
                 <label for="ctnEmail">Email address</label>
@@ -148,17 +148,17 @@ function uploadImage($inputName, $uploadDirectory)
             </div>
             <div>
                 <label for="gridStatus">Status</label>
-                <label class="inline-flex py-2">
+                <label class="inline-flex mr-3">
                     <input type="radio" name="default_radio" class="form-radio" checked value="enable" required />
                     <span>Enable</span>
                 </label>
-                <label class="">
+                <label class="inline-flex mr-3">
                     <input type="radio" name="default_radio" class="form-radio text-danger" value="disable" required />
                     <span>Disable</span>
                 </label>
             </div>
             <div class="relative inline-flex align-middle gap-3 mt-4">
-                <button type="submit" class="btn btn-success" name="save" id="save">Save</button>
+                <button type="submit" class="btn btn-success" name="save" id="save_btn">Save</button>
                 <button type="button" class="btn btn-danger" onclick="location.href='technician.php'">Close</button>
             </div>
     </div>

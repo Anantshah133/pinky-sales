@@ -36,8 +36,8 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
             <h1 class='text-primary text-2xl font-bold'>Privacy Policy</h1>
 
             <div class="flex flex-wrap items-center">
-                <a href="add_privacy.php"> <button type="button" class="p-2 btn btn-primary btn-sm m-1">
-                        <i class="ri-add-line mr-1"></i> Add 
+                <a href="add_privacy_policy.php"> <button type="button" class="p-2 btn btn-primary btn-sm m-1">
+                        <i class="ri-add-line mr-1"></i> Add Privacy Policy
                     </button></a>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="exportTable('csv')">
                     <i class="ri-file-line mr-1"></i> CSV

@@ -38,28 +38,29 @@ if(isset($_REQUEST['save']))
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
-            <h5 class="text-lg font-semibold dark:text-white-light">Service Type- Add</h5>
+            <h5 class="text-2xl text-primary font-semibold dark:text-white-light">Service Type- Add</h5>
         </div>
         <div class="mb-5">
             <form class="space-y-5" method="post">
                 <div>
                     <label for="groupFname"> Name</label>
-                    <input id="groupFname" name="name" type="text" class="form-input" require/>
+                    <input id="groupFname" name="name" type="text" class="form-input" required />
                 </div>
                 <div>
                     <label for="gridStatus">Status</label>
-                    <label class="inline-flex">
+                    <label class="inline-flex mr-3">
                         <input type="radio" name="default_radio" value="enable" class="form-radio" checked required />
                         <span>Enable</span>
                     </label>
-                    <label class="inline-flex">
+                    <label class="inline-flex mr-3">
                         <input type="radio" name="default_radio" value="disable" class="form-radio text-danger" required />
                         <span>Disable</span>
                     </label>
                 </div>
                     <div class="relative inline-flex align-middle gap-3 mt-4">
-                        <button type="submit" name="save" id="save" class="btn btn-primary">Save </button>
-                        <button type="button" class="btn  btn-warning ">Close</button>
+                        <button type="submit" name="save" id="save" class="btn btn-success">Save </button>
+                        <button type="button" class="btn btn-danger" onclick="window.location='service_type.php'"
+                        >Close</button>
                     </div>
             </form>
         </div>

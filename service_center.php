@@ -38,7 +38,7 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
             <div class="flex flex-wrap items-center">
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1"
                     onclick="location.href='add_service_center.php'">
-                    <i class="ri-add-line mr-1"></i> Add
+                    <i class="ri-add-line mr-1"></i> Add Service Center
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
@@ -155,9 +155,7 @@ document.addEventListener('alpine:init', () => {
                             // $stmt->close();
                             
                             $id=1;
-                            while($row=mysqli_fetch_array($res_stmt)){
-                               
-                                           
+                            while($row=mysqli_fetch_array($res_stmt)){            
                         ?>
 
                         ['<?php echo $id ?>', '<?php echo $row["name"] ?>',
@@ -167,7 +165,7 @@ document.addEventListener('alpine:init', () => {
                             '<?php echo $row["state"] ?>',
                             ' <?php echo $row["status"] ?>',
                             ' <?php echo $row["date_time"] ?>', getActions((
-                                '<?php echo $row['id'] ?>'))],
+                            '<?php echo $row['id'] ?>'))],
                         <?php 
                         $id++;	
                             }

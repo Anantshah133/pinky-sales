@@ -38,16 +38,15 @@ if(isset($_REQUEST['save']))
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
-            <h5 class="text-lg font-semibold dark:text-white-light">Area Pincode- Add</h5>
+            <h5 class="text-2xl text-primary font-semibold dark:text-white-light">Area Pincode- Add</h5>
         </div>
         <div class="mb-5">
             <form class="space-y-5" method="post">
                 <div>
                     
                     <label for="groupFname"> State Name</label>
-
-                    <select class="form-select text-white-dark" name="State_id">
-                        <option>-none-</option>
+                    <select class="form-select text-white-dark" name="State_id" required>
+                        <option value="">Choose State</option>
                     <?php 
                         $stmt = $obj->con1->prepare("SELECT * FROM `state`");
                         $stmt->execute();
@@ -57,19 +56,15 @@ if(isset($_REQUEST['save']))
                         while($result = mysqli_fetch_array($Resp)){
                     ?>
                         <option value="<?php echo $result['id'] ?>"><?php echo $result['name'] ?></option>
-                        <!-- <option>Gujarat</option>
-                        <option>Bhayander</option>
-                        <option>VIRAR NSP VASAI</option>
-                        <option>Thane</option> -->
                     <?php } ?>
                     </select>
                 </div>
                 <div>
                     
-                    <label for="groupFname">  City Name</label>
+                    <label for="groupFname">City Name</label>
 
-                    <select class="form-select text-white-dark" name="area_id">
-                        <option>-none-</option>
+                    <select class="form-select text-white-dark" name="area_id" required>
+                        <option value="">Choose City</option>
                     <?php 
                         $stmt = $obj->con1->prepare("SELECT * FROM `city`");
                         $stmt->execute();
@@ -79,10 +74,6 @@ if(isset($_REQUEST['save']))
                         while($result = mysqli_fetch_array($Resp)){
                     ?>
                         <option value="<?php echo $result['srno'] ?>"><?php echo $result['ctnm'] ?></option>
-                        <!-- <option>Gujarat</option>
-                        <option>Bhayander</option>
-                        <option>VIRAR NSP VASAI</option>
-                        <option>Thane</option> -->
                     <?php } ?>
                     </select>
                 </div>
@@ -90,8 +81,9 @@ if(isset($_REQUEST['save']))
                     <label for="groupFname"> Pincode </label>
                     <input id="groupFname" name="pincode" type="text" class="form-input" />
                     <div class="relative inline-flex align-middle gap-3 mt-4">
-                        <button type="submit" name="save" id="save" class="btn btn-primary">Save </button>
-                        <button type="button" class="btn  btn-warning ">Close</button>
+                        <button type="submit" name="save" id="save" class="btn btn-success">Save </button>
+                        <button type="button" class="btn btn-danger" onclick="window.location='area_pincode.php'"
+                        >Close</button>
                     </div>
                 </div>
             </form>
