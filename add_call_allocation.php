@@ -255,7 +255,6 @@ document.addEventListener("alpine:init", () => {
                 dateFormat: 'd-m-Y',
                 minDate: formattedToday,
                 defaultDate: this.date2,
-                minDate: "today",
             })
         }
     }));
