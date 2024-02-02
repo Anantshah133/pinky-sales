@@ -84,16 +84,20 @@ document.addEventListener('alpine:init', () => {
                             $stmt = $obj->con1->prepare("SELECT c1.*,s1.name FROM `city` c1, `state` s1 WHERE c1.stnm=s1.id;");
                             $stmt->execute();
                             $Resp=$stmt->get_result();
-                                    $i=1;
+                            $i=1;
                             while($row = mysqli_fetch_array($Resp)){
                         ?>
-                        [<?php echo $i ?>, '<?php echo $row['ctnm'] ?>','<?php echo $row['name'] ?>','<?php echo $row['status'] ?>', getActions(<?php echo $row['srno'] ?>)],
-                        // [1, 'COOLER','','', getActions()],
-                        // [2, 'HOME THEATER','','', getActions()],
-                        // [3, 'WASHING MACHINE','','', getActions()],
-                        // [4, 'LED TV','','', getActions()],
-                        <?php $i++;
-                        } ?>
+                        [
+                            <?php echo $i ?>, 
+                            '<?php echo $row['ctnm'] ?>',
+                            '<?php echo $row['name'] ?>',
+                            '<?php echo $row['status'] ?>',
+                            getActions(<?php echo $row['srno'] ?>)
+                        ],
+                        <?php 
+                            $i++;
+                            } 
+                        ?>
                     ],
                 },
                 perPage: 10,
@@ -102,12 +106,6 @@ document.addEventListener('alpine:init', () => {
                         select: 0,
                         sort: 'asc',
                     },
-                    // {
-                    //     select: 4,
-                    //     render: (data, cell, row) => {
-                    //         return this.formatDate(data);
-                    //     },
-                    // },
                 ],
                 firstLast: true,
                 firstText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M13 19L7 12L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M16.9998 19L10.9998 12L16.9998 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',

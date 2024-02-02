@@ -16,7 +16,6 @@ if(isset($_REQUEST['save']))
 
   try
   {
-    // echo "INSERT INTO `service_center`(`name`,`email`,`contact`,`userid`,`password`,`status`,`address`,`area`) VALUES ($name,$email,$contact,$user_id,$pass,$status,$address,$state)";
     $stmt = $obj->con1->prepare("INSERT INTO `service_center`(`name`,`email`,`contact`,`userid`,`password`,`status`,`address`,`area`) VALUES (?,?,?,?,?,?,?,?)");
     $stmt->bind_param("sssssssi",$name,$email,$contact,$user_id,$pass,$status,$address,$state);
     $Resp=$stmt->execute();
@@ -97,7 +96,6 @@ if(isset($_REQUEST['save']))
                     <label for="gridCity">City</label>
                     <select id="gridcity" class="form-select text-white-dark" >
                         <option>Choose...</option>
-                        
                     </select>
                 </div>
 

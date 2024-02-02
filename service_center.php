@@ -149,10 +149,10 @@ document.addEventListener('alpine:init', () => {
                     data: [
                         <?php
                           
-                            $stmt =  $obj->con1->prepare("SELECT sc1.*, sa1.name AS state FROM service_center sc1, service_area sa1 WHERE sc1.area=sa1.id");
+                            $stmt =  $obj->con1->prepare("SELECT sc1.*, s1.name AS state FROM service_center sc1, state s1 WHERE sc1.area=s1.id");
                             $stmt->execute();
                             $res_stmt=$stmt->get_result();
-                            $stmt->close();
+                            // $stmt->close();
                             
                             $id=1;
                             while($row=mysqli_fetch_array($res_stmt)){

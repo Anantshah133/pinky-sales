@@ -11,18 +11,18 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
     {
       if(strtok($obj->con1-> error,  ':')=="Cannot delete or update a parent row")
       {
-        // throw new Exception("City is already in use!");
+        throw new Exception("City is already in use!");
       }
     }
     $stmt_del->close();
   }
   catch(\Exception  $e) {
-    // setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
+    setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
   }
 
   if($Resp)
   {
-    // setcookie("msg", "data_del",time()+3600,"/");
+    setcookie("msg", "data_del",time()+3600,"/");
     echo "this data is deleted";
   }
     header("location:state.php");
@@ -81,13 +81,17 @@ document.addEventListener('alpine:init', () => {
                     headings: ['Sr.No.', 'Name', 'Action'],
                     data: [
                         <?php 
-                            $stmt = $obj->con1->prepare("SELECT * FROM `service_area`");
+                            $stmt = $obj->con1->prepare("SELECT * FROM `state`");
                             $stmt->execute();
                             $Resp=$stmt->get_result();
                             $i=1;
                             while($row = mysqli_fetch_array($Resp)){
                         ?>
-                        [<?php echo $i ?>, '<?php echo $row['name'] ?>', getActions(<?php echo $row['id'] ?>)],
+                        [
+                            <?php echo $i ?>, 
+                            '<?php echo $row['name'] ?>', 
+                            getActions(<?php echo $row['id'] ?>)
+                        ],
                         <?php $i++; } ?>
                     ],
                 },
@@ -97,12 +101,6 @@ document.addEventListener('alpine:init', () => {
                         select: 0,
                         sort: 'asc',
                     },
-                    // {
-                    //     select: 4,
-                    //     render: (data, cell, row) => {
-                    //         return this.formatDate(data);
-                    //     },
-                    // },
                 ],
                 firstLast: true,
                 firstText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M13 19L7 12L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M16.9998 19L10.9998 12L16.9998 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
