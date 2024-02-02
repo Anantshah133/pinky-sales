@@ -45,13 +45,9 @@ include "header.php";
 
         <form x-data="form" class="space-y-5">
             <div class="flex">
-                <div class="w-6/12 px-2">
-                    <label for="groupFname">Start Date</label>
-                    <input id="st_dt" x-model="date1" class="form-input" />
-                </div>
-                <div class="w-6/12 px-2">
-                    <label for="groupFnamec">End Date</label>
-                    <input id="en_dt" x-model="date2" class="form-input" />
+                <div>
+                    <label for="range-calendar">Date Range</label>
+                    <input id="range-calendar" x-model="date3" class="form-input" />
                 </div>
             </div>
 
@@ -183,22 +179,26 @@ include "header.php";
 <!-- script -->
 <script src="assets/js/flatpickr.js"></script>
 <script>
-document.addEventListener("alpine:init", () => {
-    Alpine.data("form", () => ({
-        date1: '2022-07-05',
-        date2:'2024-02-02',
-        init() {
-        
-            flatpickr(document.getElementById('st_dt'), {
-                dateFormat: 'Y-m-d',
-                defaultDate: this.date1,
-            });
-            flatpickr(document.getElementById('en_dt'), {
-                dateFormat: 'Y-m-d',
-                defaultDate: this.date1,
-            })
-        }
-    }));
+    document.addEventListener("alpine:init", () => {
+        let todayDate = new Date();
+        let formattedToday = todayDate.toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        }).split('/').join('-');
+
+        Alpine.data("form", () => ({
+            date3: `${formattedToday} to ${formattedToday}`,
+            init() {
+                flatpickr(document.getElementById('range-calendar'), {
+                    defaultDate: this.date3,
+                    dateFormat: 'd-m-Y',
+                    mode: 'range',
+                    minDate: formattedToday,
+                })
+            }
+        }));
+
 });
 </script>
 

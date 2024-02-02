@@ -24,12 +24,12 @@ if(isset($_REQUEST['save']))
   if($Resp)
   {
  setcookie("msg", "data",time()+3600,"/");
-      header("location:add-productcategory.php");
+      header("location:product_category.php");
   }
   else
   {
  setcookie("msg", "fail",time()+3600,"/");
-      header("location:add-productcategory.php");
+      header("location:product_category.php");
   }
 }
 
