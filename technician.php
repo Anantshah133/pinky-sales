@@ -146,7 +146,7 @@ document.addEventListener('alpine:init', () => {
                     data: [
                         <?php
                           
-                            $stmt =  $obj->con1->prepare("SELECT * FROM  `technician`");
+                            $stmt =  $obj->con1->prepare("SELECT t1.*, s1.name AS service_center_name FROM technician t1, service_center s1 WHERE t1.service_center=s1.id");
                             $stmt->execute();
                             $res_stmt=$stmt->get_result();
                             $stmt->close();
@@ -157,7 +157,7 @@ document.addEventListener('alpine:init', () => {
                                            
                         ?>
                      
-                     ['<?php echo $id ?>','<?php echo $row["name"] ?>', '<?php echo $row["email"] ?>', '<?php echo $row["contact"] ?>','<?php echo $row["service_center"] ?>',' <?php echo $row["status"] ?>',' <?php echo $row["date_time"] ?>', getActions(('<?php echo $row['id'] ?>'))],
+                     ['<?php echo $id ?>','<?php echo $row["name"] ?>', '<?php echo $row["email"] ?>', '<?php echo $row["contact"] ?>','<?php echo $row["service_center_name"] ?>',' <?php echo $row["status"] ?>',' <?php echo $row["date_time"] ?>', getActions(('<?php echo $row['id'] ?>'))],
                         <?php 
                         $id++;	
                             }

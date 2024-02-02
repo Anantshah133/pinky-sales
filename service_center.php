@@ -149,7 +149,7 @@ document.addEventListener('alpine:init', () => {
                     data: [
                         <?php
                           
-                            $stmt =  $obj->con1->prepare("SELECT * FROM  `service_center`");
+                            $stmt =  $obj->con1->prepare("SELECT sc1.*, sa1.name AS state FROM service_center sc1, service_area sa1 WHERE sc1.area=sa1.id");
                             $stmt->execute();
                             $res_stmt=$stmt->get_result();
                             $stmt->close();
@@ -164,7 +164,7 @@ document.addEventListener('alpine:init', () => {
                             '<?php echo $row["email"] ?>',
                             '<?php echo $row["contact"] ?>',
                             '<?php echo $row["address"] ?>',
-                            '<?php echo $row["area"] ?>',
+                            '<?php echo $row["state"] ?>',
                             ' <?php echo $row["status"] ?>',
                             ' <?php echo $row["date_time"] ?>', getActions((
                                 '<?php echo $row['id'] ?>'))],
@@ -173,7 +173,7 @@ document.addEventListener('alpine:init', () => {
                             }
                         ?>
                     ],
-
+                    // SELECT sc1.*, sa1.name AS state FROM service_center sc1, service_area sa1 WHERE sc1.area=sa1.id.
 
                 },
                 perPage: 10,
