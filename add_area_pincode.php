@@ -26,12 +26,12 @@ if(isset($_REQUEST['save']))
   if($Resp)
   {
     setcookie("msg", "data",time()+3600,"/");
-      header("location:add-areapincode.php");
+      header("location:area_pincode.php");
   }
   else
   {
     setcookie("msg", "fail",time()+3600,"/");
-      header("location:add-areapincode.php");
+      header("location:area_pincode.php");
   }
 }
 ?>
@@ -49,7 +49,7 @@ if(isset($_REQUEST['save']))
                     <select class="form-select text-white-dark" name="State_id">
                         <option>-none-</option>
                     <?php 
-                        $stmt = $obj->con1->prepare("SELECT * FROM `service_area`");
+                        $stmt = $obj->con1->prepare("SELECT * FROM `state`");
                         $stmt->execute();
                         $Resp=$stmt->get_result();
                         $stmt->close();

@@ -26,12 +26,12 @@ if(isset($_REQUEST['save']))
   if($Resp)
   {
     setcookie("msg", "data",time()+3600,"/");
-      header("location:add-productservice.php");
+      header("location:product_service.php");
   }
   else
   {
     setcookie("msg", "fail",time()+3600,"/");
-      header("location:add-productservice.php");
+      header("location:product_service.php");
   }
 }
 ?>

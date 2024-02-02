@@ -79,7 +79,7 @@ if(isset($_REQUEST['save']))
                         <option>Choose...</option>
                         <?php
                             $stmt = $obj->con1->prepare(
-                                "SELECT * FROM `service_area` "
+                                "SELECT * FROM `state` "
                             );
                             $stmt->execute();
                             $Res = $stmt->get_result();

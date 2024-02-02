@@ -83,7 +83,7 @@ document.addEventListener('alpine:init', () => {
                     headings: ['Sr.No.', 'state','city', 'pincode', 'Action'],
                     data: [
                         <?php 
-                            $stmt = $obj->con1->prepare("SELECT ap1.*, c1.ctnm, s1.name FROM `area_pincode` ap1,`service_area` s1,`city` c1 WHERE ap1.city_id = c1.srno AND ap1.state_id=s1.id;");
+                            $stmt = $obj->con1->prepare("SELECT ap1.*, c1.ctnm, s1.name FROM `area_pincode` ap1,`state` s1,`city` c1 WHERE ap1.city_id = c1.srno AND ap1.state_id=s1.id;");
                             $stmt->execute();
                             $Resp=$stmt->get_result();
                                     $i=1;
