@@ -46,7 +46,7 @@ include "header.php";
         <form x-data="form" class="space-y-5">
             <div class="flex">
                 <div>
-                    <label for="range-calendar">Date Range</label>
+                    <label for="range-calendar ">Date Range</label>
                     <input id="range-calendar" x-model="date3" class="form-input" />
                 </div>
             </div>

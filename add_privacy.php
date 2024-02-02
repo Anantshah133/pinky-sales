@@ -29,12 +29,12 @@ $Resp=$stmt->execute();
   if($Resp)
   {
  setcookie("msg", "data",time()+3600,"/");
-    //   header("location:privacy_policy.php");
+      header("location:privacy_policy.php");
   }
   else
   {
  setcookie("msg", "fail",time()+3600,"/");
-    //   header("location:privacy_policy.php");
+      header("location:privacy_policy.php");
   }
  }
 ?>
