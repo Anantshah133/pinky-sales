@@ -34,7 +34,7 @@ if(isset($_REQUEST['save']))
 }
 
 ?>
-<div class='p-6' x-data='exportTable'>
+<div class='p-6'>
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
             <h5 class="text-lg font-semibold dark:text-white-light">Service Area- Add</h5>

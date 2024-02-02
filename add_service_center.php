@@ -68,7 +68,7 @@ if(isset($_REQUEST['save']))
 
             <div>
                 <label for="gridAddress1">Address</label>
-                <input id="gridAddress1" type="text" name="address" placeholder="Enter Address" value="" class="form-input" required />
+                <textarea autocomplete="on" name="address" id="address" class="form-textarea" rows="2"></textarea>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">

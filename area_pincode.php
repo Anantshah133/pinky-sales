@@ -28,7 +28,7 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
 }
 ?>
 
-<div class='p-6' x-data='exportTable'>
+<div class='p-6'>
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
             <h1 class='text-primary text-2xl font-bold'>Area Pincode</h1>
