@@ -2,6 +2,7 @@
 include "header.php";
 
 if(isset($_REQUEST['viewId'])){
+    $mode = 'view';
     $viewId = $_REQUEST['viewId'];
     $stmt = $obj->con1->prepare("SELECT * FROM `state`");
     $stmt->execute();
@@ -39,14 +40,19 @@ if (isset($_REQUEST["save"])) {
 <div class='p-6' >
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
-            <h5 class="text-2xl text-primary font-semibold dark:text-white-light">State - Add</h5>
+            <h5 class="text-2xl text-primary font-semibold dark:text-white-light">State - 
+                <?php echo isset($mode) == 'view' ? 'View' : 'Add' ?>
+            </h5>
         </div>
         <div class="mb-5">
             <form class="space-y-5" method="post">
                 <div>
                     <label for="groupFname">Name </label>
-                    <input id="groupFname" name="name" type="text" class="form-input" value="<?php echo (isset($viewId)) ? $data['name'] : '' ?>" required/>
-                    <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo (isset($viewId)) ? 'hidden' : '' ?>">
+                    <input id="groupFname" name="name" type="text" class="form-input" 
+                        value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required
+                        <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
+                    />
+                    <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo (isset($mode)) ? 'hidden' : '' ?>">
                         <button type="submit" name="save" id="save" class="btn btn-success">Save</button>
                         <button type="button" class="btn btn-danger" onclick="window.location='state.php'">Close</button>
                     </div>

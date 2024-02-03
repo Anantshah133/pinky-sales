@@ -3688,8 +3688,9 @@ label {
 .form-checkbox:disabled,
 .form-radio:disabled {
     cursor: not-allowed;
-    --tw-bg-opacity: 1;
-    background-color: rgb(238 238 238/var(--tw-bg-opacity))
+    --tw-bg-opacity: 0.7;
+    opacity: var(--tw-bg-opacity);
+    /* background-color: rgb(238 238 238/var(--tw-bg-opacity)) */
 }
 
 :is([dir=ltr] .form-checkbox),

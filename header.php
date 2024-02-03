@@ -1,6 +1,7 @@
 <?php
     include "db_connect.php";
     $obj=new DB_Connect();
+    date_default_timezone_set('Asia/Kolkata');
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -297,24 +298,6 @@
                             </a>
                         </li>
                         <li class="menu nav-item">
-                            <a href="service_type.php" class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "service_type.php" ? "active" : "" ?>">
-                                <div class="flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none">
-                                        <path
-                                            d="M20.3116 12.6473L20.8293 10.7154C21.4335 8.46034 21.7356 7.3328 21.5081 6.35703C21.3285 5.58657 20.9244 4.88668 20.347 4.34587C19.6157 3.66095 18.4881 3.35883 16.2331 2.75458C13.978 2.15033 12.8504 1.84821 11.8747 2.07573C11.1042 2.25537 10.4043 2.65945 9.86351 3.23687C9.27709 3.86298 8.97128 4.77957 8.51621 6.44561C8.43979 6.7254 8.35915 7.02633 8.27227 7.35057L8.27222 7.35077L7.75458 9.28263C7.15033 11.5377 6.84821 12.6652 7.07573 13.641C7.25537 14.4115 7.65945 15.1114 8.23687 15.6522C8.96815 16.3371 10.0957 16.6392 12.3508 17.2435L12.3508 17.2435C14.3834 17.7881 15.4999 18.0873 16.415 17.9744C16.5152 17.9621 16.6129 17.9448 16.7092 17.9223C17.4796 17.7427 18.1795 17.3386 18.7203 16.7612C19.4052 16.0299 19.7074 14.9024 20.3116 12.6473Z"
-                                            fill="#1C274C" />
-                                        <path opacity="0.5"
-                                            d="M16.4149 17.9745C16.2064 18.6128 15.8398 19.1903 15.347 19.6519C14.6157 20.3368 13.4881 20.6389 11.2331 21.2432C8.97798 21.8474 7.85044 22.1496 6.87466 21.922C6.10421 21.7424 5.40432 21.3383 4.86351 20.7609C4.17859 20.0296 3.87647 18.9021 3.27222 16.647L2.75458 14.7152C2.15033 12.4601 1.84821 11.3325 2.07573 10.3568C2.25537 9.5863 2.65945 8.88641 3.23687 8.3456C3.96815 7.66068 5.09569 7.35856 7.35077 6.75431C7.7774 6.64 8.16369 6.53649 8.51621 6.44534C8.51618 6.44545 8.51624 6.44524 8.51621 6.44534C8.43979 6.72513 8.3591 7.02657 8.27222 7.35081L7.75458 9.28266C7.15033 11.5377 6.84821 12.6653 7.07573 13.6411C7.25537 14.4115 7.65945 15.1114 8.23687 15.6522C8.96815 16.3371 10.0957 16.6393 12.3508 17.2435C14.3833 17.7881 15.4999 18.0873 16.4149 17.9745Z"
-                                            fill="#1C274C" />
-                                    </svg>
-                                    <span
-                                        class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Service
-                                        Type</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="menu nav-item">
                             <a href="product_service.php" class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "product_service.php" ? "active" : "" ?>">
                                 <div class="flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -410,47 +393,6 @@
                             class="flex items-center space-x-1.5 ltr:ml-auto rtl:mr-auto rtl:space-x-reverse dark:text-[#d0d2d6] sm:flex-1 ltr:sm:ml-0 sm:rtl:mr-0 lg:space-x-2">
                             <div class="sm:ltr:mr-auto sm:rtl:ml-auto" x-data="{ search: false }"
                                 @click.outside="search = false">
-                                <form
-                                    class="absolute inset-x-0 top-1/2 z-10 mx-4 hidden -translate-y-1/2 sm:relative sm:top-0 sm:mx-0 sm:block sm:translate-y-0"
-                                    :class="{'!block' : search}" @submit.prevent="search = false">
-                                    <div class="relative">
-                                        <input type="text"
-                                            class="peer form-input bg-gray-100 placeholder:tracking-widest ltr:pl-9 ltr:pr-9 rtl:pr-9 rtl:pl-9 sm:bg-transparent ltr:sm:pr-4 rtl:sm:pl-4"
-                                            placeholder="Search..." />
-                                        <button type="button"
-                                            class="absolute inset-0 h-9 w-9 appearance-none peer-focus:text-primary ltr:right-auto rtl:left-auto">
-                                            <svg class="mx-auto" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <circle cx="11.5" cy="11.5" r="9.5" stroke="currentColor"
-                                                    stroke-width="1.5" opacity="0.5" />
-                                                <path d="M18.5 18.5L22 22" stroke="currentColor" stroke-width="1.5"
-                                                    stroke-linecap="round" />
-                                            </svg>
-                                        </button>
-                                        <button type="button"
-                                            class="absolute top-1/2 block -translate-y-1/2 hover:opacity-80 ltr:right-2 rtl:left-2 sm:hidden"
-                                            @click="search = false">
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <circle opacity="0.5" cx="12" cy="12" r="10" stroke="currentColor"
-                                                    stroke-width="1.5" />
-                                                <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5"
-                                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </form>
-                                <button type="button"
-                                    class="search_btn rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 dark:bg-dark/40 dark:hover:bg-dark/60 sm:hidden"
-                                    @click="search = ! search">
-                                    <svg class="mx-auto h-4.5 w-4.5 dark:text-[#d0d2d6]" width="20" height="20"
-                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="11.5" cy="11.5" r="9.5" stroke="currentColor" stroke-width="1.5"
-                                            opacity="0.5" />
-                                        <path d="M18.5 18.5L22 22" stroke="currentColor" stroke-width="1.5"
-                                            stroke-linecap="round" />
-                                    </svg>
-                                </button>
                             </div>
                             <div class="dropdown" x-data="dropdown" @click.outside="open = false">
                                 <a href="javascript:;"

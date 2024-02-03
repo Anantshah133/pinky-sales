@@ -64,15 +64,16 @@ if (isset($_REQUEST["save"])) {
 
     <div class="panel border shadow-md shadow-slate-200">
         <div class="mb-5 flex items-center justify-between">
-            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Service Center Add</h5>
+            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Service Center - 
+                <?php echo isset($mode) == 'view' ? 'View' : 'Add' ?>
+            </h5>
         </div>
         <form class="space-y-5" method="post">
             <div>
                 <label for="groupFname">Name</label>
-                <input id="groupFname" type="text" name="name" placeholder="Enter First Name" class="form-input"
+                <input id="groupFname" type="text" name="name" placeholder="Enter Name" class="form-input"
                     value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required 
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>    
-                />
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>/>
             </div>
             <div>
                 <label for="ctnEmail">Email Address</label>
@@ -83,20 +84,17 @@ if (isset($_REQUEST["save"])) {
             </div>
             <div>
                 <label for="groupFname">Contact</label>
-                <input id="groupFname" type="number" name="contact" placeholder="" class="form-input"
+                <input id="groupFname" type="number" name="contact" placeholder="Enter Contact number" class="form-input"
                     value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" required 
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>    
                 />
             </div>
-
+            
             <div>
                 <label for="address">Address</label>
                 <textarea autocomplete="on" name="address" id="address" 
-                    class="form-textarea" rows="2" cols="0"
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
-                >
-                    <?php echo (isset($mode)) ? $data['address'] : ''; ?>
-                </textarea>
+                    class="form-textarea" rows="2" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : null?> 
+                ><?php echo (isset($mode)) ? $data['address'] : ''; ?></textarea>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">

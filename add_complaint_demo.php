@@ -26,11 +26,11 @@ if (isset($_POST['save_btn'])) {
     $stmt->execute();
     $row_dailycounter = $stmt->get_result()->fetch_assoc();
     $stmt->close();
-
+    
     $dailycounter = (int)$row_dailycounter["customer_id"];
     $string = str_pad($dailycounter, 4, '0', STR_PAD_LEFT);
     $complaint_no = "ONL" . $day . $month . $year . $string;
-    $date = date("Y-m-d");
+    $date = date("d-m-Y");
     $time = date("h:i A");
     //--------------//
 
