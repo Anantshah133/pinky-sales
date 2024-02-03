@@ -63,7 +63,7 @@ document.addEventListener('alpine:init', () => {
                     ],
                     data: [
                         <?php 
-                            $stmt = $obj->con1->prepare("SELECT * FROM `call_allocation` order by id desc");
+                            $stmt = $obj->con1->prepare("select tbl.*,t1.name as technician_name from (select c1.*,s1.name as service_center_name,p1.name as product_category_name,CONCAT(c2.fname,' ',c2.lname) as customer_name,c2.contact as customer_contact FROM call_allocation c1,customer_reg c2,service_center s1,product_category p1 where c1.complaint_no=c2.complaint_no and c1.service_center_id=s1.id and c2.product_category=p1.id ) as tbl LEFT JOIN technician t1 on tbl.technician=t1.id order by tbl.id desc");
                             $stmt->execute();
                             $Resp=$stmt->get_result();
                             $i = 1;
@@ -71,15 +71,15 @@ document.addEventListener('alpine:init', () => {
                         ?>
                             [
                                 '<?php echo $i ?>', '<?php echo $row['complaint_no'] ?>',
-                                '<?php echo $row['service_center_id'] ?>',
-                                '<?php echo $row['technician'] ?>',
+                                '<?php echo $row['service_center_name'] ?>',
+                                '<?php echo $row['technician_name'] ?>',
                                 '<?php echo $row['allocation_date'] ?>',
                                 '<?php echo $row['status'] ?>',
                                 '<?php echo $row['allocation_time'] ?>',
                                 '<?php echo $row['reason'] ?>',
-                                '<?php echo $row['complaint_no'] ?>',
-                                '<?php echo $row['complaint_no'] ?>',
-                                '<?php echo $row['complaint_no'] ?>', getActions()
+                                '<?php echo $row['customer_name'] ?>',
+                                '<?php echo $row['customer_contact'] ?>',
+                                '<?php echo $row['product_category_name'] ?>', getActions()
                             ],
                         <?php
                             $i++;

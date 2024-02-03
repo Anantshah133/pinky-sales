@@ -2,7 +2,6 @@
 include "header.php";
 ?>
 <main class='p-6' x-data="sales">
-    <h1 class='text-2xl font-bold'>Dashboard ( <?php echo date('d-m-Y') ?> )</h1>
     <div class="pt-5">
         <div class="mb-6 grid grid-cols-1 gap-6 text-white sm:grid-cols-2 xl:grid-cols-4">
             <!-- Users Visit -->
