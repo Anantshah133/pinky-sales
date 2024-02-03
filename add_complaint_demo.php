@@ -112,9 +112,9 @@ if (isset($_POST['save_btn'])) {
                             <input name="alt_contact_num" id="alt_contact_num" type="number" class="form-input" />
                         </div>
                         <div>
-                            <label for="area"> Area </label>
+                            <label for="area"> City </label>
                             <select name="area" id="area" class="form-select text-white-dark" required>
-                                <option value="">Choose Area</option>
+                                <option value="">Choose City</option>
                                 <?php 
                                     $query = $obj->con1->prepare("SELECT * FROM `city` WHERE status='enable'");
                                     $query->execute();

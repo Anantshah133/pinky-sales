@@ -60,7 +60,7 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.No.', 'Firstname', 'Lname', 'Email', 'Contact', 'Area', 'Zipcode',
+                    headings: ['Sr.No.', 'Firstname', 'Lname', 'Email', 'Contact', 'City', 'Zipcode',
                         'Complaint No.', 'Service Type', 'Product Category', 'Dealer Name', 'Date', 'Time', 'Status', 'Action'
                     ],
                     data: [
@@ -70,7 +70,7 @@ document.addEventListener('alpine:init', () => {
                         //     `${getActions()}`
                         // ],
                         <?php 
-                            $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg`");
+                            $stmt = $obj->con1->prepare("select c1.*,s1.name as service_type,p1.name as product_category,c2.ctnm as city from customer_reg c1,service_type s1,product_category p1,city c2 where c1.area=c2.srno and c1.service_type=s1.id and c1.product_category=p1.id order by c1.id desc");
                             $stmt->execute();
                             $Resp=$stmt->get_result();
                             $id=1;
@@ -82,7 +82,7 @@ document.addEventListener('alpine:init', () => {
                                 '<?php echo $row['lname'] ?>',
                                 '<?php echo $row['email'] ?>',
                                 '<?php echo $row['contact'] ?>',
-                                '<?php echo $row['area'] ?>',
+                                '<?php echo $row['city'] ?>',
                                 '<?php echo $row['zipcode'] ?>',
                                 '<?php echo $row['complaint_no'] ?>',
                                 '<?php echo $row['service_type'] ?>',
@@ -94,6 +94,7 @@ document.addEventListener('alpine:init', () => {
                                 getActions()
                             ],
                         <?php
+                        $id++;
                             }
                         ?>
                     ],

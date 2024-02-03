@@ -63,7 +63,7 @@ document.addEventListener('alpine:init', () => {
                     ],
                     data: [
                         <?php 
-                            $stmt = $obj->con1->prepare("SELECT * FROM `call_allocation`");
+                            $stmt = $obj->con1->prepare("SELECT * FROM `call_allocation` order by id desc");
                             $stmt->execute();
                             $Resp=$stmt->get_result();
                             $i = 1;
