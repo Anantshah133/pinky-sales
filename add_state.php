@@ -1,8 +1,8 @@
 <?php
 include "header.php";
 
-if(isset($_REQUEST['editId'])){
-    $editId = $_REQUEST['editId'];
+if(isset($_REQUEST['viewId'])){
+    $viewId = $_REQUEST['viewId'];
     $stmt = $obj->con1->prepare("SELECT * FROM `state`");
     $stmt->execute();
     $Resp = $stmt->get_result();
@@ -44,13 +44,12 @@ if (isset($_REQUEST["save"])) {
             <form class="space-y-5" method="post">
                 <div>
                     <label for="groupFname">Name </label>
-                    <input id="groupFname" name="name" type="text" class="form-input" value="<?php echo ($editId) ? $data['name'] : '' ?>" 
-                    readonly="<?php $editId ?>"
+                    <input id="groupFname" name="name" type="text" class="form-input" value="<?php echo ($viewId) ? $data['name'] : '' ?>" 
+                    readonly="<?php $viewId ?>"
                     required/>
-                    <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo ($editId) ? 'hidden' : '' ?>">
-                        <button type="submit" name="save" id="save"class="btn btn-success">Save</button>
-                        <button type="button" class="btn btn-danger" 
-                        onclick="window.location='state.php'">Close</button>
+                    <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo ($viewId) ? 'hidden' : '' ?>">
+                        <button type="submit" name="save" id="save" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-danger" onclick="window.location='state.php'">Close</button>
                     </div>
                 </div>
             </form>
