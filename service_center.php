@@ -51,7 +51,7 @@ checkCookies();
 function getActions(id) {
     return `<ul class="flex items-center justify-center gap-4">
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="View">
+            <a href="add_service_center.php?viewId=${id}" class='text-xl' x-tooltip="View">
                 <i class="ri-eye-line text-primary"></i>
             </a>
         </li>
