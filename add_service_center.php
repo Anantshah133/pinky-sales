@@ -22,13 +22,14 @@ if (isset($_REQUEST["save"])) {
     $address = $_REQUEST["address"];
     $state = $_REQUEST["state"];
     $city = $_REQUEST['cityName'];
+    $date_time = date("d-m-Y h:i A");
 
     try {
         $stmt = $obj->con1->prepare(
-            "INSERT INTO `service_center`(`name`,`email`,`contact`,`userid`,`password`,`status`,`address`,`area`) VALUES (?,?,?,?,?,?,?,?)"
+            "INSERT INTO `service_center`(`name`,`email`,`contact`,`userid`,`password`,`status`,`address`,`area`,`date_time`) VALUES (?,?,?,?,?,?,?,?,?)"
         );
         $stmt->bind_param(
-            "sssssssi",
+            "sssssssis",
             $name,
             $email,
             $contact,
@@ -36,7 +37,8 @@ if (isset($_REQUEST["save"])) {
             $pass,
             $status,
             $address,
-            $city
+            $city,
+            $date_time,
         );
         $Resp = $stmt->execute();
 
