@@ -1,38 +1,39 @@
 <?php
 include "header.php";
-if(isset($_REQUEST['save']))
-{
- 
-  $name = $_REQUEST['name'];
- 
-  try
-  {
-    $stmt = $obj->con1->prepare("INSERT INTO `state`(`name`) VALUES (?)");
-    $stmt->bind_param("s",$name);
-    $Resp=$stmt->execute();
-    if(!$Resp)
-    {
-      throw new Exception("Problem in adding! ". strtok($obj->con1-> error,  '('));
-    }
+
+if(isset($_REQUEST['editId'])){
+    $editId = $_REQUEST['editId'];
+    $stmt = $obj->con1->prepare("SELECT * FROM `state`");
+    $stmt->execute();
+    $Resp = $stmt->get_result();
+    $data = $Resp->fetch_assoc();
     $stmt->close();
-  }
-  catch(\Exception  $e) {
-    setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
-  }
-
-
-  if($Resp)
-  {
-    setcookie("msg", "data",time()+3600,"/");
-    header("location:state.php");
-  }
-  else
-  {
-    setcookie("msg", "fail",time()+3600,"/");
-    header("location:state.php");
-  }
 }
+if (isset($_REQUEST["save"])) {
+    $name = $_REQUEST["name"];
 
+    try {
+        $stmt = $obj->con1->prepare("INSERT INTO `state`(`name`) VALUES (?)");
+        $stmt->bind_param("s", $name);
+        $Resp = $stmt->execute();
+        if (!$Resp) {
+            throw new Exception(
+                "Problem in adding! " . strtok($obj->con1->error, "(")
+            );
+        }
+        $stmt->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
+    }
+
+    if ($Resp) {
+        setcookie("msg", "data", time() + 3600, "/");
+        header("location:state.php");
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
+        header("location:state.php");
+    }
+}
 ?>
 <div class='p-6' >
     <div class="panel mt-6">
@@ -43,8 +44,10 @@ if(isset($_REQUEST['save']))
             <form class="space-y-5" method="post">
                 <div>
                     <label for="groupFname">Name </label>
-                    <input id="groupFname" name="name" type="text" class="form-input" required/>
-                    <div class="relative inline-flex align-middle gap-3 mt-4">
+                    <input id="groupFname" name="name" type="text" class="form-input" value="<?php echo ($editId) ? $data['name'] : '' ?>" 
+                    readonly="<?php $editId ?>"
+                    required/>
+                    <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo ($editId) ? 'hidden' : '' ?>">
                         <button type="submit" name="save" id="save"class="btn btn-success">Save</button>
                         <button type="button" class="btn btn-danger" 
                         onclick="window.location='state.php'">Close</button>
@@ -55,6 +58,5 @@ if(isset($_REQUEST['save']))
     </div>
 </div>
 
-<?php
-include "footer.php";
+<?php include "footer.php";
 ?>
