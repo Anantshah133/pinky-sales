@@ -1,5 +1,14 @@
 <?php
 include "header.php";
+if(isset($_REQUEST['viewId'])){
+    $viewId = $_REQUEST['viewId'];
+    $stmt = $obj->con1->prepare("SELECT * FROM `area_pincode` where srno=?");
+    $stmt->bind_param("i",$viewId);
+    $stmt->execute();
+    $Resp = $stmt->get_result();
+    $data = $Resp->fetch_assoc();
+    $stmt->close();
+}
 if(isset($_REQUEST['save']))
 {
   $state_name = $_REQUEST['State_id'];

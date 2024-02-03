@@ -1,5 +1,15 @@
 <?php
 include "header.php";
+
+if(isset($_REQUEST['viewId'])){
+    $viewId = $_REQUEST['viewId'];
+    $stmt = $obj->con1->prepare("SELECT * FROM `city` where srno=?");
+    $stmt->bind_param("i",$viewId);
+    $stmt->execute();
+    $Resp = $stmt->get_result();
+    $data = $Resp->fetch_assoc();
+    $stmt->close();
+}
 if(isset($_REQUEST['save']))
 {
     $city_name = $_REQUEST['city_id'];
@@ -56,31 +66,30 @@ if(isset($_REQUEST['save']))
 
                         while($result = mysqli_fetch_array($Resp)){
                     ?>
-                        <option value="<?php echo $result['id'] ?>"><?php echo $result['name'] ?></option>
-                        <!-- <option>Gujarat</option>
-                        <option>Bhayander</option>
-                        <option>VIRAR NSP VASAI</option>
-                        <option>Thane</option> -->
+                        <option value="<?php echo $result['id'] ?>" <?php echo (isset($viewId) && $data['state_id']==$result['id'])? "selected":"" ?>><?php echo $result['name'] ?></option>
+                    
                     <?php } ?>
                     </select>
                 </div>
                 <div>
                     <label for="groupFname"> City Name </label>
-                    <input id="groupFname" name="city_id" type="text" class="form-input" required />
+                    <input id="groupFname" name="name" type="text" class="form-input" value="<?php echo (isset($viewId)) ? $data['ctnm'] : '' ?>" 
+                    readonly="<?php isset($viewId) ?>"
+                    required/>
                 </div>    
                 <div>
                     <label for="gridStatus">Status</label>
                     <label class="inline-flex mr-3">
-                        <input type="radio" name="default_radio" value="enable" class="form-radio" checked required />
+                        <input type="radio" name="default_radio" value="enable" class="form-radio" <?php echo (isset($viewId) && $data['status']=='enable')? "checked":"" ?> required checked="<?php isset($viewId) ?>" />
                         <span>Enable</span>
                     </label>
                     <label class="inline-flex mr-3">
-                        <input type="radio" name="default_radio" value="disable" class="form-radio text-danger" required />
+                        <input type="radio" name="default_radio" value="disable" class="form-radio text-danger" <?php echo (isset($viewId) && $data['status']=='disable')? "checked":"" ?> required />
                         <span>Disable</span>
                     </label>
                 </div>
                     
-                    <div class="relative inline-flex align-middle gap-3 mt-4">
+                    <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo (isset($viewId)) ? 'hidden' : '' ?>">
                         <button type="submit" name="save" id="save" class="btn btn-success">Save </button>
                         <button type="button" class="btn btn-danger" 
                         onclick="window.location='city.php'">Close</button>

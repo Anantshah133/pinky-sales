@@ -53,7 +53,7 @@ checkCookies();
 function getActions(id) {
     return `<ul class="flex items-center gap-4">
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="View">
+            <a href="add_area_pincode.php?viewId=${id}" class='text-xl' x-tooltip="View">
                 <i class="ri-eye-line text-primary"></i>
             </a>
         </li>
@@ -63,7 +63,7 @@ function getActions(id) {
             </a>
         </li>
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(` + id + `)">
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(${id})">
                 <i class="ri-delete-bin-line text-danger"></i>
             </a>
         </li>
