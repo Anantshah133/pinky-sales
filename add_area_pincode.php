@@ -54,7 +54,7 @@ if(isset($_REQUEST['save']))
                 <div>
                     
                     <label for="groupFname"> State Name</label>
-                    <select class="form-select text-white-dark" name="State_id" required>
+                    <select class="form-select text-white-dark" onchange="loadCities(this.value)" name="State_id" required>
                         <option value="">Choose State</option>
                     <?php 
                         $stmt = $obj->con1->prepare("SELECT * FROM `state`");
@@ -72,7 +72,7 @@ if(isset($_REQUEST['save']))
                     
                     <label for="groupFname">City Name</label>
 
-                    <select class="form-select text-white-dark" name="area_id" required>
+                    <select class="form-select text-white-dark" name="area_id" id="area_id" required>
                         <option value="">Choose City</option>
                     <?php 
                         $stmt = $obj->con1->prepare("SELECT * FROM `city`");
@@ -98,6 +98,17 @@ if(isset($_REQUEST['save']))
         </div>
     </div>
 </div>
+
+<script>
+function loadCities(stid) {
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "getcities.php?sid=" + stid);
+    xhttp.send();
+    xhttp.onload = function() {
+        document.getElementById("area_id").innerHTML = xhttp.responseText;
+    }
+}
+</script>
 <?php
 include "footer.php";
 ?>
