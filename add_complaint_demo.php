@@ -111,7 +111,17 @@ if (isset($_POST['save_btn'])) {
                             <label for="area"> Area </label>
                             <select name="area" id="area" class="form-select text-white-dark" required>
                                 <option value="">Choose Area</option>
-                                <option value="1">Surat</option>
+                                <?php 
+                                    $query = $obj->con1->prepare("SELECT * FROM `city` WHERE status='enable'");
+                                    $query->execute();
+                                    $Resp = $query->get_result();
+                                    while($row = mysqli_fetch_array($Resp)){
+                                ?>
+                                    <option value="<?php echo $row['srno'] ?>"><?php echo $row['ctnm'] ?></option>
+                                <?php 
+                                    }
+                                    $query->close();
+                                ?>
                             </select>
                         </div>
                         <div>
@@ -128,14 +138,34 @@ if (isset($_POST['save_btn'])) {
                             <label for="service_type"> Service Type </label>
                             <select name="service_type" id="service_type" class="form-select text-white-dark" required>
                                 <option value="">Choose Service Type</option>
-                                <option value="6">Cleaning</option>
+                                <?php 
+                                    $query = $obj->con1->prepare("SELECT * FROM `service_type` WHERE status='enable'");
+                                    $query->execute();
+                                    $Resp = $query->get_result();
+                                    while($row = mysqli_fetch_array($Resp)){
+                                ?>
+                                    <option value="<?php echo $row['id'] ?>"><?php echo $row['name'] ?></option>
+                                <?php 
+                                    }
+                                    $query->close();
+                                ?>
                             </select>
                         </div>
                         <div>
                             <label for="product_category"> Product Category </label>
                             <select name="product_category" id="product_category" class="form-select text-white-dark" required>
                                 <option value="">Choose Product Category</option>
-                                <option value="4">Cooler</option>
+                                <?php 
+                                    $query = $obj->con1->prepare("SELECT * FROM `product_category`");
+                                    $query->execute();
+                                    $Resp = $query->get_result();
+                                    while($row = mysqli_fetch_array($Resp)){
+                                ?>
+                                    <option value="<?php echo $row['id'] ?>"><?php echo $row['name'] ?></option>
+                                <?php 
+                                    }
+                                    $query->close();
+                                ?>
                             </select>
                         </div>
                         <div>
