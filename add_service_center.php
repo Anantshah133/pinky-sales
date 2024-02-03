@@ -2,8 +2,10 @@
 include "header.php";
 
 if(isset($_REQUEST['viewId'])){
+    $mode = 'view';
     $viewId = $_REQUEST['viewId'];
-    $stmt = $obj->con1->prepare("SELECT sc1.*, c1.ctnm AS city, s1.name AS state FROM service_center sc1, city c1, state s1 WHERE c1.srno=sc1.area AND c1.state_id=s1.id");
+    $stmt = $obj->con1->prepare("SELECT sc1.*, c1.ctnm AS city, s1.id AS state_id FROM service_center sc1, city c1, state s1 WHERE c1.srno=sc1.area AND c1.state_id=s1.id AND sc1.id=?");
+    $stmt->bind_param("i", $viewId);
     $stmt->execute();
     $Resp = $stmt->get_result();
     $data = $Resp->fetch_assoc();
@@ -66,29 +68,35 @@ if (isset($_REQUEST["save"])) {
         </div>
         <form class="space-y-5" method="post">
             <div>
-                <label for="groupFname"> Name</label>
+                <label for="groupFname">Name</label>
                 <input id="groupFname" type="text" name="name" placeholder="Enter First Name" class="form-input"
-                    value="<?php echo (isset($viewId)) ? $data['name'] : '' ?>" readonly="<?php isset($viewId) ?>"
-                    required />
+                    value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required 
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>    
+                />
             </div>
             <div>
                 <label for="ctnEmail">Email Address</label>
                 <input id="ctnEmail" type="email" name="email" placeholder="name@example.com" class="form-input"
-                    value="<?php echo (isset($viewId)) ? $data['email'] : '' ?>" readonly="<?php isset($viewId) ?>"
-                    required />
+                    value="<?php echo (isset($mode)) ? $data['email'] : '' ?>" required 
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
+                />
             </div>
             <div>
                 <label for="groupFname">Contact</label>
                 <input id="groupFname" type="number" name="contact" placeholder="" class="form-input"
-                    value="<?php echo (isset($viewId)) ? $data['contact'] : '' ?>" readonly="<?php isset($viewId) ?>"
-                    required />
+                    value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" required 
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>    
+                />
             </div>
 
             <div>
-                <label for="gridAddress1">Address</label>
-                <textarea autocomplete="on" name="address" id="address" class="form-textarea" rows="2"
-                    value="<?php echo (isset($viewId)) ? $data['address'] : '' ?>"
-                    readonly="<?php isset($viewId) ?>"></textarea>
+                <label for="address">Address</label>
+                <textarea autocomplete="on" name="address" id="address" 
+                    class="form-textarea" rows="2" cols="0"
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
+                >
+                    <?php echo (isset($mode)) ? $data['address'] : ''; ?>
+                </textarea>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -96,46 +104,55 @@ if (isset($_REQUEST["save"])) {
                     <label for="gridState">State</label>
                     <select id="gridState" class="form-select text-white-dark" name="state"
                         onchange="loadCities(this.value)" 
-                        required value="<?php echo (isset($viewId)) ? $data['state'] : '' ?>">
-                        <?php echo (isset($viewId)) ? '<option value="">Choose State</option>' : ''?>
+                        <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> required>
+                        <option value="">Choose State</option>
                         <?php
-                        $stmt = $obj->con1->prepare("SELECT * FROM `state` ");
-                        $stmt->execute();
-                        $Res = $stmt->get_result();
-                        $stmt->close();
-                        while ($result = mysqli_fetch_assoc($Res)) { ?>
-                        <option value="<?php echo $result["id"]; ?>">
+                            $stmt = $obj->con1->prepare("SELECT * FROM `state` ");
+                            $stmt->execute();
+                            $Res = $stmt->get_result();
+                            $stmt->close();
+                            while ($result = mysqli_fetch_assoc($Res)) { 
+                        ?>
+
+                        <option value="<?php echo $result["id"]; ?>"
+                            <?php echo isset($mode) && $data['state_id'] == $result['id'] ? 'selected' : '' ?>
+                        >
                             <?php echo $result["name"]; ?>
                         </option>
+
                         <?php } ?>
                     </select>
                 </div>
                 <div class="md:col-span-2">
                     <label for="cityName">City</label>
-                    <!-- <select id="cityName" name="cityName" class="form-select text-white-dark"
-                        value="<?php echo (isset($viewId)) ? $data[''] : '' ?>" readonly="<?php isset($viewId) ?>">
-                        <option>Choose City</option>
-                    </select> -->
+                    <select id="cityName" name="cityName" 
+                        class="form-select text-white-dark"
+                        <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>
+                    >
+                        <option value=""><?php echo isset($mode) ? $data['city'] : 'Choose City' ?></option>
+                    </select>
                 </div>
 
-                <div>
+                <!-- <div>
                     <label for="gridZip">Pincode</label>
-                    <!-- <input id="gridZip" type="text" placeholder="Enter Pincode" class="form-input"
-                        value="<?php echo (isset($viewId)) ? $data[''] : '' ?>" readonly="<?php isset($viewId) ?>"
-                        required /> -->
-                </div>
+                    <input id="gridZip" type="text" placeholder="Enter Pincode" class="form-input"
+                        value="<?php echo (isset($mode)) ? $data[''] : '' ?>" 
+                        required />
+                </div> -->
             </div>
             <div>
                 <label for="gridUID">Username</label>
                 <input type="text" name="userid" placeholder="" class="form-input"
-                    value="<?php echo (isset($viewId)) ? $data['userid'] : '' ?>" readonly="<?php isset($viewId) ?>"
-                    required />
+                    value="<?php echo (isset($mode)) ? $data['userid'] : '' ?>" required 
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
+                />
             </div>
             <div>
                 <label for="gridpass">Password</label>
                 <input type="password" name="password" placeholder="Enter Password" class="form-input"
-                    value="<?php echo (isset($viewId)) ? $data['password'] : '' ?>" readonly="<?php isset($viewId) ?>"
-                    required />
+                    value="<?php echo (isset($mode)) ? $data['password'] : '' ?>" required 
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>    
+                />
             </div>
 
             <div>
@@ -151,7 +168,7 @@ if (isset($_REQUEST["save"])) {
                 </label>
             </div>
 
-            <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo (isset($viewId)) ? 'hidden' : '' ?>">
+            <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo (isset($mode)) ? 'hidden' : '' ?>">
                 <button type="submit" class="btn btn-success" name="save" id="save">Save</button>
                 <button type="button" class="btn btn-danger" onclick="window.location='service_type.php'">Close</button>
             </div>

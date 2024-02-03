@@ -45,9 +45,7 @@ if (isset($_REQUEST["save"])) {
             <form class="space-y-5" method="post">
                 <div>
                     <label for="groupFname">Name </label>
-                    <input id="groupFname" name="name" type="text" class="form-input" value="<?php echo (isset($viewId)) ? $data['name'] : '' ?>" 
-                    readonly="<?php isset($viewId) ?>"
-                    required/>
+                    <input id="groupFname" name="name" type="text" class="form-input" value="<?php echo (isset($viewId)) ? $data['name'] : '' ?>" required/>
                     <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo (isset($viewId)) ? 'hidden' : '' ?>">
                         <button type="submit" name="save" id="save" class="btn btn-success">Save</button>
                         <button type="button" class="btn btn-danger" onclick="window.location='state.php'">Close</button>

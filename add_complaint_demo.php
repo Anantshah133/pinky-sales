@@ -17,9 +17,12 @@ if (isset($_POST['save_btn'])) {
     $dealer_name = $_REQUEST['dealer_name'];
     $date = $_REQUEST['complaint_date'];
     $time = $_REQUEST['complaint_time'];
+    $day = Date("d");
+    $month = Date("m");
+    $year = Date("y");
 
     // get max customer id - added by Rachna
-    $stmt = $obj->con1->prepare("select IFNULL(count(id)+1,1) as customer_id from customer_reg where  DATE(date) ='" . date("Y-m-d") . "'");
+    $stmt = $obj->con1->prepare("select IFNULL(count(id)+1,1) as customer_id from customer_reg where DATE(date) ='" . date("Y-m-d") . "'");
     $stmt->execute();
     $row_dailycounter = $stmt->get_result()->fetch_assoc();
     $stmt->close();
@@ -56,6 +59,7 @@ if (isset($_POST['save_btn'])) {
         $status = "new";
         //---------------//
 
+           
            
         $stmt = $obj->con1->prepare("INSERT INTO `call_allocation`( `complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (?,?,?,?,?,?,?,?,?)");
         $stmt->bind_param("sisssisss", $complaint_no, $service_center["id"], $product_serial_no, $product_model, $purchase_date, $techinician, $allocation_date, $allocation_time, $status);
