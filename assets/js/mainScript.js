@@ -60,9 +60,7 @@ function checkCookies(){
     }
     if(readCookie("msg") == "fail"){
         coloredToast("danger", 'Some Error Occured.');
-        let x = document.cookie;
-        console.log(x);
-        // eraseCookie("msg")
+        eraseCookie("msg")
         return;
     }
 }

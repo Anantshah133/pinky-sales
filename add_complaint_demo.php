@@ -1,46 +1,81 @@
-<?php 
-    include "header.php";
+<?php
+include "header.php";
 
-    if(isset($_POST['save_btn'])){
-        $fname = $_REQUEST['fname'];
-        $lname = $_REQUEST['lname'];
-        $email = $_REQUEST['mail'];
-        $contact = $_REQUEST['contact_num'];
-        $alt_contact = $_REQUEST['alt_contact_num'];
-        $map_location = $_REQUEST['map_location'];
-        $area = $_REQUEST['area'];
-        $address = $_REQUEST['address'];
-        $pincode = $_REQUEST['pincode'];
-        $complaint_no = 'ORP3101240010';
-        $service_type = $_REQUEST['service_type'];
-        $product_category = $_REQUEST['product_category'];
-        $dealer_name = $_REQUEST['dealer_name'];
-        $date = $_REQUEST['complaint_date'];
-        $time = $_REQUEST['complaint_time'];
+if (isset($_POST['save_btn'])) {
+    $fname = $_REQUEST['fname'];
+    $lname = $_REQUEST['lname'];
+    $email = $_REQUEST['mail'];
+    $contact = $_REQUEST['contact_num'];
+    $alt_contact = $_REQUEST['alt_contact_num'];
+    $map_location = $_REQUEST['map_location'];
+    $area = $_REQUEST['area'];
+    $address = $_REQUEST['address'];
+    $pincode = $_REQUEST['pincode'];
+    //$complaint_no = 'ORP3101240010';
+    $service_type = $_REQUEST['service_type'];
+    $product_category = $_REQUEST['product_category'];
+    $dealer_name = $_REQUEST['dealer_name'];
+    $date = $_REQUEST['complaint_date'];
+    $time = $_REQUEST['complaint_time'];
 
-        try {
-            $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `area`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-            $stmt->bind_param("sssssisssssisss", $fname, $lname, $email, $contact, $alt_contact, $area, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $date, $time);
-            $Resp=$stmt->execute();
-            
-            if(!$Resp) {
-                throw new Exception("Problem in adding! ". strtok($obj->con1-> error,  '('));
-            }
-            $stmt->close();
+    // get max customer id - added by Rachna
+    $stmt = $obj->con1->prepare("select IFNULL(count(id)+1,1) as customer_id from customer_reg where  DATE(date) ='" . date("Y-m-d") . "'");
+    $stmt->execute();
+    $row_dailycounter = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    $dailycounter = (int)$row_dailycounter["customer_id"];
+    $string = str_pad($dailycounter, 4, '0', STR_PAD_LEFT);
+    $complaint_no = "ONL" . $day . $month . $year . $string;
+    $date = date("Y-m-d");
+    $time = date("h:i A");
+    //--------------//
+
+    try {
+        $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `area`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param("sssssisssssisss", $fname, $lname, $email, $contact, $alt_contact, $area, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $date, $time);
+        $Resp = $stmt->execute();
+        $stmt->close();
+
+        //allocate call -added by Rachna
+
+        // get service area
+       
+        $stmt = $obj->con1->prepare("select * from service_center where area=? ");
+        $stmt->bind_param("i", $area);
+        $stmt->execute();
+        $service_center = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+        //insert into call allocation
+        $product_serial_no = "";
+        $product_model = "";
+        $purchase_date = "";
+        $techinician = "";
+        $allocation_date = "";
+        $allocation_time = "";
+        $status = "new";
+        //---------------//
+
+           
+        $stmt = $obj->con1->prepare("INSERT INTO `call_allocation`( `complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param("sisssisss", $complaint_no, $service_center["id"], $product_serial_no, $product_model, $purchase_date, $techinician, $allocation_date, $allocation_time, $status);
+        $result = $stmt->execute();
+        $stmt->close();
+        if (!$Resp) {
+            throw new Exception("Problem in adding! " . strtok($obj->con1->error,  '('));
         }
-        catch(\Exception  $e) {
-            setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
-        }
-    
-        if($Resp) {
-            setcookie("msg", "data", time()+3600,"/");
-            header("location:complaint_demo.php");
-        }
-        else {
-            setcookie("msg", "fail", time()+3600,"/");
-            header("location:complaint_demo.php");
-        }
+    } catch (\Exception  $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
     }
+
+    if ($Resp) {
+        setcookie("msg", "data", time() + 3600, "/");
+        header("location:complaint_demo.php");
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
+        header("location:complaint_demo.php");
+    }
+}
 ?>
 
 <div class='p-6'>
@@ -98,8 +133,7 @@
                         </div>
                         <div>
                             <label for="product_category"> Product Category </label>
-                            <select name="product_category" id="product_category" class="form-select text-white-dark"
-                                required>
+                            <select name="product_category" id="product_category" class="form-select text-white-dark" required>
                                 <option value="">Choose Product Category</option>
                                 <option value="4">Cooler</option>
                             </select>
@@ -120,8 +154,7 @@
                 </div>
                 <div class="relative inline-flex align-middle gap-3 mt-10">
                     <button type="submit" id="save_btn" name="save_btn" class="btn btn-success">Save</button>
-                    <button type="button" id="close_btn" name="close_btn" class="btn btn-danger"
-                        onclick="window.location='complaint_demo.php'">Close</button>
+                    <button type="button" id="close_btn" name="close_btn" class="btn btn-danger" onclick="window.location='complaint_demo.php'">Close</button>
                 </div>
                 <!------ Hidden Inputs ------>
                 <input type="hidden" name="map_location" id="map_location">
@@ -132,66 +165,67 @@
 
 
 <script>
-function resetForm() {
-    window.location = "complaint_demo.php"
-}
-
-document.addEventListener("alpine:init", () => {
-    let todayDate = new Date();
-    let formattedToday = todayDate.toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-    }).split('/').join('-')
-
-    Alpine.data("cmplnDate", () => ({
-        date2: formattedToday,
-        init() {
-            flatpickr(document.getElementById('complaint_date'), {
-                dateFormat: 'd-m-Y',
-                minDate: formattedToday,
-                defaultDate: this.date2,
-                minDate: "today",
-            })
-        }
-    }));
-
-    Alpine.data("complaintTime", () => ({
-        time: todayDate.toLocaleTimeString('en-GB', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-        }),
-        init() {
-            flatpickr(document.getElementById('complaint_time'), {
-                defaultDate: this.time,
-                noCalendar: true,
-                enableTime: true,
-                dateFormat: 'H:i'
-            });
-        }
-    }));
-});
-
-function showPosition(position) {
-    var latitude = position.coords.latitude;
-    var longitude = position.coords.longitude;
-    const mapLocation = `${latitude},${longitude}`;
-    document.getElementById('map_location').value = mapLocation;
-}
-
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-        alert("Geolocation is not supported by this browser.");
+    function resetForm() {
+        window.location = "complaint_demo.php"
     }
-}
 
-document.addEventListener("DOMContentLoaded", function () {
-    getLocation();
-});
+    document.addEventListener("alpine:init", () => {
+        let todayDate = new Date();
+        let formattedToday = todayDate.toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        }).split('/').join('-')
+
+        Alpine.data("cmplnDate", () => ({
+            date2: formattedToday,
+            init() {
+                flatpickr(document.getElementById('complaint_date'), {
+                    dateFormat: 'd-m-Y',
+                    minDate: formattedToday,
+                    defaultDate: this.date2,
+                    minDate: "today",
+                })
+            }
+        }));
+
+        Alpine.data("complaintTime", () => ({
+            time: todayDate.toLocaleTimeString('en-GB', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            }),
+            init() {
+                flatpickr(document.getElementById('complaint_time'), {
+                    defaultDate: this.time,
+                    noCalendar: true,
+                    enableTime: true,
+                    dateFormat: 'H:i'
+                });
+            }
+        }));
+    });
+
+    function showPosition(position) {
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        const mapLocation = `${latitude},${longitude}`;
+        document.getElementById('map_location').value = mapLocation;
+    }
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        getLocation();
+    });
 </script>
-<?php 
-    include "footer.php";
+
+<?php
+include "footer.php";
 ?>
