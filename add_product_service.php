@@ -1,38 +1,32 @@
 <?php
 include "header.php";
-if(isset($_REQUEST['save']))
-{
- 
-  $product = $_REQUEST['product_id'];
-  $service = $_REQUEST['service_id'];
-  $status = $_REQUEST['default_radio'];
-  try
-  {
-    $stmt = $obj->con1->prepare("INSERT INTO `product_service`(`pid`,`sid`,`status`) VALUES (?,?,?)");
-    $stmt->bind_param("iis",$product,$service,$status);
-    $Resp=$stmt->execute();
-    if(!$Resp)
-    {
-      throw new Exception("Problem in adding! ". strtok($obj->con1-> error,  '('));
+if (isset($_REQUEST["save"])) {
+    $product = $_REQUEST["product_id"];
+    $service = $_REQUEST["service_id"];
+    $status = $_REQUEST["default_radio"];
+    try {
+        $stmt = $obj->con1->prepare(
+            "INSERT INTO `product_service`(`pid`,`sid`,`status`) VALUES (?,?,?)"
+        );
+        $stmt->bind_param("iis", $product, $service, $status);
+        $Resp = $stmt->execute();
+        if (!$Resp) {
+            throw new Exception(
+                "Problem in adding! " . strtok($obj->con1->error, "(")
+            );
+        }
+        $stmt->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
     }
-    $stmt->close();
-    
-  }
-  catch(\Exception  $e) {
-    setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
-  }
 
-
-  if($Resp)
-  {
-    setcookie("msg", "data",time()+3600,"/");
-      header("location:product_service.php");
-  }
-  else
-  {
-    setcookie("msg", "fail",time()+3600,"/");
-      header("location:product_service.php");
-  }
+    if ($Resp) {
+        setcookie("msg", "data", time() + 3600, "/");
+        header("location:product_service.php");
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
+        header("location:product_service.php");
+    }
 }
 ?>
 <div class='p-6' >
@@ -46,32 +40,40 @@ if(isset($_REQUEST['save']))
                     <label for="groupFname"> Product</label>
                     <select class="form-select text-white-dark" name="product_id" required>
                         <option value="">Choose Product</option>
-                        <?php 
-                        $stmt = $obj->con1->prepare("SELECT * FROM `product_category`");
+                        <?php
+                        $stmt = $obj->con1->prepare(
+                            "SELECT * FROM `product_category`"
+                        );
                         $stmt->execute();
-                        $Resp=$stmt->get_result();
+                        $Resp = $stmt->get_result();
                         $stmt->close();
 
-                        while($result = mysqli_fetch_array($Resp)){
-                        ?>
-                    <option value="<?php echo $result['id'] ?>"><?php echo $result['name'] ?></option>
-                    <?php } ?>   
+                        while ($result = mysqli_fetch_array($Resp)) { ?>
+                    <option value="<?php echo $result[
+                        "id"
+                    ]; ?>"><?php echo $result["name"]; ?></option>
+                    <?php }
+                        ?>   
                     </select>
                 </div>
                 <div>
                     <label for="groupFname">Service</label>
                     <select class="form-select text-white-dark" name="service_id" required>
                         <option value="">Choose Service</option>
-                        <?php 
-                        $stmt = $obj->con1->prepare("SELECT * FROM `service_type`");
+                        <?php
+                        $stmt = $obj->con1->prepare(
+                            "SELECT * FROM `service_type`"
+                        );
                         $stmt->execute();
-                        $Resp=$stmt->get_result();
+                        $Resp = $stmt->get_result();
                         $stmt->close();
 
-                        while($result = mysqli_fetch_array($Resp)){
-                        ?>
-                    <option value="<?php echo $result['id'] ?>"><?php echo $result['name'] ?></option>
-                        <?php } ?>    
+                        while ($result = mysqli_fetch_array($Resp)) { ?>
+                    <option value="<?php echo $result[
+                        "id"
+                    ]; ?>"><?php echo $result["name"]; ?></option>
+                        <?php }
+                        ?>    
                     </select>
                 </div>
                 <div>
@@ -96,6 +98,5 @@ if(isset($_REQUEST['save']))
     </div>
 </div>
 
-<?php
-include "footer.php";
+<?php include "footer.php";
 ?>
