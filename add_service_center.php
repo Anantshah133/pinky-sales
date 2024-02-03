@@ -92,9 +92,7 @@ if (isset($_REQUEST["save"])) {
             
             <div>
                 <label for="address">Address</label>
-                <textarea autocomplete="on" name="address" id="address" 
-                    class="form-textarea" rows="2" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : null?> 
-                ><?php echo (isset($mode)) ? $data['address'] : ''; ?></textarea>
+                <textarea autocomplete="on" name="address" id="address" class="form-textarea" rows="2" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : null?>><?php echo (isset($mode)) ? $data['address'] : ''; ?></textarea>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
