@@ -26,11 +26,6 @@
             if(!$Resp) {
                 throw new Exception("Problem in adding! ". strtok($obj->con1-> error,  '('));
             }
-            // else{
-            //     $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `area`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-            //     $stmt->bind_param("sssssisssssisss", $fname, $lname, $email, $contact, $alt_contact, $area, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $date, $time);
-            //     $Resp=$stmt->execute();
-            // }
             $stmt->close();
         }
         catch(\Exception  $e) {
@@ -38,11 +33,11 @@
         }
     
         if($Resp) {
-            setcookie("msg", "data",time()+3600,"/");
+            setcookie("msg", "data", time()+3600,"/");
             header("location:complaint_demo.php");
         }
         else {
-            setcookie("msg", "fail",time()+3600,"/");
+            setcookie("msg", "fail", time()+3600,"/");
             header("location:complaint_demo.php");
         }
     }

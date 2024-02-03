@@ -47,23 +47,14 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
                 </button>
             </div>
         </div>
-        <table id="myTable" class="table-hover whitespace-nowrap">
-
-    
-        </table>
+        <table id="myTable" class="table-hover whitespace-nowrap"></table>
     </div>
 </div>
 
 <!-- script -->
 
 <script>
-if (readCookie("msg") == "data_del") {
-    coloredToast("success", 'Record Deleted Successfully.');
-    eraseCookie("msg")
-}
-
-
-
+checkCookies();
 function getActions(id) {
     return `<ul class="flex items-center justify-center gap-4">
         <li>

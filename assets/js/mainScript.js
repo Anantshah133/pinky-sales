@@ -41,3 +41,26 @@ coloredToast = (color, msg) => {
         title: msg,
     });
 };
+
+function checkCookies(){
+    if (readCookie("msg") == "data_del") {
+        coloredToast("success", 'Record Deleted Successfully.');
+        eraseCookie("msg")
+        return;
+    }
+    if(readCookie("msg") == "data"){
+        coloredToast("success", 'Record Added Successfully.');
+        eraseCookie("msg")
+        return;
+    }
+    if(readCookie("msg") == "update"){
+        coloredToast("success", 'Record Updated Successfully.');
+        eraseCookie("msg")
+        return;
+    }
+    if(readCookie("msg") == "fail"){
+        coloredToast("success", 'Some Error Occured.');
+        eraseCookie("msg")
+        return;
+    }
+}

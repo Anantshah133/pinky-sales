@@ -61,7 +61,7 @@ $Resp=$stmt->execute();
                     onclick="formSubmit('quill-input')">Save</button>
                 <button type="button" class="btn btn-danger" onclick="location.href='privacy_policy.php'">Close</button>
             </div>
-            <input type="hidden" name="quill_input" id="quill-input">
+            <inut type="hidden" name="quill_input" id="quill-input">
         </form>
     </div>
 

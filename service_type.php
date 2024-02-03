@@ -1,29 +1,29 @@
 <?php
 include "header.php";
-if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
-{
-  try
-  {
-    $stmt_del = $obj->con1->prepare("delete from service_type where id='".$_REQUEST["n_servicetypeid"]."'");
-    $Resp=$stmt_del->execute();
-    if(!$Resp)
-    {
-      if(strtok($obj->con1-> error,  ':')=="Cannot delete or update a parent row")
-      {
-        // throw new Exception("City is already in use!");
-      }
+if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
+    try {
+        $stmt_del = $obj->con1->prepare(
+            "delete from service_type where id='" .
+                $_REQUEST["n_servicetypeid"] .
+                "'"
+        );
+        $Resp = $stmt_del->execute();
+        if (!$Resp) {
+            if (
+                strtok($obj->con1->error, ":") ==
+                "Cannot delete or update a parent row"
+            ) {
+                throw new Exception("City is already in use!");
+            }
+        }
+        $stmt_del->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
     }
-    $stmt_del->close();
-  }
-  catch(\Exception  $e) {
-    // setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
-  }
 
-  if($Resp)
-  {
-    // setcookie("msg", "data_del",time()+3600,"/");
-    echo "this data is deleted";
-  }
+    if ($Resp) {
+        setcookie("msg", "data_del", time() + 3600, "/");
+    }
     header("location:service_type.php");
 }
 ?>
@@ -51,6 +51,7 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
 </div>
 <!-- script -->
 <script>
+checkCookies();
 function getActions(id) {
     return `<ul class="flex items-center gap-4">
         <li>
@@ -80,16 +81,25 @@ document.addEventListener('alpine:init', () => {
                 data: {
                     headings: ['Sr.No.', 'Name', 'Status', 'Action'],
                     data: [
-                        <?php 
-                            $stmt = $obj->con1->prepare("SELECT * FROM `service_type`");
+                        <?php
+                            $stmt = $obj->con1->prepare(
+                                "SELECT * FROM `service_type`"
+                            );
                             $stmt->execute();
-                            $Resp=$stmt->get_result();
-                                    $i=1;
-                            while($row = mysqli_fetch_array($Resp)){
-                        ?>[<?php echo $i ?>, '<?php echo $row['name'] ?>', '<?php echo $row['status'] ?>', getActions(
-                            '<?php echo $row['id'] ?>')],
-                        <?php $i++;
-                         } ?>
+                            $Resp = $stmt->get_result();
+                            $i = 1;
+                            while ($row = mysqli_fetch_array($Resp)) 
+                            { 
+                        ?>
+                            [
+                                <?php echo $i; ?>,
+                                '<?php echo $row["name"]?>', 
+                                '<?php echo $row["status"]; ?>', 
+                                getActions('<?php echo $row["id"]; ?>')
+                            ],
+                        <?php
+                            $i++;}
+                        ?>
                     ],
                 },
                 perPage: 10,
@@ -161,6 +171,6 @@ async function showAlert(id) {
 }
 </script>
 
-<?php
+<?php 
 include "footer.php";
 ?>

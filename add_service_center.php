@@ -2,48 +2,52 @@
 include "header.php";
 Insert:
 
-if(isset($_REQUEST['save']))
-{
- 
-  $name = $_REQUEST['name'];
-  $email = $_REQUEST['email'];
-  $contact = $_REQUEST['contact'];
-  $user_id = $_REQUEST['userid'];
-  $pass = $_REQUEST['password']; 
-  $status = $_REQUEST['default_radio'];
-  $address=$_REQUEST['address'];
-  $state = $_REQUEST['state'];
+if (isset($_REQUEST["save"])) {
+    $name = $_REQUEST["name"];
+    $email = $_REQUEST["email"];
+    $contact = $_REQUEST["contact"];
+    $user_id = $_REQUEST["userid"];
+    $pass = $_REQUEST["password"];
+    $status = $_REQUEST["default_radio"];
+    $address = $_REQUEST["address"];
+    $state = $_REQUEST["state"];
+    $city = $_REQUEST['cityName'];
 
-  try
-  {
-    $stmt = $obj->con1->prepare("INSERT INTO `service_center`(`name`,`email`,`contact`,`userid`,`password`,`status`,`address`,`area`) VALUES (?,?,?,?,?,?,?,?)");
-    $stmt->bind_param("sssssssi",$name,$email,$contact,$user_id,$pass,$status,$address,$state);
-    $Resp=$stmt->execute();
+    try {
+        $stmt = $obj->con1->prepare(
+            "INSERT INTO `service_center`(`name`,`email`,`contact`,`userid`,`password`,`status`,`address`,`area`) VALUES (?,?,?,?,?,?,?,?)"
+        );
+        $stmt->bind_param(
+            "sssssssi",
+            $name,
+            $email,
+            $contact,
+            $user_id,
+            $pass,
+            $status,
+            $address,
+            $city
+        );
+        $Resp = $stmt->execute();
 
-    if(!$Resp)
-    {
-      throw new Exception("Problem in adding! ". strtok($obj->con1-> error,  '('));
+        if (!$Resp) {
+            throw new Exception(
+                "Problem in adding! " . strtok($obj->con1->error, "(")
+            );
+        }
+        $stmt->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
     }
-    $stmt->close();
-  }
-  catch(\Exception  $e) {
-    setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
-  }
 
-
-  if($Resp)
-  {
- setcookie("msg", "data",time()+3600,"/");
-      header("location:service_center.php");
-  }
-  else
-  {
- setcookie("msg", "fail",time()+3600,"/");
-      header("location:service_center.php");
-  }
- }
-
-
+    if ($Resp) {
+        setcookie("msg", "data", time() + 3600, "/");
+        header("location:service_center.php");
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
+        header("location:service_center.php");
+    }
+}
 ?>
 
 <div class='p-6'>
@@ -63,7 +67,7 @@ if(isset($_REQUEST['save']))
             </div>
             <div>
                 <label for="groupFname">Contact</label>
-                <input id="groupFname" type="text" name="contact" placeholder="" class="form-input" required />
+                <input id="groupFname" type="number" name="contact" placeholder="" class="form-input" required />
             </div>
 
             <div>
@@ -77,24 +81,20 @@ if(isset($_REQUEST['save']))
                     <select id="gridState" class="form-select text-white-dark"  name="state" onchange="loadCities(this.value)" required>
                         <option value="">Choose State</option>
                         <?php
-                            $stmt = $obj->con1->prepare(
-                                "SELECT * FROM `state` "
-                            );
-                            $stmt->execute();
-                            $Res = $stmt->get_result();
-                          //  $stmt->close();
-
-                            while ($result = mysqli_fetch_assoc($Res)) { 
-                        ?>
-                                <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
-                                <?php 
-                            } 
-                        ?>
+                        $stmt = $obj->con1->prepare("SELECT * FROM `state` ");
+                        $stmt->execute();
+                        $Res = $stmt->get_result();
+                        $stmt->close();
+                        while ($result = mysqli_fetch_assoc($Res)) { ?>
+                        <option value="<?php echo $result["id"]; ?>">
+                            <?php echo $result["name"]; ?>
+                        </option>
+                        <?php } ?>
                     </select>
                 </div>
                 <div class="md:col-span-2">
-                    <label for="gridCity">City</label>
-                    <select id="gridcity" class="form-select text-white-dark" >
+                    <label for="cityName">City</label>
+                    <select id="cityName" name="cityName" class="form-select text-white-dark" >
                         <option>Choose City</option>
                     </select>
                 </div>
@@ -130,28 +130,17 @@ if(isset($_REQUEST['save']))
                 <button type="button" class="btn btn-danger" onclick="window.location='service_type.php'">Close</button>
             </div>
         </form>
-
-
     </div>
 </div>
-<?php
-include "footer.php";
-?>
-
 <script>
-    function loadCities(stid) 
-	{
-		
-		// alert(stid);
-  		const xhttp = new XMLHttpRequest();
-  		
+    function loadCities(stid){
+  		const xhttp = new XMLHttpRequest();	
   		xhttp.open("GET","getcities.php?sid="+stid);
   		xhttp.send();
-		xhttp.onload = function()
-		{
-   			 document.getElementById("gridcity").innerHTML = xhttp.responseText;
-           
-		}
+		xhttp.onload = function(){document.getElementById("cityName").innerHTML = xhttp.responseText;}
 	}
-
 </script>
+
+<?php
+include "footer.php"; 
+?>

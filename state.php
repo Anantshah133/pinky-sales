@@ -1,33 +1,30 @@
 <?php
 include "header.php";
 
-if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
-{
-  try
-  {
-    $stmt_del = $obj->con1->prepare("delete from state where id='".$_REQUEST["n_stateid"]."'");
-    $Resp=$stmt_del->execute();
-    if(!$Resp)
-    {
-      if(strtok($obj->con1-> error,  ':')=="Cannot delete or update a parent row")
-      {
-        // throw new Exception("City is already in use!");
-      }
+if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
+    try {
+        $stmt_del = $obj->con1->prepare(
+            "delete from state where id='" . $_REQUEST["n_stateid"] . "'"
+        );
+        $Resp = $stmt_del->execute();
+        if (!$Resp) {
+            if (
+                strtok($obj->con1->error, ":") ==
+                "Cannot delete or update a parent row"
+            ) {
+                throw new Exception("City is already in use!");
+            }
+        }
+        $stmt_del->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
     }
-    $stmt_del->close();
-  }
-  catch(\Exception  $e) {
-    // setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
-  }
 
-  if($Resp)
-  {
-    // setcookie("msg", "data_del",time()+3600,"/");
-    echo "this data is deleted";
-  }
+    if ($Resp) {
+        setcookie("msg", "data_del", time() + 3600, "/");
+    }
     header("location:state.php");
 }
-
 ?>
 
 <div class='p-6' x-data='exportTable'>
@@ -52,6 +49,7 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
 </div>
 <!-- script -->
 <script>
+checkCookies();
 function getActions(id) {
     return `<ul class="flex items-center gap-4">
         <li>
@@ -80,15 +78,21 @@ document.addEventListener('alpine:init', () => {
                 data: {
                     headings: ['Sr.No.', 'Name', 'Action'],
                     data: [
-                        <?php 
+                        <?php
                             $stmt = $obj->con1->prepare("SELECT * FROM `state`");
                             $stmt->execute();
-                            $Resp=$stmt->get_result();
-                            $i=1;
-                            while($row = mysqli_fetch_array($Resp)){
+                            $Resp = $stmt->get_result();
+                            $i = 1;
+                            while ($row = mysqli_fetch_array($Resp)) { 
                         ?>
-                        [<?php echo $i ?>, '<?php echo $row['name'] ?>', getActions(<?php echo $row['id'] ?>)],
-                        <?php $i++; } ?>
+                            [
+                                <?php echo $i; ?>, 
+                                '<?php echo $row["name"]; ?>', 
+                                getActions(<?php echo $row["id"]; ?>)
+                            ],
+                        <?php 
+                            $i++;}
+                        ?>
                     ],
                 },
                 perPage: 10,
@@ -97,12 +101,6 @@ document.addEventListener('alpine:init', () => {
                         select: 0,
                         sort: 'asc',
                     },
-                    // {
-                    //     select: 4,
-                    //     render: (data, cell, row) => {
-                    //         return this.formatDate(data);
-                    //     },
-                    // },
                 ],
                 firstLast: true,
                 firstText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M13 19L7 12L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M16.9998 19L10.9998 12L16.9998 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
@@ -165,26 +163,8 @@ async function showAlert(id) {
         }
     });
 }
-
-coloredToast = (color) => {
-    const toast = window.Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        showCloseButton: true,
-        // animation: true,
-        customClass: {
-            popup: `color-${color}`
-        },
-        // target: document.getElementById(color + '-toast')
-    });
-    toast.fire({
-        title: 'Record Deleted Successfully.',
-    });
-};
 </script>
 
-<?php
-include "footer.php";
+<?php 
+    include "footer.php";
 ?>

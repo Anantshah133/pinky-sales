@@ -21,33 +21,12 @@ error_reporting(E_ALL);
 
 
         try {
-            // $serialNumImg = $_FILES['srno_img']['name'];
-            // $serialNumImgPath = $_FILES['srno_img']['tmp_name'];
-
-            // if ($_FILES["srno_img"]["name"] != ""){
-            //     if(file_exists("serial_no_img/" . $serialNumImg)) {
-            //         $i = 0;
-            //         $PicFileName = $_FILES["srno_img"]["name"];
-            //         $Arr1 = explode('.', $PicFileName);
-            //         $PicFileName = $Arr1[0] . $i . "." . $Arr1[1];
-            //         while (file_exists("serial_no_img/" . $PicFileName)) {
-            //             $i++;
-            //             $PicFileName = $Arr1[0] . $i . "." . $Arr1[1];
-            //         }
-            //     }
-            //     else {
-            //         $PicFileName = $_FILES["srno_img"]["name"];
-            //     }
-            // } 
-
             $serialNumImg = uploadImage('srno_img', 'images/serial_no_img');
             $productModelImg = uploadImage('product_model_img', 'images/product_model_img');
             $purchaseDateImg = uploadImage('purchase_date_img', 'images/purchase_date_img');
-            
-            $stmt = $obj->con1->prepare("INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `serial_no_img`, `product_model`, `product_model_img`, `purchase_date`, `purchase_date_img`, `technician`, `allocation_date`, `allocation_time`, `status`, `reason`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
+            $stmt = $obj->con1->prepare("INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `serial_no_img`, `product_model`, `product_model_img`, `purchase_date`, `purchase_date_img`, `technician`, `allocation_date`, `allocation_time`, `status`, `reason`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
             $stmt->bind_param("sissssssissss", $complaintNum, $serviceCenterId, $productSerialNum, $serialNumImg, $productModel, $productModelImg, $purchaseDate, $purchaseDateImg, $technician, $allocationDate, $allocationTime, $callStatus, $reason);
-            
             $Resp=$stmt->execute();
 
             if(!$Resp) {
@@ -61,9 +40,7 @@ error_reporting(E_ALL);
     
         if($Resp) {
             move_uploaded_file($_FILES['srno_img']['tmp_name'], "images/serial_no_img/".$serialNumImg);
-
             move_uploaded_file($_FILES['product_model_img']['tmp_name'], "images/product_model_img/".$productModelImg);
-
             move_uploaded_file($_FILES['purchase_date_img']['tmp_name'], "images/purchase_date_img/".$purchaseDateImg);
 
             setcookie("msg", "data",time()+3600,"/");
@@ -81,19 +58,15 @@ error_reporting(E_ALL);
         echo $fileName.$tmpFilePath;
         if ($fileName != "") {
             $targetDirectory = $uploadDirectory . '/';
-
             if (!file_exists($targetDirectory)) {
                 mkdir($targetDirectory, 0755, true);
             }
-
             $i = 0;
             $newFileName = $fileName;
-
             while (file_exists($targetDirectory . $newFileName)) {
                 $i++;
                 $newFileName = $i . '_' . $fileName;
             }
-            
             $targetFilePath = $targetDirectory . $newFileName;
             return $newFileName;
         }
@@ -121,17 +94,17 @@ error_reporting(E_ALL);
                                 required>
                                 <option value=''>-none-</option>
                                 <?php
-                            $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE status='enable'");
-                            $stmt->execute();
-                            $Resp = $stmt->get_result();
-                            $stmt->close();
+                                    $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE status='enable'");
+                                    $stmt->execute();
+                                    $Resp = $stmt->get_result();
+                                    $stmt->close();
 
-                            while ($result = mysqli_fetch_array($Resp)) { 
-                        ?>
-                                <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                                    while ($result = mysqli_fetch_array($Resp)) { 
+                                ?>
+                                    <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
                                 <?php 
-                            } 
-                        ?>
+                                    } 
+                                ?>
                             </select>
                         </div>
                         <div>

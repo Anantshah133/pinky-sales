@@ -6,14 +6,12 @@
 	$stmt->execute();
 	$result = $stmt->get_result();
 ?>
-
-<option value="">Choose</option>
+<option value="">Choose City</option>
 <?php	
-	
-			while($row = mysqli_fetch_assoc($result))
-			{
+	while($row = mysqli_fetch_assoc($result))
+	{
 ?>
 	<option value="<?php echo $row["srno"] ?>"><?php echo $row["ctnm"] ?></option>
 <?php
-			}
+	}
 ?>

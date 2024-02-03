@@ -32,6 +32,7 @@ include "header.php";
 <!-- script -->
 
 <script>
+checkCookies();
 function getActions() {
     return `<ul class="flex items-center justify-center gap-4">
         <li>

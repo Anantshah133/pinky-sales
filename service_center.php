@@ -1,32 +1,26 @@
 <?php
 include "header.php";
-if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
-{
-  try
-  {
-   
-    $stmt_del = $obj->con1->prepare("delete from service_center where id='".$_REQUEST["id"]."'");
-    $Resp=$stmt_del->execute();
-    if(!$Resp)
-    {
-      if(strtok($obj->con1-> error,  ':')=="Cannot delete or update a parent row")
-      {
-        throw new Exception("City is already in use!");
-      }
+if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
+    try {
+        $stmt_del = $obj->con1->prepare(
+            "delete from service_center where id='" . $_REQUEST["id"] . "'"
+        );
+        $Resp = $stmt_del->execute();
+        if (!$Resp) {
+            if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row") {
+                throw new Exception("City is already in use!");
+            }
+        }
+        $stmt_del->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
     }
-    $stmt_del->close();
-  }
-  catch(\Exception  $e) {
-    setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
-  }
 
-  if($Resp)
-  {
-    setcookie("msg", "data_del",time()+3600,"/");
-  }
+    if ($Resp) {
+        setcookie("msg", "data_del", time() + 3600, "/");
+    }
     header("location:service_center.php");
 }
-
 ?>
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-6">
@@ -52,15 +46,9 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
     </div>
 </div>
 
-<!-- script -->
 <script>
-if (readCookie("msg") == "data_del") {
-    coloredToast("success", 'Record Deleted Successfully.');
-    eraseCookie("msg")
-}
-
+checkCookies();
 function getActions(id) {
-
     return `<ul class="flex items-center justify-center gap-4">
         <li>
             <a href="javascript:;" class='text-xl' x-tooltip="View">
@@ -73,13 +61,12 @@ function getActions(id) {
             </a>
         </li>
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Delete"  @click="showAlert(` + id + `)">
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete"  @click="showAlert(${id})">
                 <i class="ri-delete-bin-line text-danger"></i>
             </a>
         </li>
     </ul>`
 }
-
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('exportTable', () => ({
@@ -88,34 +75,35 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.No.', 'Name', '	Email', '	Contact',
+                    headings: ['Sr.No.', 'Name', '	Email', 'Contact',
                         'Adress', 'Area', 'Status', 'Date Time',
                         'Action'
                     ],
                     data: [
                         <?php
-                          
-                            $stmt =  $obj->con1->prepare("SELECT sc1.*, s1.name AS state FROM service_center sc1, state s1 WHERE sc1.area=s1.id");
+                            $stmt = $obj->con1->prepare(
+                                "SELECT sc1.*, c1.ctnm AS city FROM service_center sc1, city c1 WHERE c1.srno=sc1.area"
+                            );
                             $stmt->execute();
-                            $res_stmt=$stmt->get_result();
-                            // $stmt->close();
-                            
-                            $id=1;
-                            while($row=mysqli_fetch_array($res_stmt)){            
+                            $res_stmt = $stmt->get_result();
+                            $id = 1;
+                            while ($row = mysqli_fetch_array($res_stmt)) {
                         ?>
-
-                        ['<?php echo $id ?>', '<?php echo $row["name"] ?>',
-                            '<?php echo $row["email"] ?>',
-                            '<?php echo $row["contact"] ?>',
-                            '<?php echo $row["address"] ?>',
-                            '<?php echo $row["state"] ?>',
-                            '<?php echo $row["status"] ?>',
-                            '<?php echo $row["date_time"] ?>', 
-                            getActions(<?php echo $row['id'] ?>)
-                        ],
+                            [
+                                <?php echo $id; ?>, 
+                                '<?php echo $row["name"]; ?>',
+                                '<?php echo $row["email"]; ?>',
+                                '<?php echo $row["contact"]; ?>',
+                                '<?php echo $row["address"]; ?>',
+                                '<?php echo $row["city"]; ?>',
+                                '<?php echo $row["status"]; ?>',
+                                '<?php echo $row["date_time"]; ?>', 
+                                getActions(<?php echo $row["id"] ?>),
+                            ],
                         <?php 
-                        $id++;	
+                            $id++;
                             }
+                            $stmt->close();
                         ?>
                     ],
                 },
@@ -186,7 +174,6 @@ async function showAlert(id) {
         }
     });
 }
-
 </script>
 
 <?php
