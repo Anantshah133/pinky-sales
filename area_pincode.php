@@ -77,7 +77,7 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.No.', 'state', 'city', 'pincode', 'Action'],
+                    headings: ['Sr.No.', 'State', 'City', 'Pincode', 'Action'],
                     data: [
                         <?php
                         $stmt = $obj->con1->prepare(
