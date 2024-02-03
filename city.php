@@ -1,31 +1,29 @@
 <?php
 include "header.php";
-if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
-{
-  try
-  {
-    $stmt_del = $obj->con1->prepare("delete from city where srno='".$_REQUEST["n_cityid"]."'");
-    $Resp=$stmt_del->execute();
-    if(!$Resp)
-    {
-      if(strtok($obj->con1-> error,  ':')=="Cannot delete or update a parent row")
-      {
-        throw new Exception("City is already in use!");
-      }
+if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
+    try {
+        $stmt_del = $obj->con1->prepare(
+            "delete from city where srno='" . $_REQUEST["n_cityid"] . "'"
+        );
+        $Resp = $stmt_del->execute();
+        if (!$Resp) {
+            if (
+                strtok($obj->con1->error, ":") ==
+                "Cannot delete or update a parent row"
+            ) {
+                throw new Exception("City is already in use!");
+            }
+        }
+        $stmt_del->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
     }
-    $stmt_del->close();
-  }
-  catch(\Exception  $e) {
-    setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
-  }
 
-  if($Resp)
-  {
-    setcookie("msg", "data_del",time()+3600,"/");
-  }
+    if ($Resp) {
+        setcookie("msg", "data_del", time() + 3600, "/");
+    }
     header("location:city.php");
 }
-
 ?>
 
 <div class='p-6' x-data='exportTable'>
@@ -50,8 +48,8 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
 </div>
 <!-- script -->
 <script>
+checkCookies();
 function getActions(id) {
-    
     return `<ul class="flex items-center gap-4">
         <li>
             <a href="javascript:;" class='text-xl' x-tooltip="View">
@@ -77,25 +75,24 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.No.', 'State Name','City Name', 'Status','Action'],
+                    headings: ['Sr.No.', 'City Name','State Name', 'Status','Action'],
                     data: [
-                        <?php 
-                            $stmt = $obj->con1->prepare("SELECT c1.*,s1.name FROM `city` c1, `state` s1 WHERE c1.stnm=s1.id;");
-                            $stmt->execute();
-                            $Resp=$stmt->get_result();
-                            $i=1;
-                            while($row = mysqli_fetch_array($Resp)){
-                        ?>
+                        <?php
+                        $stmt = $obj->con1->prepare(
+                            "SELECT c1.*,s1.name FROM `city` c1, `state` s1 WHERE c1.stnm=s1.id;"
+                        );
+                        $stmt->execute();
+                        $Resp = $stmt->get_result();
+                        $i = 1;
+                        while ($row = mysqli_fetch_array($Resp)) { ?>
                         [
-                            <?php echo $i ?>, 
-                            '<?php echo $row['name'] ?>',
-                            '<?php echo $row['ctnm'] ?>',
-                            '<?php echo $row['status'] ?>',
-                            getActions(<?php echo $row['srno'] ?>)
+                            <?php echo $i; ?>, 
+                            '<?php echo $row["ctnm"]; ?>',
+                            '<?php echo $row["name"]; ?>',
+                            '<?php echo $row["status"]; ?>',
+                            getActions(<?php echo $row["srno"]; ?>)
                         ],
-                        <?php 
-                            $i++;
-                            } 
+                        <?php $i++;}
                         ?>
                     ],
                 },

@@ -3,14 +3,13 @@ include "header.php";
 if(isset($_REQUEST['save']))
 {
   $state_name = $_REQUEST['State_id'];
-  $city_name = $_REQUEST['city_id'];
-  $area_name = $_REQUEST['area_id'];
+  $city_name = $_REQUEST['area_id'];
   $pincode = $_REQUEST['pincode'];
  
   try
   {
-    $stmt = $obj->con1->prepare("INSERT INTO `area_pincode`(`state_id`,`city_id`,`area_id`,`pincode`) VALUES (?,?,?,?)");
-    $stmt->bind_param("iiis",$state_name,$city_name,$area_name,$pincode);
+    $stmt = $obj->con1->prepare("INSERT INTO `area_pincode`(`state_id`,`city_id`,`pincode`) VALUES (?,?,?)");
+    $stmt->bind_param("iis",$state_name,$city_name,$pincode);
     $Resp=$stmt->execute();
     if(!$Resp)
     {
@@ -23,19 +22,19 @@ if(isset($_REQUEST['save']))
     setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
   }
 
-
   if($Resp)
   {
-    setcookie("msg", "data",time()+3600,"/");
-      header("location:area_pincode.php");
+    setcookie("msg", "data", time()+3600,"/");
+    header("location:area_pincode.php");
   }
   else
   {
-    setcookie("msg", "fail",time()+3600,"/");
-      header("location:area_pincode.php");
+    setcookie("msg", "fail", time()+3600,"/");
+    header("location:area_pincode.php");
   }
 }
 ?>
+
 <div class='p-6'>
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
@@ -64,7 +63,7 @@ if(isset($_REQUEST['save']))
                     
                     <label for="groupFname">City Name</label>
 
-                    <select class="form-select text-white-dark" name="city_id" required>
+                    <select class="form-select text-white-dark" name="area_id" required>
                         <option value="">Choose City</option>
                     <?php 
                         $stmt = $obj->con1->prepare("SELECT * FROM `city`");
@@ -79,16 +78,11 @@ if(isset($_REQUEST['save']))
                     </select>
                 </div>
                 <div>
-                    <label for="groupFname"> Area Name </label>
-                    <input id="groupFname" name="area_id" type="text" class="form-input" required />
-                </div>
-                <div>
                     <label for="groupFname"> Pincode </label>
                     <input id="groupFname" name="pincode" type="text" class="form-input" />
                     <div class="relative inline-flex align-middle gap-3 mt-4">
                         <button type="submit" name="save" id="save" class="btn btn-success">Save </button>
-                        <button type="button" class="btn btn-danger" onclick="window.location='area_pincode.php'"
-                        >Close</button>
+                        <button type="button" class="btn btn-danger" onclick="window.location='area_pincode.php'">Close</button>
                     </div>
                 </div>
             </form>
