@@ -150,18 +150,23 @@ error_reporting(E_ALL);
                         </div>
                         <div>
                             <label for="technician"> Technician </label>
-                            <select name="technician" id="technician" class="form-select text-white-dark" required>
-                                <option value=''>-none-</option>
-                                <option value="1">Deepak Kumar</option>
-                                <option value="1">Kadam</option>
-                                <option value="1">MAHENDRA</option>
-                                <option value="1">Nagender Tiwari</option>
-                                <option value="1">RANAPRATAP</option>
-                                <option value="1">SANJAY SINGH</option>
-                                <option value="1">Tech 1</option>
-                                <option value="1">VILAS</option>
-                                <option value="1">Waris</option>
-                            </select>
+                            <select class="form-select text-white-dark" name="" required >
+                    <option value="">Choose...</option>
+                    <?php
+                            $stmt = $obj->con1->prepare(
+                                "SELECT * FROM `technician` WHERE status='enable'"
+                            );
+                            $stmt->execute();
+                            $Res = $stmt->get_result();
+                            $stmt->close();
+
+                            while ($result = mysqli_fetch_assoc($Res)) { 
+                        ?>
+                    <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                    <?php 
+                            } 
+                        ?>
+                </select>
                         </div>
                         <div>
                             <label for="call_status"> Status</label>
