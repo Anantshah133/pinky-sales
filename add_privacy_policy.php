@@ -50,7 +50,6 @@ $Resp=$stmt->execute();
             <lable for="">Detail</lable>
             <div id="editor" name="detail" class="!mt-0"></div>
             <label for="groupFname">Type</label>
-
             <select class="form-select text-white-dark" required name="type">
                 <option value="">Choose Type</option>
                 <option value="user">User</option>
@@ -62,14 +61,9 @@ $Resp=$stmt->execute();
                     onclick="formSubmit('quill-input')">Save</button>
                 <button type="button" class="btn btn-danger" onclick="location.href='privacy_policy.php'">Close</button>
             </div>
+            <input type="hidden" name="quill_input" id="quill-input">
+        </form>
     </div>
-
-    <!-- <button id="normal-content" type="button" class="p-2 bg-danger text-white" onclick="test()">Test</button> -->
-    <input type="hidden" name="quill_input" id="quill-input">
-    </form>
-
-
-
 
 </div>
 
@@ -95,10 +89,6 @@ document.addEventListener("alpine:init", () => {
         },
     }));
 });
-
-
-
-
 // quill-editor
 
 var quill = new Quill('#editor', {
@@ -118,29 +108,7 @@ function formSubmit(ele) {
     let xyz = document.getElementById(ele);
     xyz.value = quill.root.innerHTML;
 }
-
-coloredToast = (color, own) => {
-    const toast = window.Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        showCloseButton: true,
-        customClass: {
-            popup: `color-${color}`
-        },
-    });
-    toast.fire({
-        title: own,
-        onClose: () => {
-            document.cookie = "msg=data_del; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        }
-    });
-};
-
 </script>
-
-
 
 <?php
 include "footer.php";

@@ -23,8 +23,6 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
   if($Resp)
   {
     setcookie("msg", "data_del",time()+3600,"/");
-    // echo "this data is deleted";
-    // echo "<script type='text/javascript'>coloredToast('success')</script>";
   }
     header("location:privacy_policy.php");
 }
@@ -55,55 +53,8 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
 <!-- script -->
 
 <script>
-
-function createCookie(name, value, days) {
-    var expires;
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toGMTString();
-    } else {
-        expires = "";
-    }
-    document.cookie = (name) + "=" + String(value) + expires + ";path=/ ";
-
-}
-
-function readCookie(name) {
-    var nameEQ = (name) + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return (c.substring(nameEQ.length, c.length));
-    }
-    return null;
-}
-
-function eraseCookie(name) {
-    createCookie(name, "", -1);
-}
-coloredToast = (color) => {
-    const toast = window.Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        showCloseButton: true,
-        customClass: {
-            popup: `color-${color}`
-        },
-    });
-    toast.fire({
-        title: 'Record Deleted Successfully.',
-        onClose: () => {
-            document.cookie = "msg=data_del; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        }
-    });
-};
-
 if (readCookie("msg") == "data_del") {
-    coloredToast("success");
+    coloredToast("success", 'Record Deleted Successfully.');
     eraseCookie("msg")
 }
 
@@ -166,12 +117,6 @@ document.addEventListener('alpine:init', () => {
                         select: 0,
                         sort: 'asc',
                     },
-                    // {
-                    //     select: 4,
-                    //     render: (data, cell, row) => {
-                    //         return this.formatDate(data);
-                    //     },
-                    // },
                 ],
                 firstLast: true,
                 firstText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M13 19L7 12L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M16.9998 19L10.9998 12L16.9998 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
@@ -231,8 +176,6 @@ async function showAlert(id) {
         if (result.isConfirmed) {
             var loc = "privacy_policy.php?flg=del&id=" + id;
             window.location = loc;
-
-            // coloredToast('success')
         }
     });
 }

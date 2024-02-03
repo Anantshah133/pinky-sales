@@ -162,7 +162,6 @@ async function showAlert(id) {
         if (result.isConfirmed) {
             var loc = "state.php?flg=del&n_stateid=" + id;
             window.location = loc;
-            // coloredToast('success')
         }
     });
 }

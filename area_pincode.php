@@ -1,34 +1,30 @@
 <?php
 include "header.php";
-if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
-{
-  try
-  {
-    $stmt_del = $obj->con1->prepare("delete from area_pincode where id='".$_REQUEST["n_pincodeid"]."'");
-    $Resp=$stmt_del->execute();
-    if(!$Resp)
-    {
-      if(strtok($obj->con1-> error,  ':')=="Cannot delete or update a parent row")
-      {
-        // throw new Exception("City is already in use!");
-      }
+if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
+    try {
+        $stmt_del = $obj->con1->prepare("delete from area_pincode where id='".$_REQUEST["n_pincodeid"] ."'");
+        $Resp = $stmt_del->execute();
+        if (!$Resp) {
+            if (
+                strtok($obj->con1->error, ":") ==
+                "Cannot delete or update a parent row"
+            ) {
+                throw new Exception("City is already in use!");
+            }
+        }
+        $stmt_del->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
     }
-    $stmt_del->close();
-  }
-  catch(\Exception  $e) {
-    // setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
-  }
 
-  if($Resp)
-  {
-    // setcookie("msg", "data_del",time()+3600,"/");
-    echo "this data is deleted";
-  }
+    if ($Resp) {
+        setcookie("msg", "data_del", time() + 3600, "/");
+    }
     header("location:area_pincode.php");
 }
 ?>
 
-<div class='p-6'>
+<div class='p-6' x-data="exportTable">
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
             <h1 class='text-primary text-2xl font-bold'>Area Pincode</h1>
@@ -82,20 +78,23 @@ document.addEventListener('alpine:init', () => {
                 data: {
                     headings: ['Sr.No.', 'state', 'city', 'pincode', 'Action'],
                     data: [
-                        <?php 
-                            $stmt = $obj->con1->prepare("SELECT ap1.*, c1.ctnm, s1.name FROM `area_pincode` ap1,`state` s1,`city` c1 WHERE ap1.city_id = c1.srno AND ap1.state_id=s1.id;");
-                            $stmt->execute();
-                            $Resp=$stmt->get_result();
-                                    $i=1;
-                            while($row = mysqli_fetch_array($Resp)){
-                        ?>[<?php echo $i ?>, '<?php echo $row['name'] ?>', '<?php echo $row['ctnm'] ?>',
-                            '<?php echo $row['pincode'] ?>', getActions(
-                                '<?php echo $row['id'] ?>')],
-                        <?php 
-                        $i++;
-                         } 
-                         ?>
-
+                        <?php
+                        $stmt = $obj->con1->prepare(
+                            "SELECT ap1.*, c1.ctnm, s1.name FROM `area_pincode` ap1,`state` s1,`city` c1 WHERE ap1.city_id = c1.srno AND ap1.state_id=s1.id"
+                        );
+                        $stmt->execute();
+                        $Resp = $stmt->get_result();
+                        $i = 1;
+                        while ($row = mysqli_fetch_array($Resp)) { ?>[
+                            <?php echo $i; ?>,
+                            '<?php echo $row["name"]; ?>',
+                            '<?php echo $row["ctnm"]; ?>',
+                            '<?php echo $row["pincode"]; ?>',
+                            getActions(<?php echo $row["id"]; ?>)
+                        ],
+                        <?php $i++;}
+                        $stmt->close();
+                        ?>
                     ],
                 },
                 perPage: 10,
@@ -156,7 +155,7 @@ document.addEventListener('alpine:init', () => {
         },
     }));
 })
-async function showAlert(id) {
+function showAlert(id) {
     new window.Swal({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -168,31 +167,11 @@ async function showAlert(id) {
         if (result.isConfirmed) {
             var loc = "area_pincode.php?flg=del&n_pincodeid=" + id;
             window.location = loc;
-
-            // coloredToast('success')
         }
     });
 }
-
-coloredToast = (color) => {
-    const toast = window.Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        showCloseButton: true,
-        // animation: true,
-        customClass: {
-            popup: `color-${color}`
-        },
-        // target: document.getElementById(color + '-toast')
-    });
-    toast.fire({
-        title: 'Record Deleted Successfully.',
-    });
-};
 </script>
 
-<?php
-include "footer.php";
+<?php 
+    include "footer.php";
 ?>

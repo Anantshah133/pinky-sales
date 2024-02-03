@@ -10,19 +10,18 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
     {
       if(strtok($obj->con1-> error,  ':')=="Cannot delete or update a parent row")
       {
-        // throw new Exception("City is already in use!");
+        throw new Exception("City is already in use!");
       }
     }
     $stmt_del->close();
   }
   catch(\Exception  $e) {
-    // setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
+    setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
   }
 
   if($Resp)
   {
-    // setcookie("msg", "data_del",time()+3600,"/");
-    echo "this data is deleted";
+    setcookie("msg", "data_del",time()+3600,"/");
   }
     header("location:city.php");
 }
@@ -166,29 +165,9 @@ async function showAlert(id) {
         if (result.isConfirmed) {
             var loc = "city.php?flg=del&n_cityid=" + id;
             window.location = loc;
-            // coloredToast('success')
         }
     });
 }
-
-coloredToast = (color) => {
-    const toast = window.Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        showCloseButton: true,
-        // animation: true,
-        customClass: {
-            popup: `color-${color}`
-        },
-        // target: document.getElementById(color + '-toast')
-    });
-    toast.fire({
-        title: 'Record Deleted Successfully.',
-    });
-};
-    
     
 </script>
 

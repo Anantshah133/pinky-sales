@@ -34,7 +34,8 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
             <h1 class='text-primary text-2xl font-bold'>Service Type</h1>
 
             <div class="flex flex-wrap items-center">
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_service_type.php'">
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1"
+                    onclick="location.href='add_service_type.php'">
                     <i class="ri-add-line mr-1"></i> Add Service Type
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
@@ -77,16 +78,16 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.No.', 'Name','Status', 'Action'],
-                    data: [ 
+                    headings: ['Sr.No.', 'Name', 'Status', 'Action'],
+                    data: [
                         <?php 
                             $stmt = $obj->con1->prepare("SELECT * FROM `service_type`");
                             $stmt->execute();
                             $Resp=$stmt->get_result();
                                     $i=1;
                             while($row = mysqli_fetch_array($Resp)){
-                        ?>
-                        [<?php echo $i ?>, '<?php echo $row['name'] ?>','<?php echo $row['status'] ?>', getActions('<?php echo $row['id'] ?>')],
+                        ?>[<?php echo $i ?>, '<?php echo $row['name'] ?>', '<?php echo $row['status'] ?>', getActions(
+                            '<?php echo $row['id'] ?>')],
                         <?php $i++;
                          } ?>
                     ],
@@ -97,12 +98,6 @@ document.addEventListener('alpine:init', () => {
                         select: 0,
                         sort: 'asc',
                     },
-                    // {
-                    //     select: 4,
-                    //     render: (data, cell, row) => {
-                    //         return this.formatDate(data);
-                    //     },
-                    // },
                 ],
                 firstLast: true,
                 firstText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M13 19L7 12L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M16.9998 19L10.9998 12L16.9998 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
@@ -149,7 +144,7 @@ document.addEventListener('alpine:init', () => {
         },
     }));
 })
-    async function showAlert(id) {
+async function showAlert(id) {
     new window.Swal({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -161,28 +156,9 @@ document.addEventListener('alpine:init', () => {
         if (result.isConfirmed) {
             var loc = "service_type.php?flg=del&n_servicetypeid=" + id;
             window.location = loc;
-            // coloredToast('success')
         }
-});
+    });
 }
-
-coloredToast = (color) => {
-    const toast = window.Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        showCloseButton: true,
-        // animation: true,
-        customClass: {
-            popup: `color-${color}`
-        },
-        // target: document.getElementById(color + '-toast')
-    });
-    toast.fire({
-        title: 'Record Deleted Successfully.',
-    });
-};
 </script>
 
 <?php

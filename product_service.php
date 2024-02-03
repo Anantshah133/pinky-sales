@@ -11,19 +11,18 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
     {
       if(strtok($obj->con1-> error,  ':')=="Cannot delete or update a parent row")
       {
-        // throw new Exception("City is already in use!");
+        throw new Exception("City is already in use!");
       }
     }
     $stmt_del->close();
   }
   catch(\Exception  $e) {
-    // setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
+    setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
   }
 
   if($Resp)
   {
-    // setcookie("msg", "data_del",time()+3600,"/");
-    echo "this data is deleted";
+    setcookie("msg", "data_del",time()+3600,"/");
   }
     header("location:product_service.php");
 }
@@ -79,7 +78,7 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.No.', 'Product','Service', 'Status','Action'],
+                    headings: ['Sr.No.', 'Product', 'Service', 'Status', 'Action'],
                     data: [
                         <?php 
                             $stmt = $obj->con1->prepare("SELECT ps1.*,p1.name as product,s1.name as service FROM `product_service` ps1, `product_category` p1,`service_type` s1 WHERE ps1.pid=p1.id AND ps1.sid=s1.id;");
@@ -87,31 +86,20 @@ document.addEventListener('alpine:init', () => {
                             $Resp=$stmt->get_result();
                                     $i=1;
                             while($row = mysqli_fetch_array($Resp)){
-                        ?>
-                        [<?php echo $i ?>, '<?php echo $row['product'] ?>','<?php echo $row['service'] ?>','<?php echo $row['status'] ?>', getActions('<?php echo $row['srno'] ?>')],
-                        // [1, 'COOLER','','', getActions()],
-                        // [2, 'HOME THEATER','','', getActions()],
-                        // [3, 'WASHING MACHINE','','', getActions()],
-                        // [4, 'LED TV','','', getActions()],
-                       
+                        ?>[<?php echo $i ?>, '<?php echo $row['product'] ?>', '<?php echo $row['service'] ?>',
+                            '<?php echo $row['status'] ?>', getActions(
+                                '<?php echo $row['srno'] ?>')],
                         <?php $i++;
                         } ?>
-                        
+
                     ],
                 },
                 perPage: 10,
                 perPageSelect: [10, 20, 30, 50, 100],
                 columns: [{
-                        select: 0,
-                        sort: 'asc',
-                    },
-                    // {
-                    //     select: 4,
-                    //     render: (data, cell, row) => {
-                    //         return this.formatDate(data);
-                    //     },
-                    // },
-                ],
+                    select: 0,
+                    sort: 'asc',
+                }, ],
                 firstLast: true,
                 firstText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M13 19L7 12L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M16.9998 19L10.9998 12L16.9998 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
                 lastText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M11 19L17 12L11 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M6.99976 19L12.9998 12L6.99976 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
@@ -169,29 +157,9 @@ async function showAlert(id) {
         if (result.isConfirmed) {
             var loc = "product_service.php?flg=del&n_pserviceid=" + id;
             window.location = loc;
-           
-            // coloredToast('success')
         }
     });
-    }
-
-coloredToast = (color) => {
-    const toast = window.Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        showCloseButton: true,
-        // animation: true,
-        customClass: {
-            popup: `color-${color}`
-        },
-        // target: document.getElementById(color + '-toast')
-    });
-    toast.fire({
-        title: 'Record Deleted Successfully.',
-    });
-};
+}
 </script>
 
 <?php
