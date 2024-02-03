@@ -2,7 +2,7 @@
 	include "db_connect.php";
 	$obj = new DB_Connect();
 	$s=$_REQUEST["sid"];
-	$stmt = $obj->con1->prepare("select * from city WHERE status='enable' and stnm=$s");
+	$stmt = $obj->con1->prepare("select * from city WHERE status='enable' and state_id=$s");
 	$stmt->execute();
 	$result = $stmt->get_result();
 ?>
