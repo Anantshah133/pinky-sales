@@ -3,13 +3,14 @@ include "header.php";
 if(isset($_REQUEST['save']))
 {
   $state_name = $_REQUEST['State_id'];
-  $city_name = $_REQUEST['area_id'];
+  $city_name = $_REQUEST['city_id'];
+  $area_name = $_REQUEST['area_id'];
   $pincode = $_REQUEST['pincode'];
  
   try
   {
-    $stmt = $obj->con1->prepare("INSERT INTO `area_pincode`(`state_id`,`city_id`,`pincode`) VALUES (?,?,?)");
-    $stmt->bind_param("iis",$state_name,$city_name,$pincode);
+    $stmt = $obj->con1->prepare("INSERT INTO `area_pincode`(`state_id`,`city_id`,`area_id`,`pincode`) VALUES (?,?,?,?)");
+    $stmt->bind_param("iiis",$state_name,$city_name,$area_name,$pincode);
     $Resp=$stmt->execute();
     if(!$Resp)
     {
@@ -63,7 +64,7 @@ if(isset($_REQUEST['save']))
                     
                     <label for="groupFname">City Name</label>
 
-                    <select class="form-select text-white-dark" name="area_id" required>
+                    <select class="form-select text-white-dark" name="city_id" required>
                         <option value="">Choose City</option>
                     <?php 
                         $stmt = $obj->con1->prepare("SELECT * FROM `city`");
@@ -76,6 +77,10 @@ if(isset($_REQUEST['save']))
                         <option value="<?php echo $result['srno'] ?>"><?php echo $result['ctnm'] ?></option>
                     <?php } ?>
                     </select>
+                </div>
+                <div>
+                    <label for="groupFname"> Area Name </label>
+                    <input id="groupFname" name="area_id" type="text" class="form-input" required />
                 </div>
                 <div>
                     <label for="groupFname"> Pincode </label>

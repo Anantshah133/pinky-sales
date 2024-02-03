@@ -77,7 +77,7 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.No.', 'City Name','State Name', 'Status','Action'],
+                    headings: ['Sr.No.', 'State Name','City Name', 'Status','Action'],
                     data: [
                         <?php 
                             $stmt = $obj->con1->prepare("SELECT c1.*,s1.name FROM `city` c1, `state` s1 WHERE c1.stnm=s1.id;");
@@ -88,8 +88,8 @@ document.addEventListener('alpine:init', () => {
                         ?>
                         [
                             <?php echo $i ?>, 
-                            '<?php echo $row['ctnm'] ?>',
                             '<?php echo $row['name'] ?>',
+                            '<?php echo $row['ctnm'] ?>',
                             '<?php echo $row['status'] ?>',
                             getActions(<?php echo $row['srno'] ?>)
                         ],

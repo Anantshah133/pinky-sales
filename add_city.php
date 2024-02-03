@@ -41,10 +41,7 @@ if(isset($_REQUEST['save']))
         </div>
         <div class="mb-5">
             <form class="space-y-5" method="post">
-                <div>
-                    <label for="groupFname"> City Name </label>
-                    <input id="groupFname" name="city_id" type="text" class="form-input" required />
-                </div>    
+                
                 <div>
                     
                     <label for="groupFname"> State Name</label>
@@ -67,6 +64,10 @@ if(isset($_REQUEST['save']))
                     <?php } ?>
                     </select>
                 </div>
+                <div>
+                    <label for="groupFname"> City Name </label>
+                    <input id="groupFname" name="city_id" type="text" class="form-input" required />
+                </div>    
                 <div>
                     <label for="gridStatus">Status</label>
                     <label class="inline-flex mr-3">
