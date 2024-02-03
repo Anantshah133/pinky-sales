@@ -1,30 +1,25 @@
 <?php
 include "header.php";
 
-if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
-{
-  try
-  {
-   
-    $stmt_del = $obj->con1->prepare("delete from technician where id='".$_REQUEST["id"]."'");
-    $Resp=$stmt_del->execute();
-    if(!$Resp)
-    {
-      if(strtok($obj->con1-> error,  ':')=="Cannot delete or update a parent row")
-      {
-        // throw new Exception("City is already in use!");
-      }
+if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
+    try {
+        $stmt_del = $obj->con1->prepare(
+            "delete from technician where id='" . $_REQUEST["id"] . "'"
+        );
+        $Resp = $stmt_del->execute();
+        if (!$Resp) {
+            if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row") {
+                throw new Exception("City is already in use!");
+            }
+        }
+        $stmt_del->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
     }
-    $stmt_del->close();
-  }
-  catch(\Exception  $e) {
-    setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
-  }
 
-  if($Resp)
-  {
-    // setcookie("msg", "data_del",time()+3600,"/");
-  }
+    if ($Resp) {
+        setcookie("msg", "data_del",time()+3600,"/");
+    }
     header("location:technician.php");
 }
 ?>
@@ -89,22 +84,27 @@ document.addEventListener('alpine:init', () => {
                     ],
                     data: [
                         <?php
-                          
-                            $stmt =  $obj->con1->prepare("SELECT t1.*, s1.name AS service_center_name FROM technician t1, service_center s1 WHERE t1.service_center=s1.id");
+                            $stmt = $obj->con1->prepare(
+                                "SELECT t1.*, s1.name AS service_center_name FROM technician t1, service_center s1 WHERE t1.service_center=s1.id"
+                            );
                             $stmt->execute();
-                            $res_stmt=$stmt->get_result();
+                            $res_stmt = $stmt->get_result();
                             $stmt->close();
-                            
-                            $id=1;
-                            while($row=mysqli_fetch_array($res_stmt)){
-                               
-                                           
+                            $id = 1;
+                            while ($row = mysqli_fetch_array($res_stmt)) { 
                         ?>
-                     
-                     ['<?php echo $id ?>','<?php echo $row["name"] ?>', '<?php echo $row["email"] ?>', '<?php echo $row["contact"] ?>','<?php echo $row["service_center_name"] ?>',' <?php echo $row["status"] ?>',' <?php echo $row["date_time"] ?>', getActions(('<?php echo $row['id'] ?>'))],
+                            [
+                                '<?php echo $id; ?>',
+                                '<?php echo $row["name"]; ?>',
+                                '<?php echo $row["email"]; ?>', 
+                                '<?php echo $row["contact"]; ?>',
+                                '<?php echo $row["service_center_name"]; ?>',
+                                '<?php echo $row["status"]; ?>',
+                                '<?php echo $row["date_time"]; ?>', 
+                                getActions(<?php echo $row["id"]; ?>)
+                            ],
                         <?php 
-                        $id++;	
-                            }
+                            $id++;}
                         ?>
                     ],
                 },

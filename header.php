@@ -79,7 +79,7 @@
                 <div class="h-full bg-white dark:bg-[#0e1726]">
                     <div class="flex items-center justify-between px-4 py-3">
                         <a href="index.php" class="main-logo flex shrink-0 items-center justify-center">
-                            <img class="ml-[5px] logo flex-none" src="assets/images/orpel/logo.png" alt="image" />
+                            <img class="ml-[5px] logo flex-none" src="assets/images/one_life/logo.png" alt="image" />
                         </a>
                         <a href="javascript:;"
                             class="collapse-icon flex h-8 w-8 items-center rounded-full transition duration-300 hover:bg-gray-500/10 rtl:rotate-180 dark:text-white-light dark:hover:bg-dark-light/10"
@@ -340,7 +340,7 @@
                             </a>
                         </li>
                         <li class="menu nav-item">
-                            <a href="privacy_policy.php" class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "privacy_policy.php" ? "active" : "" ?>">
+                            <a href="privacy.php" class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "privacy_policy.php" ? "active" : "" ?>">
                                 <div class="flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none">
@@ -384,7 +384,7 @@
                     <div class="relative flex w-full items-center bg-white px-5 py-2.5 dark:bg-[#0e1726]">
                         <div class="horizontal-logo flex items-center justify-between ltr:mr-2 rtl:ml-2 lg:hidden">
                             <a href="index.php" class="main-logo flex shrink-0 items-center justify-center">
-                                <img class="ml-[5px] logo flex-none" src="assets/images/orpel/logo.png" alt="image" />
+                                <img class="ml-[5px] logo flex-none" src="assets/images/one_life/logo.png" alt="image" />
                             </a>
 
                             <a href="javascript:;"
@@ -473,27 +473,16 @@
                                 <ul x-cloak x-show="open" x-transition x-transition.duration.300ms
                                     class="top-11 w-[300px] divide-y !py-0 text-dark ltr:-right-2 rtl:-left-2 dark:divide-white/10 dark:text-white-dark sm:w-[350px]">
                                     <li>
-                                        <div
-                                            class="flex items-center justify-between px-4 py-2 font-semibold hover:!bg-transparent">
+                                        <div class="flex items-center justify-between px-4 py-2 font-semibold hover:!bg-transparent">
                                             <h4 class="text-lg">Notification</h4>
                                             <template x-if="notifications.length">
-                                                <span class="badge bg-primary/80"
-                                                    x-text="notifications.length + 'New'"></span>
+                                                <span class="badge bg-primary/80" x-text="notifications.length + 'New'"></span>
                                             </template>
                                         </div>
                                     </li>
                                     <template x-for="notification in notifications">
                                         <li class="dark:text-white-light/90">
                                             <div class="group flex items-center px-4 py-2" @click.self="toggle">
-                                                <div class="grid place-content-center rounded">
-                                                    <div class="relative h-12 w-12">
-                                                        <img class="h-12 w-12 rounded-full object-cover"
-                                                            :src="`assets/images/${notification.profile}`"
-                                                            alt="image" />
-                                                        <span
-                                                            class="absolute right-[6px] bottom-0 block h-2 w-2 rounded-full bg-success"></span>
-                                                    </div>
-                                                </div>
                                                 <div class="flex flex-auto ltr:pl-3 rtl:pr-3">
                                                     <div class="ltr:pr-3 rtl:pl-3">
                                                         <h6 x-html="notification.message"></h6>

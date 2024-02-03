@@ -7,7 +7,7 @@ if(isset($_REQUEST['save']))
     $status = $_REQUEST['default_radio'];
   try
   {
-    $stmt = $obj->con1->prepare("INSERT INTO `city`(`ctnm`,`stnm`,`status`) VALUES (?,?,?)");
+    $stmt = $obj->con1->prepare("INSERT INTO `city`(`ctnm`,`state_id`,`status`) VALUES (?,?,?)");
     $stmt->bind_param("sis",$city_name,$state_name,$status);
     $Resp=$stmt->execute();
     if(!$Resp)

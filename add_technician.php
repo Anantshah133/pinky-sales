@@ -39,8 +39,8 @@ if (isset($_REQUEST["save"])) {
     }
 
     if ($Resp) {
-        setcookie("msg", "Technician added Sucessfully!", time() + 3600, "/");
-        header("location:add_technician.php");
+        setcookie("msg", "data", time() + 3600, "/");
+        header("location:technician.php");
 
         if ($Resp) {
             move_uploaded_file(
@@ -48,13 +48,13 @@ if (isset($_REQUEST["save"])) {
                 "images/technician_idproof/" . $idproofImg
             );
             header("location:technician.php");
-            // echo "Sorry the file name is already in use!";
         } else {
             setcookie("msg", "fail", time() + 3600, "/");
             header("location:technician.php");
         }
     }
 }
+
 function uploadImage($inputName, $uploadDirectory)
     {
         $fileName = $_FILES[$inputName]["name"];
@@ -85,7 +85,6 @@ function uploadImage($inputName, $uploadDirectory)
 
 
 <div class='p-6'>
-    <!-- Service Center - Add form -->
     <div class="panel border shadow-md shadow-slate-200">
         <div class="mb-5 flex items-center justify-between">
             <h5 class="text-xl text-primary font-semibold dark:text-white-light">Technician Add</h5>
@@ -120,15 +119,12 @@ function uploadImage($inputName, $uploadDirectory)
 
                             while ($result = mysqli_fetch_assoc($Res)) { 
                         ?>
-                    <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
-                    <?php 
+                            <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                        <?php 
                             } 
                         ?>
                 </select>
             </div>
-
-
-
             <div>
                 <label for="gridUID">Userid</label>
                 <input type="text" placeholder="" name="userid" class="form-input" required />
@@ -161,11 +157,8 @@ function uploadImage($inputName, $uploadDirectory)
                 <button type="submit" class="btn btn-success" name="save" id="save_btn">Save</button>
                 <button type="button" class="btn btn-danger" onclick="location.href='technician.php'">Close</button>
             </div>
+        </form>
     </div>
-
-
-    </form>
-</div>
 </div>
 
 
@@ -202,11 +195,6 @@ const resetForm = (formElement) => {
     preview.forEach(img => img.style.display = 'none');
 }
 </script>
-
-
-
-
-
 
 <?php
 include "footer.php";

@@ -15,7 +15,6 @@
 
 
 document.addEventListener('alpine:init', () => {
-    // main section
     Alpine.data('scrollToTop', () => ({
         showTopButton: false,
         init() {
@@ -39,15 +38,14 @@ document.addEventListener('alpine:init', () => {
     }));
 
     // theme customization
-    Alpine.data('customizer', () => ({
-        showCustomizer: false,
-    }));
+    // Alpine.data('customizer', () => ({
+    //     showCustomizer: false,
+    // }));
 
     // sidebar section
     Alpine.data('sidebar', () => ({
         init() {
-            const selector = document.querySelector('.sidebar ul a[href="' + window.location
-                .pathname + '"]');
+            const selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
             if (selector) {
                 selector.classList.add('active');
                 const ul = selector.closest('ul.sub-menu');
@@ -84,21 +82,19 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        notifications: [{
+        notifications: [
+            {
                 id: 1,
-                profile: 'user-profile.jpeg',
                 message: '<strong class="text-sm mr-1">John Doe</strong>invite you to <strong>Prototyping</strong>',
                 time: '45 min ago',
             },
             {
                 id: 2,
-                profile: 'profile-34.jpeg',
                 message: '<strong class="text-sm mr-1">Adam Nolan</strong>mentioned you to <strong>UX Basics</strong>',
                 time: '9h Ago',
             },
             {
                 id: 3,
-                profile: 'profile-16.jpeg',
                 message: '<strong class="text-sm mr-1">Anna Morgan</strong>Upload a file',
                 time: '9h Ago',
             },
@@ -131,88 +127,6 @@ document.addEventListener('alpine:init', () => {
                 title: 'Warning',
                 message: 'Your password strength is low.',
                 time: '5days',
-            },
-        ],
-
-        languages: [{
-                id: 1,
-                key: 'Chinese',
-                value: 'zh',
-            },
-            {
-                id: 2,
-                key: 'Danish',
-                value: 'da',
-            },
-            {
-                id: 3,
-                key: 'English',
-                value: 'en',
-            },
-            {
-                id: 4,
-                key: 'French',
-                value: 'fr',
-            },
-            {
-                id: 5,
-                key: 'German',
-                value: 'de',
-            },
-            {
-                id: 6,
-                key: 'Greek',
-                value: 'el',
-            },
-            {
-                id: 7,
-                key: 'Hungarian',
-                value: 'hu',
-            },
-            {
-                id: 8,
-                key: 'Italian',
-                value: 'it',
-            },
-            {
-                id: 9,
-                key: 'Japanese',
-                value: 'ja',
-            },
-            {
-                id: 10,
-                key: 'Polish',
-                value: 'pl',
-            },
-            {
-                id: 11,
-                key: 'Portuguese',
-                value: 'pt',
-            },
-            {
-                id: 12,
-                key: 'Russian',
-                value: 'ru',
-            },
-            {
-                id: 13,
-                key: 'Spanish',
-                value: 'es',
-            },
-            {
-                id: 14,
-                key: 'Swedish',
-                value: 'sv',
-            },
-            {
-                id: 15,
-                key: 'Turkish',
-                value: 'tr',
-            },
-            {
-                id: 16,
-                key: 'Arabic',
-                value: 'ae',
             },
         ],
 

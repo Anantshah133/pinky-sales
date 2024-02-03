@@ -1,29 +1,30 @@
 <?php
 include "header.php";
 
-if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
-{
-  try
-  {
-    $stmt_del = $obj->con1->prepare("delete from product_service where srno='".$_REQUEST["n_pserviceid"]."'");
-    $Resp=$stmt_del->execute();
-    if(!$Resp)
-    {
-      if(strtok($obj->con1-> error,  ':')=="Cannot delete or update a parent row")
-      {
-        throw new Exception("City is already in use!");
-      }
+if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
+    try {
+        $stmt_del = $obj->con1->prepare(
+            "delete from product_service where srno='" .
+                $_REQUEST["n_pserviceid"] .
+                "'"
+        );
+        $Resp = $stmt_del->execute();
+        if (!$Resp) {
+            if (
+                strtok($obj->con1->error, ":") ==
+                "Cannot delete or update a parent row"
+            ) {
+                throw new Exception("City is already in use!");
+            }
+        }
+        $stmt_del->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
     }
-    $stmt_del->close();
-  }
-  catch(\Exception  $e) {
-    setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
-  }
 
-  if($Resp)
-  {
-    setcookie("msg", "data_del",time()+3600,"/");
-  }
+    if ($Resp) {
+        setcookie("msg", "data_del", time() + 3600, "/");
+    }
     header("location:product_service.php");
 }
 ?>
@@ -51,6 +52,7 @@ if(isset($_REQUEST["flg"]) && $_REQUEST["flg"]=="del")
 </div>
 <!-- script -->
 <script>
+checkCookies();
 function getActions(id) {
     return `<ul class="flex items-center gap-4">
         <li>
@@ -80,18 +82,26 @@ document.addEventListener('alpine:init', () => {
                 data: {
                     headings: ['Sr.No.', 'Product', 'Service', 'Status', 'Action'],
                     data: [
-                        <?php 
-                            $stmt = $obj->con1->prepare("SELECT ps1.*,p1.name as product,s1.name as service FROM `product_service` ps1, `product_category` p1,`service_type` s1 WHERE ps1.pid=p1.id AND ps1.sid=s1.id;");
+                        <?php
+                            $stmt = $obj->con1->prepare(
+                                "SELECT ps1.*,p1.name as product,s1.name as service FROM `product_service` ps1, `product_category` p1,`service_type` s1 WHERE ps1.pid=p1.id AND ps1.sid=s1.id;"
+                            );
                             $stmt->execute();
-                            $Resp=$stmt->get_result();
-                                    $i=1;
-                            while($row = mysqli_fetch_array($Resp)){
-                        ?>[<?php echo $i ?>, '<?php echo $row['product'] ?>', '<?php echo $row['service'] ?>',
-                            '<?php echo $row['status'] ?>', getActions(
-                                '<?php echo $row['srno'] ?>')],
-                        <?php $i++;
-                        } ?>
-
+                            $Resp = $stmt->get_result();
+                            $i = 1;
+                            while ($row = mysqli_fetch_array($Resp)) { 
+                        ?>
+                        [
+                            <?php echo $i; ?>,
+                            '<?php echo $row["product"]; ?>', 
+                            '<?php echo $row["service"]; ?>',
+                            '<?php echo $row["status"]; ?>', 
+                            getActions(<?php echo $row["srno"]; ?>)
+                        ],
+                        <?php 
+                            $i++;}
+                            $stmt->close();
+                        ?>
                     ],
                 },
                 perPage: 10,
