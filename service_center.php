@@ -91,13 +91,13 @@ document.addEventListener('alpine:init', () => {
                         ?>
                             [
                                 <?php echo $id; ?>, 
-                                '<?php echo $row["name"]; ?>',
-                                '<?php echo $row["email"]; ?>',
-                                '<?php echo $row["contact"]; ?>',
-                                '<?php echo $row["address"]; ?>',
-                                '<?php echo $row["city"]; ?>',
-                                '<?php echo $row["status"]; ?>',
-                                '<?php echo $row["date_time"]; ?>', 
+                                `<?php echo $row["name"]; ?>`,
+                                `<?php echo $row["email"]; ?>`,
+                                `<?php echo $row["contact"]; ?>`,
+                                `<?php echo $row["address"]; ?>`,
+                                `<?php echo $row["city"]; ?>`,
+                                `<?php echo $row["status"]; ?>`,
+                                `<?php echo $row["date_time"]; ?>`, 
                                 getActions(<?php echo $row["id"] ?>),
                             ],
                         <?php 
