@@ -39,10 +39,10 @@ if (isset($_REQUEST["save"])) {
                     <label for="groupFname">Name</label>
                     <input id="groupFname" name="name" type="text" class="form-input" required />
                 </div>
-                    <div class="relative inline-flex align-middle gap-3 mt-4">
-                        <button type="submit" name="save" id="save" class="btn btn-success">Save</button>
-                        <button type="button" class="btn btn-danger" onclick="window.location='service_type.php'">Close</button>
-                    </div>
+                <div class="relative inline-flex align-middle gap-3 mt-4">
+                    <button type="submit" name="save" id="save" class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-danger" onclick="window.location='service_type.php'">Close</button>
+                </div>
             </form>
         </div>
     </div>

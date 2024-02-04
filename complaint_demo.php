@@ -64,11 +64,6 @@ document.addEventListener('alpine:init', () => {
                         'Complaint No.', 'Service Type', 'Product Category', 'Dealer Name', 'Date', 'Time', 'Status', 'Action'
                     ],
                     data: [
-                        // [1, 'Santosh', 'Nikam', '8483808528', 'Virar nsp vasai',
-                        //     '401209', 'ORP2401240005', 'Complaint', 'COOLER',
-                        //     '2024-01-24', 'new',
-                        //     `${getActions()}`
-                        // ],
                         <?php 
                             $stmt = $obj->con1->prepare("select c1.*,s1.name as service_type,p1.name as product_category,c2.ctnm as city from customer_reg c1,service_type s1,product_category p1,city c2 where c1.area=c2.srno and c1.service_type=s1.id and c1.product_category=p1.id order by c1.id desc");
                             $stmt->execute();
@@ -105,12 +100,6 @@ document.addEventListener('alpine:init', () => {
                         select: 0,
                         sort: 'asc',
                     },
-                    // {
-                    //     select: 4,
-                    //     render: (data, cell, row) => {
-                    //         return this.formatDate(data);
-                    //     },
-                    // },
                 ],
                 firstLast: true,
                 firstText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M13 19L7 12L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M16.9998 19L10.9998 12L16.9998 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',

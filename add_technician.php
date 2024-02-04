@@ -16,18 +16,7 @@ if (isset($_REQUEST["save"])) {
         $stmt = $obj->con1->prepare(
             "INSERT INTO `technician`(`name`,`email`,`contact`,`service_center`,`userid`,`password`,`id_proof`,`status`,`date_time`) VALUES (?,?,?,?,?,?,?,?,?)"
         );
-        $stmt->bind_param(
-            "sssisssss",
-            $name,
-            $email,
-            $contact,
-            $serviceCenterId,
-            $user_id,
-            $pass,
-            $idproofImg,
-            $status,
-            $date_time,
-        );
+        $stmt->bind_param("sssisssss",$name,$email,$contact,$serviceCenterId,$user_id,$pass,$idproofImg,$status,$date_time);
         $Resp = $stmt->execute();
 
         if (!$Resp) {

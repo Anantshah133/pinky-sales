@@ -10,18 +10,17 @@ class DB_Connect
     }
 
     // Connecting to database
-    public function connect() {
-       
-$con = mysqli_connect("localhost","root","","onelife_db") or die("Connection Failed...!");
+    public function connect()
+    {
+        ($con = mysqli_connect("localhost", "root", "", "onelife_db")) or
+            die("Connection Failed...!");
 
-if (!$con)
-  {
-  die("Connection error: " . mysqli_connect_errno());
-  }
-mysqli_autocommit($con, true);
-     
-$this->con1=$con;
- 
+        if (!$con) {
+            die("Connection error: " . mysqli_connect_errno());
+        }
+        mysqli_autocommit($con, true);
+
+        $this->con1 = $con;
         // return database handler
         return $con;
     }

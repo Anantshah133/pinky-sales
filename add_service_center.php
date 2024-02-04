@@ -28,18 +28,7 @@ if (isset($_REQUEST["save"])) {
         $stmt = $obj->con1->prepare(
             "INSERT INTO `service_center`(`name`,`email`,`contact`,`userid`,`password`,`status`,`address`,`area`,`date_time`) VALUES (?,?,?,?,?,?,?,?,?)"
         );
-        $stmt->bind_param(
-            "sssssssis",
-            $name,
-            $email,
-            $contact,
-            $user_id,
-            $pass,
-            $status,
-            $address,
-            $city,
-            $date_time,
-        );
+        $stmt->bind_param("sssssssis",$name,$email,$contact,$user_id,$pass,$status,$address,$city,$date_time);
         $Resp = $stmt->execute();
 
         if (!$Resp) {
