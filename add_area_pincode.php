@@ -77,7 +77,7 @@ if (isset($_REQUEST["save"])) {
                 <div>
                     <label for="groupFname"> Pincode </label>
                     <input id="groupFname" name="pincode" type="text" class="form-input" 
-                    <?php echo (isset($mode) == 'view') ? 'readonly' : '' ?> value="<?php echo isset($mode) ? data['pincode'] : '' ?>" />
+                    <?php echo (isset($mode) == 'view') ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['pincode'] : '' ?>" />
                     <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) == 'view' ? 'hidden' : '' ?>">
                         <button type="submit" name="save" id="save" class="btn btn-success">Save </button>
                         <button type="button" class="btn btn-danger" onclick="window.location='area_pincode.php'">Close</button>
