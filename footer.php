@@ -37,11 +37,6 @@ document.addEventListener('alpine:init', () => {
         },
     }));
 
-    // theme customization
-    // Alpine.data('customizer', () => ({
-    //     showCustomizer: false,
-    // }));
-
     // sidebar section
     Alpine.data('sidebar', () => ({
         init() {

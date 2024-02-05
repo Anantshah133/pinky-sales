@@ -11,6 +11,7 @@ if (isset($_REQUEST["viewId"])) {
     $data = $Resp->fetch_assoc();
     $stmt->close();
 }
+
 if (isset($_REQUEST["save"])) {
     $city_name = $_REQUEST["city_name"];
     $state_name = $_REQUEST["state_id"];
@@ -81,16 +82,16 @@ if (isset($_REQUEST["save"])) {
                 <div>
                     <label for="gridStatus">Status</label>
                     <label class="inline-flex mr-3">
-                        <input type="radio" name="default_radio" value="enable" class="form-radio disabled:text-primary text-primary" 
-                        <?php echo isset($viewId) && $data["status"] == "enable" ? "checked": ""; ?> 
-                        <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>
+                        <input type="radio" name="default_radio" value="enable" class="form-radio disabled:text-primary text-primary" checked
+                            <?php echo isset($viewId) && $data["status"] == "enable" ? "checked": ""; ?> 
+                            <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>
                         required />
                         <span>Enable</span>
                     </label>
                     <label class="inline-flex mr-3">
                         <input type="radio" name="default_radio" value="disable" class="form-radio disabled:text-danger text-danger" 
-                        <?php echo isset($viewId) && $data["status"] == "disable"? "checked": ""; ?> 
-                        <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>
+                            <?php echo isset($viewId) && $data["status"] == "disable"? "checked": ""; ?> 
+                            <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>
                         required />
                         <span>Disable</span>
                     </label>

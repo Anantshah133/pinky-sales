@@ -1,38 +1,32 @@
 <?php
 include "header.php";
-if(isset($_REQUEST['save']))
-{
- 
-  $name = $_REQUEST['name'];
-  $status = $_REQUEST['default_radio'];
- 
-  try
-  {
-    $stmt = $obj->con1->prepare("INSERT INTO `service_type`(`name`,`status`) VALUES (?,?)");
-    $stmt->bind_param("ss",$name,$status);
-    $Resp=$stmt->execute();
-    if(!$Resp)
-    {
-      throw new Exception("Problem in adding! ". strtok($obj->con1-> error,  '('));
+if (isset($_REQUEST["save"])) {
+    $name = $_REQUEST["name"];
+    $status = $_REQUEST["default_radio"];
+
+    try {
+        $stmt = $obj->con1->prepare(
+            "INSERT INTO `service_type`(`name`,`status`) VALUES (?,?)"
+        );
+        $stmt->bind_param("ss", $name, $status);
+        $Resp = $stmt->execute();
+        if (!$Resp) {
+            throw new Exception(
+                "Problem in adding! " . strtok($obj->con1->error, "(")
+            );
+        }
+        $stmt->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
     }
-    $stmt->close();
-    
-  }
-  catch(\Exception  $e) {
-    setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
-  }
 
-
-  if($Resp)
-  {
-    setcookie("msg", "data",time()+3600,"/");
-      header("location:service_type.php");
-  }
-  else
-  {
-    setcookie("msg", "fail",time()+3600,"/");
-      header("location:service_type.php");
-  }
+    if ($Resp) {
+        setcookie("msg", "data", time() + 3600, "/");
+        header("location:service_type.php");
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
+        header("location:service_type.php");
+    }
 }
 ?>
 <div class='p-6' >

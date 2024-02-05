@@ -98,7 +98,7 @@ include "header.php";
         </div>
     </div>
     <div class='mb-6 grid gap-6 xl:grid-cols-3'>
-        <div class="panel h-full xl:col-span-2 shadow-md">
+        <div class="panel xl:col-span-2 shadow-md">
             <div class="mb-5 flex items-center">
                 <h5 class="text-2xl text-primary font-bold dark:text-white-light">
                     Daily Calls
@@ -122,7 +122,7 @@ include "header.php";
                 </div>
             </div>
         </div>
-        <div class="panel h-full shadow-md">
+        <div class="panel shadow-md">
             <div class="mb-5 flex items-center">
                 <h5 class="text-2xl text-primary font-bold dark:text-white-light">Calls Data</h5>
             </div>

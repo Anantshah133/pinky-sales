@@ -20,23 +20,14 @@ if (isset($_REQUEST["save"])) {
     $user_id = $_REQUEST["userid"];
     $pass = $_REQUEST["password"];
     $status = $_REQUEST["default_radio"];
+    $date_time = date("d-m-Y h:i A");
 
     try {
         $idproofImg = uploadImage("idproof_img", "images/technician_idproof");
         $stmt = $obj->con1->prepare(
-            "INSERT INTO `technician`(`name`,`email`,`contact`,`service_center`,`userid`,`password`,`id_proof`,`status`) VALUES (?,?,?,?,?,?,?,?)"
+            "INSERT INTO `technician`(`name`,`email`,`contact`,`service_center`,`userid`,`password`,`id_proof`,`status`,`date_time`) VALUES (?,?,?,?,?,?,?,?,?)"
         );
-        $stmt->bind_param(
-            "sssissss",
-            $name,
-            $email,
-            $contact,
-            $serviceCenterId,
-            $user_id,
-            $pass,
-            $idproofImg,
-            $status
-        );
+        $stmt->bind_param("sssisssss",$name,$email,$contact,$serviceCenterId,$user_id,$pass,$idproofImg,$status,$date_time);
         $Resp = $stmt->execute();
 
         if (!$Resp) {

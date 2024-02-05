@@ -5,12 +5,12 @@ error_reporting(E_ALL);
 if (isset($_REQUEST["save"])) {
     $detail = $_REQUEST["quill_input"];
     $type = $_REQUEST["type"];
-
+    $date_time = date("d-m-Y h:i A");
     try {
         $stmt = $obj->con1->prepare(
-            "INSERT INTO `privacy_policy`(`detail`,`type`) VALUES (?,?)"
+            "INSERT INTO `privacy_policy`(`detail`,`type`,`date_time`) VALUES (?,?,?)"
         );
-        $stmt->bind_param("ss", $detail, $type);
+        $stmt->bind_param("sss", $detail, $type, $date_time);
         $Resp = $stmt->execute();
         $stmt->close();
 

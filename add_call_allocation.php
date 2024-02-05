@@ -151,21 +151,21 @@ error_reporting(E_ALL);
                         <div>
                             <label for="technician"> Technician </label>
                             <select class="form-select text-white-dark" name="" required >
-                    <option value="">Choose...</option>
-                    <?php
-                            $stmt = $obj->con1->prepare(
-                                "SELECT * FROM `technician` WHERE status='enable'"
-                            );
-                            $stmt->execute();
-                            $Res = $stmt->get_result();
-                            $stmt->close();
+                            <option value="">Choose...</option>
+                            <?php
+                                $stmt = $obj->con1->prepare(
+                                    "SELECT * FROM `technician` WHERE status='enable'"
+                                );
+                                $stmt->execute();
+                                $Res = $stmt->get_result();
+                                $stmt->close();
 
-                            while ($result = mysqli_fetch_assoc($Res)) { 
-                        ?>
-                    <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
-                    <?php 
-                            } 
-                        ?>
+                                while ($result = mysqli_fetch_assoc($Res)) { 
+                            ?>
+                                <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                            <?php 
+                                } 
+                            ?>
                 </select>
                         </div>
                         <div>
