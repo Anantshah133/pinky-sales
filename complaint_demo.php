@@ -1,5 +1,26 @@
 <?php
 include "header.php";
+if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
+    try {
+        $stmt_del = $obj->con1->prepare(
+            "delete from customer_reg where id='" . $_REQUEST["id"] . "'"
+        );
+        $Resp = $stmt_del->execute();
+        if (!$Resp) {
+            if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row") {
+                throw new Exception("City is already in use!");
+            }
+        }
+        $stmt_del->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
+    }
+
+    if ($Resp) {
+        setcookie("msg", "data_del",time()+3600,"/");
+    }
+    header("location:complaint_demo.php");
+}
 ?>
 
 <div class='p-6' x-data='exportTable'>
@@ -11,17 +32,11 @@ include "header.php";
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_complaint_demo.php'">
                     <i class="ri-add-line mr-1"></i> Add Complaint
                 </button>
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="exportTable('csv')">
-                    <i class="ri-file-line mr-1"></i> CSV
-                </button>
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="exportTable('txt')">
-                    <i class="ri-file-list-line mr-1"></i> TXT
-                </button>
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="exportTable('json')">
-                    <i class="ri-braces-line mr-1"></i> JSON
-                </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
+                </button>
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="exportTable('csv')">
+                    <i class="ri-file-line mr-1"></i> CSV
                 </button>
             </div>
         </div>
@@ -33,10 +48,10 @@ include "header.php";
 
 <script>
 checkCookies();
-function getActions() {
+function getActions(id) {
     return `<ul class="flex items-center justify-center gap-4">
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="View">
+            <a href="add_complaint_demo.php?viewId=${id}" class='text-xl' x-tooltip="View">
                 <i class="ri-eye-line text-primary"></i>
             </a>
         </li>
@@ -46,7 +61,7 @@ function getActions() {
             </a>
         </li>
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Delete">
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(${id})">
                 <i class="ri-delete-bin-line text-danger"></i>
             </a>
         </li>
@@ -86,7 +101,7 @@ document.addEventListener('alpine:init', () => {
                                 '<?php echo $row['date'] ?>',
                                 '<?php echo $row['time'] ?>',
                                 'New',
-                                getActions()
+                                getActions('<?php echo $row['id'] ?>')
                             ],
                         <?php
                         $id++;
@@ -146,6 +161,21 @@ document.addEventListener('alpine:init', () => {
         },
     }));
 })
+function showAlert(id) {
+    new window.Swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        showCancelButton: true,
+        confirmButtonText: 'Delete',
+        padding: '2em',
+    }).then((result) => {
+        console.log(result)
+        if (result.isConfirmed) {
+            var loc = "complaint_demo.php?flg=del&n_complaintid=" + id;
+            window.location = loc;
+        }
+    });
+}
 </script>
 
 <?php
