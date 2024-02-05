@@ -1,6 +1,17 @@
 <?php
 include "header.php";
 
+if(isset($_REQUEST['editId'])){
+    $mode = 'edit';
+    $editId = $_REQUEST['editId'];
+    $stmt = $obj->con1->prepare("SELECT * FROM `state` WHERE id=?");
+    $stmt->bind_param("i", $editId);
+    $stmt->execute();
+    $Resp = $stmt->get_result();
+    $data = $Resp->fetch_assoc();
+    $stmt->close();
+}
+
 if(isset($_REQUEST['viewId'])){
     $mode = 'view';
     $viewId = $_REQUEST['viewId'];
@@ -9,6 +20,24 @@ if(isset($_REQUEST['viewId'])){
     $Resp = $stmt->get_result();
     $data = $Resp->fetch_assoc();
     $stmt->close();
+}
+
+if(isset($_REQUEST['update'])){
+    $editId = $_REQUEST['editId'];
+    $name = $_REQUEST["name"];
+
+    $stmt = $obj->con1->prepare("UPDATE `state` SET name=? WHERE id=?");
+    $stmt->bind_param("si", $name, $editId);
+    $Res = $stmt->execute();
+    $stmt->close();
+
+    if ($Res) {
+        setcookie("msg", "update", time() + 3600, "/");
+        header("location:state.php");
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
+        header("location:state.php");
+    }
 }
 
 if (isset($_REQUEST["save"])) {
@@ -52,8 +81,8 @@ if (isset($_REQUEST["save"])) {
                         value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required
                         <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
                     />
-                    <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo (isset($mode)) ? 'hidden' : '' ?>">
-                        <button type="submit" name="save" id="save" class="btn btn-success">Save</button>
+                    <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
+                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?></button>
                         <button type="button" class="btn btn-danger" onclick="window.location='state.php'">Close</button>
                     </div>
                 </div>
