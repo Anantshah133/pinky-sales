@@ -1,13 +1,53 @@
 <?php
 include "header.php";
+
+if(isset($_REQUEST['editId'])){
+    $mode = 'edit';
+    $editId = $_REQUEST['editId']; //14
+    
+    $qry = $obj->con1->prepare("SELECT * FROM `service_type` WHERE id=?");
+    $qry->bind_param("i", $editId);
+    $qry->execute();
+    $Res = $qry->get_result();
+    $data = $Res->fetch_assoc();
+    $qry->close();
+}
+
+if(isset($_REQUEST['viewId'])){
+    $mode = 'view';
+    $viewId = $_REQUEST['viewId'];
+    $qry = $obj->con1->prepare("SELECT * FROM `service_type` WHERE id=?");
+    $qry->bind_param("i", $viewId);
+    $qry->execute();
+    $Res = $qry->get_result();
+    $data = $Res->fetch_assoc();
+    $qry->close();
+}
+
+if(isset($_REQUEST['update'])){
+    $name = $_REQUEST["name"];
+    $status = $_REQUEST["default_radio"];
+
+    $qry = $obj->con1->prepare("UPDATE `service_type` SET name=?, status=? WHERE id=?");
+    $qry->bind_param("ssi", $name, $status, $editId);
+    $Res = $qry->execute();
+    $qry->close();
+
+    if ($Res) {
+        setcookie("msg", "update", time() + 3600, "/");
+        header("location:service_type.php");
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
+        header("location:service_type.php");
+    }
+}
+
 if (isset($_REQUEST["save"])) {
     $name = $_REQUEST["name"];
     $status = $_REQUEST["default_radio"];
 
     try {
-        $stmt = $obj->con1->prepare(
-            "INSERT INTO `service_type`(`name`,`status`) VALUES (?,?)"
-        );
+        $stmt = $obj->con1->prepare("INSERT INTO `service_type`(`name`,`status`) VALUES (?,?)");
         $stmt->bind_param("ss", $name, $status);
         $Resp = $stmt->execute();
         if (!$Resp) {
@@ -32,27 +72,35 @@ if (isset($_REQUEST["save"])) {
 <div class='p-6' >
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
-            <h5 class="text-2xl text-primary font-semibold dark:text-white-light">Service Type- Add</h5>
+            <h5 class="text-2xl text-primary font-semibold dark:text-white-light">Service Type - Add</h5>
         </div>
         <div class="mb-5">
             <form class="space-y-5" method="post">
                 <div>
                     <label for="groupFname"> Name</label>
-                    <input id="groupFname" name="name" type="text" class="form-input" required />
+                    <input id="groupFname" name="name" type="text" class="form-input" 
+                    required value="<?php echo isset($mode) ? $data['name'] : '' ?>"
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                 </div>
                 <div>
                     <label for="gridStatus">Status</label>
                     <label class="inline-flex mr-3">
-                        <input type="radio" name="default_radio" value="enable" class="form-radio" checked required />
+                        <input type="radio" name="default_radio" value="enable" class="form-radio" checked required 
+                            <?php echo isset($mode) && $data["status"] == "enable" ? "checked": ""; ?> 
+                            <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>
+                        />
                         <span>Enable</span>
                     </label>
                     <label class="inline-flex mr-3">
-                        <input type="radio" name="default_radio" value="disable" class="form-radio text-danger" required />
+                        <input type="radio" name="default_radio" value="disable" class="form-radio text-danger" required 
+                            <?php echo isset($mode) && $data["status"] == "disable" ? "checked": ""; ?> 
+                            <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>
+                        />
                         <span>Disable</span>
                     </label>
                 </div>
-                    <div class="relative inline-flex align-middle gap-3 mt-4">
-                        <button type="submit" name="save" id="save" class="btn btn-success">Save </button>
+                    <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
+                        <button type="submit" name="<?php echo isset($mode) == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success"><?php echo isset($mode) == 'edit' ? 'Update' : 'Save'  ?></button>
                         <button type="button" class="btn btn-danger" onclick="window.location='service_type.php'"
                         >Close</button>
                     </div>
