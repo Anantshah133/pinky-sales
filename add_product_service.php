@@ -1,5 +1,17 @@
 <?php
 include "header.php";
+
+if (isset($_REQUEST["viewId"])) {
+    $mode = 'view';
+    $viewId = $_REQUEST["viewId"];
+    $stmt = $obj->con1->prepare("SELECT ps1.*, pc1.name AS product_category, s1.name AS service_type FROM product_service ps1, product_category pc1, service_type s1 WHERE ps1.srno=? AND ps1.pid=pc1.id AND ps1.sid=s1.id");
+    $stmt->bind_param('i', $viewId);
+    $stmt->execute();
+    $Resp = $stmt->get_result();
+    $data = $Resp->fetch_assoc();
+    $stmt->close();
+}
+
 if (isset($_REQUEST["save"])) {
     $product = $_REQUEST["product_id"];
     $service = $_REQUEST["service_id"];
@@ -29,7 +41,7 @@ if (isset($_REQUEST["save"])) {
     }
 }
 ?>
-<div class='p-6' >
+<div class='p-6'>
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
             <h5 class="text-xl text-primary font-semibold dark:text-white-light">Product-Service- Add</h5>
@@ -38,8 +50,11 @@ if (isset($_REQUEST["save"])) {
             <form class="space-y-5" method="post">
                 <div>
                     <label for="groupFname"> Product</label>
-                    <select class="form-select text-white-dark" name="product_id" required>
-                        <option value="">Choose Product</option>
+                    <select class="form-select text-white-dark" name="product_id" required
+                        <?php echo (isset($mode) == 'view') ? 'disabled' : '' ?>>
+                        <option value=""><?php echo (isset($mode)) ? $data['product_category'] : 'Choose Product' ?>
+                        </option>
+
                         <?php
                         $stmt = $obj->con1->prepare(
                             "SELECT * FROM `product_category`"
@@ -49,17 +64,18 @@ if (isset($_REQUEST["save"])) {
                         $stmt->close();
 
                         while ($result = mysqli_fetch_array($Resp)) { ?>
-                    <option value="<?php echo $result[
+                        <option value="<?php echo $result[
                         "id"
                     ]; ?>"><?php echo $result["name"]; ?></option>
-                    <?php }
-                        ?>   
+                        <?php }
+                        ?>
                     </select>
                 </div>
                 <div>
                     <label for="groupFname">Service</label>
-                    <select class="form-select text-white-dark" name="service_id" required>
-                        <option value="">Choose Service</option>
+                    <select class="form-select text-white-dark" name="service_id" required
+                        <?php echo (isset($mode)== 'view')?'disabled' :''?>>
+                        <option value=""><?php echo (isset($mode)) ? $data['service_type']:'Choose Service' ?></option>
                         <?php
                         $stmt = $obj->con1->prepare(
                             "SELECT * FROM `service_type`"
@@ -69,11 +85,11 @@ if (isset($_REQUEST["save"])) {
                         $stmt->close();
 
                         while ($result = mysqli_fetch_array($Resp)) { ?>
-                    <option value="<?php echo $result[
+                        <option value="<?php echo $result[
                         "id"
                     ]; ?>"><?php echo $result["name"]; ?></option>
                         <?php }
-                        ?>    
+                        ?>
                     </select>
                 </div>
                 <div>
@@ -83,19 +99,21 @@ if (isset($_REQUEST["save"])) {
                         <span>Enable</span>
                     </label>
                     <label class="inline-flex mr-3">
-                        <input type="radio" name="default_radio" value="disable" class="form-radio text-danger" required />
+                        <input type="radio" name="default_radio" value="disable" class="form-radio text-danger"
+                            required />
                         <span>Disable</span>
                     </label>
                 </div>
-                    
-                    <div class="relative inline-flex align-middle gap-3 mt-4">
-                        <button type="submit" name="save" id="save" class="btn btn-success">Save</button>
-                        <button type="button" class="btn btn-danger" onclick="location.href='product_service.php'">Close</button>
-                    </div>
+
+                <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo (isset($mode)) ? 'hidden' : '' ?>">
+                    <button type="submit" name="save" id="save" class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-danger"
+                        onclick="location.href='product_service.php'">Close</button>
                 </div>
         </div>
-        </form>
     </div>
+    </form>
+</div>
 </div>
 
 <?php include "footer.php";

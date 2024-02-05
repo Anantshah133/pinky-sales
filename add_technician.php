@@ -4,7 +4,7 @@ include "header.php";
 if (isset($_REQUEST["viewId"])) {
     $mode = 'view';
     $viewId = $_REQUEST["viewId"];
-    $stmt = $obj->con1->prepare("SELECT * FROM `technician` where id=?");
+    $stmt = $obj->con1->prepare("SELECT t1.*, s1.name AS service_center FROM technician t1, service_center s1 WHERE t1.id=? AND t1.service_center=s1.id;");
     $stmt->bind_param('i', $viewId);
     $stmt->execute();
     $Resp = $stmt->get_result();
@@ -115,8 +115,8 @@ function uploadImage($inputName, $uploadDirectory)
             <div>
                 <label for="groupFname"> Service Center</label>
 
-                <select class="form-select text-white-dark" name="service_center" required>
-                    <option value="<?php echo (isset($mode)) ? $data['service_center'] : '' ?>">Choose...</option>
+                <select class="form-select text-white-dark" name="service_center" required <?php echo (isset($mode) == 'view') ? 'disabled' : '' ?>>
+                    <option value=""><?php echo (isset($mode)) ? $data['service_center'] : 'Choose service center' ?></option>
                     <?php
                             $stmt = $obj->con1->prepare(
                                 "SELECT * FROM `service_center` WHERE status='enable'"
