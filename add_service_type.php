@@ -1,5 +1,18 @@
 <?php
 include "header.php";
+
+if(isset($_REQUEST['editId'])){
+    $mode = 'edit';
+    $editId = $_REQUEST['editId']; //14
+    
+    $qry = $obj->con1->prepare("SELECT * FROM `service_type` WHERE id=?");
+    $qry->bind_param("i", $editId);
+    $qry->execute();
+    $Res = $qry->get_result();
+    $data = $Res->fetch_assoc();
+    $qry->close();
+}
+
 if(isset($_REQUEST['viewId'])){
     $mode = 'view';
     $viewId = $_REQUEST['viewId'];
@@ -11,6 +24,23 @@ if(isset($_REQUEST['viewId'])){
     $qry->close();
 }
 
+if(isset($_REQUEST['update'])){
+    $name = $_REQUEST["name"];
+    $status = $_REQUEST["default_radio"];
+
+    $qry = $obj->con1->prepare("UPDATE `service_type` SET name=?, status=? WHERE id=?");
+    $qry->bind_param("ssi", $name, $status, $editId);
+    $Res = $qry->execute();
+    $qry->close();
+
+    if ($Res) {
+        setcookie("msg", "update", time() + 3600, "/");
+        header("location:service_type.php");
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
+        header("location:service_type.php");
+    }
+}
 
 if (isset($_REQUEST["save"])) {
     $name = $_REQUEST["name"];
@@ -50,7 +80,7 @@ if (isset($_REQUEST["save"])) {
                     <label for="groupFname"> Name</label>
                     <input id="groupFname" name="name" type="text" class="form-input" 
                     required value="<?php echo isset($mode) ? $data['name'] : '' ?>"
-                    <?php echo isset($mode) == 'view' ? 'readonly' : '' ?> />
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                 </div>
                 <div>
                     <label for="gridStatus">Status</label>
@@ -69,8 +99,8 @@ if (isset($_REQUEST["save"])) {
                         <span>Disable</span>
                     </label>
                 </div>
-                    <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) == 'view' ? 'hidden' : '' ?>">
-                        <button type="submit" name="save" id="save" class="btn btn-success">Save </button>
+                    <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
+                        <button type="submit" name="<?php echo isset($mode) == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success"><?php echo isset($mode) == 'edit' ? 'Update' : 'Save'  ?></button>
                         <button type="button" class="btn btn-danger" onclick="window.location='service_type.php'"
                         >Close</button>
                     </div>

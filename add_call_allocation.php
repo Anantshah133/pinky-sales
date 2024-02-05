@@ -8,9 +8,6 @@ error_reporting(E_ALL);
         $complaintNum = $_POST['complaint_num'];
         $serviceCenterId = $_POST['service_center'];
         $productSerialNum = $_POST['product_srno'];
-        // $serialNumImg = $_POST['srno_img'];
-        // $productModelImg = $_POST['product_model_img'];
-        // $purchaseDateImg = $_POST['purchase_date_img'];
         $productModel = $_POST['product_model'];
         $purchaseDate = $_POST['purchase_date'];
         $technician = $_POST['technician'];
@@ -18,7 +15,8 @@ error_reporting(E_ALL);
         $reason = $_POST['rson'];
         $allocationDate = $_POST['allocation_date'];
         $allocationTime = $_POST['allocation_time'];
-
+        
+        echo $allocationDate. " " . $allocationTime;
 
         try {
             $serialNumImg = uploadImage('srno_img', 'images/serial_no_img');
@@ -49,7 +47,7 @@ error_reporting(E_ALL);
         else {
             setcookie("msg", "fail",time()+3600,"/");
             header("location:call_allocation.php");
-        } 
+        }
     }
 
     function uploadImage($inputName, $uploadDirectory) {
@@ -150,8 +148,8 @@ error_reporting(E_ALL);
                         </div>
                         <div>
                             <label for="technician"> Technician </label>
-                            <select class="form-select text-white-dark" name="" required >
-                            <option value="">Choose...</option>
+                            <select class="form-select text-white-dark" name="technician" required >
+                            <option value="">Choose Technician</option>
                             <?php
                                 $stmt = $obj->con1->prepare(
                                     "SELECT * FROM `technician` WHERE status='enable'"
@@ -172,11 +170,11 @@ error_reporting(E_ALL);
                             <label for="call_status"> Status</label>
                             <select name="call_status" id="call_status" class="form-select text-white-dark" required>
                                 <option value=''>-none-</option>
-                                <option value="1">New</option>
-                                <option value="1">Pending</option>
-                                <option value="1">Canclled</option>
-                                <option value="1">Closed</option>
-                                <option value="1">Allocated</option>
+                                <option value="new">New</option>
+                                <option value="pending">Pending</option>
+                                <option value="cancelled">Cancelled</option>
+                                <option value="closed">Closed</option>
+                                <option value="allocated">Allocated</option>
                             </select>
                         </div>
                         <div>
