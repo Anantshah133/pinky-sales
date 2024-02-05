@@ -11,6 +11,37 @@ if (isset($_REQUEST["viewId"])) {
     $stmt->close();
 }
 
+if(isset($_REQUEST['editId'])){
+    $mode = 'edit';
+    $editId = $_REQUEST["editId"];
+    $stmt = $obj->con1->prepare("SELECT a1.*, s1.name AS state, c1.ctnm AS city FROM `area_pincode` a1, `state` s1, `city` c1 WHERE a1.id=? AND a1.state_id=s1.id AND a1.city_id=c1.srno");
+    $stmt->bind_param("i", $editId);
+    $stmt->execute();
+    $Resp = $stmt->get_result();
+    $data = $Resp->fetch_assoc();
+    $stmt->close();
+}
+
+if(isset($_REQUEST['update'])){
+    $editId = $_REQUEST['editId'];
+    $state_name = $_REQUEST["state_id"];
+    $city_name = $_REQUEST["area_id"];
+    $pincode = $_REQUEST["pincode"];
+
+    $stmt = $obj->con1->prepare("UPDATE `area_pincode` SET state_id=?, city_id=?, pincode=? WHERE id=?");
+    $stmt->bind_param("iisi", $state_name, $city_name, $pincode, $editId);
+    $Res = $stmt->execute();
+    $stmt->close();
+
+    if ($Res) {
+        setcookie("msg", "update", time() + 3600, "/");
+        header("location:area_pincode.php");
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
+        header("location:area_pincode.php");
+    }
+}
+
 if (isset($_REQUEST["save"])) {
     $state_name = $_REQUEST["state_id"];
     $city_name = $_REQUEST["area_id"];
@@ -45,14 +76,16 @@ if (isset($_REQUEST["save"])) {
 <div class='p-6'>
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
-            <h5 class="text-2xl text-primary font-semibold dark:text-white-light">Area Pincode- Add</h5>
+            <h5 class="text-2xl text-primary font-semibold dark:text-white-light">Area Pincode - 
+                <?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View' ) : 'Add' ?>
+            </h5>
         </div>
         <div class="mb-5">
             <form class="space-y-5" method="post">
                 <div>
-                    <label for="groupFname"> State Name</label>
-                    <select class="form-select text-white-dark" onchange="loadCities(this.value)" name="state_id" required <?php echo (isset($mode) == 'view') ? 'disabled' : '' ?>>
-                        <option value=""><?php echo isset($mode) ? $data['state'] : 'Choose State' ?></option>
+                    <label for="groupFname">State Name</label>
+                    <select class="form-select text-white-dark" onchange="loadCities(this.value)" name="state_id" id="stateId" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
+                        <option value="">Choose State</option>
                         <?php
                             $stmt = $obj->con1->prepare("SELECT * FROM `state`");
                             $stmt->execute();
@@ -60,44 +93,59 @@ if (isset($_REQUEST["save"])) {
                             $stmt->close();
                             while ($result = mysqli_fetch_array($Resp)) { 
                         ?>
-                            <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                            <option value="<?php echo $result["id"]; ?>" <?php echo isset($mode) && $result['id'] == $data['state_id'] ? 'selected' : '' ?>>
+                                <?php echo $result["name"]; ?>
+                            </option>
                         <?php 
                             }
                         ?>
                     </select>
                 </div>
                 <div>
-                    
                     <label for="groupFname">City Name</label>
                     <select class="form-select text-white-dark" name="area_id" id="area_id" 
-                    required <?php echo (isset($mode) == 'view') ? 'disabled' : '' ?>>
-                        <option value=""><?php echo isset($mode) ? $data['city'] : 'Choose City' ?></option>
+                    required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
+                        <option value="">
+                            <?php echo isset($mode) && $mode == 'view' ? $data['city'] : 'Choose City'; ?>
+                        </option>
                     </select>
                 </div>
                 <div>
                     <label for="groupFname"> Pincode </label>
                     <input id="groupFname" name="pincode" type="text" class="form-input" 
-                    <?php echo (isset($mode) == 'view') ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['pincode'] : '' ?>" />
-                    <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) == 'view' ? 'hidden' : '' ?>">
-                        <button type="submit" name="save" id="save" class="btn btn-success">Save </button>
-                        <button type="button" class="btn btn-danger" onclick="window.location='area_pincode.php'">Close</button>
-                    </div>
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['pincode'] : '' ?>" />    
+                </div>
+                <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
+                    <button type="submit" name="<?php echo isset($mode) == 'edit' ? 'update' : 'save'; ?>" id="save" class="btn btn-success"><?php echo isset($mode) == 'edit' ? 'Update' : 'Save'; ?> </button>
+                    <button type="button" class="btn btn-danger" onclick="window.location='area_pincode.php'">Close</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
+
 <script>
-function loadCities(stid) {
-    const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "getcities.php?sid=" + stid);
-    xhttp.send();
-    xhttp.onload = function() {
-        document.getElementById("area_id").innerHTML = xhttp.responseText;
+    function loadCities(stid, ctid = 0) {
+        const xhttp = new XMLHttpRequest();
+        xhttp.open("GET", `getcities.php?sid=${stid}&ctid=${ctid}`);
+        xhttp.send();
+        xhttp.onload = function() {
+            document.getElementById("area_id").innerHTML = xhttp.responseText;
+        }
     }
-}
 </script>
+<?php 
+    if(isset($mode) && $mode == 'edit'){
+        echo "
+            <script>
+                const stid = document.getElementById('stateId').value;
+                const ctid =". json_encode($data['city_id']) .";
+                loadCities(stid, ctid);
+            </script>
+        ";
+    }
+?>
 <?php
 include "footer.php";
 ?>
