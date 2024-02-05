@@ -1,6 +1,17 @@
 <?php
 include "header.php";
 
+if (isset($_REQUEST["viewId"])) {
+    $mode = 'view';
+    $viewId = $_REQUEST["viewId"];
+    $stmt = $obj->con1->prepare("SELECT * FROM `technician` where id=?");
+    $stmt->bind_param('i', $viewId);
+    $stmt->execute();
+    $Resp = $stmt->get_result();
+    $data = $Resp->fetch_assoc();
+    $stmt->close();
+}
+
 if (isset($_REQUEST["save"])) {
     $name = $_REQUEST["name"];
     $email = $_REQUEST["email"];
@@ -87,28 +98,34 @@ function uploadImage($inputName, $uploadDirectory)
 <div class='p-6'>
     <div class="panel border shadow-md shadow-slate-200">
         <div class="mb-5 flex items-center justify-between">
-            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Technician Add</h5>
+            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Technician -
+                <?php echo isset($mode) == 'view' ? 'View' : 'Add' ?></h5>
         </div>
 
         <form class="space-y-5" method="post" enctype="multipart/form-data">
             <div>
                 <label for="groupFname"> Name</label>
-                <input id="groupFname" type="text" name="name" placeholder="Enter Name" class="form-input" required />
+                <input id="groupFname" type="text" name="name" placeholder="Enter Name" class="form-input"
+                    value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
             </div>
             <div>
                 <label for="ctnEmail">Email address</label>
                 <input id="ctnEmail" type="email" name="email" placeholder="name@example.com" class="form-input"
-                    required />
+                    value="<?php echo (isset($mode)) ? $data['email'] : '' ?>" required
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
             </div>
             <div>
                 <label for="groupFname">Contact</label>
-                <input id="groupFname" type="text" name="contact" placeholder="" class="form-input" required />
+                <input id="groupFname" type="text" name="contact" placeholder="" class="form-input"
+                    value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" required
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
             </div>
             <div>
                 <label for="groupFname"> Service Center</label>
 
-                <select class="form-select text-white-dark" name="service_center" required >
-                    <option value="">Choose...</option>
+                <select class="form-select text-white-dark" name="service_center" required>
+                    <option value="<?php echo (isset($mode)) ? $data['service_center'] : '' ?>">Choose...</option>
                     <?php
                             $stmt = $obj->con1->prepare(
                                 "SELECT * FROM `service_center` WHERE status='enable'"
@@ -119,19 +136,23 @@ function uploadImage($inputName, $uploadDirectory)
 
                             while ($result = mysqli_fetch_assoc($Res)) { 
                         ?>
-                            <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
-                        <?php 
+                    <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                    <?php 
                             } 
                         ?>
                 </select>
             </div>
             <div>
                 <label for="gridUID">Userid</label>
-                <input type="text" placeholder="" name="userid" class="form-input" required />
+                <input type="text" placeholder="" name="userid" class="form-input"
+                    value="<?php echo (isset($mode)) ? $data['userid'] : '' ?>" required
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
             </div>
             <div>
                 <label for="gridpass">Password</label>
-                <input type="password" placeholder="Enter Password" name="password" class="form-input" required />
+                <input type="password" placeholder="Enter Password" name="password" class="form-input"
+                    value="<?php echo (isset($mode)) ? $data['password'] : '' ?>" required
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
             </div>
             <div>
                 <label for="idproof_img"> Id Proof </label>
@@ -139,7 +160,8 @@ function uploadImage($inputName, $uploadDirectory)
                     class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
                     required onchange="readURL(this, 'previewModalImage', 'errModalImg')" />
 
-                <img src="" class="mt-8 hidden w-80 preview-img" alt="" id="previewModalImage">
+                <img src="<?php echo (isset($mode)) ? 'images/technician_idproof/'.$data['id_proof'] : '' ?>"
+                    class="mt-8  w-80 preview-img" alt="" id="previewModalImage" value="  ">
                 <h6 id='errModalImg' class='error-elem'></h6>
             </div>
             <div>
@@ -153,7 +175,7 @@ function uploadImage($inputName, $uploadDirectory)
                     <span>Disable</span>
                 </label>
             </div>
-            <div class="relative inline-flex align-middle gap-3 mt-4">
+            <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo (isset($mode)) ? 'hidden' : '' ?>">
                 <button type="submit" class="btn btn-success" name="save" id="save_btn">Save</button>
                 <button type="button" class="btn btn-danger" onclick="location.href='technician.php'">Close</button>
             </div>
