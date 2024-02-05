@@ -12,6 +12,37 @@ if (isset($_REQUEST["viewId"])) {
     $stmt->close();
 }
 
+if(isset($_REQUEST['editId'])){
+    $mode = 'edit';
+    $editId = $_REQUEST['editId'];
+    $stmt = $obj->con1->prepare("SELECT * FROM `city` where srno=?");
+    $stmt->bind_param("i", $editId);
+    $stmt->execute();
+    $Resp = $stmt->get_result();
+    $data = $Resp->fetch_assoc();
+    $stmt->close();
+}
+
+if(isset($_REQUEST['update'])){
+    $editId = $_REQUEST['editId'];
+    $state_id = $_REQUEST["state_id"];
+    $city_name = $_REQUEST['city_name'];
+    $status = $_REQUEST["default_radio"];
+
+    $stmt = $obj->con1->prepare("UPDATE `city` SET ctnm=?, state_id=?, status=? WHERE srno=?");
+    $stmt->bind_param("sisi", $city_name, $state_id, $status, $editId);
+    $Res = $stmt->execute();
+    $stmt->close();
+
+    if ($Res) {
+        setcookie("msg", "update", time() + 3600, "/");
+        header("location:city.php");
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
+        header("location:city.php");
+    }
+}
+
 if (isset($_REQUEST["save"])) {
     $city_name = $_REQUEST["city_name"];
     $state_name = $_REQUEST["state_id"];
@@ -45,37 +76,38 @@ if (isset($_REQUEST["save"])) {
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
             <h5 class="text-2xl text-primary font-semibold dark:text-white-light">
-                City - <?php echo isset($mode) == 'view' ? 'View' : 'Add' ?>
+                City - <?php echo isset($mode) ? ($mode == 'view' ? 'View' : ($mode == 'edit' ? 'Edit' : 'Add')) : 'Add'; ?>
             </h5>
         </div>
         <div class="mb-5">
             <form class="space-y-5" method="post">
                 <div>
                     <label for="groupFname">State Name</label>
-                    <select class="form-select text-white-dark" name="state_id" 
+                    <select class="form-select text-gray-500" name="state_id" 
                     <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> required>
                         <option value="">Choose State</option>
-                    <?php
-                        $stmt = $obj->con1->prepare("SELECT * FROM `state`");
-                        $stmt->execute();
-                        $Resp = $stmt->get_result();
-                        $stmt->close();
+                        <?php
+                            $stmt = $obj->con1->prepare("SELECT * FROM `state`");
+                            $stmt->execute();
+                            $Resp = $stmt->get_result();
+                            $stmt->close();
 
-                        while ($result = mysqli_fetch_array($Resp)) { 
-                    ?>
-                        <option value="<?php echo $result["id"]; ?>"
-                            <?php echo isset($viewId) && $data["state_id"] == $result["id"] ? "selected" : ""; ?> 
-                        >
-                            <?php echo $result["name"]; ?>
-                        </option>
-                    <?php }
-                    ?>
+                            while ($result = mysqli_fetch_array($Resp)) { 
+                        ?>
+                            <option value="<?php echo $result["id"]; ?>"
+                                <?php echo isset($mode) && $data["state_id"] == $result["id"] ? "selected" : ""; ?> 
+                            >
+                                <?php echo $result["name"]; ?>
+                            </option>
+                        <?php 
+                            }
+                        ?>
                     </select>
                 </div>
                 <div>
                     <label for="city_name">City Name </label>
                     <input id="city_name" name="city_name" type="text" class="form-input" 
-                    value="<?php echo isset($viewId) ? $data["ctnm"] : ""; ?>" 
+                    value="<?php echo isset($mode) ? $data["ctnm"] : ""; ?>" 
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
                     required/>
                 </div>    
@@ -83,14 +115,14 @@ if (isset($_REQUEST["save"])) {
                     <label for="gridStatus">Status</label>
                     <label class="inline-flex mr-3">
                         <input type="radio" name="default_radio" value="enable" class="form-radio disabled:text-primary text-primary" checked
-                            <?php echo isset($viewId) && $data["status"] == "enable" ? "checked": ""; ?> 
+                            <?php echo isset($mode) && $data["status"] == "enable" ? "checked": ""; ?> 
                             <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>
                         required />
                         <span>Enable</span>
                     </label>
                     <label class="inline-flex mr-3">
                         <input type="radio" name="default_radio" value="disable" class="form-radio disabled:text-danger text-danger" 
-                            <?php echo isset($viewId) && $data["status"] == "disable"? "checked": ""; ?> 
+                            <?php echo isset($mode) && $data["status"] == "disable"? "checked": ""; ?> 
                             <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>
                         required />
                         <span>Disable</span>
@@ -98,7 +130,7 @@ if (isset($_REQUEST["save"])) {
                 </div>
                     
                     <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($viewId)? "hidden" : ""; ?>">
-                        <button type="submit" name="save" id="save" class="btn btn-success">Save </button>
+                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?> </button>
                         <button type="button" class="btn btn-danger" 
                         onclick="window.location='city.php'">Close</button>
                     </div>

@@ -15,7 +15,8 @@ if(isset($_REQUEST['editId'])){
 if(isset($_REQUEST['viewId'])){
     $mode = 'view';
     $viewId = $_REQUEST['viewId'];
-    $stmt = $obj->con1->prepare("SELECT * FROM `state`");
+    $stmt = $obj->con1->prepare("SELECT * FROM `state` WHERE id=?");
+    $stmt->bind_param("i", $viewId);
     $stmt->execute();
     $Resp = $stmt->get_result();
     $data = $Resp->fetch_assoc();
@@ -70,7 +71,7 @@ if (isset($_REQUEST["save"])) {
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
             <h5 class="text-2xl text-primary font-semibold dark:text-white-light">State - 
-                <?php echo isset($mode) == 'view' ? 'View' : 'Add' ?>
+                <?php echo isset($mode) == 'view' ? 'View' : (isset($mode) == 'Edit' ? 'Edit' : 'Add') : 'Add' ?>
             </h5>
         </div>
         <div class="mb-5">
