@@ -3,7 +3,7 @@ include "header.php";
 if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     try {
         $stmt_del = $obj->con1->prepare(
-            "delete from customer_reg where id='" . $_REQUEST["id"] . "'"
+            "delete from customer_reg where id='" . $_REQUEST["n_complaintid"] . "'"
         );
         $Resp = $stmt_del->execute();
         if (!$Resp) {
