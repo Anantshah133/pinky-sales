@@ -1,6 +1,17 @@
 <?php
 include "header.php";
 
+if (isset($_REQUEST["viewId"])) {
+    $mode = 'view';
+    $viewId = $_REQUEST["viewId"];
+    $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg` where id=?");
+    $stmt->bind_param('i', $viewId);
+    $stmt->execute();
+    $Resp = $stmt->get_result();
+    $data = $Resp->fetch_assoc();
+    $stmt->close();
+}
+
 if (isset($_POST['save_btn'])) {
     $fname = $_REQUEST['fname'];
     $lname = $_REQUEST['lname'];
@@ -93,23 +104,28 @@ if (isset($_POST['save_btn'])) {
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
                             <label for="fname"> First Name </label>
-                            <input name="fname" id="fname" type="text" class="form-input" required />
+                            <input name="fname" id="fname" type="text" class="form-input" value="<?php echo (isset($mode)) ? $data['fname'] : '' ?>" required
+                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
                         </div>
                         <div>
                             <label for="lname"> Last Name </label>
-                            <input name="lname" id="lname" type="text" class="form-input" required />
+                            <input name="lname" id="lname" type="text" class="form-input" value="<?php echo (isset($mode)) ? $data['lname'] : '' ?>" required
+                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
                         </div>
                         <div>
                             <label for="mail">Email</label>
-                            <input name="mail" id="mail" type="email" class="form-input" required />
+                            <input name="mail" id="mail" type="email" class="form-input" value="<?php echo (isset($mode)) ? $data['email'] : '' ?>" required
+                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
                         </div>
                         <div>
                             <label for="contact_num"> Contact </label>
-                            <input name="contact_num" id="contact_num" type="number" class="form-input" required />
+                            <input name="contact_num" id="contact_num" type="tel" class="form-input" value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" required
+                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
                         </div>
                         <div>
                             <label for="alt_contact_num"> Alternate Contact </label>
-                            <input name="alt_contact_num" id="alt_contact_num" type="number" class="form-input" />
+                            <input name="alt_contact_num" id="alt_contact_num" type="tel" class="form-input" value="<?php echo (isset($mode)) ? $data['alternate_contact'] : '' ?>" required
+                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> /> 
                         </div>
                         <div>
                             <label for="area"> City </label>
@@ -130,13 +146,15 @@ if (isset($_POST['save_btn'])) {
                         </div>
                         <div>
                             <label for="address"> Address </label>
-                            <textarea autocomplete="on" name="address" id="address" class="form-textarea" rows="2"></textarea>
+                            <textarea autocomplete="on" name="address" id="address" class="form-textarea" rows="2" value="" required
+                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>><?php echo (isset($mode)) ? $data['address'] : '' ?></textarea>
                         </div>
                     </div>
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
                             <label for="pincode"> Pincode </label>
-                            <input name="pincode" id="pincode" type="number" class="form-input" />
+                            <input name="pincode" id="pincode" type="number" class="form-input" value="<?php echo (isset($mode)) ? $data['zipcode'] : '' ?>" required
+                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> /> 
                         </div>
                         <div>
                             <label for="service_type"> Service Type </label>
@@ -148,7 +166,7 @@ if (isset($_POST['save_btn'])) {
                                     $Resp = $query->get_result();
                                     while($row = mysqli_fetch_array($Resp)){
                                 ?>
-                                    <option value="<?php echo $row['id'] ?>"><?php echo $row['name'] ?></option>
+                                    <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
                                 <?php 
                                     }
                                     $query->close();
@@ -165,7 +183,7 @@ if (isset($_POST['save_btn'])) {
                                     $Resp = $query->get_result();
                                     while($row = mysqli_fetch_array($Resp)){
                                 ?>
-                                    <option value="<?php echo $row['id'] ?>"><?php echo $row['name'] ?></option>
+                                   <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
                                 <?php 
                                     }
                                     $query->close();
@@ -174,19 +192,22 @@ if (isset($_POST['save_btn'])) {
                         </div>
                         <div>
                             <label for="dealer_name"> Dealer Name </label>
-                            <input name="dealer_name" id="dealer_name" type="text" class="form-input" required />
+                            <input name="dealer_name" id="dealer_name" type="text" class="form-input" value="<?php echo (isset($mode)) ? $data['dealer_name'] : '' ?>" required
+                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> /> 
                         </div>
                         <div x-data="cmplnDate">
                             <label>Date </label>
-                            <input x-model="date2" name="complaint_date" id="complaint_date" class="form-input" />
+                            <input x-model="date2" name="complaint_date" id="complaint_date" class="form-input" value="<?php echo (isset($mode)) ? $data['date'] : '' ?>" required
+                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> /> 
                         </div>
                         <div x-data="complaintTime">
                             <label>Time </label>
-                            <input x-model="time" name="complaint_time" id="complaint_time" class="form-input" />
+                            <input x-model="time" name="complaint_time" id="complaint_time" class="form-input" value="<?php echo (isset($mode)) ? $data['time'] : '' ?>" required
+                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />  
                         </div>
                     </div>
                 </div>
-                <div class="relative inline-flex align-middle gap-3 mt-10">
+                <div class="relative inline-flex align-middle gap-3 mt-10 <?php echo (isset($mode)) ? 'hidden' : '' ?>">
                     <button type="submit" id="save_btn" name="save_btn" class="btn btn-success">Save</button>
                     <button type="button" id="close_btn" name="close_btn" class="btn btn-danger" onclick="window.location='complaint_demo.php'">Close</button>
                 </div>
