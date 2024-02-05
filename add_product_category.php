@@ -1,5 +1,16 @@
 <?php
 include "header.php";
+if (isset($_REQUEST["viewId"])) {
+    $mode = 'view';
+    $viewId = $_REQUEST["viewId"];
+    $stmt = $obj->con1->prepare("SELECT * FROM `product_category` where id=?");
+    $stmt->bind_param('i', $viewId);
+    $stmt->execute();
+    $Resp = $stmt->get_result();
+    $data = $Resp->fetch_assoc();
+    $stmt->close();
+}
+
 if (isset($_REQUEST["save"])) {
     $name = $_REQUEST["name"];
 
@@ -37,10 +48,11 @@ if (isset($_REQUEST["save"])) {
             <form class="space-y-5" method="post">
                 <div>
                     <label for="groupFname">Name</label>
-                    <input id="groupFname" name="name" type="text" class="form-input" required />
+                    <input id="groupFname" name="name" type="text" class="form-input" value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
                 </div>
-                <div class="relative inline-flex align-middle gap-3 mt-4">
-                    <button type="submit" name="save" id="save" class="btn btn-success">Save</button>
+                <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo (isset($mode)) ? 'hidden' : '' ?>">
+                    <button type="submit" name="save" id="save" class="btn btn-success ">Save</button>
                     <button type="button" class="btn btn-danger" onclick="window.location='service_type.php'">Close</button>
                 </div>
             </form>
