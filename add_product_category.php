@@ -1,5 +1,34 @@
 <?php
 include "header.php";
+
+if(isset($_REQUEST['editId'])){
+    $mode = 'edit';
+    $editId = $_REQUEST['editId']; //14
+
+    $qry = $obj->con1->prepare("SELECT * FROM `product_category` WHERE  id=?");
+    $qry->bind_param("i", $editId);
+    $qry->execute();
+    $Res = $qry->get_result();
+    $data = $Res->fetch_assoc();
+    $qry->close();
+}
+if(isset($_REQUEST['update'])){
+    $name = $_REQUEST["name"];
+    
+
+    $qry = $obj->con1->prepare("UPDATE `product_category` SET name=? WHERE id=?");
+    $qry->bind_param("si", $name,$editId);
+    $Res = $qry->execute();
+    $qry->close();
+
+    if ($Res) {
+        setcookie("msg", "update", time() + 3600, "/");
+        header("location:product_category.php");
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
+        header("location:product_category.php");
+    }
+}
 if (isset($_REQUEST["viewId"])) {
     $mode = 'view';
     $viewId = $_REQUEST["viewId"];
@@ -42,7 +71,7 @@ if (isset($_REQUEST["save"])) {
 <div class='p-6' >
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
-            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Product Category- Add</h5>
+            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Product Category-<?php echo isset($mode) == 'view' ? 'View' : 'Add' ?></h5>
         </div>
         <div class="mb-5">
             <form class="space-y-5" method="post">
@@ -51,9 +80,9 @@ if (isset($_REQUEST["save"])) {
                     <input id="groupFname" name="name" type="text" class="form-input" value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
                 </div>
-                <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo (isset($mode)) ? 'hidden' : '' ?>">
-                    <button type="submit" name="save" id="save" class="btn btn-success ">Save</button>
-                    <button type="button" class="btn btn-danger" onclick="window.location='service_type.php'">Close</button>
+                <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
+                <button type="submit" name="<?php echo isset($mode) == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success"><?php echo isset($mode) == 'edit' ? 'Update' : 'Save'  ?></button>
+                    <button type="button" class="btn btn-danger" onclick="window.location='product_category.php'">Close</button>
                 </div>
             </form>
         </div>
