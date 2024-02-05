@@ -3,9 +3,7 @@ include "header.php";
 if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     try {
         $stmt_del = $obj->con1->prepare(
-            "delete from service_type where id='" .
-                $_REQUEST["n_servicetypeid"] .
-                "'"
+            "delete from service_type where id='" .$_REQUEST["n_servicetypeid"] ."'"
         );
         $Resp = $stmt_del->execute();
         if (!$Resp) {
@@ -55,7 +53,7 @@ checkCookies();
 function getActions(id) {
     return `<ul class="flex items-center gap-4">
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="View">
+            <a href="add_service_type.php?viewId=${id}" class='text-xl' x-tooltip="View">
                 <i class="ri-eye-line text-primary"></i>
             </a>
         </li>
@@ -65,7 +63,7 @@ function getActions(id) {
             </a>
         </li>
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Delete"  @click="showAlert(` + id + `)">
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete"  @click="showAlert(${id})">
                 <i class="ri-delete-bin-line text-danger"></i>
             </a>
         </li>
