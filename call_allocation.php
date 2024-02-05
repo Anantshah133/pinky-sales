@@ -28,10 +28,10 @@ include "header.php";
 <script>
 checkCookies();
 
-function getActions() {
+function getActions(id) {
     return `<ul class="flex items-center justify-center gap-4">
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="View">
+            <a href="add_call_allocation.php?viewId=${id}" class='text-xl' x-tooltip="View">
                 <i class="ri-eye-line text-primary"></i>
             </a>
         </li>
@@ -57,7 +57,7 @@ document.addEventListener('alpine:init', () => {
             this.datatable = new simpleDatatables.DataTable('#call-table', {
                 data: {
                     headings: ['Sr.No.', 'Complaint No.', 'Service Center', 'Technician',
-                        'Allocation Date', 'Status', 'Allocation Time',
+                        'Allocation Date', 'Allocation Time', 'Status',
                         'Reason', 'Customer Name', 'Customer Contact',
                         'Product Category', 'Action'
                     ],
@@ -74,12 +74,13 @@ document.addEventListener('alpine:init', () => {
                                 '<?php echo $row['service_center_name'] ?>',
                                 '<?php echo $row['technician_name'] ?>',
                                 '<?php echo $row['allocation_date'] ?>',
-                                '<?php echo $row['status'] ?>',
                                 '<?php echo $row['allocation_time'] ?>',
+                                '<?php echo $row['status'] ?>',
                                 '<?php echo $row['reason'] ?>',
                                 '<?php echo $row['customer_name'] ?>',
                                 '<?php echo $row['customer_contact'] ?>',
-                                '<?php echo $row['product_category_name'] ?>', getActions()
+                                '<?php echo $row['product_category_name'] ?>',
+                                getActions(<?php echo $row['id'] ?>)
                             ],
                         <?php
                             $i++;
