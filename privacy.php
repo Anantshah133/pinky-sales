@@ -52,14 +52,14 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 <script>
 checkCookies();
 function getActions(id) {
-    return `<ul class="flex items-center  gap-4">
+    return `<ul class="flex items-center gap-4">
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="View">
+            <a href="add_privacy.php?viewId=${id}" class='text-xl' x-tooltip="View">
                 <i class="ri-eye-line text-primary"></i>
             </a>
         </li>
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Edit">
+            <a href="add_privacy.php?editId=${id}" class='text-xl' x-tooltip="Edit">
                 <i class="ri-pencil-line text text-success"></i>
             </a>
         </li>

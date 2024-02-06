@@ -71,7 +71,7 @@ if (isset($_REQUEST["save"])) {
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
             <h5 class="text-2xl text-primary font-semibold dark:text-white-light">State - 
-                <?php echo isset($mode) == 'view' ? 'View' : (isset($mode) == 'Edit' ? 'Edit' : 'Add') : 'Add' ?>
+                <?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View') : 'Add' ?>
             </h5>
         </div>
         <div class="mb-5">
