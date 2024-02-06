@@ -5,6 +5,17 @@ if (isset($_REQUEST["viewId"])) {
     $mode = 'view';
     $viewId = $_REQUEST["viewId"];
     $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg` where id=?");
+    $stmt->bind_param("i", $viewId);
+    $stmt->execute();
+    $Resp = $stmt->get_result();
+    $data = $Resp->fetch_assoc();
+    $stmt->close();
+}
+
+if (isset($_REQUEST["editId"])) {
+    $mode = 'edit';
+    $viewId = $_REQUEST["editId"];
+    $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg` where id=?");
     $stmt->bind_param('i', $viewId);
     $stmt->execute();
     $Resp = $stmt->get_result();
@@ -12,7 +23,8 @@ if (isset($_REQUEST["viewId"])) {
     $stmt->close();
 }
 
-if (isset($_POST['save_btn'])) {
+if(isset($_REQUEST['update'])){
+    $editId = $_REQUEST['editId'];
     $fname = $_REQUEST['fname'];
     $lname = $_REQUEST['lname'];
     $email = $_REQUEST['mail'];
@@ -22,7 +34,39 @@ if (isset($_POST['save_btn'])) {
     $area = $_REQUEST['area'];
     $address = $_REQUEST['address'];
     $pincode = $_REQUEST['pincode'];
-    //$complaint_no = 'ORP3101240010';
+    $service_type = $_REQUEST['service_type'];
+    $product_category = $_REQUEST['product_category'];
+    $dealer_name = $_REQUEST['dealer_name'];
+    $date = $_REQUEST['complaint_date'];
+    $time = $_REQUEST['complaint_time'];
+    $day = Date("d");
+    $month = Date("m");
+    $year = Date("y");
+
+    $stmt = $obj->con1->prepare("UPDATE `customer_reg` SET fname=?,lname=?,email=?,contact=?,alternate_contact=?,area=?,map_location=?,address=?,zipcode=?,complaint_no=?,service_type=?,product_category=?,dealer_name=?,date=?,time=?  WHERE id=?");
+    $stmt->bind_param("sssssisssssisssi", $fname, $lname, $email, $contact, $alt_contact, $area, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $date, $time, $editId);
+    $Res = $stmt->execute();
+    $stmt->close();
+
+    if ($Res) {
+        setcookie("msg", "update", time() + 3600, "/");
+        header("location:complaint_demo.php");
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
+        header("location:complaint_demo.php");
+    }
+}
+
+if (isset($_POST['save'])) {
+    $fname = $_REQUEST['fname'];
+    $lname = $_REQUEST['lname'];
+    $email = $_REQUEST['mail'];
+    $contact = $_REQUEST['contact_num'];
+    $alt_contact = $_REQUEST['alt_contact_num'];
+    $map_location = $_REQUEST['map_location'];
+    $area = $_REQUEST['area'];
+    $address = $_REQUEST['address'];
+    $pincode = $_REQUEST['pincode'];
     $service_type = $_REQUEST['service_type'];
     $product_category = $_REQUEST['product_category'];
     $dealer_name = $_REQUEST['dealer_name'];
@@ -96,8 +140,10 @@ if (isset($_POST['save_btn'])) {
 <div class='p-6'>
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-5'>
-            <h5 class="text-2xl text-primary font-semibold dark:text-white-light">Add - Complaint / Demo</h5>
-        </div>
+            <h5 class="text-2xl text-primary font-semibold dark:text-white-light">Complaint / Demo -
+            <?php echo isset($mode) ? ($mode == 'view' ? 'View' : ($mode == 'edit' ? 'Edit' : 'Add')) : 'Add'; ?>
+            </h5>
+        </div> 
         <div class="mb-5">
             <form id="call_form" method="post" onsubmit="" enctype="multipart/form-data">
                 <div class="flex flex-wrap">
@@ -137,7 +183,11 @@ if (isset($_POST['save_btn'])) {
                                     $Resp = $query->get_result();
                                     while($row = mysqli_fetch_array($Resp)){
                                 ?>
-                                    <option value="<?php echo $row['srno'] ?>"><?php echo $row['ctnm'] ?></option>
+                                    <option value="<?php echo $row['srno'] ?>"
+                                        <?php echo isset($mode) && $row['srno'] == $data['area'] ? 'selected' : '' ?>
+                                    >
+                                        <?php echo $row['ctnm'] ?>
+                                    </option>
                                 <?php 
                                     }
                                     $query->close();
@@ -166,7 +216,11 @@ if (isset($_POST['save_btn'])) {
                                     $Resp = $query->get_result();
                                     while($row = mysqli_fetch_array($Resp)){
                                 ?>
-                                    <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                                    <option value="<?php echo $row["id"]; ?>"
+                                    <?php echo isset($mode) && $row['id'] == $data['service_type'] ? 'selected' : '' ?>
+                                    >
+                                        <?php echo $row["name"]; ?>
+                                    </option>
                                 <?php 
                                     }
                                     $query->close();
@@ -183,7 +237,10 @@ if (isset($_POST['save_btn'])) {
                                     $Resp = $query->get_result();
                                     while($row = mysqli_fetch_array($Resp)){
                                 ?>
-                                   <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                                    <option value="<?php echo $row["id"]; ?>" <?php echo isset($mode) && $row['id'] == $data['product_category'] ? 'selected' : '' ?>
+                                    >
+                                        <?php echo $row["name"]; ?>
+                                    </option>
                                 <?php 
                                     }
                                     $query->close();
@@ -207,8 +264,8 @@ if (isset($_POST['save_btn'])) {
                         </div>
                     </div>
                 </div>
-                <div class="relative inline-flex align-middle gap-3 mt-10 <?php echo (isset($mode)) ? 'hidden' : '' ?>">
-                    <button type="submit" id="save_btn" name="save_btn" class="btn btn-success">Save</button>
+                <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? "hidden" : ""; ?>">
+                    <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?> </button>
                     <button type="button" id="close_btn" name="close_btn" class="btn btn-danger" onclick="window.location='complaint_demo.php'">Close</button>
                 </div>
                 <!------ Hidden Inputs ------>
