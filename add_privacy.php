@@ -2,6 +2,48 @@
 include "header.php";
 error_reporting(E_ALL);
 
+if (isset($_REQUEST["viewId"])) {
+    $mode = 'view';
+    $viewId = $_REQUEST["viewId"];
+    $stmt = $obj->con1->prepare("SELECT * FROM privacy_policy where id=?");
+    $stmt->bind_param('i', $viewId);
+    $stmt->execute();
+    $Resp = $stmt->get_result();
+    $data = $Resp->fetch_assoc();
+    $stmt->close();
+}
+
+if(isset($_REQUEST['editId'])){
+    $mode = 'edit';
+    $editId = $_REQUEST['editId'];
+    $stmt = $obj->con1->prepare("SELECT * FROM `privacy_policy` where id=?");
+    $stmt->bind_param("i", $editId);
+    $stmt->execute();
+    $Res = $stmt->get_result();
+    $data = $Res->fetch_assoc();
+    $stmt->close();
+}
+
+if(isset($_REQUEST['update'])){
+    $detail = $_REQUEST["quill_input"];
+    $type = $_REQUEST["type"];
+    $date_time = date("d-m-Y h:i A");
+    $editId = $_REQUEST['editId'];
+
+    $stmt = $obj->con1->prepare("UPDATE `privacy_policy` SET detail=?, type=?, date_time=? WHERE id=?");
+    $stmt->bind_param("sssi", $detail, $type, $date_time, $editId);
+    $Res = $stmt->execute();
+    $stmt->close();
+
+    if ($Res) {
+        setcookie("msg", "update", time() + 3600, "/");
+        header("location:privacy.php");
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
+        header("location:privacy.php");
+    }
+}
+
 if (isset($_REQUEST["save"])) {
     $detail = $_REQUEST["quill_input"];
     $type = $_REQUEST["type"];
@@ -36,25 +78,29 @@ if (isset($_REQUEST["save"])) {
 <div class='p-6'>
     <div class="panel border shadow-md shadow-slate-200">
         <div class="mb-5 flex items-center justify-between">
-            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Privacy Policy Add</h5>
+        <h5 class="text-xl text-primary font-semibold dark:text-white-light">Privacy Policy -
+            <?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View' ) : 'Add' ?>
+        </h5>
         </div>
         <form method="post" class="space-y-5" id="privacy_form">
             <div>
                 <label for="">Type</label>
-                <select class="form-select text-white-dark" required name="type">
+                <select class="form-select text-white-dark" required name="type" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>>
                     <option value="">Choose Type</option>
-                    <option value="user">User</option>
-                    <option value="service">Service-center</option>
-                    <option value="technician">Technician</option>
+                    <option value="user" <?php echo isset($mode) && $data['type'] == 'user' ? 'selected' : '' ?> >User</option>
+                    <option value="service" <?php echo isset($mode) && $data['type'] == 'service' ? 'selected' : '' ?> >Service-center</option>
+                    <option value="technician" <?php echo isset($mode) && $data['type'] == 'technician' ? 'selected' : '' ?>>Technician</option>
                 </select>
             </div>
             <div>
                 <label for="" class="mb-3 block">Detail</label>
-                <div id="editor" name="detail" class="!mt-1"></div>
+                <div id="editor" name="detail" class="!mt-1">
+                    <?php echo isset($mode) ? $data['detail'] : '' ?>
+                </div>
             </div>
-            <div class="relative inline-flex align-middle gap-5 mt-4">
-                <button type="submit" name="save" id="save" class="btn btn-success"
-                    onclick="formSubmit('quill-input')">Save</button>
+            <div class="relative inline-flex align-middle gap-5 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
+                <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success"
+                    onclick="formSubmit('quill-input')"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?></button>
                 <button type="button" class="btn btn-danger" onclick="location.href='privacy.php'">Close</button>
             </div>
             <input type="hidden" name="quill_input" id="quill-input">
@@ -82,7 +128,6 @@ document.addEventListener("alpine:init", () => {
         },
     }));
 });
-// quill-editor
 
 var quill = new Quill('#editor', {
     theme: 'snow'
