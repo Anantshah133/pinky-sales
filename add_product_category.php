@@ -3,7 +3,7 @@ include "header.php";
 
 if(isset($_REQUEST['editId'])){
     $mode = 'edit';
-    $editId = $_REQUEST['editId']; //14
+    $editId = $_REQUEST['editId']; 
 
     $qry = $obj->con1->prepare("SELECT * FROM `product_category` WHERE  id=?");
     $qry->bind_param("i", $editId);
@@ -71,7 +71,7 @@ if (isset($_REQUEST["save"])) {
 <div class='p-6' >
     <div class="panel mt-6">
         <div class='flex items-center justify-between mb-3'>
-            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Product Category-<?php echo isset($mode) == 'view' ? 'View' : 'Add' ?></h5>
+            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Product Category-<?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View' ) : 'Add' ?></h5>
         </div>
         <div class="mb-5">
             <form class="space-y-5" method="post">
