@@ -255,12 +255,12 @@ if (isset($_POST['save'])) {
                         <div x-data="cmplnDate">
                             <label>Date </label>
                             <input x-model="date2" name="complaint_date" id="complaint_date" class="form-input" value="<?php echo (isset($mode)) ? $data['date'] : '' ?>" required
-                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> /> 
+                            <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> /> 
                         </div>
                         <div x-data="complaintTime">
                             <label>Time </label>
                             <input x-model="time" name="complaint_time" id="complaint_time" class="form-input" value="<?php echo (isset($mode)) ? $data['time'] : '' ?>" required
-                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />  
+                            <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> />  
                         </div>
                     </div>
                 </div>
