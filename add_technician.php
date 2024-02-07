@@ -1,10 +1,44 @@
 <?php
 include "header.php";
+if (isset($_REQUEST["editId"])) {
+    $mode = 'edit';
+    $editId = $_REQUEST["editId"];
+    $stmt = $obj->con1->prepare("SELECT t1.*, s1.name AS service_center_name FROM technician t1, service_center s1 WHERE t1.service_center=s1.id And  t1.id=?");
+    $stmt->bind_param('i', $editId);
+    $stmt->execute();
+    $Resp = $stmt->get_result();
+    $data = $Resp->fetch_assoc();
+    $stmt->close();
+}
+if(isset($_REQUEST['update'])){
+    $name = $_REQUEST["name"];
+    $email = $_REQUEST["email"];
+    $contact = $_REQUEST["contact"];
+    $serviceCenterId = $_REQUEST["service_center"];
+    $user_id = $_REQUEST["userid"];
+    $pass = $_REQUEST["password"];
+    $status = $_REQUEST["default_radio"];
+    $date_time = date("d-m-Y h:i A");
+    // echo  "UPDATE technician  SET name='".$name."', email='".$email."', contact='".$contact."',service_center='".$serviceCenterId."', userid='".$user_id."', password='".$pass."', status='".$status."', date_time='".$date_time."' WHERE id=".$editId;
+    $stmt = $obj->con1->prepare(
+          "UPDATE technician SET name=?, email=?, contact=?,service_center=?, userid=?, password=?, status=?, date_time=? WHERE id=?"
+    );
+    $stmt->bind_param("sssissssi",$name,$email,$contact,$serviceCenterId,$user_id,$pass,$status,$date_time,$editId);
+    $Resp = $stmt->execute();
+
+    if ($Resp) {
+        setcookie("msg", "update", time() + 3600, "/");
+        header("location:technician.php");
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
+        header("location:technician.php");
+    }
+}
 
 if (isset($_REQUEST["viewId"])) {
     $mode = 'view';
     $viewId = $_REQUEST["viewId"];
-    $stmt = $obj->con1->prepare("SELECT t1.*, s1.name AS service_center FROM technician t1, service_center s1 WHERE t1.id=? AND t1.service_center=s1.id;");
+    $stmt = $obj->con1->prepare("SELECT t1.*, s1.name AS service_center_name FROM technician t1, service_center s1 WHERE t1.id=? AND t1.service_center=s1.id;");
     $stmt->bind_param('i', $viewId);
     $stmt->execute();
     $Resp = $stmt->get_result();
@@ -42,18 +76,14 @@ if (isset($_REQUEST["save"])) {
 
     if ($Resp) {
         setcookie("msg", "data", time() + 3600, "/");
+        move_uploaded_file(
+            $_FILES["idproof_img"]["tmp_name"],
+            "images/technician_idproof/" . $idproofImg
+        );
         header("location:technician.php");
-
-        if ($Resp) {
-            move_uploaded_file(
-                $_FILES["idproof_img"]["tmp_name"],
-                "images/technician_idproof/" . $idproofImg
-            );
-            header("location:technician.php");
-        } else {
-            setcookie("msg", "fail", time() + 3600, "/");
-            header("location:technician.php");
-        }
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
+        header("location:technician.php");
     }
 }
 
@@ -61,7 +91,7 @@ function uploadImage($inputName, $uploadDirectory)
     {
         $fileName = $_FILES[$inputName]["name"];
         $tmpFilePath = $_FILES[$inputName]["tmp_name"];
-        echo $fileName . $tmpFilePath;
+
         if ($fileName != "") {
             $targetDirectory = $uploadDirectory . "/";
 
@@ -90,7 +120,7 @@ function uploadImage($inputName, $uploadDirectory)
     <div class="panel border shadow-md shadow-slate-200">
         <div class="mb-5 flex items-center justify-between">
             <h5 class="text-xl text-primary font-semibold dark:text-white-light">Technician -
-                <?php echo isset($mode) == 'view' ? 'View' : 'Add' ?></h5>
+                <?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View' ) : 'Add' ?></h5>
         </div>
 
         <form class="space-y-5" method="post" enctype="multipart/form-data">
@@ -108,29 +138,34 @@ function uploadImage($inputName, $uploadDirectory)
             </div>
             <div>
                 <label for="groupFname">Contact</label>
-                <input id="groupFname" type="text" name="contact" placeholder="" class="form-input"
+                <input id="groupFname" type="tel" name="contact" placeholder="" class="form-input"
                     value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" required
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
             </div>
             <div>
                 <label for="groupFname"> Service Center</label>
 
-                <select class="form-select text-white-dark" name="service_center" required <?php echo (isset($mode) == 'view') ? 'disabled' : '' ?>>
-                    <option value=""><?php echo (isset($mode)) ? $data['service_center'] : 'Choose service center' ?></option>
+                <select class="form-select text-white-dark" name="service_center"
+                    <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>>
+                    <option value="">Choose service center</option>
                     <?php
-                            $stmt = $obj->con1->prepare(
-                                "SELECT * FROM `service_center` WHERE status='enable'"
-                            );
-                            $stmt->execute();
-                            $Res = $stmt->get_result();
-                            $stmt->close();
+                        $stmt = $obj->con1->prepare(
+                            "SELECT * FROM `service_center` WHERE status='enable'"
+                        );
+                        $stmt->execute();
+                        $Res = $stmt->get_result();
+                        $stmt->close();
 
-                            while ($result = mysqli_fetch_assoc($Res)) { 
-                        ?>
-                    <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                        while ($result = mysqli_fetch_assoc($Res)) { 
+                    ?>
+                        <option value="<?php echo $result["id"]; ?>"
+                            <?php echo isset($mode) && $result['id'] == $data['service_center'] ? 'selected' : '' ?>
+                        >
+                            <?php echo $result["name"]; ?>
+                        </option>
                     <?php 
-                            } 
-                        ?>
+                        } 
+                    ?>
                 </select>
             </div>
             <div>
@@ -149,7 +184,8 @@ function uploadImage($inputName, $uploadDirectory)
                 <label for="idproof_img"> Id Proof </label>
                 <input name="idproof_img" id="idproof_img" type="file"
                     class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
-                    required onchange="readURL(this, 'previewModalImage', 'errModalImg')" />
+                    onchange="readURL(this, 'previewModalImage', 'errModalImg')"
+                    <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> />
 
                 <img src="<?php echo (isset($mode)) ? 'images/technician_idproof/'.$data['id_proof'] : '' ?>"
                     class="mt-8  w-80 preview-img" alt="" id="previewModalImage" value="  ">
@@ -158,16 +194,23 @@ function uploadImage($inputName, $uploadDirectory)
             <div>
                 <label for="gridStatus">Status</label>
                 <label class="inline-flex mr-3">
-                    <input type="radio" name="default_radio" class="form-radio" checked value="enable" required />
+                    <input type="radio" name="default_radio" value="enable" class="form-radio" checked required
+                        <?php echo isset($mode) && $data["status"] == "enable" ? "checked" : ""; ?>
+                        <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> />
                     <span>Enable</span>
                 </label>
                 <label class="inline-flex mr-3">
-                    <input type="radio" name="default_radio" class="form-radio text-danger" value="disable" required />
+                    <input type="radio" name="default_radio" value="disable" class="form-radio text-danger" required
+                        <?php echo isset($mode) && $data["status"] == "disable" ? "checked" : ""; ?>
+                        <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> />
                     <span>Disable</span>
                 </label>
             </div>
-            <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo (isset($mode)) ? 'hidden' : '' ?>">
-                <button type="submit" class="btn btn-success" name="save" id="save_btn">Save</button>
+            <div
+                class="relative inline-flex align-middle gap-3 mt-4  <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
+                <button type="submit" class="btn btn-success"
+                    name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save'; ?>"
+                    id="save"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save'; ?></button>
                 <button type="button" class="btn btn-danger" onclick="location.href='technician.php'">Close</button>
             </div>
         </form>
