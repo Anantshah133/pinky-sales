@@ -165,13 +165,23 @@ if (isset($_POST['save'])) {
                         </div>
                         <div>
                             <label for="contact_num"> Contact </label>
-                            <input name="contact_num" id="contact_num" type="tel" class="form-input" value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" required
-                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
+                            <!-- <input name="contact_num" id="contact_num" type="tel" class="form-input" value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" required
+                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="10" pattern="[0-9]+" title="Please enter numbers only" /> -->
+
+                            <div class="flex">
+                                <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">+91</div>
+                                <input name="contact_num" id="contact_num" type="tel" placeholder="1234567890" class="form-input ltr:rounded-l-none rtl:rounded-r-none" value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="10" minlength="10" pattern="[0-9]+" title="Please enter numbers only" required/>
+                            </div>
                         </div>
                         <div>
                             <label for="alt_contact_num"> Alternate Contact </label>
-                            <input name="alt_contact_num" id="alt_contact_num" type="tel" class="form-input" value="<?php echo (isset($mode)) ? $data['alternate_contact'] : '' ?>" required
-                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> /> 
+                            <!-- <input name="alt_contact_num" id="alt_contact_num" type="tel" class="form-input" value="<?php echo (isset($mode)) ? $data['alternate_contact'] : '' ?>" required
+                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="10" />  -->
+
+                            <div class="flex">
+                                <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">+91</div>
+                                <input name="alt_contact_num" id="alt_contact_num" type="tel" placeholder="1234567890" class="form-input ltr:rounded-l-none rtl:rounded-r-none" value="<?php echo (isset($mode)) ? $data['alternate_contact'] : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="10" minlength="10" pattern="[0-9]+" title="Please enter numbers only" />
+                            </div>
                         </div>
                         <div>
                             <label for="area"> City </label>
@@ -203,8 +213,8 @@ if (isset($_POST['save'])) {
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
                             <label for="pincode"> Pincode </label>
-                            <input name="pincode" id="pincode" type="number" class="form-input" value="<?php echo (isset($mode)) ? $data['zipcode'] : '' ?>" required
-                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> /> 
+                            <input name="pincode" id="pincode" type="number" class="form-input" value="<?php echo (isset($mode)) ? $data['zipcode'] : '' ?>" required minlength="6" maxlength="6"
+                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="6" /> 
                         </div>
                         <div>
                             <label for="service_type"> Service Type </label>
