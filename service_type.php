@@ -50,7 +50,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 <!-- script -->
 <script>
 checkCookies();
-function getActions(id) {
+function getActions(id, service) {
     return `<ul class="flex items-center gap-4">
         <li>
             <a href="add_service_type.php?viewId=${id}" class='text-xl' x-tooltip="View">
@@ -63,7 +63,7 @@ function getActions(id) {
             </a>
         </li>
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Delete"  @click="showAlert(${id})">
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete"  @click="showAlert(${id}, '${service}')">
                 <i class="ri-delete-bin-line text-danger"></i>
             </a>
         </li>
@@ -93,7 +93,7 @@ document.addEventListener('alpine:init', () => {
                                 <?php echo $i; ?>,
                                 '<?php echo $row["name"]?>', 
                                 '<?php echo $row["status"]; ?>', 
-                                getActions('<?php echo $row["id"]; ?>')
+                                getActions('<?php echo $row["id"]; ?>', '<?php echo $row["name"]?>')
                             ],
                         <?php
                             $i++;}
@@ -152,10 +152,10 @@ document.addEventListener('alpine:init', () => {
         },
     }));
 })
-async function showAlert(id) {
+async function showAlert(id, service) {
     new window.Swal({
         title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        text: `You want to delete service type :- ${service} !`,
         showCancelButton: true,
         confirmButtonText: 'Delete',
         padding: '2em',

@@ -50,7 +50,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 <!-- script -->
 <script>
 checkCookies();
-function getActions(id) {
+function getActions(id, area, pincode) {
     return `<ul class="flex items-center gap-4">
         <li>
             <a href="add_area_pincode.php?viewId=${id}" class='text-xl' x-tooltip="View">
@@ -63,7 +63,7 @@ function getActions(id) {
             </a>
         </li>
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(${id})">
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(${id}, '${area}', '${pincode}')">
                 <i class="ri-delete-bin-line text-danger"></i>
             </a>
         </li>
@@ -91,7 +91,7 @@ document.addEventListener('alpine:init', () => {
                             '<?php echo $row["name"]; ?>',
                             '<?php echo $row["ctnm"]; ?>',
                             '<?php echo $row["pincode"]; ?>',
-                            getActions(<?php echo $row["id"]; ?>)
+                            getActions(<?php echo $row["id"]; ?>, '<?php echo $row["ctnm"]; ?>', '<?php echo $row["pincode"]; ?>')
                         ],
                         <?php $i++;}
                         $stmt->close();
@@ -150,10 +150,10 @@ document.addEventListener('alpine:init', () => {
         },
     }));
 })
-function showAlert(id) {
+function showAlert(id, area, pincode) {
     new window.Swal({
         title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        text: `You want to delete this Area :- ${area}, ${pincode} `,
         showCancelButton: true,
         confirmButtonText: 'Delete',
         padding: '2em',
