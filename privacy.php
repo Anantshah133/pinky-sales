@@ -51,7 +51,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 
 <script>
 checkCookies();
-function getActions(id) {
+function getActions(id,type) {
     return `<ul class="flex items-center gap-4">
         <li>
             <a href="add_privacy.php?viewId=${id}" class='text-xl' x-tooltip="View">
@@ -64,7 +64,7 @@ function getActions(id) {
             </a>
         </li>
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(${id})">
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(${id},'${type}')">
                 <i class="ri-delete-bin-line text-danger"></i>
             </a>
         </li>
@@ -94,7 +94,7 @@ document.addEventListener('alpine:init', () => {
                             '<?php echo $id; ?>',
                             '<?php echo $row["type"]; ?>',
                             '<?php echo $row["date_time"]; ?>', 
-                            getActions(<?php echo $row["id"]; ?>)
+                            getActions(<?php echo $row["id"]; ?>,'<?php echo $row["type"];?>')
                         ],
                         <?php $id++;}
                         $stmt->close();
@@ -154,10 +154,10 @@ document.addEventListener('alpine:init', () => {
     }));
 })
 
-async function showAlert(id) {
+async function showAlert(id,type) {
     new window.Swal({
         title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        text: `You want to delete privacy police for:-${type}! `,
         showCancelButton: true,
         confirmButtonText: 'Delete',
         padding: '2em',

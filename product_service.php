@@ -53,7 +53,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 <!-- script -->
 <script>
 checkCookies();
-function getActions(id) {
+function getActions(id,product,service) {
     return `<ul class="flex items-center gap-4">
         <li>
             <a href="add_product_service.php?viewId=${id}" class='text-xl' x-tooltip="View">
@@ -66,7 +66,7 @@ function getActions(id) {
             </a>
         </li>
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(` + id + `)">
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(${id},'${product}','${service}')">
                 <i class="ri-delete-bin-line text-danger"></i>
             </a>
         </li>
@@ -96,7 +96,7 @@ document.addEventListener('alpine:init', () => {
                             '<?php echo $row["product"]; ?>', 
                             '<?php echo $row["service"]; ?>',
                             '<?php echo $row["status"]; ?>', 
-                            getActions(<?php echo $row["srno"]; ?>)
+                            getActions(<?php echo $row["srno"]; ?> ,'<?php  echo $row["product"];?>','<?php echo $row["service"];?>')
                         ],
                         <?php 
                             $i++;}
@@ -155,10 +155,10 @@ document.addEventListener('alpine:init', () => {
         },
     }));
 })
-async function showAlert(id) {
+async function showAlert(id,product,service) {
     new window.Swal({
         title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        text: `You want to delete Product service :- ${product}, ${service}!`,
         showCancelButton: true,
         confirmButtonText: 'Delete',
         padding: '2em',
