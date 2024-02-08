@@ -1,6 +1,28 @@
 <?php
 include "header.php";
+if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
+    try {
+        $stmt_del = $obj->con1->prepare(
+            "delete from call_allocation where id='" . $_REQUEST["n_pcategoryid"] . "'"
+        );
+        $Resp = $stmt_del->execute();
+        if (!$Resp) {
+            if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row") {
+                throw new Exception("City is already in use!");
+            }
+        }
+        $stmt_del->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
+    }
+
+    if ($Resp) {
+        setcookie("msg", "data_del",time()+3600,"/");
+    }
+    header("location:call_allocation.php");
+}
 ?>
+
 
 <div class='p-6' x-data='callAllocationTable'>
     <div class="panel mt-6">
@@ -28,7 +50,7 @@ include "header.php";
 <script>
 checkCookies();
 
-function getActions(id) {
+function getActions(id,complaint_no) {
     return `<ul class="flex items-center justify-center gap-4">
         <li>
             <a href="add_call_allocation.php?viewId=${id}" class='text-xl' x-tooltip="View">
@@ -41,7 +63,7 @@ function getActions(id) {
             </a>
         </li>
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Delete">
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete"  @click="showAlert(${id},'${complaint_no}')">
                 <i class="ri-delete-bin-line text-danger"></i>
             </a>
         </li>
@@ -80,7 +102,7 @@ document.addEventListener('alpine:init', () => {
                                 '<?php echo $row['customer_name'] ?>',
                                 '<?php echo $row['customer_contact'] ?>',
                                 '<?php echo $row['product_category_name'] ?>',
-                                getActions(<?php echo $row['id'] ?>)
+                                getActions(<?php echo $row['id'] ?>, '<?php echo $row['complaint_no'] ?>')
                             ],
                         <?php
                             $i++;
@@ -140,7 +162,24 @@ document.addEventListener('alpine:init', () => {
         },
     }));
 })
+
+async function showAlert(id,complaint_no) {
+    new window.Swal({
+        title: 'Are you sure?',
+        text: `You want to delete Call allocation for:- ${complaint_no}!`,
+        showCancelButton: true,
+        confirmButtonText: 'Delete',
+        padding: '2em',
+    }).then((result) => {
+        console.log(result)
+        if (result.isConfirmed) {
+            var loc = "call_allocation.php?flg=del&n_pcategoryid=" + id;
+            window.location = loc;
+        }
+    });
+}
 </script>
+
 
 <?php
 include "footer.php";
