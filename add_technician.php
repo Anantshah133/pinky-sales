@@ -19,13 +19,43 @@ if(isset($_REQUEST['update'])){
     $pass = $_REQUEST["password"];
     $status = $_REQUEST["default_radio"];
     $date_time = date("d-m-Y h:i A");
-    // echo  "UPDATE technician  SET name='".$name."', email='".$email."', contact='".$contact."',service_center='".$serviceCenterId."', userid='".$user_id."', password='".$pass."', status='".$status."', date_time='".$date_time."' WHERE id=".$editId;
-    $stmt = $obj->con1->prepare(
-          "UPDATE technician SET name=?, email=?, contact=?,service_center=?, userid=?, password=?, status=?, date_time=? WHERE id=?"
-    );
-    $stmt->bind_param("sssissssi",$name,$email,$contact,$serviceCenterId,$user_id,$pass,$status,$date_time,$editId);
-    $Resp = $stmt->execute();
 
+    if($_FILES['idproof_img']['size'] > 0) {
+        // Process image upload
+        $serialNumImg = uploadImage('idproof_img', 'images/technician_idproof');
+        
+        // Update the image file name in the database
+        $stmt = $obj->con1->prepare("UPDATE `technician` SET id_proof=? WHERE id=?");
+        $stmt->bind_param("si", $serialNumImg, $editId);
+        $Resp = $stmt->execute();
+        $stmt->close();
+        
+        // Remove the old image file
+        if(isset($data['id_proof'])) {
+            $oldSerialNumImg = $data['id_proof'];
+            unlink("images/technician_idproof/".$oldSerialNumImg);
+        }
+        
+        move_uploaded_file($_FILES['idproof_img']['tmp_name'], "images/technician_idproof/".$serialNumImg);
+    }
+    try {
+        $stmt = $obj->con1->prepare(
+            "UPDATE technician SET name=?, email=?, contact=?,service_center=?, userid=?, password=?, status=?, date_time=? WHERE id=?"
+      );
+      $stmt->bind_param("sssissssi",$name,$email,$contact,$serviceCenterId,$user_id,$pass,$status,$date_time,$editId);
+      $Resp = $stmt->execute();
+
+        if(!$Resp) {
+            throw new Exception("Problem in adding! ". strtok($obj->con1-> error,  '('));
+        }
+        $stmt->close();
+    }
+    catch(\Exception  $e) {
+        setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
+    }
+
+    // echo  "UPDATE technician  SET name='".$name."', email='".$email."', contact='".$contact."',service_center='".$serviceCenterId."', userid='".$user_id."', password='".$pass."', status='".$status."', date_time='".$date_time."' WHERE id=".$editId;
+    
     if ($Resp) {
         setcookie("msg", "update", time() + 3600, "/");
         header("location:technician.php");
@@ -88,10 +118,11 @@ if (isset($_REQUEST["save"])) {
 }
 
 function uploadImage($inputName, $uploadDirectory)
-    {
+{
+    if (isset($_FILES[$inputName]) && isset($_FILES[$inputName]["name"])) {
         $fileName = $_FILES[$inputName]["name"];
         $tmpFilePath = $_FILES[$inputName]["tmp_name"];
-
+        
         if ($fileName != "") {
             $targetDirectory = $uploadDirectory . "/";
 
@@ -110,9 +141,10 @@ function uploadImage($inputName, $uploadDirectory)
             $targetFilePath = $targetDirectory . $newFileName;
             return $newFileName;
         }
-
-        return null;
     }
+
+    return null;
+}
 ?>
 
 
@@ -182,13 +214,12 @@ function uploadImage($inputName, $uploadDirectory)
             </div>
             <div>
                 <label for="idproof_img"> Id Proof </label>
-                <input name="idproof_img" id="idproof_img" type="file"
+                <input name="idproof_img" id="idproof_img" type="file" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>
                     class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
-                    onchange="readURL(this, 'previewModalImage', 'errModalImg')"
-                    <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> />
+                    value="<?php echo isset($mode) ? $data['id_proof'] : "" ?>" required
+                    onchange="readURL(this, 'previewModalImage', 'errModalImg')" />
 
-                <img src="<?php echo (isset($mode)) ? 'images/technician_idproof/'.$data['id_proof'] : '' ?>"
-                    class="mt-8  w-80 preview-img" alt="" id="previewModalImage" value="  ">
+                <img src="<?php echo (isset($mode)) ? 'images/technician_idproof/'.$data['id_proof'] : '' ?>" class="mt-8 w-80 preview-img" alt="" id="previewModalImage" value="">
                 <h6 id='errModalImg' class='error-elem'></h6>
             </div>
             <div>
