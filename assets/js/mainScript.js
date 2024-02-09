@@ -64,3 +64,14 @@ function checkCookies(){
         return;
     }
 }
+
+function validateAndDisable() {
+    let form = document.getElementById('form');
+    let submitButton = document.getElementById('save');
+    if (form.checkValidity()) {
+        setTimeout(() => {
+            submitButton.disabled = true;
+        }, 10);
+        return true;
+    }
+}

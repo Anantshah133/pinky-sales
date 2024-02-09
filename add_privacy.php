@@ -100,7 +100,7 @@ if (isset($_REQUEST["save"])) {
             </div>
             <div class="relative inline-flex align-middle gap-5 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
                 <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success"
-                    onclick="formSubmit('quill-input')"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?></button>
+                    onclick="return formSubmit('quill-input')"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?></button>
                 <button type="button" class="btn btn-danger" onclick="location.href='privacy.php'">Close</button>
             </div>
             <input type="hidden" name="quill_input" id="quill-input">
@@ -144,7 +144,16 @@ toolbar.querySelector('[value=bullet]').setAttribute('title', 'Bullet List');
 
 function formSubmit(ele) {
     let xyz = document.getElementById(ele);
-    xyz.value = quill.root.innerHTML;
+    let editorContent = quill.root.innerHTML;
+    xyz.value = editorContent;
+    let val = xyz.value.replace(/<[^>]*>/g, '');
+
+    if(val.trim() == ''){
+        coloredToast("danger", 'Please add something in Detail.');
+        return false;
+    } else {
+        return true;
+    }
 }
 </script>
 

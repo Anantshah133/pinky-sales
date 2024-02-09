@@ -89,7 +89,7 @@ document.addEventListener('alpine:init', () => {
                             <?php echo $i; ?>, 
                             '<?php echo $row["ctnm"]; ?>',
                             '<?php echo $row["name"]; ?>',
-                            '<?php echo $row["status"]; ?>',
+                            '<?php echo ucfirst($row["status"]); ?>',
                             getActions(<?php echo $row["srno"]; ?>, '<?php echo $row["ctnm"]; ?>')
                         ],
                         <?php $i++;}

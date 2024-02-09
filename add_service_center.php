@@ -158,7 +158,7 @@ if (isset($_REQUEST["save"])) {
                     <div class="md:col-span-2">
                         <label for="cityName">City</label>
                         <select id="area_id" name="cityName" class="form-select text-white-dark"
-                            <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>>
+                            <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> required>
                             <option value=""><?php echo isset($mode) ? $data['city'] : 'Choose City' ?></option>
                         </select>
                     </div>
@@ -181,13 +181,12 @@ if (isset($_REQUEST["save"])) {
                 <div>
                     <label for="gridStatus">Status</label>
                     <label class="inline-flex mr-3">
-                        <input type="radio" name="default_radio" class="form-radio text-primary" value="enable" checked
-                            required />
+                        <input type="radio" name="default_radio"  <?php echo isset($mode) && $data['status'] == 'enable' ? 'checked' : '' ?> class="form-radio text-primary" value="enable" checked
+                            required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
                         <span>Enable</span>
                     </label>
                     <label class="inline-flex mr-3">
-                        <input type="radio" name="default_radio" class="form-radio text-danger" value="disable"
-                            required />
+                        <input type="radio" name="default_radio" <?php echo isset($mode) && $data['status'] == 'disable' ? 'checked' : '' ?> class="form-radio text-danger" value="disable" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>/>
                         <span>Disable</span>
                     </label>
                 </div>

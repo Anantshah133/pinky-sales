@@ -39,6 +39,7 @@ if(isset($_REQUEST['update'])){
         setcookie("msg", "fail", time() + 3600, "/");
         header("location:state.php");
     }
+    exit();
 }
 
 if (isset($_REQUEST["save"])) {
@@ -65,6 +66,7 @@ if (isset($_REQUEST["save"])) {
         setcookie("msg", "fail", time() + 3600, "/");
         header("location:state.php");
     }
+    exit();
 }
 ?>
 <div class='p-6' >
@@ -75,7 +77,7 @@ if (isset($_REQUEST["save"])) {
             </h5>
         </div>
         <div class="mb-5">
-            <form class="space-y-5" method="post">
+            <form class="space-y-5" method="post" id="form">
                 <div>
                     <label for="groupFname">Name </label>
                     <input id="groupFname" name="name" type="text" class="form-input" 
@@ -83,7 +85,7 @@ if (isset($_REQUEST["save"])) {
                         <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
                     />
                     <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
-                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?></button>
+                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success" onclick="return validateAndDisable()"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?></button>
                         <button type="button" class="btn btn-danger" onclick="window.location='state.php'">Close</button>
                     </div>
                 </div>
@@ -92,6 +94,9 @@ if (isset($_REQUEST["save"])) {
     </div>
 </div>
 
+<script>
+    
+</script>
 <?php 
 include "footer.php";
 ?>

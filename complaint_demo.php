@@ -48,7 +48,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 
 <script>
 checkCookies();
-function getActions(id) {
+function getActions(id, number) {
     return `<ul class="flex items-center justify-center gap-4">
         <li>
             <a href="add_complaint_demo.php?viewId=${id}" class='text-xl' x-tooltip="View">
@@ -61,7 +61,7 @@ function getActions(id) {
             </a>
         </li>
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(${id})">
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(${id}, '${number}')">
                 <i class="ri-delete-bin-line text-danger"></i>
             </a>
         </li>
@@ -101,7 +101,7 @@ document.addEventListener('alpine:init', () => {
                                 '<?php echo $row['date'] ?>',
                                 '<?php echo $row['time'] ?>',
                                 'New',
-                                getActions('<?php echo $row['id'] ?>')
+                                getActions('<?php echo $row['id'] ?>', '<?php echo $row['complaint_no'] ?>')
                             ],
                         <?php
                         $id++;
@@ -161,10 +161,10 @@ document.addEventListener('alpine:init', () => {
         },
     }));
 })
-function showAlert(id) {
+function showAlert(id, number) {
     new window.Swal({
         title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        text: `You want to delete Call :- ${number}!`,
         showCancelButton: true,
         confirmButtonText: 'Delete',
         padding: '2em',
