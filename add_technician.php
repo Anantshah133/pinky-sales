@@ -13,7 +13,7 @@ if (isset($_REQUEST["editId"])) {
 if(isset($_REQUEST['update'])){
     $name = $_REQUEST["name"];
     $email = $_REQUEST["email"];
-    $contact = $_REQUEST["contact"];
+    $contact = $_REQUEST["contact_num"];
     $serviceCenterId = $_REQUEST["service_center"];
     $user_id = $_REQUEST["userid"];
     $pass = $_REQUEST["password"];
@@ -38,6 +38,7 @@ if(isset($_REQUEST['update'])){
         
         move_uploaded_file($_FILES['idproof_img']['tmp_name'], "images/technician_idproof/".$serialNumImg);
     }
+
     try {
         $stmt = $obj->con1->prepare(
             "UPDATE technician SET name=?, email=?, contact=?,service_center=?, userid=?, password=?, status=?, date_time=? WHERE id=?"
@@ -79,12 +80,15 @@ if (isset($_REQUEST["viewId"])) {
 if (isset($_REQUEST["save"])) {
     $name = $_REQUEST["name"];
     $email = $_REQUEST["email"];
-    $contact = $_REQUEST["contact"];
+    $contact = $_REQUEST["contact_num"];
     $serviceCenterId = $_REQUEST["service_center"];
     $user_id = $_REQUEST["userid"];
     $pass = $_REQUEST["password"];
     $status = $_REQUEST["default_radio"];
     $date_time = date("d-m-Y h:i A");
+    $idproofImg = "123";
+
+    echo "INSERT INTO `technician`(`name`,`email`,`contact`,`service_center`,`userid`,`password`,`id_proof`,`status`,`date_time`) VALUES ($name,$email,$contact,$serviceCenterId,$user_id,$pass,$status,$date_time,$idproofImg)";
 
     try {
         $idproofImg = uploadImage("idproof_img", "images/technician_idproof");
@@ -155,7 +159,7 @@ function uploadImage($inputName, $uploadDirectory)
                 <?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View' ) : 'Add' ?></h5>
         </div>
 
-        <form class="space-y-5" method="post" enctype="multipart/form-data">
+        <form class="space-y-5" method="post" id="mainForm" enctype="multipart/form-data">
             <div>
                 <label for="groupFname"> Name</label>
                 <input id="groupFname" type="text" name="name" placeholder="Enter Name" class="form-input"
@@ -247,7 +251,7 @@ function uploadImage($inputName, $uploadDirectory)
                 class="relative inline-flex align-middle gap-3 mt-4  <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
                 <button type="submit" class="btn btn-success"
                     name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save'; ?>"
-                    id="save"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save'; ?></button>
+                    id="save" onclick="return validateAndDisable()"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save'; ?></button>
                 <button type="button" class="btn btn-danger" onclick="location.href='technician.php'">Close</button>
             </div>
         </form>
@@ -273,11 +277,11 @@ function readURL(input, preview, errElement) {
 
             reader.readAsDataURL(input.files[0]);
             document.getElementById(errElement).innerHTML = "";
-            document.getElementById('save_btn').disabled = false;
+            document.getElementById('save').disabled = false;
         } else {
             document.getElementById(preview).style.display = "none";
             document.getElementById(errElement).innerHTML = "Please Select Image Only";
-            document.getElementById('save_btn').disabled = true;
+            document.getElementById('save').disabled = true;
         }
     }
 }

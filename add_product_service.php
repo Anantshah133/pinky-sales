@@ -78,9 +78,9 @@ if (isset($_REQUEST["save"])) {
             <h5 class="text-xl text-primary font-semibold dark:text-white-light">Product-Service - <?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View') : 'Add' ?></h5>
         </div>
         <div class="mb-5">
-            <form class="space-y-5" method="post">
+            <form class="space-y-5" method="post" id="mainForm">
                 <div>
-                    <label for="groupFname"> Product</label>
+                    <label for="groupFname">Product</label>
                     <select class="form-select text-white-dark" name="product_id" required
                         <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
                         <option value="">Choose Product</option>
@@ -145,17 +145,15 @@ if (isset($_REQUEST["save"])) {
                         <span>Disable</span>
                     </label>
                 </div>
-
                 <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
-                    <button type="submit" name="<?php echo isset($mode) == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success">
+                    <button type="submit" name="<?php echo isset($mode) == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success" onclick="return validateAndDisable()">
                         <?php echo isset($mode) == 'edit' ? 'Update' : 'Save' ?>
                     </button>
                     <button type="button" class="btn btn-danger" onclick="location.href='product_service.php'">Close</button>
                 </div>
+            </form>
         </div>
     </div>
-    </form>
-</div>
 </div>
 
 <?php include "footer.php";

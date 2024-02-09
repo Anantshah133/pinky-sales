@@ -74,14 +74,14 @@ if (isset($_REQUEST["save"])) {
             <h5 class="text-xl text-primary font-semibold dark:text-white-light">Product Category-<?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View' ) : 'Add' ?></h5>
         </div>
         <div class="mb-5">
-            <form class="space-y-5" method="post">
+            <form class="space-y-5" method="post" id="mainForm">
                 <div>
                     <label for="groupFname">Name</label>
                     <input id="groupFname" name="name" type="text" class="form-input" value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> pattern="^\S+$" />
                 </div>
                 <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
-                <button type="submit" name="<?php echo isset($mode) == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success"><?php echo isset($mode) == 'edit' ? 'Update' : 'Save'  ?></button>
+                    <button type="submit" name="<?php echo isset($mode) == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success" onclick="return validateAndDisable()"><?php echo isset($mode) == 'edit' ? 'Update' : 'Save' ?></button>
                     <button type="button" class="btn btn-danger" onclick="window.location='product_category.php'">Close</button>
                 </div>
             </form>

@@ -82,7 +82,7 @@ if (isset($_REQUEST["save"])) {
             <?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View' ) : 'Add' ?>
         </h5>
         </div>
-        <form method="post" class="space-y-5" id="privacy_form">
+        <form method="post" class="space-y-5" id="mainForm">
             <div>
                 <label for="">Type</label>
                 <select class="form-select text-white-dark" required name="type" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>>
@@ -150,9 +150,9 @@ function formSubmit(ele) {
 
     if(val.trim() == ''){
         coloredToast("danger", 'Please add something in Detail.');
-        return false;
+        return validateAndDisable();
     } else {
-        return true;
+        return validateAndDisable();
     }
 }
 </script>

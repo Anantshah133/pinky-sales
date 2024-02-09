@@ -81,7 +81,7 @@ if (isset($_REQUEST["save"])) {
             </h5>
         </div>
         <div class="mb-5">
-            <form class="space-y-5" method="post">
+            <form class="space-y-5" method="post" id="mainForm">
                 <div>
                     <label for="groupFname">State Name</label>
                     <select class="form-select text-white-dark" onchange="loadCities(this.value)" name="state_id" id="stateId" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
@@ -114,10 +114,10 @@ if (isset($_REQUEST["save"])) {
                     <label for="groupFname"> Pincode </label>
                     <input id="groupFname" name="pincode" type="text" class="form-input" pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" 
                     onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['pincode'] : '' ?>" />    
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['pincode'] : '' ?>" required />
                 </div>
                 <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
-                    <button type="submit" name="<?php echo isset($mode) == 'edit' ? 'update' : 'save'; ?>" id="save" class="btn btn-success"><?php echo isset($mode) == 'edit' ? 'Update' : 'Save'; ?> </button>
+                    <button type="submit" name="<?php echo isset($mode) == 'edit' ? 'update' : 'save'; ?>" id="save" onclick="return validateAndDisable()" class="btn btn-success"><?php echo isset($mode) == 'edit' ? 'Update' : 'Save'; ?></button>
                     <button type="button" class="btn btn-danger" onclick="window.location='area_pincode.php'">Close</button>
                 </div>
             </form>

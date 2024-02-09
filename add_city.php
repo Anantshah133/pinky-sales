@@ -80,7 +80,7 @@ if (isset($_REQUEST["save"])) {
             </h5>
         </div>
         <div class="mb-5">
-            <form class="space-y-5" method="post">
+            <form class="space-y-5" method="post" id="mainForm">
                 <div>
                     <label for="groupFname">State Name</label>
                     <select class="form-select text-gray-500" name="state_id" 
@@ -107,9 +107,9 @@ if (isset($_REQUEST["save"])) {
                 <div>
                     <label for="city_name">City Name </label>
                     <input id="city_name" name="city_name" type="text" class="form-input" 
-                    value="<?php echo isset($mode) ? $data["ctnm"] : ""; ?>" 
+                    value="<?php echo isset($mode) ? $data["ctnm"] : ""; ?>" pattern="^\S+$"
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
-                    required/>
+                    required />
                 </div>    
                 <div>
                     <label for="gridStatus">Status</label>
@@ -130,7 +130,7 @@ if (isset($_REQUEST["save"])) {
                 </div>
                     
                     <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($viewId)? "hidden" : ""; ?>">
-                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?> </button>
+                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success" onclick="return validateAndDisable()"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?> </button>
                         <button type="button" class="btn btn-danger" 
                         onclick="window.location='city.php'">Close</button>
                     </div>

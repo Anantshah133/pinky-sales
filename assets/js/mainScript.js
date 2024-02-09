@@ -66,7 +66,7 @@ function checkCookies(){
 }
 
 function validateAndDisable() {
-    let form = document.getElementById('form');
+    let form = document.getElementById('mainForm');
     let submitButton = document.getElementById('save');
     if (form.checkValidity()) {
         setTimeout(() => {

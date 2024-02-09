@@ -77,10 +77,10 @@ if (isset($_REQUEST["save"])) {
             </h5>
         </div>
         <div class="mb-5">
-            <form class="space-y-5" method="post" id="form">
+            <form class="space-y-5" method="post" id="mainForm">
                 <div>
                     <label for="groupFname">Name </label>
-                    <input id="groupFname" name="name" type="text" class="form-input" 
+                    <input id="groupFname" name="name" type="text" class="form-input" pattern="^\S+$"
                         value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required
                         <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
                     />

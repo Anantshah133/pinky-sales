@@ -26,7 +26,7 @@ if(isset($_REQUEST['editId'])){
 if(isset($_REQUEST['update'])){
     $name = $_REQUEST["name"];
     $email = $_REQUEST["email"];
-    $contact = $_REQUEST["contact"];
+    $contact = $_REQUEST["contact_num"];
     $user_id = $_REQUEST["userid"];
     $pass = $_REQUEST["password"];
     $status = $_REQUEST["default_radio"];
@@ -53,14 +53,15 @@ if(isset($_REQUEST['update'])){
 if (isset($_REQUEST["save"])) {
     $name = $_REQUEST["name"];
     $email = $_REQUEST["email"];
-    $contact = $_REQUEST["contact"];
+    $contact = $_REQUEST["contact_num"];
     $user_id = $_REQUEST["userid"];
     $pass = $_REQUEST["password"];
     $status = $_REQUEST["default_radio"];
     $address = $_REQUEST["address"];
-    $state = $_REQUEST["state"];
     $city = $_REQUEST['cityName'];
     $date_time = date("d-m-Y h:i A");
+
+    echo "INSERT INTO `service_center`(`name`,`email`,`contact`,`userid`,`password`,`status`,`address`,`area`,`date_time`) VALUES ($name,$email,$contact,$user_id,$pass,$status,$address,$city,$date_time)";
 
     try {
         $stmt = $obj->con1->prepare(
@@ -97,7 +98,7 @@ if (isset($_REQUEST["save"])) {
                 <?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View' ) : 'Add' ?>
             </h5>
         </div>
-        <form class="space-y-5" method="post">
+        <form class="space-y-5" method="post" id="mainForm">
             <div>
                 <label for="name">Name</label>
                 <input id="name" type="text" name="name" placeholder="Enter Name" class="form-input"
@@ -193,9 +194,7 @@ if (isset($_REQUEST["save"])) {
 
                 <div
                     class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
-                    <button type="submit" class="btn btn-success"
-                        name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save'; ?>"
-                        id="save"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save'; ?></button>
+                    <button type="submit" class="btn btn-success" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save'; ?>" id="save" onclick="return validateAndDisable()"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save'; ?></button>
                     <button type="button" class="btn btn-danger"
                         onclick="window.location='service_type.php'">Close</button>
                 </div>

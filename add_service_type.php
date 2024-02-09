@@ -77,7 +77,7 @@ if (isset($_REQUEST["save"])) {
             </h5>
         </div>
         <div class="mb-5">
-            <form class="space-y-5" method="post">
+            <form class="space-y-5" method="post" id="mainForm">
                 <div>
                     <label for="groupFname"> Name</label>
                     <input id="groupFname" name="name" type="text" class="form-input" 
@@ -102,7 +102,7 @@ if (isset($_REQUEST["save"])) {
                     </label>
                 </div>
                     <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
-                        <button type="submit" name="<?php echo isset($mode) == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success"><?php echo isset($mode) == 'edit' ? 'Update' : 'Save'  ?></button>
+                        <button type="submit" name="<?php echo isset($mode) == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success" onclick="return validateAndDisable()"><?php echo isset($mode) == 'edit' ? 'Update' : 'Save'?></button>
                         <button type="button" class="btn btn-danger" onclick="window.location='service_type.php'"
                         >Close</button>
                     </div>

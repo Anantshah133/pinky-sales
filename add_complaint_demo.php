@@ -99,7 +99,7 @@ if (isset($_POST['save'])) {
 
         // get service area
 
-        $stmt = $obj->con1->prepare("select * from service_center where area=? ");
+        $stmt = $obj->con1->prepare("select * from service_center where area=?");
         $stmt->bind_param("i", $area);
         $stmt->execute();
         $service_center = $stmt->get_result()->fetch_assoc();
@@ -145,7 +145,7 @@ if (isset($_POST['save'])) {
             </h5>
         </div> 
         <div class="mb-5">
-            <form id="call_form" method="post" onsubmit="" enctype="multipart/form-data">
+            <form method="post" id="mainForm" enctype="multipart/form-data">
                 <div class="flex flex-wrap">
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
@@ -278,7 +278,7 @@ if (isset($_POST['save'])) {
                     </div>
                 </div>
                 <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? "hidden" : ""; ?>">
-                    <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?> </button>
+                    <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success" onclick="return validateAndDisable()"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?> </button>
                     <button type="button" id="close_btn" name="close_btn" class="btn btn-danger" onclick="window.location='complaint_demo.php'">Close</button>
                 </div>
                 <!------ Hidden Inputs ------>

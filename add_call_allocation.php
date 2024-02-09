@@ -201,7 +201,7 @@ function uploadImage($inputName, $uploadDirectory) {
             </h5>
         </div>
         <div class="mb-5">
-            <form id="call_form" method="post" onsubmit="" enctype="multipart/form-data">
+            <form id="mainForm" method="post" enctype="multipart/form-data">
                 <div class="flex flex-wrap">
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
@@ -342,7 +342,7 @@ function uploadImage($inputName, $uploadDirectory) {
                     </div>
                 </div>
                 <div class="relative inline-flex align-middle gap-3 mt-10 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
-                    <button type="submit" id="save" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" class="btn btn-success"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?></button>
+                    <button type="submit" id="save" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" class="btn btn-success" onclick="return validateAndDisable()"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?></button>
                     <button type="button" id="close_btn" name="close_btn" class="btn btn-danger"
                         onclick="window.location=`call_allocation.php`">Close</button>
                 </div>
