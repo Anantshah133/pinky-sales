@@ -93,7 +93,7 @@ if (isset($_REQUEST["save"])) {
 
     <div class="panel border shadow-md shadow-slate-200">
         <div class="mb-5 flex items-center justify-between">
-            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Service Center - 
+            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Service Center -
                 <?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View' ) : 'Add' ?>
             </h5>
         </div>
@@ -101,37 +101,45 @@ if (isset($_REQUEST["save"])) {
             <div>
                 <label for="name">Name</label>
                 <input id="name" type="text" name="name" placeholder="Enter Name" class="form-input"
-                    value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required 
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>/>
+                    value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
             </div>
             <div>
                 <label for="ctnEmail">Email Address</label>
-                <input id="ctnEmail" type="email" name="email" placeholder="name@example.com" class="form-input"
-                    value="<?php echo (isset($mode)) ? $data['email'] : '' ?>" required 
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
-                />
+                <input id="ctnEmail" type="email" name="email" placeholder="name@example.com" class="form-input" 
+                pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" title="Invalid Email Format"
+                value="<?php echo (isset($mode)) ? $data['email'] : '' ?>" required
+                <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
             </div>
             <div>
-                <label for="contact">Contact</label>
-                <input id="contact" type="number" name="contact" placeholder="Enter Contact number" class="form-input"
-                    value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" required 
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>    
-                />
-            </div>
-            
-            <div>
-                <label for="address">Address</label>
-                <textarea autocomplete="on" name="address" id="address" class="form-textarea" rows="2" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : null?>><?php echo (isset($mode)) ? $data['address'] : ''; ?></textarea>
-            </div>
+                <label for="contact_num"> Contact </label>
+                <!-- <input name="contact_num" id="contact_num" type="tel" class="form-input" value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" required
+                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="10" pattern="[0-9]+" title="Please enter numbers only" /> -->
 
-            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div class="flex">
+                    <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
+                        +91</div>
+                    <input name="contact_num" id="contact_num" type="tel" placeholder="1234567890"
+                        class="form-input ltr:rounded-l-none rtl:rounded-r-none" 
+                        onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                        value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>"
+                        <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="10" minlength="10"
+                        pattern="[0-9]+" title="Please enter numbers only" required />
+                </div>
+                </div>
                 <div>
-                    <label for="stateId">State</label>
-                    <select class="form-select text-white-dark" name="state"
-                        onchange="loadCities(this.value)" id="stateId"
-                        <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> required>
-                        <option value="">Choose State</option>
-                        <?php
+                    <label for="address">Address</label>
+                    <textarea autocomplete="on" name="address" id="address" class="form-textarea" rows="2"
+                        <?php echo isset($mode) && $mode == 'view' ? 'readonly' : null?>><?php echo (isset($mode)) ? $data['address'] : ''; ?></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div>
+                        <label for="stateId">State</label>
+                        <select class="form-select text-white-dark" name="state" onchange="loadCities(this.value)"
+                            id="stateId" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> required>
+                            <option value="">Choose State</option>
+                            <?php
                             $stmt = $obj->con1->prepare("SELECT * FROM `state` ");
                             $stmt->execute();
                             $Res = $stmt->get_result();
@@ -139,67 +147,71 @@ if (isset($_REQUEST["save"])) {
                             while ($result = mysqli_fetch_assoc($Res)) { 
                         ?>
 
-                        <option value="<?php echo $result["id"]; ?>"
-                            <?php echo isset($mode) && $data['state_id'] == $result['id'] ? 'selected' : '' ?>
-                        >
-                            <?php echo $result["name"]; ?>
-                        </option>
+                            <option value="<?php echo $result["id"]; ?>"
+                                <?php echo isset($mode) && $data['state_id'] == $result['id'] ? 'selected' : '' ?>>
+                                <?php echo $result["name"]; ?>
+                            </option>
 
-                        <?php } ?>
-                    </select>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="cityName">City</label>
+                        <select id="area_id" name="cityName" class="form-select text-white-dark"
+                            <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>>
+                            <option value=""><?php echo isset($mode) ? $data['city'] : 'Choose City' ?></option>
+                        </select>
+                    </div>
                 </div>
-                <div class="md:col-span-2">
-                    <label for="cityName">City</label>
-                    <select id="area_id" name="cityName" class="form-select text-white-dark"
-                    <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> >
-                        <option value=""><?php echo isset($mode) ? $data['city'] : 'Choose City' ?></option>
-                    </select>
+                <div>
+                    <label for="gridUID">Username</label>
+                    <input type="text" name="userid" placeholder="" class="form-input"
+                        value="<?php echo (isset($mode)) ? $data['userid'] : '' ?>" required
+                        <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
                 </div>
-            </div>
-            <div>
-                <label for="gridUID">Username</label>
-                <input type="text" name="userid" placeholder="" class="form-input"
-                    value="<?php echo (isset($mode)) ? $data['userid'] : '' ?>" required 
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
-                />
-            </div>
-            <div>
-                <label for="gridpass">Password</label>
-                <input type="password" name="password" placeholder="Enter Password" class="form-input"
-                    value="<?php echo (isset($mode)) ? $data['password'] : '' ?>" required 
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>    
-                />
-            </div>
+                <div>
+                    <label for="gridpass">Password</label>
+                    <input type="password" name="password" placeholder="Enter Password" class="form-input"
+                        pattern="^(?=.[!@#$%^&])(?=.*[0-9]).{8,}$"
+                        title="Password should be of atleast length 8 and should contain atleast 1 special character"
+                        value="<?php echo (isset($mode)) ? $data['password'] : '' ?>" required
+                        <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
+                </div>
 
-            <div>
-                <label for="gridStatus">Status</label>
-                <label class="inline-flex mr-3">
-                    <input type="radio" name="default_radio" class="form-radio text-primary" value="enable" checked
-                        required />
-                    <span>Enable</span>
-                </label>
-                <label class="inline-flex mr-3">
-                    <input type="radio" name="default_radio" class="form-radio text-danger" value="disable" required />
-                    <span>Disable</span>
-                </label>
-            </div>
+                <div>
+                    <label for="gridStatus">Status</label>
+                    <label class="inline-flex mr-3">
+                        <input type="radio" name="default_radio" class="form-radio text-primary" value="enable" checked
+                            required />
+                        <span>Enable</span>
+                    </label>
+                    <label class="inline-flex mr-3">
+                        <input type="radio" name="default_radio" class="form-radio text-danger" value="disable"
+                            required />
+                        <span>Disable</span>
+                    </label>
+                </div>
 
-            <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
-                <button type="submit" class="btn btn-success" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save'; ?>" id="save"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save'; ?></button>
-                <button type="button" class="btn btn-danger" onclick="window.location='service_type.php'">Close</button>
-            </div>
+                <div
+                    class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
+                    <button type="submit" class="btn btn-success"
+                        name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save'; ?>"
+                        id="save"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save'; ?></button>
+                    <button type="button" class="btn btn-danger"
+                        onclick="window.location='service_type.php'">Close</button>
+                </div>
         </form>
     </div>
 </div>
 <script>
-    function loadCities(stid, ctid = 0) {
-        const xhttp = new XMLHttpRequest();
-        xhttp.open("GET", `getcities.php?sid=${stid}&ctid=${ctid}`);
-        xhttp.send();
-        xhttp.onload = function() {
-            document.getElementById("area_id").innerHTML = xhttp.responseText;
-        }
+function loadCities(stid, ctid = 0) {
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", `getcities.php?sid=${stid}&ctid=${ctid}`);
+    xhttp.send();
+    xhttp.onload = function() {
+        document.getElementById("area_id").innerHTML = xhttp.responseText;
     }
+}
 </script>
 <?php 
     if(isset($mode) && $mode == 'edit'){

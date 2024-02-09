@@ -164,17 +164,22 @@ function uploadImage($inputName, $uploadDirectory)
             </div>
             <div>
                 <label for="ctnEmail">Email address</label>
-                <input id="ctnEmail" type="email" name="email" placeholder="name@example.com" class="form-input"
+                <input id="ctnEmail" type="email" name="email" placeholder="name@example.com" class="form-input"pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" title="Invalid Email Format"
                     value="<?php echo (isset($mode)) ? $data['email'] : '' ?>" required
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
             </div>
-            <div>
-                <label for="groupFname">Contact</label>
-                <input id="groupFname" type="tel" name="contact" placeholder="" class="form-input"
-                    value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" required
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
-            </div>
-            <div>
+                <div>
+                    <label for="contact_num"> Contact </label>
+                     <!-- <input name="contact_num" id="contact_num" type="tel" class="form-input" value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" required
+                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="10" pattern="[0-9]+" title="Please enter numbers only" /> -->
+
+                        <div class="flex">
+                            <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">+91</div>
+                            <input name="contact_num" id="contact_num" type="tel" placeholder="1234567890" class="form-input ltr:rounded-l-none rtl:rounded-r-none" onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                            value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="10" minlength="10" pattern="[0-9]+" title="Please enter numbers only" required/>
+                            </div>
+                        </div>
+                 <div>
                 <label for="groupFname"> Service Center</label>
 
                 <select class="form-select text-white-dark" name="service_center"
@@ -209,8 +214,9 @@ function uploadImage($inputName, $uploadDirectory)
             <div>
                 <label for="gridpass">Password</label>
                 <input type="password" placeholder="Enter Password" name="password" class="form-input"
-                    value="<?php echo (isset($mode)) ? $data['password'] : '' ?>" required
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
+                pattern="^(?=.[!@#$%^&])(?=.*[0-9]).{8,}$" 
+                title="Password should be of atleast length 8 and should contain atleast 1 special character"
+                value="<?php echo (isset($mode)) ? $data['password'] : '' ?>"<?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> required/>
             </div>
             <div>
                 <label for="idproof_img"> Id Proof </label>

@@ -160,7 +160,8 @@ if (isset($_POST['save'])) {
                         </div>
                         <div>
                             <label for="mail">Email</label>
-                            <input name="mail" id="mail" type="email" class="form-input" value="<?php echo (isset($mode)) ? $data['email'] : '' ?>" required
+                            <input name="mail" id="mail" type="email" class="form-input" pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" title="Invalid Email Format"
+                             value="<?php echo (isset($mode)) ? $data['email'] : '' ?>" required
                             <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
                         </div>
                         <div>
@@ -170,7 +171,8 @@ if (isset($_POST['save'])) {
 
                             <div class="flex">
                                 <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">+91</div>
-                                <input name="contact_num" id="contact_num" type="tel" placeholder="1234567890" class="form-input ltr:rounded-l-none rtl:rounded-r-none" value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="10" minlength="10" pattern="[0-9]+" title="Please enter numbers only" required/>
+                                <input name="contact_num" id="contact_num" type="tel" placeholder="1234567890" class="form-input ltr:rounded-l-none rtl:rounded-r-none" onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="10" minlength="10" pattern="[0-9]+" title="Please enter numbers only" required/>
                             </div>
                         </div>
                         <div>
@@ -180,7 +182,7 @@ if (isset($_POST['save'])) {
 
                             <div class="flex">
                                 <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">+91</div>
-                                <input name="alt_contact_num" id="alt_contact_num" type="tel" placeholder="1234567890" class="form-input ltr:rounded-l-none rtl:rounded-r-none" value="<?php echo (isset($mode)) ? $data['alternate_contact'] : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="10" minlength="10" pattern="[0-9]+" title="Please enter numbers only" />
+                                <input name="alt_contact_num" id="alt_contact_num" type="tel" placeholder="1234567890" class="form-input ltr:rounded-l-none rtl:rounded-r-none" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo (isset($mode)) ? $data['alternate_contact'] : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="10" minlength="10" pattern="[0-9]+" title="Please enter numbers only" />
                             </div>
                         </div>
                         <div>
@@ -213,8 +215,9 @@ if (isset($_POST['save'])) {
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
                             <label for="pincode"> Pincode </label>
-                            <input name="pincode" id="pincode" type="number" class="form-input" value="<?php echo (isset($mode)) ? $data['zipcode'] : '' ?>" required minlength="6" maxlength="6"
-                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="6" /> 
+                            <input name="pincode" id="pincode" type="text" class="form-input" pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" 
+                            onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo (isset($mode)) ? $data['zipcode'] : '' ?>" required 
+                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> /> 
                         </div>
                         <div>
                             <label for="service_type"> Service Type </label>
