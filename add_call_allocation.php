@@ -194,7 +194,7 @@ function uploadImage($inputName, $uploadDirectory) {
 ?>
 
 <div class='p-6'>
-    <div class="panel mt-6">
+    <div class="panel mt-2">
         <div class='flex items-center justify-between mb-5'>
             <h5 class="text-2xl text-primary font-semibold dark:text-white-light">Call Allocation - 
                 <?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View') : 'Add' ?>
@@ -354,6 +354,27 @@ function uploadImage($inputName, $uploadDirectory) {
 </div>
 
 
+<div class='px-6 py-4' x-data='exportTable'>
+    <div class="panel">
+        <div class='flex items-center justify-between mb-3'>
+            <h1 class='text-primary text-2xl font-bold'>Call History</h1>
+
+            <div class="flex flex-wrap items-center">
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_call_history.php'">
+                    <i class="ri-add-line mr-1"></i> Add Call History
+                </button>
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
+                    <i class="ri-printer-line mr-1"></i> PRINT
+                </button>
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="exportTable('csv')">
+                    <i class="ri-file-line mr-1"></i> CSV
+                </button>
+            </div>
+        </div>
+        <table id="myTable" class="table-hover whitespace-nowrap"></table>
+    </div>
+</div>
+
 <script>
 document.addEventListener("alpine:init", () => {
     let todayDate = new Date();
@@ -436,29 +457,8 @@ const resetForm = (formElement) => {
 }
 </script>
 
-<div class='p-6' x-data='exportTable'>
-    <div class="panel mt-6">
-        <div class='flex items-center justify-between mb-3'>
-            <h1 class='text-primary text-2xl font-bold'>Call History</h1>
-
-            <div class="flex flex-wrap items-center">
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_call_history.php'">
-                    <i class="ri-add-line mr-1"></i> Add Call History
-                </button>
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
-                    <i class="ri-printer-line mr-1"></i> PRINT
-                </button>
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="exportTable('csv')">
-                    <i class="ri-file-line mr-1"></i> CSV
-                </button>
-            </div>
-        </div>
-        <table id="myTable" class="table-hover whitespace-nowrap"></table>
-    </div>
-</div>
 
 <!-- script -->
-
 <script>
 checkCookies();
 

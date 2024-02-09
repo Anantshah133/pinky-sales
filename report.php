@@ -146,8 +146,8 @@ include "header.php";
     </div>
 </div>
 
-<div class='p-6 ' x-data='exportTable'>
-    <div class="panel mt-6">
+<div class='px-6' x-data='exportTable'>
+    <div class="panel mt-2 shadow-md shadow-slate-200 border">
         <div class='flex items-center justify-between mb-3'>
             <h1 class='text-primary text-2xl font-bold'>Report</h1>
             <div class="flex flex-wrap items-center">

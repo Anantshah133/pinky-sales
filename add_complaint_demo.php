@@ -138,7 +138,7 @@ if (isset($_POST['save'])) {
 ?>
 
 <div class='p-6'>
-    <div class="panel mt-6">
+    <div class="panel mt-2">
         <div class='flex items-center justify-between mb-5'>
             <h5 class="text-2xl text-primary font-semibold dark:text-white-light">Complaint / Demo -
             <?php echo isset($mode) ? ($mode == 'view' ? 'View' : ($mode == 'edit' ? 'Edit' : 'Add')) : 'Add'; ?>
