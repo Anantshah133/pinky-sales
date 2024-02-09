@@ -94,9 +94,6 @@ if (isset($_REQUEST["save"])) {
     </div>
 </div>
 
-<script>
-    
-</script>
 <?php 
 include "footer.php";
 ?>

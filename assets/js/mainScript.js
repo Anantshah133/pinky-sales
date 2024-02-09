@@ -71,7 +71,7 @@ function validateAndDisable() {
     if (form.checkValidity()) {
         setTimeout(() => {
             submitButton.disabled = true;
-        }, 10);
+        }, 0);
         return true;
     }
 }
