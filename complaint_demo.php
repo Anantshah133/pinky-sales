@@ -1,5 +1,6 @@
 <?php
 include "header.php";
+
 if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     try {
         $stmt_del = $obj->con1->prepare(
@@ -134,7 +135,7 @@ document.addEventListener('alpine:init', () => {
         exportTable(eType) {
             var data = {
                 type: eType,
-                filename: 'table',
+                filename: 'complaint_demo',
                 download: true,
             };
 

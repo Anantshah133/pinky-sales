@@ -125,7 +125,7 @@ document.addEventListener('alpine:init', () => {
         exportTable(eType) {
             var data = {
                 type: eType,
-                filename: 'table',
+                filename: 'service_type',
                 download: true,
             };
 

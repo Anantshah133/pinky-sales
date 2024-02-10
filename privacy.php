@@ -126,7 +126,7 @@ document.addEventListener('alpine:init', () => {
         exportTable(eType) {
             var data = {
                 type: eType,
-                filename: '<?php echo basename($_SERVER['PHP_SELF']) ?>',
+                filename: 'privacy_policy',
                 download: true,
             };
 
