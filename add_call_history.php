@@ -7,17 +7,17 @@ if(isset($_REQUEST["save"])) {
     $technician = $_REQUEST["technician"];
     $parts_used= $_REQUEST["parts_used"];
     $call_type = $_REQUEST["call_type"];
-    $service_charges = $_REQUEST["service_charges"];
-    $parts_charges = $_REQUEST["parts_charges"];
+    $service_charge = $_REQUEST["service_charge"];
+    $parts_charge = $_REQUEST["parts_charge"];
     $status = $_REQUEST["status"];
     $reason = $_REQUEST['reason'];
     $date_time = date("d-m-Y h:i A");
 
     try {
         $stmt = $obj->con1->prepare(
-            "INSERT INTO `call_history`(`complaint_no`,`service_center`,`technician`,`parts_used`,`call_type`,`service_charges`,`parts_charges`,`status`,`reason`,`date_time`) VALUES (?,?,?,?,?,?,?,?,?,?)"
+            "INSERT INTO `call_history`(`complaint_no`,`service_center`,`technician`,`parts_used`,`call_type`,`service_charge`,`parts_charge`,`status`,`reason`,`date_time`) VALUES (?,?,?,?,?,?,?,?,?,?)"
         );
-        $stmt->bind_param("siisssssss",$complaint_no,$service_center,$technician,$parts_used,$call_type,$service_charges,$parts_charges,$status,$reason,$date_time);
+        $stmt->bind_param("siisssssss",$complaint_no,$service_center,$technician,$parts_used,$call_type,$service_charge,$parts_charge,$status,$reason,$date_time);
         $Resp = $stmt->execute();
 
         if (!$Resp) {
@@ -32,12 +32,13 @@ if(isset($_REQUEST["save"])) {
 
     if ($Resp) {
         setcookie("msg", "data", time() + 3600, "/");
-        header("location:add_call_allocation.php");
+        // header("location:add_call_allocation.php");
     } else {
         setcookie("msg", "fail", time() + 3600, "/");
-        header("location:add_call_allocation.php");
+        // header("location:add_call_allocation.php");
     }
 }
+
 ?>
 
 <div class='p-6'>
@@ -49,129 +50,122 @@ if(isset($_REQUEST["save"])) {
         <form class="space-y-5" method="post">
             <div>
                 <label for="name">Complaint No.</label>
-                <input id="name" type="text" name="name" placeholder="Enter Name" class="form-input" required />
+                <input id="name" type="text" name="complaint_no" placeholder="" class="form-input" 
+                 value="<?php echo isset($mode) ? $data['complaint_no'] : ''?>" required />
             </div>
             <div>
-                <label for="ctnEmail">Email Address</label>
-                <input id="ctnEmail" type="email" name="email" placeholder="name@example.com" class="form-input"
-                    pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" title="Invalid Email Format"
-                    value="<?php echo (isset($mode)) ? $data['email'] : '' ?>" required
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
-            </div>
-            <div>
-                <label for="contact_num"> Contact </label>
-                <div class="flex">
-                    <div
-                        class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
-                        +91</div>
-                    <input name="contact_num" id="contact_num" type="tel" placeholder="1234567890"
-                        class="form-input ltr:rounded-l-none rtl:rounded-r-none"
-                        onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                        value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>"
-                        <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="10" minlength="10"
-                        pattern="[0-9]+" title="Please enter numbers only" required />
-                </div>
-            </div>
-            <div>
-                <label for="address">Address</label>
-                <textarea autocomplete="on" name="address" id="address" class="form-textarea" rows="2"
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : null?>><?php echo (isset($mode)) ? $data['address'] : ''; ?></textarea>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                <div>
-                    <label for="stateId">State</label>
-                    <select class="form-select text-white-dark" name="state" onchange="loadCities(this.value)"
-                        id="stateId" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> required>
-                        <option value="">Choose State</option>
-                        <?php
-                            $stmt = $obj->con1->prepare("SELECT * FROM `state` ");
+                <label for="groupFname"> Service Center</label>
+                <select class="form-select text-white-dark" name="service_center" required>
+                    <option value="">Choose...</option>
+                    <?php
+                            $stmt = $obj->con1->prepare(
+                                "SELECT * FROM `service_center` WHERE status='enable'"
+                            );
                             $stmt->execute();
                             $Res = $stmt->get_result();
                             $stmt->close();
+
                             while ($result = mysqli_fetch_assoc($Res)) { 
                         ?>
-
-                        <option value="<?php echo $result["id"]; ?>"
-                            <?php echo isset($mode) && $data['state_id'] == $result['id'] ? 'selected' : '' ?>>
-                            <?php echo $result["name"]; ?>
-                        </option>
-
-                        <?php } ?>
-                    </select>
-                </div>
-                <div class="md:col-span-2">
-                    <label for="cityName">City</label>
-                    <select id="area_id" name="cityName" class="form-select text-white-dark"
-                        <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> required>
-                        <option value=""><?php echo isset($mode) ? $data['city'] : 'Choose City' ?></option>
-                    </select>
-                </div>
+                    <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                    <?php 
+                            } 
+                        ?>
+                </select>
             </div>
             <div>
-                <label for="gridUID">Username</label>
-                <input type="text" name="userid" placeholder="" class="form-input"
-                    value="<?php echo (isset($mode)) ? $data['userid'] : '' ?>" required
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
-            </div>
-            <div>
-                <label for="gridpass">Password</label>
-                <input type="password" name="password" placeholder="Enter Password" class="form-input"
-                    pattern="^(?=.[!@#$%^&])(?=.*[0-9]).{8,}$"
-                    title="Password should be of atleast length 8 and should contain atleast 1 special character"
-                    value="<?php echo (isset($mode)) ? $data['password'] : '' ?>" required
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
-            </div>
+                <label for="groupFname"> Technician</label>
+                <select class="form-select text-white-dark" name="technician" required>
+                    <option value="">Choose...</option>
+                    <?php
+                            $stmt = $obj->con1->prepare(
+                                "SELECT * FROM `technician` WHERE status='enable'"
+                            );
+                            $stmt->execute();
+                            $Res = $stmt->get_result();
+                            $stmt->close();
 
+                            while ($result = mysqli_fetch_assoc($Res)) { 
+                        ?>
+                    <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                    <?php 
+                            } 
+                        ?>
+                </select>
+            </div>
             <div>
-                <label for="gridStatus">Status</label>
-                <label class="inline-flex mr-3">
-                    <input type="radio" name="default_radio"
-                        <?php echo isset($mode) && $data['status'] == 'enable' ? 'checked' : '' ?>
-                        class="form-radio text-primary" value="enable" checked required
-                        <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
-                    <span>Enable</span>
-                </label>
-                <label class="inline-flex mr-3">
-                    <input type="radio" name="default_radio"
-                        <?php echo isset($mode) && $data['status'] == 'disable' ? 'checked' : '' ?>
-                        class="form-radio text-danger" value="disable" required
-                        <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
-                    <span>Disable</span>
-                </label>
+                <label for="groupFname"> Parts Used</label>
+                <select class="form-select text-white-dark" name="parts_used" required>
+                    <option value="part call" <?php echo isset($mode) && $data['parts_used'] == 'new' ? 'selected' : '' ?>>
+                        Part Call
+                    </option>
+                    <option value="non_part call"
+                        <?php echo isset($mode) && $data['Parts_used'] == 'pending' ? 'selected' : '' ?>>
+                        Non-Part Call
+                    </option>
+                </select>
+            </div>
+            <div>
+                <label for="groupFname"> Call Type</label>
+                <select class="form-select text-white-dark" name="call_type" required>
+                    <option value="warranty" <?php echo isset($mode) && $data['status'] == 'new' ? 'selected' : '' ?>>
+                        Warranty
+                    </option>
+                    <option value="out of warranty"
+                        <?php echo isset($mode) && $data['status'] == 'pending' ? 'selected' : '' ?>>
+                        Out Of Warranty
+                    </option>
+                </select>
+            </div>
+            <div>
+                <label for="name">Service Charge</label>
+                <input id="name" type="text" name="service_charge" placeholder="" class="form-input" required />
+            </div>
+            <div>
+                <label for="name">Parts Charge</label>
+                <input id="name" type="text" name="parts_charge" placeholder="" class="form-input" required />
+            </div>
+            <div>
+                <label for="call_status">Status</label>
+                <select name="status" id="status" class="form-select text-white-dark" required
+                    <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
+                    <option value="">Choose Status</option>
+                    <option value="new" <?php echo isset($mode) && $data['status'] == 'new' ? 'selected' : '' ?>>
+                        New
+                    </option>
+                    <option value="pending"
+                        <?php echo isset($mode) && $data['status'] == 'pending' ? 'selected' : '' ?>>
+                        Pending
+                    </option>
+                    <option value="cancelled"
+                        <?php echo isset($mode) && $data['status'] == 'cancelled' ? 'selected' : '' ?>>
+                        Cancelled
+                    </option>
+                    <option value="closed" <?php echo isset($mode) && $data['status'] == 'closed' ? 'selected' : '' ?>>
+                        Closed
+                    </option>
+                    <option value="allocated"
+                        <?php echo isset($mode) && $data['status'] == 'allocated' ? 'selected' : '' ?>>
+                        Allocated
+                    </option>
+                </select>
+            </div>
+            <div>
+                <label for="rson">Reason </label>
+                <input id="rson" name="reason" type="text" class="form-input" required
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?>
+                    value="<?php echo isset($mode) ? $data['reason'] : "" ?>" />
             </div>
 
             <div
-                class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
-                <button type="submit" class="btn btn-success"
-                    name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save'; ?>"
-                    id="save"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save'; ?></button>
-                <button type="button" class="btn btn-danger" onclick="window.location='service_type.php'">Close</button>
+                class="relative inline-flex align-middle gap-3 mt-4">
+                <button type="submit" class="btn btn-success" name="save" id="save">Save</button>
+                <button type="button" class="btn btn-danger" onclick="window.location='call_alloction.php'">Close</button>
             </div>
         </form>
     </div>
 </div>
-<script>
-function loadCities(stid, ctid = 0) {
-    const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", `getcities.php?sid=${stid}&ctid=${ctid}`);
-    xhttp.send();
-    xhttp.onload = function() {
-        document.getElementById("area_id").innerHTML = xhttp.responseText;
-    }
-}
-</script>
-<?php 
-    if(isset($mode) && $mode == 'edit'){
-        echo "
-            <script>
-                const stid = document.getElementById('stateId').value;
-                const ctid =". json_encode($data['area']) .";
-                loadCities(stid, ctid);
-            </script>
-        ";
-    }
-?>
+
 
 <?php
 include "footer.php"; 
