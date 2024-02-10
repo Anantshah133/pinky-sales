@@ -2,6 +2,19 @@
     include "db_connect.php";
     $obj=new DB_Connect();
     date_default_timezone_set('Asia/Kolkata');
+    session_start();
+
+if(!isset($_SESSION['type'])){
+    header("location:login.php");
+}
+
+
+
+if(isset($_REQUEST['logout'])){
+    setcookie("msg", "logout", time() + 3600, "/");
+    session_destroy();
+    header("location:login.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -28,6 +41,11 @@
     <script defer src="assets/js/popper.min.js"></script>
     <script defer src="assets/js/tippy-bundle.umd.min.js"></script>
     <script src="assets/js/sweetalert.min.js"></script>
+    <script>
+        window.onload = () => {
+            checkCookies();
+        }
+    </script>
 </head>
 
 <body x-data="main" class="relative overflow-x-hidden font-nunito text-sm font-normal antialiased"
@@ -35,23 +53,6 @@
     <!-- sidebar menu overlay -->
     <div x-cloak class="fixed inset-0 z-50 bg-[black]/60 lg:hidden" :class="{'hidden' : !$store.app.sidebar}"
         @click="$store.app.toggleSidebar()"></div>
-
-    <!-- screen loader -->
-    <!--<div
-        class="screen_loader animate__animated fixed inset-0 z-[60] grid place-content-center bg-[#fafafa] dark:bg-[#060818]">
-        <svg width="64" height="64" viewBox="0 0 135 135" xmlns="http://www.w3.org/2000/svg" fill="#4361ee">
-            <path
-                d="M67.447 58c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10zm9.448 9.447c0 5.523 4.477 10 10 10 5.522 0 10-4.477 10-10s-4.478-10-10-10c-5.523 0-10 4.477-10 10zm-9.448 9.448c-5.523 0-10 4.477-10 10 0 5.522 4.477 10 10 10s10-4.478 10-10c0-5.523-4.477-10-10-10zM58 67.447c0-5.523-4.477-10-10-10s-10 4.477-10 10 4.477 10 10 10 10-4.477 10-10z">
-                <animateTransform attributeName="transform" type="rotate" from="0 67 67" to="-360 67 67" dur="2.5s"
-                    repeatCount="indefinite" />
-            </path>
-            <path
-                d="M28.19 40.31c6.627 0 12-5.374 12-12 0-6.628-5.373-12-12-12-6.628 0-12 5.372-12 12 0 6.626 5.372 12 12 12zm30.72-19.825c4.686 4.687 12.284 4.687 16.97 0 4.686-4.686 4.686-12.284 0-16.97-4.686-4.687-12.284-4.687-16.97 0-4.687 4.686-4.687 12.284 0 16.97zm35.74 7.705c0 6.627 5.37 12 12 12 6.626 0 12-5.373 12-12 0-6.628-5.374-12-12-12-6.63 0-12 5.372-12 12zm19.822 30.72c-4.686 4.686-4.686 12.284 0 16.97 4.687 4.686 12.285 4.686 16.97 0 4.687-4.686 4.687-12.284 0-16.97-4.685-4.687-12.283-4.687-16.97 0zm-7.704 35.74c-6.627 0-12 5.37-12 12 0 6.626 5.373 12 12 12s12-5.374 12-12c0-6.63-5.373-12-12-12zm-30.72 19.822c-4.686-4.686-12.284-4.686-16.97 0-4.686 4.687-4.686 12.285 0 16.97 4.686 4.687 12.284 4.687 16.97 0 4.687-4.685 4.687-12.283 0-16.97zm-35.74-7.704c0-6.627-5.372-12-12-12-6.626 0-12 5.373-12 12s5.374 12 12 12c6.628 0 12-5.373 12-12zm-19.823-30.72c4.687-4.686 4.687-12.284 0-16.97-4.686-4.686-12.284-4.686-16.97 0-4.687 4.686-4.687 12.284 0 16.97 4.686 4.687 12.284 4.687 16.97 0z">
-                <animateTransform attributeName="transform" type="rotate" from="0 67 67" to="360 67 67" dur="8s"
-                    repeatCount="indefinite" />
-            </path>
-        </svg>
-    </div>-->
 
     <!-- scroll to top button -->
     <div class="fixed bottom-6 z-50 ltr:right-6 rtl:left-6" x-data="scrollToTop">
@@ -94,16 +95,16 @@
                             </svg>
                         </a>
                     </div>
-                    <ul
-                        class='perfect-scrollbar relative h-[calc(100vh-80px)] space-y-0.5 overflow-y-auto overflow-x-hidden p-4 py-0 font-semibold'>
-                        <h2
-                            class="-mx-4 mb-1 flex items-center bg-white-light/30 py-3 px-7 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                    <ul class='perfect-scrollbar relative h-[calc(100vh-80px)] space-y-0.5 overflow-y-auto overflow-x-hidden p-4 py-0 font-semibold'>
+                        <h2 class="-mx-4 mb-1 flex items-center bg-white-light/30 py-3 px-7 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
                             <svg class="hidden h-5 w-4 flex-none" viewBox="0 0 24 24" stroke="currentColor"
                                 stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                             </svg>
                             <span>Dashboard</span>
                         </h2>
+
+                        <!------ Both Visible ------>
                         <li class="menu nav-item">
                             <a href="index.php" class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "index.php" ? "active" : "" ?>">
                                 <div class="flex items-center">
@@ -121,8 +122,7 @@
                                 </div>
                             </a>
                         </li>
-                        <h2
-                            class='-mx-4 mb-1 flex items-center bg-white-light/30 py-3 px-7 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]'>
+                        <h2 class='-mx-4 mb-1 flex items-center bg-white-light/30 py-3 px-7 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]'>
                             Complaint And Calls
                         </h2>
                         <li class="menu nav-item">
@@ -160,9 +160,9 @@
                                 </div>
                             </a>
                         </li>
+                        <!------ Both Visible ------>
 
-                        <h2
-                            class='-mx-4 mb-1 flex items-center bg-white-light/30 py-3 px-7 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]'>
+                        <h2 class='-mx-4 mb-1 flex items-center bg-white-light/30 py-3 px-7 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]'>
                             Admin Controls
                         </h2>
                         <li class="menu nav-item">
@@ -235,6 +235,8 @@
                                 </div>
                             </a>
                         </li>
+
+                        <!------ Technician Page ------>
                         <li class="menu nav-item">
                             <a href="technician.php" class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "technician.php" ? "active" : "" ?>">
                                 <div class="flex items-center">
@@ -258,6 +260,8 @@
                                 </div>
                             </a>
                         </li>
+                        <!------ Technician Page ------>
+
                         <li class="menu nav-item">
                             <a href="service_type.php" class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "service_type.php" ? "active" : "" ?>">
                                 <div class="flex items-center">
@@ -469,8 +473,7 @@
                                         <li>
                                             <div class="p-4">
                                                 <button class="btn btn-primary btn-small block w-full"
-                                                    @click="toggle">Read
-                                                    All Notifications</button>
+                                                    @click="toggle">Read All Notifications</button>
                                             </div>
                                         </li>
                                     </template>
@@ -574,7 +577,7 @@
                                             Lock Screen</a>
                                     </li>
                                     <li class="border-t border-white-light dark:border-white-light/10">
-                                        <a href="" class="!py-3 text-danger" @click="toggle">
+                                        <a href="?logout" class="!py-3 text-danger" @click="toggle">
                                             <svg class="h-4.5 w-4.5 shrink-0 rotate-90 ltr:mr-2 rtl:ml-2" width="18"
                                                 height="18" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
