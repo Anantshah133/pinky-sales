@@ -63,6 +63,26 @@ function checkCookies(){
         eraseCookie("msg")
         return;
     }
+    if(readCookie("msg") == "login"){
+        coloredToast("success", 'Admin Logged-In Successfully');
+        eraseCookie("msg")
+        return;
+    }
+    if(readCookie("msg") == "logout"){
+        coloredToast("success", 'Logged-Out Successfully');
+        eraseCookie("msg")
+        return;
+    }
+    if(readCookie("msg") == "sc_login"){
+        coloredToast("success", 'Logged-in successfully');
+        eraseCookie("msg")
+        return;
+    }
+    if(readCookie("msg") == "wrong_cred"){
+        coloredToast("danger", 'Wrong Username or Password !');
+        eraseCookie("msg")
+        return;
+    }
 }
 
 function validateAndDisable() {
