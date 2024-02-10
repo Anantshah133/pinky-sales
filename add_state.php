@@ -1,6 +1,7 @@
 <?php
 include "header.php";
 
+
 if(isset($_REQUEST['editId'])){
     $mode = 'edit';
     $editId = $_REQUEST['editId'];
@@ -80,10 +81,11 @@ if (isset($_REQUEST["save"])) {
             <form class="space-y-5" method="post" id="mainForm">
                 <div>
                     <label for="groupFname">Name </label>
-                    <input id="groupFname" name="name" type="text" class="form-input" pattern="^\S+$"
+                    <input id="groupFname" name="name" type="text" class="form-input" onblur="checkName(this)" pattern="^\S+$"
                         value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required
                         <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
                     />
+                    <span id="demo"><span>
                     <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
                         <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success" onclick="return validateAndDisable()"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?></button>
                         <button type="button" class="btn btn-danger" onclick="window.location='state.php'">Close</button>
@@ -93,6 +95,31 @@ if (isset($_REQUEST["save"])) {
         </div>
     </div>
 </div>
+
+<script>
+    function checkName(c1){
+        n=c1.value;
+        //alert(name);
+        const obj=new XMLHttpRequest();
+        obj.onload=function(){
+            x=obj.responseText;
+
+            if(x==1)
+            {
+                c1.value="";
+                c1.focus();
+                document.getElementById("demo").innerHTML="Sorry the name alredy exist!";
+                
+            }
+            else{
+                document.getElementById("demo").innerHTML="";
+            }
+        }
+        obj.open("GET","check_state.php?name="+n,true);
+        obj.send();
+    }
+
+</script>
 
 <?php 
 include "footer.php";
