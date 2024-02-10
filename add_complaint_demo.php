@@ -14,9 +14,9 @@ if (isset($_REQUEST["viewId"])) {
 
 if (isset($_REQUEST["editId"])) {
     $mode = 'edit';
-    $viewId = $_REQUEST["editId"];
+    $editId = $_REQUEST["editId"];
     $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg` where id=?");
-    $stmt->bind_param('i', $viewId);
+    $stmt->bind_param('i', $editId);
     $stmt->execute();
     $Resp = $stmt->get_result();
     $data = $Resp->fetch_assoc();
@@ -37,14 +37,12 @@ if(isset($_REQUEST['update'])){
     $service_type = $_REQUEST['service_type'];
     $product_category = $_REQUEST['product_category'];
     $dealer_name = $_REQUEST['dealer_name'];
-    $date = $_REQUEST['complaint_date'];
-    $time = $_REQUEST['complaint_time'];
-    $day = Date("d");
-    $month = Date("m");
-    $year = Date("y");
+    $complaint_date = $_REQUEST['complaint_date'];
+    $complaint_time = $_REQUEST['complaint_time'];
+    $complaint_no = $data['complaint_no'];
 
     $stmt = $obj->con1->prepare("UPDATE `customer_reg` SET fname=?,lname=?,email=?,contact=?,alternate_contact=?,area=?,map_location=?,address=?,zipcode=?,complaint_no=?,service_type=?,product_category=?,dealer_name=?,date=?,time=?  WHERE id=?");
-    $stmt->bind_param("sssssisssssisssi", $fname, $lname, $email, $contact, $alt_contact, $area, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $date, $time, $editId);
+    $stmt->bind_param("sssssisssssisssi", $fname, $lname, $email, $contact, $alt_contact, $area, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $complaint_date, $complaint_time, $editId);
     $Res = $stmt->execute();
     $stmt->close();
 
@@ -70,8 +68,8 @@ if (isset($_POST['save'])) {
     $service_type = $_REQUEST['service_type'];
     $product_category = $_REQUEST['product_category'];
     $dealer_name = $_REQUEST['dealer_name'];
-    $date = $_REQUEST['complaint_date'];
-    $time = $_REQUEST['complaint_time'];
+    $complaint_date = $_REQUEST['complaint_date'];
+    $complaint_time = $_REQUEST['complaint_time'];
     $day = Date("d");
     $month = Date("m");
     $year = Date("y");
@@ -85,13 +83,13 @@ if (isset($_POST['save'])) {
     $dailycounter = (int)$row_dailycounter["customer_id"];
     $string = str_pad($dailycounter, 4, '0', STR_PAD_LEFT);
     $complaint_no = "ONL" . $day . $month . $year . $string;
-    $date = date("d-m-Y");
-    $time = date("h:i A");
+    // $date = date("d-m-Y");
+    // $time = date("h:i A");
     //--------------//
 
     try {
         $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `area`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("sssssisssssisss", $fname, $lname, $email, $contact, $alt_contact, $area, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $date, $time);
+        $stmt->bind_param("sssssisssssisss", $fname, $lname, $email, $contact, $alt_contact, $area, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $complaint_date, $complaint_time);
         $Resp = $stmt->execute();
         $stmt->close();
 
@@ -166,8 +164,6 @@ if (isset($_POST['save'])) {
                         </div>
                         <div>
                             <label for="contact_num"> Contact </label>
-                            <!-- <input name="contact_num" id="contact_num" type="tel" class="form-input" value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" required
-                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="10" pattern="[0-9]+" title="Please enter numbers only" /> -->
 
                             <div class="flex">
                                 <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">+91</div>
@@ -177,8 +173,6 @@ if (isset($_POST['save'])) {
                         </div>
                         <div>
                             <label for="alt_contact_num"> Alternate Contact </label>
-                            <!-- <input name="alt_contact_num" id="alt_contact_num" type="tel" class="form-input" value="<?php echo (isset($mode)) ? $data['alternate_contact'] : '' ?>" required
-                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="10" />  -->
 
                             <div class="flex">
                                 <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">+91</div>
@@ -261,19 +255,19 @@ if (isset($_POST['save'])) {
                             </select>
                         </div>
                         <div>
-                            <label for="dealer_name"> Dealer Name </label>
+                            <label for="dealer_name">Dealer Name </label>
                             <input name="dealer_name" id="dealer_name" type="text" class="form-input" value="<?php echo (isset($mode)) ? $data['dealer_name'] : '' ?>" required
                             <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> /> 
                         </div>
                         <div x-data="cmplnDate">
                             <label>Date </label>
-                            <input x-model="date2" name="complaint_date" id="complaint_date" class="form-input" value="<?php echo (isset($mode)) ? $data['date'] : '' ?>" required
+                            <input x-model="date2" name="complaint_date" id="complaint_date" class="form-input" value="" required
                             <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> /> 
                         </div>
                         <div x-data="complaintTime">
                             <label>Time </label>
-                            <input x-model="time" name="complaint_time" id="complaint_time" class="form-input" value="<?php echo (isset($mode)) ? $data['time'] : '' ?>" required
-                            <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> />  
+                            <input x-model="time" name="complaint_time" id="complaint_time" class="form-input" value="" required
+                            <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> />
                         </div>
                     </div>
                 </div>
@@ -303,7 +297,7 @@ if (isset($_POST['save'])) {
         }).split('/').join('-')
 
         Alpine.data("cmplnDate", () => ({
-            date2: formattedToday,
+            date2: '<?php echo (isset($mode)) ? $data['date'] : date("d-m-Y") ?>',
             init() {
                 flatpickr(document.getElementById('complaint_date'), {
                     dateFormat: 'd-m-Y',
@@ -322,7 +316,7 @@ if (isset($_POST['save'])) {
             }),
             init() {
                 flatpickr(document.getElementById('complaint_time'), {
-                    defaultDate: this.time,
+                    defaultDate: '<?php echo isset($mode) ? $data['time'] : date("H:i A") ?>',
                     noCalendar: true,
                     enableTime: true,
                     dateFormat: 'H:i'
