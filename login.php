@@ -37,7 +37,8 @@ if (isset($_REQUEST['save'])) {
             header("location:index.php");
         } else {
             setcookie("msg", "wrong_cred", time() + 3600, "/");
-            header("location:index.php");
+            header("location:login.php");
+            exit;
         }
     }
 }

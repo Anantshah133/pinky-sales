@@ -84,8 +84,8 @@ if (isset($_REQUEST["save"])) {
         </div>
         <form method="post" class="space-y-5" id="mainForm">
             <div>
-                <label for="">Type</label>
-                <select class="form-select text-white-dark" required name="type" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>>
+                <label for="type">Type</label>
+                <select class="form-select text-white-dark" required id="type" name="type" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>>
                     <option value="">Choose Type</option>
                     <option value="user" <?php echo isset($mode) && $data['type'] == 'user' ? 'selected' : '' ?> >User</option>
                     <option value="service" <?php echo isset($mode) && $data['type'] == 'service' ? 'selected' : '' ?> >Service-center</option>
@@ -93,7 +93,7 @@ if (isset($_REQUEST["save"])) {
                 </select>
             </div>
             <div>
-                <label for="" class="mb-3 block">Detail</label>
+                <label for="editor" class="mb-3 block">Detail</label>
                 <div id="editor" name="detail" class="!mt-1">
                     <?php echo isset($mode) ? $data['detail'] : '' ?>
                 </div>
