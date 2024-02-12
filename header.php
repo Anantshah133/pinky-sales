@@ -6,6 +6,7 @@ session_start();
 
 if(!isset($_SESSION['type'])){
     header("location:login.php");
+    exit;
 }
 
 $allowed_pages = array();
@@ -13,6 +14,7 @@ $allowed_pages = array();
 if ($_SESSION['type'] == "admin") {
     $allowed_pages = array(
         "index.php",
+        "user_profile.php",
         "complaint_demo.php",
         "call_allocation.php",
         "state.php",
@@ -40,6 +42,7 @@ if ($_SESSION['type'] == "admin") {
 } elseif ($_SESSION['type'] == "center") {
     $allowed_pages = array(
         "index.php",
+        "user_profile.php",
         "call_allocation.php",
         "complaint_demo.php",
         "technician.php",
@@ -577,7 +580,7 @@ if(isset($_REQUEST['logout'])){
                                         </div>
                                     </li>
                                     <li>
-                                        <a href="users_profile.html" class="dark:hover:text-white" @click="toggle">
+                                        <a href="user_profile.php" class="dark:hover:text-white" @click="toggle">
                                             <svg class="h-4.5 w-4.5 shrink-0 ltr:mr-2 rtl:ml-2" width="18" height="18"
                                                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <circle cx="12" cy="6" r="4" stroke="currentColor" stroke-width="1.5" />

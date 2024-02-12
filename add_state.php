@@ -85,7 +85,7 @@ if (isset($_REQUEST["save"])) {
                         value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required
                         <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
                     />
-                    <span id="demo"><span>
+                    <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
                     <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
                         <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success" onclick="return validateAndDisable()"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?></button>
                         <button type="button" class="btn btn-danger" onclick="window.location='state.php'">Close</button>
@@ -98,21 +98,19 @@ if (isset($_REQUEST["save"])) {
 
 <script>
     function checkName(c1){
-        n=c1.value;
-        //alert(name);
-        const obj=new XMLHttpRequest();
-        obj.onload=function(){
-            x=obj.responseText;
+        let n = c1.value;
+        const obj = new XMLHttpRequest();
+        obj.onload = function(){
+            let x = obj.responseText;
 
             if(x==1)
             {
                 c1.value="";
                 c1.focus();
-                document.getElementById("demo").innerHTML="Sorry the name alredy exist!";
-                
+                document.getElementById("demo").innerHTML = "Sorry the name alredy exist!";
             }
             else{
-                document.getElementById("demo").innerHTML="";
+                document.getElementById("demo").innerHTML = "";
             }
         }
         obj.open("GET","check_state.php?name="+n,true);
