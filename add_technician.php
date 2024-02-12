@@ -218,8 +218,7 @@ function uploadImage($inputName, $uploadDirectory)
             <div>
                 <label for="gridpass">Password</label>
                 <input type="password" placeholder="Enter Password" name="password" class="form-input"
-                pattern="^(?=.[!@#$%^&])(?=.*[0-9]).{8,}$" 
-                title="Password should be of atleast length 8 and should contain atleast 1 special character"
+                pattern=".{8,}" title="Password should be at least 8 characters long" 
                 value="<?php echo (isset($mode)) ? $data['password'] : '' ?>"<?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> required/>
             </div>
             <div>
