@@ -29,6 +29,7 @@ if ($_SESSION['type'] == "admin") {
         "privacy.php",
         "add_complaint_demo.php",
         "add_call_allocation.php",
+        "add_call_history.php",
         "add_state.php",
         "add_city.php",
         "add_area_pincode.php",
