@@ -83,7 +83,7 @@ if (isset($_REQUEST["save"])) {
             <form class="space-y-5" method="post" id="mainForm">
                 <div>
                     <label for="groupFname">State Name</label>
-                    <select class="form-select text-gray-500" name="state_id" 
+                    <select class="form-select text-gray-500" name="state_id" id="state_id"
                     <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> required>
                         <option value="">Choose State</option>
                         <?php
@@ -106,10 +106,11 @@ if (isset($_REQUEST["save"])) {
                 </div>
                 <div>
                     <label for="city_name">City Name </label>
-                    <input id="city_name" name="city_name" type="text" class="form-input" 
+                    <input id="city_name" name="city_name" type="text" class="form-input" onblur="checkCity(this)"
                     value="<?php echo isset($mode) ? $data["ctnm"] : ""; ?>" pattern="^\S+$"
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
                     required />
+                    <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
                 </div>    
                 <div>
                     <label for="gridStatus">Status</label>
@@ -139,6 +140,29 @@ if (isset($_REQUEST["save"])) {
         </div>
     </div>
 </div>
+<script>
+    function checkCity(c1){
+        let n = c1.value;
+        var state_id=document.getElementById('state_id').value;
+        const obj = new XMLHttpRequest();
+        obj.onload = function(){
+            let x = obj.responseText;
+            if(x>=1)
+            {
+                c1.value="";
+                c1.focus();
+                document.getElementById("demo").innerHTML = "Sorry the name alredy exist!";
+            }
+            else{
+               
+                document.getElementById("demo").innerHTML = "";
+            }
+        }
+        obj.open("GET","check_city.php?city_name="+n+"&state_id="+state_id,true);
+        obj.send();
+    }
+
+</script>
 
 
 <?php

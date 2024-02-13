@@ -80,9 +80,10 @@ if (isset($_REQUEST["save"])) {
             <form class="space-y-5" method="post" id="mainForm">
                 <div>
                     <label for="groupFname"> Name</label>
-                    <input id="groupFname" name="name" type="text" class="form-input" 
+                    <input id="groupFname" name="name" type="text" class="form-input" onblur="checkServicetype(this)"
                     required value="<?php echo isset($mode) ? $data['name'] : '' ?>"
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                    <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
                 </div>
                 <div>
                     <label for="gridStatus">Status</label>
@@ -110,6 +111,28 @@ if (isset($_REQUEST["save"])) {
         </div>
     </div>
 </div>
+<script>
+    function checkServicetype(c1){
+        let n = c1.value;
+        const obj = new XMLHttpRequest();
+        obj.onload = function(){
+            let x = obj.responseText;
+
+            if(x>=1)
+            {
+                c1.value="";
+                c1.focus();
+                document.getElementById("demo").innerHTML = "Sorry the name alredy exist!";
+            }
+            else{
+                document.getElementById("demo").innerHTML = "";
+            }
+        }
+        obj.open("GET","check_servicetype.php?name="+n,true);
+        obj.send();
+    }
+
+</script>
 
 <?php
 include "footer.php";
