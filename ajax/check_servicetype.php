@@ -1,5 +1,5 @@
 <?php
-	include "db_connect.php";
+	include "../db_connect.php";
 	$obj = new DB_Connect();
     $name = $_REQUEST["name"];
     $stmt = $obj->con1->prepare("SELECT count(*) as tot FROM  `service_type` WHERE soundex(name)=soundex(?)");

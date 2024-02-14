@@ -41,6 +41,8 @@ if(isset($_REQUEST['update'])){
     $complaint_time = $_REQUEST['complaint_time'];
     $complaint_no = $data['complaint_no'];
 
+    echo $complaint_date." ".$complaint_time; 
+
     $stmt = $obj->con1->prepare("UPDATE `customer_reg` SET fname=?,lname=?,email=?,contact=?,alternate_contact=?,area=?,map_location=?,address=?,zipcode=?,complaint_no=?,service_type=?,product_category=?,dealer_name=?,date=?,time=?  WHERE id=?");
     $stmt->bind_param("sssssisssssisssi", $fname, $lname, $email, $contact, $alt_contact, $area, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $complaint_date, $complaint_time, $editId);
     $Res = $stmt->execute();
@@ -164,7 +166,6 @@ if (isset($_POST['save'])) {
                         </div>
                         <div>
                             <label for="contact_num"> Contact </label>
-
                             <div class="flex">
                                 <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">+91</div>
                                 <input name="contact_num" id="contact_num" type="tel" placeholder="1234567890" class="form-input ltr:rounded-l-none rtl:rounded-r-none" onkeypress="return event.charCode >= 48 && event.charCode <= 57"
@@ -173,7 +174,6 @@ if (isset($_POST['save'])) {
                         </div>
                         <div>
                             <label for="alt_contact_num"> Alternate Contact </label>
-
                             <div class="flex">
                                 <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">+91</div>
                                 <input name="alt_contact_num" id="alt_contact_num" type="tel" placeholder="1234567890" class="form-input ltr:rounded-l-none rtl:rounded-r-none" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo (isset($mode)) ? $data['alternate_contact'] : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> maxlength="10" minlength="10" pattern="[0-9]+" title="Please enter numbers only" />
@@ -266,8 +266,7 @@ if (isset($_POST['save'])) {
                         </div>
                         <div x-data="complaintTime">
                             <label>Time </label>
-                            <input x-model="time" name="complaint_time" id="complaint_time" class="form-input" value="" required
-                            <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> />
+                            <input name="complaint_time" id="complaint_time" class="form-input" value="" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> />
                         </div>
                     </div>
                 </div>
@@ -309,11 +308,13 @@ if (isset($_POST['save'])) {
         }));
 
         Alpine.data("complaintTime", () => ({
-            time: todayDate.toLocaleTimeString('en-GB', {
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false
-            }),
+            <?php if(!isset($mode)){ ?>
+                time: todayDate.toLocaleTimeString('en-GB', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                }),
+            <?php } ?>
             init() {
                 flatpickr(document.getElementById('complaint_time'), {
                     defaultDate: '<?php echo isset($mode) ? $data['time'] : date("H:i A") ?>',

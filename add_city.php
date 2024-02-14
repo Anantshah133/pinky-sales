@@ -158,7 +158,7 @@ if (isset($_REQUEST["save"])) {
                 document.getElementById("demo").innerHTML = "";
             }
         }
-        obj.open("GET","check_city.php?city_name="+n+"&state_id="+state_id,true);
+        obj.open("GET","./ajax/check_city.php?city_name="+n+"&state_id="+state_id,true);
         obj.send();
     }
 

@@ -13,10 +13,10 @@ include "header.php";
 
             <div class="flex">
                 <div class="w-6/12 px-4">
-                    <label for="groupFname"> Service Center</label>
+                    <label for="groupFname">Service Center</label>
 
-                    <select class="form-select text-white-dark" name="service_center" required>
-                        <option value="">Choose...</option>
+                    <select class="form-select text-white-dark" name="service_center" onchange="getTechnician(this)" required>
+                        <option value="">Choose Service center</option>
                         <?php
                             $stmt = $obj->con1->prepare(
                                 "SELECT * FROM `service_center` WHERE status='enable'"
@@ -27,7 +27,7 @@ include "header.php";
 
                             while ($result = mysqli_fetch_assoc($Res)) { 
                         ?>
-                        <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                            <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
                         <?php 
                             } 
                         ?>
@@ -38,20 +38,20 @@ include "header.php";
                     <label for="groupFname"> Technician</label>
 
                     <select class="form-select text-white-dark" name="" required>
-                        <option value="">Choose...</option>
+                        <option value="">Choose Technician</option>
                         <?php
-                            $stmt = $obj->con1->prepare(
-                                "SELECT * FROM `technician` WHERE status='enable'"
-                            );
-                            $stmt->execute();
-                            $Res = $stmt->get_result();
-                            $stmt->close();
+                            // $stmt = $obj->con1->prepare(
+                            //     "SELECT * FROM `technician` WHERE status='enable'"
+                            // );
+                            // $stmt->execute();
+                            // $Res = $stmt->get_result();
+                            // $stmt->close();
 
-                            while ($result = mysqli_fetch_assoc($Res)) { 
+                            // while ($result = mysqli_fetch_assoc($Res)) { 
                         ?>
-                        <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                            <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
                         <?php 
-                            } 
+                            // } 
                         ?>
                     </select>
                 </div>
@@ -169,7 +169,8 @@ include "header.php";
 <script>
 checkCookies();
 function getActions(id) {
-    return `<ul class="flex items-center justify-center gap-4">
+    return `
+    <ul class="flex items-center justify-center gap-4">
         <li>
             <a href="add_complaint_demo.php?viewId=${id}" class='text-xl' x-tooltip="View">
                 <i class="ri-eye-line text-primary"></i>
@@ -177,6 +178,14 @@ function getActions(id) {
         </li>
     </ul>`
 }
+
+function getTechnician(con){
+    let idx = con.value;
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", `./ajax/get_technician.php?`)
+    console.log(idx);
+}
+
 document.addEventListener('alpine:init', () => {
     Alpine.data('exportTable', () => ({
         datatable: null,

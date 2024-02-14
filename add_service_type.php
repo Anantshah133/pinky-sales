@@ -128,7 +128,7 @@ if (isset($_REQUEST["save"])) {
                 document.getElementById("demo").innerHTML = "";
             }
         }
-        obj.open("GET","check_servicetype.php?name="+n,true);
+        obj.open("GET","./ajax/check_servicetype.php?name="+n,true);
         obj.send();
     }
 

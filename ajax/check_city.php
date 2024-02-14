@@ -1,5 +1,5 @@
 <?php
-	include "db_connect.php";
+	include "../db_connect.php";
 	$obj = new DB_Connect();
     $city_name = $_REQUEST["city_name"];
     $state_id = $_REQUEST["state_id"];
@@ -9,5 +9,5 @@
     $Resp = $stmt->get_result();
     $data = $Resp->fetch_assoc();
     echo $data["tot"];
-   $stmt->close();
+    $stmt->close();
 ?>

@@ -111,7 +111,7 @@ if (isset($_REQUEST["save"])) {
                 document.getElementById("demo").innerHTML = "";
             }
         }
-        obj.open("GET","check_product.php?name="+n,true);
+        obj.open("GET","./ajax/check_product.php?name="+n,true);
         obj.send();
     }
 
