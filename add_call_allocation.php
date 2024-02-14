@@ -2,10 +2,21 @@
 include "header.php";
 error_reporting(E_ALL);
 ?>
+<script>
+function addHistory()
+{
+  //  alert("hi!");
+
+  cno = document.getElementById("complaint_num").value;
+  document.cookie = "comp_no="+cno;
+  window.location = "add_call_history.php";
+}
+</script>
 
 <!-- echo "UPDATE `call_allocation` SET complaint_no=$complaintNum, service_center_id=$serviceCenterId, product_serial_no=$productSerialNum, serial_no_img=$serialNumImg, product_model=$productModel, product_model_img=$productModelImg, purchase_date=$purchaseDate, purchase_date_img=$purchaseDateImg, technician=$technician, allocation_date=$allocationDate, allocation_time=$allocationTime, status=$callStatus, reason=$reason WHERE call_allocation.id=$editId"; -->
 
 <?php 
+$cno="";
 if(isset($_REQUEST['viewId'])){
     $mode = 'view';
     $viewId = $_REQUEST['viewId'];
@@ -21,9 +32,9 @@ if(isset($_REQUEST['viewId'])){
     $query->close();
 }
 
-if(isset($_REQUEST['editId'])){
+if(isset($_COOKIE['eid'])){
     $mode = 'edit';
-    $editId = $_REQUEST['editId'];
+    $editId = $_COOKIE['eid'];
     $query = $obj->con1->prepare("SELECT c1.*, sc1.name AS service_center, t1.name AS tech 
     FROM call_allocation c1 
         INNER JOIN service_center sc1 ON c1.service_center_id=sc1.id
@@ -33,6 +44,7 @@ if(isset($_REQUEST['editId'])){
     $query->execute();
     $Res = $query->get_result();
     $data = $Res->fetch_assoc();
+    $cno= $data['complaint_no'];
     $query->close();
 }
 
@@ -47,7 +59,7 @@ if(isset($_REQUEST['update'])){
     $reason = $_REQUEST['rson'];
     $allocationDate = $_REQUEST['allocation_date'];
     $allocationTime = $_REQUEST['allocation_time'];
-    $editId = $_REQUEST['editId'];
+    $editId = $_COOKIE['eid'];
 
     if($_FILES['srno_img']['size'] > 0) {
         // Process image upload
@@ -196,7 +208,7 @@ function uploadImage($inputName, $uploadDirectory) {
 <div class='p-6'>
     <div class="panel mt-2">
         <div class='flex items-center justify-between mb-5'>
-            <h5 class="text-2xl text-primary font-semibold dark:text-white-light">Call Allocation - 
+            <h5 class="text-2xl text-primary font-semibold dark:text-white-light">Call Allocation -
                 <?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View') : 'Add' ?>
             </h5>
         </div>
@@ -206,8 +218,9 @@ function uploadImage($inputName, $uploadDirectory) {
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
                             <label for="complaint_num"> Complaint No. </label>
-                            <input name="complaint_num" id="complaint_num" type="text" class="form-input"
-                            required <?php echo isset($mode) ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['complaint_no'] : ''?>" />
+                            <input name="complaint_num" id="complaint_num" type="text" class="form-input" required
+                                <?php echo isset($mode) ? 'readonly' : '' ?>
+                                value="<?php echo isset($mode) ? $data['complaint_no'] : ''?>" />
                         </div>
                         <div>
                             <label for="service_center">Service Center</label>
@@ -221,11 +234,10 @@ function uploadImage($inputName, $uploadDirectory) {
                                     $stmt->close();
                                     while ($result = mysqli_fetch_array($Resp)) { 
                                 ?>
-                                    <option value="<?php echo $result["id"]; ?>"
-                                        <?php echo isset($mode) && $result['id'] == $data['service_center_id'] ? 'selected' : '' ?>
-                                    >
-                                        <?php echo $result["name"]; ?>
-                                    </option>
+                                <option value="<?php echo $result["id"]; ?>"
+                                    <?php echo isset($mode) && $result['id'] == $data['service_center_id'] ? 'selected' : '' ?>>
+                                    <?php echo $result["name"]; ?>
+                                </option>
                                 <?php 
                                     } 
                                 ?>
@@ -233,52 +245,67 @@ function uploadImage($inputName, $uploadDirectory) {
                         </div>
                         <div>
                             <label for="product_srno"> Product Serial NO. </label>
-                            <input name="product_srno" id="product_srno" type="text" class="form-input" 
-                            required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> 
-                            value="<?php echo isset($mode) ? $data['product_serial_no'] : ''?>" />
+                            <input name="product_srno" id="product_srno" type="text" class="form-input" required
+                                <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?>
+                                value="<?php echo isset($mode) ? $data['product_serial_no'] : ''?>" />
                         </div>
                         <div>
                             <label for="srno_img">Serial NO. Image</label>
-                            <input name="srno_img" id="srno_img" type="file" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary" value="<?php echo isset($mode) ? $data['serial_no_img'] : "" ?>" required onchange="readURL(this, 'srNoImg', 'errSrNoImg')">
+                            <input name="srno_img" id="srno_img" type="file"
+                                <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>
+                                class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
+                                value="<?php echo isset($mode) ? $data['serial_no_img'] : "" ?>" required
+                                onchange="readURL(this, 'srNoImg', 'errSrNoImg')">
 
-                            <img src="<?php echo isset($mode) && isset($data['serial_no_img']) ? 'images/serial_no_img/'.$data['serial_no_img'] : '' ?>" 
-                            class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img" alt="" id="srNoImg">
+                            <img src="<?php echo isset($mode) && isset($data['serial_no_img']) ? 'images/serial_no_img/'.$data['serial_no_img'] : '' ?>"
+                                class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img"
+                                alt="" id="srNoImg">
                             <h6 id='errSrNoImg' class='error-elem'></h6>
                         </div>
                         <div>
                             <label for="product_model"> Product Model </label>
-                            <input name="product_model" id="product_model" type="text" class="form-input" 
-                            required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) && isset($data['product_model']) ? $data['product_model'] : "" ?>" />
+                            <input name="product_model" id="product_model" type="text" class="form-input" required
+                                <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?>
+                                value="<?php echo isset($mode) && isset($data['product_model']) ? $data['product_model'] : "" ?>" />
                         </div>
                         <div>
                             <label for="product_model_img"> Product Model Image </label>
-                            <input name="product_model_img" id="product_model_img" type="file" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary" value="<?php echo isset($mode) ? $data['product_model_img'] : "" ?>"
-                            required onchange="readURL(this, 'previewModalImage', 'errModalImg')" />
+                            <input name="product_model_img" id="product_model_img" type="file"
+                                <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>
+                                class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
+                                value="<?php echo isset($mode) ? $data['product_model_img'] : "" ?>" required
+                                onchange="readURL(this, 'previewModalImage', 'errModalImg')" />
 
-                            <img src="<?php echo isset($mode) && isset($data['product_model_img']) ? 'images/product_model_img/'.$data['product_model_img'] : '' ?>" 
-                            class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img" alt="" id="previewModalImage">
+                            <img src="<?php echo isset($mode) && isset($data['product_model_img']) ? 'images/product_model_img/'.$data['product_model_img'] : '' ?>"
+                                class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img"
+                                alt="" id="previewModalImage">
                             <h6 id='errModalImg' class='error-elem'></h6>
                         </div>
                     </div>
                     <div class="w-6/12 px-3 space-y-5">
                         <div x-data="purchaseDate">
                             <label for="purchase_date"> Purchase Date </label>
-                            <input x-model="date1" name="purchase_date" id="purchase_date" class="form-input" 
-                            <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> value="<?php echo isset($mode) && isset($data['purchase_data']) ? $data['purchase_data'] : '' ?>" />
+                            <input x-model="date1" name="purchase_date" id="purchase_date" class="form-input"
+                                <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>
+                                value="<?php echo isset($mode) && isset($data['purchase_data']) ? $data['purchase_data'] : '' ?>" />
                         </div>
                         <div>
                             <label for="purchase_date_img">Purchase Date Image</label>
-                            <input id="purchase_date_img" name="purchase_date_img" type="file" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary" value="<?php echo isset($mode) ? $data['purchase_date_img'] : "" ?>"
-                            required onchange="readURL(this, 'purDateImg', 'errPurDateImg')" />
+                            <input id="purchase_date_img" name="purchase_date_img" type="file"
+                                <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>
+                                class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
+                                value="<?php echo isset($mode) ? $data['purchase_date_img'] : "" ?>" required
+                                onchange="readURL(this, 'purDateImg', 'errPurDateImg')" />
 
-                            <img src="<?php echo isset($mode) && isset($data['purchase_date_img']) ? 'images/purchase_date_img/'.$data['purchase_date_img'] : '' ?>" 
-                            class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img" alt="" id="purDateImg">
+                            <img src="<?php echo isset($mode) && isset($data['purchase_date_img']) ? 'images/purchase_date_img/'.$data['purchase_date_img'] : '' ?>"
+                                class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img"
+                                alt="" id="purDateImg">
                             <h6 id='errPurDateImg' class='error-elem'></h6>
                         </div>
                         <div>
                             <label for="technician">Technician </label>
-                            <select class="form-select text-white-dark" name="technician" 
-                            required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> >
+                            <select class="form-select text-white-dark" name="technician" required
+                                <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
                                 <option value="">Choose Technician</option>
                                 <?php
                                     $stmt = $obj->con1->prepare(
@@ -290,11 +317,10 @@ function uploadImage($inputName, $uploadDirectory) {
 
                                     while ($result = mysqli_fetch_assoc($Res)) { 
                                 ?>
-                                    <option value="<?php echo $result["id"]; ?>" 
-                                        <?php echo isset($mode) && $result['id'] == $data['technician'] ? 'selected' : '' ?>
-                                    >
-                                        <?php echo $result["name"]; ?>
-                                    </option>
+                                <option value="<?php echo $result["id"]; ?>"
+                                    <?php echo isset($mode) && $result['id'] == $data['technician'] ? 'selected' : '' ?>>
+                                    <?php echo $result["name"]; ?>
+                                </option>
                                 <?php 
                                     } 
                                 ?>
@@ -302,47 +328,56 @@ function uploadImage($inputName, $uploadDirectory) {
                         </div>
                         <div>
                             <label for="call_status">Status</label>
-                            <select name="call_status" id="call_status" class="form-select text-white-dark" 
-                            required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> >
+                            <select name="call_status" id="call_status" class="form-select text-white-dark" required
+                                <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
                                 <option value="">Choose Status</option>
-                                <option value="new" <?php echo isset($mode) && $data['status'] == 'new' ? 'selected' : '' ?>>
+                                <option value="new"
+                                    <?php echo isset($mode) && $data['status'] == 'new' ? 'selected' : '' ?>>
                                     New
                                 </option>
-                                <option value="pending" <?php echo isset($mode) && $data['status'] == 'pending' ? 'selected' : '' ?>>
+                                <option value="pending"
+                                    <?php echo isset($mode) && $data['status'] == 'pending' ? 'selected' : '' ?>>
                                     Pending
                                 </option>
-                                <option value="cancelled" <?php echo isset($mode) && $data['status'] == 'cancelled' ? 'selected' : '' ?>>
+                                <option value="cancelled"
+                                    <?php echo isset($mode) && $data['status'] == 'cancelled' ? 'selected' : '' ?>>
                                     Cancelled
                                 </option>
-                                <option value="closed" <?php echo isset($mode) && $data['status'] == 'closed' ? 'selected' : '' ?>>
+                                <option value="closed"
+                                    <?php echo isset($mode) && $data['status'] == 'closed' ? 'selected' : '' ?>>
                                     Closed
                                 </option>
-                                <option value="allocated" <?php echo isset($mode) && $data['status'] == 'allocated' ? 'selected' : '' ?>>
+                                <option value="allocated"
+                                    <?php echo isset($mode) && $data['status'] == 'allocated' ? 'selected' : '' ?>>
                                     Allocated
                                 </option>
                             </select>
                         </div>
                         <div>
                             <label for="rson">Reason </label>
-                            <input id="rson" name="rson" type="text" class="form-input" 
-                            required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?>
-                            value="<?php echo isset($mode) ? $data['reason'] : "" ?>" />
+                            <input id="rson" name="rson" type="text" class="form-input" required
+                                <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?>
+                                value="<?php echo isset($mode) ? $data['reason'] : "" ?>" />
                         </div>
 
                         <div x-data="allocationDate">
                             <label for="allocation_date">Allocation Date </label>
-                            <input x-model="date2" name="allocation_date" id="allocation_date" class="form-input" value="" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
+                            <input x-model="date2" name="allocation_date" id="allocation_date" class="form-input"
+                                value="" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
                         </div>
 
                         <div x-data="allocationTime">
                             <label for="allocation_time"> Allocation Time </label>
-                            <input x-model="time" name="allocation_time" id="allocation_time" class="form-input" value=""
-                            <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
+                            <input x-model="time" name="allocation_time" id="allocation_time" class="form-input"
+                                value="" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
                         </div>
                     </div>
                 </div>
-                <div class="relative inline-flex align-middle gap-3 mt-10 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
-                    <button type="submit" id="save" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" class="btn btn-success" onclick="return validateAndDisable()"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?></button>
+                <div
+                    class="relative inline-flex align-middle gap-3 mt-10 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
+                    <button type="submit" id="save"
+                        name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" class="btn btn-success"
+                        onclick="return validateAndDisable()"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?></button>
                     <button type="button" id="close_btn" name="close_btn" class="btn btn-danger"
                         onclick="window.location=`call_allocation.php`">Close</button>
                 </div>
@@ -360,7 +395,7 @@ function uploadImage($inputName, $uploadDirectory) {
             <h1 class='text-primary text-2xl font-bold'>Call History</h1>
 
             <div class="flex flex-wrap items-center">
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_call_history.php'">
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="addHistory()">
                     <i class="ri-add-line mr-1"></i> Add Call History
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
@@ -469,31 +504,33 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.no','Complaint No.', 'Service Center', 'Technician', 'Parts Used', 'Call Type', 'Service Charges', 'Parts Charges',
-                        'Status', 'Reason',  'Date Time'
+                    headings: ['Sr.no', 'Complaint No.', 'Service Center', 'Technician',
+                        'Parts Used', 'Call Type', 'Service Charges', 'Parts Charges',
+                        'Status', 'Reason', 'Date Time'
                     ],
                     data: [
                         <?php 
-                            $stmt = $obj->con1->prepare("SELECT * FROM `call_history`");
+                            $stmt = $obj->con1->prepare("SELECT * FROM `call_history` where complaint_no=?");
+                            $stmt->bind_param("s",$cno);
                             $stmt->execute();
+
                             $Resp=$stmt->get_result();
                             $id=1;
                             while($row = mysqli_fetch_array($Resp)){
-                        ?>
-                            [
-                                <?php echo $id ?>,
-                                '<?php echo $row['complaint_no'] ?>',
-                                '<?php echo $row['service_center'] ?>',
-                                '<?php echo $row['technician'] ?>',
-                                '<?php echo $row['parts_used'] ?>',
-                                '<?php echo $row['call_type'] ?>',
-                                '<?php echo $row['service_charge'] ?>',
-                                '<?php echo $row['parts_charge'] ?>',
-                                '<?php echo $row['status'] ?>',
-                                '<?php echo $row['reason'] ?>',
-                                '<?php echo $row['date_time'] ?>',
-        
-                            ],
+                        ?>[
+                            <?php echo $id ?>,
+                            '<?php echo $row['complaint_no'] ?>',
+                            '<?php echo $row['service_center'] ?>',
+                            '<?php echo $row['technician'] ?>',
+                            '<?php echo $row['parts_used'] ?>',
+                            '<?php echo $row['call_type'] ?>',
+                            '<?php echo $row['service_charge'] ?>',
+                            '<?php echo $row['parts_charge'] ?>',
+                            '<?php echo $row['status'] ?>',
+                            '<?php echo $row['reason'] ?>',
+                            '<?php echo $row['date_time'] ?>',
+
+                        ],
                         <?php
                         $id++;
                             }
@@ -503,10 +540,9 @@ document.addEventListener('alpine:init', () => {
                 perPage: 10,
                 perPageSelect: [10, 20, 30, 50, 100],
                 columns: [{
-                        select: 0,
-                        sort: 'asc',
-                    },
-                ],
+                    select: 0,
+                    sort: 'asc',
+                }, ],
                 firstLast: true,
                 firstText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M13 19L7 12L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M16.9998 19L10.9998 12L16.9998 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
                 lastText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M11 19L17 12L11 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M6.99976 19L12.9998 12L6.99976 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
@@ -552,6 +588,9 @@ document.addEventListener('alpine:init', () => {
         },
     }));
 })
+
+
+
 
 </script>
 <?php 

@@ -1,5 +1,6 @@
 <?php
 include "header.php";
+setcookie("eid","",time()-3600);
 if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     try {
         $stmt_del = $obj->con1->prepare(
@@ -58,7 +59,7 @@ function getActions(id,complaint_no) {
             </a>
         </li>
         <li>
-            <a href="add_call_allocation.php?editId=${id}" class='text-xl' x-tooltip="Edit">
+            <a href="javascript:updateRecord('${id}')" class='text-xl' x-tooltip="Edit">
                 <i class="ri-pencil-line text text-success"></i>
             </a>
         </li>
@@ -70,6 +71,13 @@ function getActions(id,complaint_no) {
     </ul>`
 }
 
+function updateRecord(id)
+{
+
+    document.cookie = "eid="+id;
+  window.location = "add_call_allocation.php";
+  //  alert(id);
+}
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('callAllocationTable', () => ({

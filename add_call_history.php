@@ -1,5 +1,19 @@
+
 <?php
 include "header.php";
+
+$mode="save";
+$complaint_no=$_COOKIE["comp_no"];
+//echo "$complaint_no";
+$stmt = $obj->con1->prepare("SELECT * FROM `call_allocation` WHERE complaint_no=?");
+$stmt->bind_param("s",$complaint_no);
+$stmt->execute();
+$Resp = $stmt->get_result();
+$data = $Resp->fetch_assoc();
+$service_id= $data["service_center_id"];
+$tech_id = $data["technician"];
+$comp_no= $data['complaint_no'];
+$stmt->close();
 
 if(isset($_REQUEST["save"])) {
     $complaint_no = $_REQUEST["complaint_no"];
@@ -32,10 +46,10 @@ if(isset($_REQUEST["save"])) {
 
     if ($Resp) {
         setcookie("msg", "data", time() + 3600, "/");
-        // header("location:add_call_allocation.php");
+        header("location:add_call_allocation.php");
     } else {
         setcookie("msg", "fail", time() + 3600, "/");
-        // header("location:add_call_allocation.php");
+        header("location:add_call_allocation.php");
     }
 }
 
@@ -50,13 +64,13 @@ if(isset($_REQUEST["save"])) {
         <form class="space-y-5" method="post">
             <div>
                 <label for="name">Complaint No.</label>
-                <input id="name" type="text" name="complaint_no" placeholder="" class="form-input" 
-                 value="<?php echo isset($mode) ? $data['complaint_no'] : ''?>" required />
+                <input id="complaint_no" type="text" name="complaint_no" placeholder="" class="form-input"
+                    value="<?php echo isset($mode) ? $data['complaint_no'] : ''?>" required />
             </div>
             <div>
                 <label for="groupFname"> Service Center</label>
                 <select class="form-select text-white-dark" name="service_center" required>
-                    <option value="">Choose...</option>
+
                     <?php
                             $stmt = $obj->con1->prepare(
                                 "SELECT * FROM `service_center` WHERE status='enable'"
@@ -66,9 +80,14 @@ if(isset($_REQUEST["save"])) {
                             $stmt->close();
 
                             while ($result = mysqli_fetch_assoc($Res)) { 
+
+                                if($service_id==$result["id"])
+                                {
                         ?>
-                    <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                    <option value="<?php echo $result["id"]; ?>" selected readonly><?php echo $result["name"]; ?>
+                    </option>
                     <?php 
+                                }
                             } 
                         ?>
                 </select>
@@ -76,7 +95,7 @@ if(isset($_REQUEST["save"])) {
             <div>
                 <label for="groupFname"> Technician</label>
                 <select class="form-select text-white-dark" name="technician" required>
-                    <option value="">Choose...</option>
+
                     <?php
                             $stmt = $obj->con1->prepare(
                                 "SELECT * FROM `technician` WHERE status='enable'"
@@ -86,9 +105,12 @@ if(isset($_REQUEST["save"])) {
                             $stmt->close();
 
                             while ($result = mysqli_fetch_assoc($Res)) { 
+                                if($tech_id==$result["id"])
+                                {
                         ?>
-                    <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                    <option value="<?php echo $result["id"]; ?>" selected><?php echo $result["name"]; ?></option>
                     <?php 
+                                }
                             } 
                         ?>
                 </select>
@@ -96,11 +118,10 @@ if(isset($_REQUEST["save"])) {
             <div>
                 <label for="groupFname"> Parts Used</label>
                 <select class="form-select text-white-dark" name="parts_used" required>
-                    <option value="part call" <?php echo isset($mode) && $data['parts_used'] == 'new' ? 'selected' : '' ?>>
+                    <option value="part call">
                         Part Call
                     </option>
-                    <option value="non_part call"
-                        <?php echo isset($mode) && $data['Parts_used'] == 'pending' ? 'selected' : '' ?>>
+                    <option value="non_part call">
                         Non-Part Call
                     </option>
                 </select>
@@ -108,11 +129,10 @@ if(isset($_REQUEST["save"])) {
             <div>
                 <label for="groupFname"> Call Type</label>
                 <select class="form-select text-white-dark" name="call_type" required>
-                    <option value="warranty" <?php echo isset($mode) && $data['status'] == 'new' ? 'selected' : '' ?>>
+                    <option value="warranty">
                         Warranty
                     </option>
-                    <option value="out of warranty"
-                        <?php echo isset($mode) && $data['status'] == 'pending' ? 'selected' : '' ?>>
+                    <option value="out of warranty">
                         Out Of Warranty
                     </option>
                 </select>
@@ -130,9 +150,7 @@ if(isset($_REQUEST["save"])) {
                 <select name="status" id="status" class="form-select text-white-dark" required
                     <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
                     <option value="">Choose Status</option>
-                    <option value="new" <?php echo isset($mode) && $data['status'] == 'new' ? 'selected' : '' ?>>
-                        New
-                    </option>
+                    
                     <option value="pending"
                         <?php echo isset($mode) && $data['status'] == 'pending' ? 'selected' : '' ?>>
                         Pending
@@ -144,10 +162,7 @@ if(isset($_REQUEST["save"])) {
                     <option value="closed" <?php echo isset($mode) && $data['status'] == 'closed' ? 'selected' : '' ?>>
                         Closed
                     </option>
-                    <option value="allocated"
-                        <?php echo isset($mode) && $data['status'] == 'allocated' ? 'selected' : '' ?>>
-                        Allocated
-                    </option>
+                    
                 </select>
             </div>
             <div>
@@ -157,10 +172,10 @@ if(isset($_REQUEST["save"])) {
                     value="<?php echo isset($mode) ? $data['reason'] : "" ?>" />
             </div>
 
-            <div
-                class="relative inline-flex align-middle gap-3 mt-4">
+            <div class="relative inline-flex align-middle gap-3 mt-4">
                 <button type="submit" class="btn btn-success" name="save" id="save">Save</button>
-                <button type="button" class="btn btn-danger" onclick="window.location='call_alloction.php'">Close</button>
+                <button type="button" class="btn btn-danger"
+                    onclick="window.location='call_alloction.php'">Close</button>
             </div>
         </form>
     </div>

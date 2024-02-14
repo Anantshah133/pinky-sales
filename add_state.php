@@ -2,9 +2,9 @@
 include "header.php";
 
 
-if(isset($_REQUEST['editId'])){
+if(isset($_COOKIE['eid'])){
     $mode = 'edit';
-    $editId = $_REQUEST['editId'];
+    $editId = $_COOKIE['eid'];
     $stmt = $obj->con1->prepare("SELECT * FROM `state` WHERE id=?");
     $stmt->bind_param("i", $editId);
     $stmt->execute();
@@ -25,7 +25,7 @@ if(isset($_REQUEST['viewId'])){
 }
 
 if(isset($_REQUEST['update'])){
-    $editId = $_REQUEST['editId'];
+    $editId =$_COOKIE['eid'];
     $name = $_REQUEST["name"];
 
     $stmt = $obj->con1->prepare("UPDATE `state` SET name=? WHERE id=?");
@@ -33,6 +33,7 @@ if(isset($_REQUEST['update'])){
     $Res = $stmt->execute();
     $stmt->close();
 
+    setcookie("eid","",time()-3600);
     if ($Res) {
         setcookie("msg", "update", time() + 3600, "/");
         header("location:state.php");
@@ -40,12 +41,12 @@ if(isset($_REQUEST['update'])){
         setcookie("msg", "fail", time() + 3600, "/");
         header("location:state.php");
     }
-    exit();
+  
 }
 
 if (isset($_REQUEST["save"])) {
     $name = $_REQUEST["name"];
-
+    $mode ="";
     try {
         $stmt = $obj->con1->prepare("INSERT INTO `state`(`name`) VALUES (?)");
         $stmt->bind_param("s", $name);
