@@ -82,7 +82,7 @@ if (isset($_REQUEST["save"])) {
                     value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
                 </div>
-               echo SELECT count(*) as tot FROM `area_pincode` WHERE pincode=?;?>
+               
                 <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
                 <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
                     <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success" onclick="return validateAndDisable()"><?php echo isset($mode)  && $mode == 'edit' ? 'Update' : 'Save' ?></button>
