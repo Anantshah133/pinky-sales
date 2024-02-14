@@ -2,7 +2,7 @@
 include "header.php";
 error_reporting(E_ALL);
 
-if (isset($_REQUEST["viewId"])) {
+if (isset($_COOKIE['viewId'])) {
     $mode = 'view';
     $viewId = $_COOKIE['viewId'];
     $stmt = $obj->con1->prepare("SELECT * FROM privacy_policy where id=?");

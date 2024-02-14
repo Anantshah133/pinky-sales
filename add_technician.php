@@ -66,7 +66,7 @@ if(isset($_REQUEST['update'])){
     }
 }
 
-if (isset($_REQUEST["viewId"])) {
+if (isset($_COOKIE['viewId'])) {
     $mode = 'view';
     $viewId = $_COOKIE['viewId'];
     $stmt = $obj->con1->prepare("SELECT t1.*, s1.name AS service_center_name FROM technician t1, service_center s1 WHERE t1.id=? AND t1.service_center=s1.id;");

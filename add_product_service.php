@@ -1,7 +1,7 @@
 <?php
 include "header.php";
 
-if (isset($_REQUEST["viewId"])) {
+if (isset($_COOKIE['viewId'])) {
     $mode = 'view';
     $viewId = $_COOKIE['viewId'];
     $stmt = $obj->con1->prepare("SELECT ps1.*, pc1.name AS product_category, s1.name AS service_type FROM product_service ps1, product_category pc1, service_type s1 WHERE ps1.srno=? AND ps1.pid=pc1.id AND ps1.sid=s1.id");

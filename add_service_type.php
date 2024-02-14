@@ -13,7 +13,7 @@ if(isset($_COOKIE['editId'])){
     $qry->close();
 }
 
-if(isset($_REQUEST['viewId'])){
+if(isset($_COOKIE['viewId'])){
     $mode = 'view';
     $viewId = $_COOKIE['viewId'];
     $qry = $obj->con1->prepare("SELECT * FROM `service_type` WHERE id=?");

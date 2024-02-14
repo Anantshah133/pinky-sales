@@ -15,7 +15,7 @@ cno = document.getElementById("complaint_num").value;
 
 <?php 
 $cno="";
-if(isset($_REQUEST['viewId'])){
+if(isset($_COOKIE['viewId'])){
     $mode = 'view';
     $viewId = $_COOKIE['viewId'];
     $query = $obj->con1->prepare("SELECT c1.*, sc1.name AS service_center, t1.name AS tech 

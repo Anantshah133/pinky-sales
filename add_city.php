@@ -1,7 +1,7 @@
 <?php
 include "header.php";
 
-if (isset($_REQUEST["viewId"])) {
+if (isset($_COOKIE['viewId'])) {
     $mode = 'view';
     $viewId = $_COOKIE['viewId'];
     $stmt = $obj->con1->prepare("SELECT * FROM `city` where srno=?");

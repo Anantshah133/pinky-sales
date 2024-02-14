@@ -1,6 +1,6 @@
 <?php
 include "header.php";
-if (isset($_REQUEST["viewId"])) {
+if (isset($_COOKIE['viewId'])) {
     $mode = 'view';
     $viewId = $_COOKIE['viewId']; // currently 15
     $stmt = $obj->con1->prepare("SELECT a1.*, s1.name AS state, c1.ctnm AS city FROM `area_pincode` a1, `state` s1, `city` c1 WHERE a1.id=? AND a1.state_id=s1.id AND a1.city_id=c1.srno");
