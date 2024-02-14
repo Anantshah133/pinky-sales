@@ -95,3 +95,13 @@ function validateAndDisable() {
         return true;
     }
 }
+
+function updateRecord(id, url) {
+    document.cookie = "editId=" + id;
+    window.location = url;
+}
+
+function viewRecord(id, url) {
+    document.cookie = "viewId=" + id;
+    window.location = url;
+}

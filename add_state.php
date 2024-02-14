@@ -2,9 +2,9 @@
 include "header.php";
 
 
-if(isset($_COOKIE['eid'])){
+if(isset($_COOKIE['editId'])){
     $mode = 'edit';
-    $editId = $_COOKIE['eid'];
+    $editId = $_COOKIE['editId'];
     $stmt = $obj->con1->prepare("SELECT * FROM `state` WHERE id=?");
     $stmt->bind_param("i", $editId);
     $stmt->execute();
@@ -13,9 +13,9 @@ if(isset($_COOKIE['eid'])){
     $stmt->close();
 }
 
-if(isset($_REQUEST['viewId'])){
+if(isset($_COOKIE['viewId'])){
     $mode = 'view';
-    $viewId = $_REQUEST['viewId'];
+    $viewId = $_COOKIE['viewId'];
     $stmt = $obj->con1->prepare("SELECT * FROM `state` WHERE id=?");
     $stmt->bind_param("i", $viewId);
     $stmt->execute();
@@ -25,15 +25,14 @@ if(isset($_REQUEST['viewId'])){
 }
 
 if(isset($_REQUEST['update'])){
-    $editId =$_COOKIE['eid'];
+    $editId = $_COOKIE['editId'];
     $name = $_REQUEST["name"];
-
+    
     $stmt = $obj->con1->prepare("UPDATE `state` SET name=? WHERE id=?");
     $stmt->bind_param("si", $name, $editId);
     $Res = $stmt->execute();
     $stmt->close();
-
-    setcookie("eid","",time()-3600);
+    
     if ($Res) {
         setcookie("msg", "update", time() + 3600, "/");
         header("location:state.php");
@@ -41,7 +40,6 @@ if(isset($_REQUEST['update'])){
         setcookie("msg", "fail", time() + 3600, "/");
         header("location:state.php");
     }
-  
 }
 
 if (isset($_REQUEST["save"])) {
@@ -71,6 +69,11 @@ if (isset($_REQUEST["save"])) {
     exit();
 }
 ?>
+<script>
+    document.addEventListener("", ()=>{
+        localStorage.setItem("Flag", "working")
+    });
+</script>
 <div class='p-6' >
     <div class="panel mt-2">
         <div class='flex items-center justify-between mb-3'>

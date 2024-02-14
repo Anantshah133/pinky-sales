@@ -3,7 +3,7 @@ include "header.php";
 
 if (isset($_REQUEST["viewId"])) {
     $mode = 'view';
-    $viewId = $_REQUEST["viewId"];
+    $viewId = $_COOKIE['viewId'];
     $stmt = $obj->con1->prepare("SELECT * FROM `city` where srno=?");
     $stmt->bind_param("i", $viewId);
     $stmt->execute();
@@ -14,7 +14,7 @@ if (isset($_REQUEST["viewId"])) {
 
 if(isset($_REQUEST['editId'])){
     $mode = 'edit';
-    $editId = $_REQUEST['editId'];
+    $editId = $_COOKIE['editId'];
     $stmt = $obj->con1->prepare("SELECT * FROM `city` where srno=?");
     $stmt->bind_param("i", $editId);
     $stmt->execute();
@@ -24,7 +24,7 @@ if(isset($_REQUEST['editId'])){
 }
 
 if(isset($_REQUEST['update'])){
-    $editId = $_REQUEST['editId'];
+    $editId = $_COOKIE['editId'];
     $state_id = $_REQUEST["state_id"];
     $city_name = $_REQUEST['city_name'];
     $status = $_REQUEST["default_radio"];

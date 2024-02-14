@@ -3,7 +3,7 @@ include "header.php";
 
 if (isset($_REQUEST["viewId"])) {
     $mode = 'view';
-    $viewId = $_REQUEST["viewId"];
+    $viewId = $_COOKIE['viewId'];
     $stmt = $obj->con1->prepare("SELECT ps1.*, pc1.name AS product_category, s1.name AS service_type FROM product_service ps1, product_category pc1, service_type s1 WHERE ps1.srno=? AND ps1.pid=pc1.id AND ps1.sid=s1.id");
     $stmt->bind_param('i', $viewId);
     $stmt->execute();
@@ -24,7 +24,7 @@ if (isset($_REQUEST["editId"])) {
 }
 
 if(isset($_REQUEST['update'])){
-    $editId = $_REQUEST['editId'];
+    $editId = $_COOKIE['editId'];
     $product = $_REQUEST["product_id"];
     $service = $_REQUEST["service_id"];
     $status = $_REQUEST["default_radio"];

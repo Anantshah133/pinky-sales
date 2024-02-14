@@ -2,7 +2,7 @@
 include "header.php";
 if (isset($_REQUEST["viewId"])) {
     $mode = 'view';
-    $viewId = $_REQUEST["viewId"]; // currently 15
+    $viewId = $_COOKIE['viewId']; // currently 15
     $stmt = $obj->con1->prepare("SELECT a1.*, s1.name AS state, c1.ctnm AS city FROM `area_pincode` a1, `state` s1, `city` c1 WHERE a1.id=? AND a1.state_id=s1.id AND a1.city_id=c1.srno");
     $stmt->bind_param("i", $viewId);
     $stmt->execute();
@@ -23,7 +23,7 @@ if(isset($_REQUEST['editId'])){
 }
 
 if(isset($_REQUEST['update'])){
-    $editId = $_REQUEST['editId'];
+    $editId = $_COOKIE['editId'];
     $state_name = $_REQUEST["state_id"];
     $city_name = $_REQUEST["area_id"];
     $pincode = $_REQUEST["pincode"];

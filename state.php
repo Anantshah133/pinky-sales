@@ -1,6 +1,8 @@
 <?php
 include "header.php";
-setcookie("eid","",time()-3600);
+setcookie("editId", "", time() - 3600);
+setcookie("viewId", "", time() - 3600);
+
 if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     try {
         $stmt_del = $obj->con1->prepare(
@@ -46,16 +48,16 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 </div>
 <!-- script -->
 <script>
-checkCookies();
-function getActions(id, name) {
-    return `<ul class="flex items-center gap-4">
+    checkCookies();
+    function getActions(id, name) {
+        return `<ul class="flex items-center gap-4">
         <li>
-            <a href="add_state.php?viewId=${id}" class='text-xl' x-tooltip="View">
+            <a href="javascript:viewRecord(${id}, 'add_state.php')" class='text-xl' x-tooltip="View">
                 <i class="ri-eye-line text-primary"></i>
             </a>
         </li>
         <li>
-            <a href="javascript:updateRecord('${id}');" class='text-xl' x-tooltip="Edit">
+            <a href="javascript:updateRecord(${id}, 'add_state.php');" class='text-xl' x-tooltip="Edit">
                 <i class="ri-pencil-line text text-success"></i>
             </a>
         </li>
@@ -65,110 +67,105 @@ function getActions(id, name) {
             </a>
         </li>
     </ul>`
-}
-function updateRecord(id)
-{
-
-    document.cookie = "eid="+id;
-  window.location = "add_state.php";
-  
-}
-document.addEventListener('alpine:init', () => {
-    Alpine.data('exportTable', () => ({
-        datatable: null,
-        init() {
-            console.log('Initalizing datatable')
-            this.datatable = new simpleDatatables.DataTable('#myTable', {
-                data: {
-                    headings: ['Sr.No.', 'Name', 'Action'],
-                    data: [
-                        <?php
+    }
+    
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('exportTable', () => ({
+            datatable: null,
+            init() {
+                console.log('Initalizing datatable')
+                this.datatable = new simpleDatatables.DataTable('#myTable', {
+                    data: {
+                        headings: ['Sr.No.', 'Name', 'Action'],
+                        data: [
+                            <?php
                             $stmt = $obj->con1->prepare("SELECT * FROM `state`");
                             $stmt->execute();
                             $Resp = $stmt->get_result();
                             $i = 1;
-                            while ($row = mysqli_fetch_array($Resp)) { 
-                        ?>
-                            [
-                                <?php echo $i; ?>, 
-                                '<?php echo $row["name"]; ?>', 
+                            while ($row = mysqli_fetch_array($Resp)) {
+                                ?>
+                                [
+                                <?php echo $i; ?>,
+                                '<?php echo $row["name"]; ?>',
                                 getActions(<?php echo $row["id"]; ?>, '<?php echo $row["name"]; ?>')
-                            ],
-                        <?php 
-                            $i++;}
-                        ?>
-                    ],
-                },
-                perPage: 10,
-                perPageSelect: [10, 20, 30, 50, 100],
-                columns: [{
+                                ],
+                                <?php
+                                $i++;
+                            }
+                            ?>
+                        ],
+                    },
+                    perPage: 10,
+                    perPageSelect: [10, 20, 30, 50, 100],
+                    columns: [{
                         select: 0,
                         sort: 'asc',
                     },
-                ],
-                firstLast: true,
-                firstText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M13 19L7 12L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M16.9998 19L10.9998 12L16.9998 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
-                lastText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M11 19L17 12L11 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M6.99976 19L12.9998 12L6.99976 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
-                prevText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M15 5L9 12L15 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
-                nextText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M9 5L15 12L9 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
-                labels: {
-                    perPage: '{select}',
-                },
-                layout: {
-                    top: '{search}',
-                    bottom: '{info}{select}{pager}',
-                },
-            });
-        },
+                    ],
+                    firstLast: true,
+                    firstText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M13 19L7 12L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M16.9998 19L10.9998 12L16.9998 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                    lastText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M11 19L17 12L11 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M6.99976 19L12.9998 12L6.99976 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                    prevText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M15 5L9 12L15 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                    nextText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M9 5L15 12L9 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                    labels: {
+                        perPage: '{select}',
+                    },
+                    layout: {
+                        top: '{search}',
+                        bottom: '{info}{select}{pager}',
+                    },
+                });
+            },
 
-        exportTable(eType) {
-            var data = {
-                type: eType,
-                filename: 'state',
-                download: true,
-            };
+            exportTable(eType) {
+                var data = {
+                    type: eType,
+                    filename: 'state',
+                    download: true,
+                };
 
-            if (data.type === 'csv') {
-                data.lineDelimiter = '\n';
-                data.columnDelimiter = ';';
+                if (data.type === 'csv') {
+                    data.lineDelimiter = '\n';
+                    data.columnDelimiter = ';';
+                }
+                this.datatable.export(data);
+            },
+
+            printTable() {
+                this.datatable.print();
+            },
+
+            formatDate(date) {
+                if (date) {
+                    const dt = new Date(date);
+                    const month = dt.getMonth() + 1 < 10 ? '0' + (dt.getMonth() + 1) : dt.getMonth() +
+                        1;
+                    const day = dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate();
+                    return day + '/' + month + '/' + dt.getFullYear();
+                }
+                return '';
+            },
+        }));
+    })
+
+    async function showAlert(id, name) {
+        new window.Swal({
+            title: 'Are you sure?',
+            text: `You want to delete state :- ${name}`,
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            padding: '2em',
+        }).then((result) => {
+            console.log(result)
+            if (result.isConfirmed) {
+                var loc = "state.php?flg=del&n_stateid=" + id;
+                window.location = loc;
             }
-            this.datatable.export(data);
-        },
-
-        printTable() {
-            this.datatable.print();
-        },
-
-        formatDate(date) {
-            if (date) {
-                const dt = new Date(date);
-                const month = dt.getMonth() + 1 < 10 ? '0' + (dt.getMonth() + 1) : dt.getMonth() +
-                    1;
-                const day = dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate();
-                return day + '/' + month + '/' + dt.getFullYear();
-            }
-            return '';
-        },
-    }));
-})
-
-async function showAlert(id, name) {
-    new window.Swal({
-        title: 'Are you sure?',
-        text: `You want to delete state :- ${name}`,
-        showCancelButton: true,
-        confirmButtonText: 'Delete',
-        padding: '2em',
-    }).then((result) => {
-        console.log(result)
-        if (result.isConfirmed) {
-            var loc = "state.php?flg=del&n_stateid=" + id;
-            window.location = loc;
-        }
-    });
-}
+        });
+    }
 </script>
 
-<?php 
-    include "footer.php";
+<?php
+include "footer.php";
 ?>

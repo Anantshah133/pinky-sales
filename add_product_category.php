@@ -3,7 +3,7 @@ include "header.php";
 
 if(isset($_REQUEST['editId'])){
     $mode = 'edit';
-    $editId = $_REQUEST['editId']; 
+    $editId = $_COOKIE['editId']; 
 
     $qry = $obj->con1->prepare("SELECT * FROM `product_category` WHERE  id=?");
     $qry->bind_param("i", $editId);
@@ -15,7 +15,6 @@ if(isset($_REQUEST['editId'])){
 if(isset($_REQUEST['update'])){
     $name = $_REQUEST["name"];
     
-
     $qry = $obj->con1->prepare("UPDATE `product_category` SET name=? WHERE id=?");
     $qry->bind_param("si", $name,$editId);
     $Res = $qry->execute();
@@ -31,7 +30,7 @@ if(isset($_REQUEST['update'])){
 }
 if (isset($_REQUEST["viewId"])) {
     $mode = 'view';
-    $viewId = $_REQUEST["viewId"];
+    $viewId = $_COOKIE['viewId'];
     $stmt = $obj->con1->prepare("SELECT * FROM `product_category` where id=?");
     $stmt->bind_param('i', $viewId);
     $stmt->execute();

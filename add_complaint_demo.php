@@ -3,7 +3,7 @@ include "header.php";
 
 if (isset($_REQUEST["viewId"])) {
     $mode = 'view';
-    $viewId = $_REQUEST["viewId"];
+    $viewId = $_COOKIE['viewId'];
     $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg` where id=?");
     $stmt->bind_param("i", $viewId);
     $stmt->execute();
@@ -24,7 +24,7 @@ if (isset($_REQUEST["editId"])) {
 }
 
 if(isset($_REQUEST['update'])){
-    $editId = $_REQUEST['editId'];
+    $editId = $_COOKIE['editId'];
     $fname = $_REQUEST['fname'];
     $lname = $_REQUEST['lname'];
     $email = $_REQUEST['mail'];

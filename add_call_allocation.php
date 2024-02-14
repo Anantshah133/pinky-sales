@@ -5,9 +5,7 @@ error_reporting(E_ALL);
 <script>
 function addHistory()
 {
-  //  alert("hi!");
-
-  cno = document.getElementById("complaint_num").value;
+cno = document.getElementById("complaint_num").value;
   document.cookie = "comp_no="+cno;
   window.location = "add_call_history.php";
 }
@@ -19,7 +17,7 @@ function addHistory()
 $cno="";
 if(isset($_REQUEST['viewId'])){
     $mode = 'view';
-    $viewId = $_REQUEST['viewId'];
+    $viewId = $_COOKIE['viewId'];
     $query = $obj->con1->prepare("SELECT c1.*, sc1.name AS service_center, t1.name AS tech 
     FROM call_allocation c1 
         INNER JOIN service_center sc1 ON c1.service_center_id = sc1.id
@@ -219,7 +217,7 @@ function uploadImage($inputName, $uploadDirectory) {
                         <div>
                             <label for="complaint_num"> Complaint No. </label>
                             <input name="complaint_num" id="complaint_num" type="text" class="form-input" required
-                                <?php echo isset($mode) ? 'readonly' : '' ?>
+                                <?php echo isset($mode) ? 'readonly' : '' ?> 
                                 value="<?php echo isset($mode) ? $data['complaint_no'] : ''?>" />
                         </div>
                         <div>

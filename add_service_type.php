@@ -3,7 +3,7 @@ include "header.php";
 
 if(isset($_REQUEST['editId'])){
     $mode = 'edit';
-    $editId = $_REQUEST['editId']; //14
+    $editId = $_COOKIE['editId']; //14
     
     $qry = $obj->con1->prepare("SELECT * FROM `service_type` WHERE id=?");
     $qry->bind_param("i", $editId);
@@ -15,7 +15,7 @@ if(isset($_REQUEST['editId'])){
 
 if(isset($_REQUEST['viewId'])){
     $mode = 'view';
-    $viewId = $_REQUEST['viewId'];
+    $viewId = $_COOKIE['viewId'];
     $qry = $obj->con1->prepare("SELECT * FROM `service_type` WHERE id=?");
     $qry->bind_param("i", $viewId);
     $qry->execute();

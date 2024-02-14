@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 
 if (isset($_REQUEST["viewId"])) {
     $mode = 'view';
-    $viewId = $_REQUEST["viewId"];
+    $viewId = $_COOKIE['viewId'];
     $stmt = $obj->con1->prepare("SELECT * FROM privacy_policy where id=?");
     $stmt->bind_param('i', $viewId);
     $stmt->execute();
@@ -15,7 +15,7 @@ if (isset($_REQUEST["viewId"])) {
 
 if(isset($_REQUEST['editId'])){
     $mode = 'edit';
-    $editId = $_REQUEST['editId'];
+    $editId = $_COOKIE['editId'];
     $stmt = $obj->con1->prepare("SELECT * FROM `privacy_policy` where id=?");
     $stmt->bind_param("i", $editId);
     $stmt->execute();
@@ -28,7 +28,7 @@ if(isset($_REQUEST['update'])){
     $detail = $_REQUEST["quill_input"];
     $type = $_REQUEST["type"];
     $date_time = date("d-m-Y h:i A");
-    $editId = $_REQUEST['editId'];
+    $editId = $_COOKIE['editId'];
 
     $stmt = $obj->con1->prepare("UPDATE `privacy_policy` SET detail=?, type=?, date_time=? WHERE id=?");
     $stmt->bind_param("sssi", $detail, $type, $date_time, $editId);
