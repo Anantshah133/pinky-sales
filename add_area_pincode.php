@@ -11,9 +11,9 @@ if (isset($_REQUEST["viewId"])) {
     $stmt->close();
 }
 
-if(isset($_REQUEST['editId'])){
+if(isset($_COOKIE['editId'])){
     $mode = 'edit';
-    $editId = $_REQUEST["editId"];
+    $editId = $_COOKIE['editId'];
     $stmt = $obj->con1->prepare("SELECT a1.*, s1.name AS state, c1.ctnm AS city FROM `area_pincode` a1, `state` s1, `city` c1 WHERE a1.id=? AND a1.state_id=s1.id AND a1.city_id=c1.srno");
     $stmt->bind_param("i", $editId);
     $stmt->execute();

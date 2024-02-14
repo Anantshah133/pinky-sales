@@ -52,12 +52,12 @@ checkCookies();
 function getActions(id, number) {
     return `<ul class="flex items-center justify-center gap-4">
         <li>
-            <a href="add_complaint_demo.php?viewId=${id}" class='text-xl' x-tooltip="View">
+            <a href="javascript:editRecord(${id}, 'add_complaint_demo.php')" class='text-xl' x-tooltip="View">
                 <i class="ri-eye-line text-primary"></i>
             </a>
         </li>
         <li>
-            <a href="add_complaint_demo.php?editId=${id}" class='text-xl' x-tooltip="Edit">
+            <a href="javascript:viewRecord(${id}, 'add_complaint_demo.php')" class='text-xl' x-tooltip="Edit">
                 <i class="ri-pencil-line text text-success"></i>
             </a>
         </li>

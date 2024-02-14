@@ -13,7 +13,7 @@ if (isset($_REQUEST["viewId"])) {
     $stmt->close();
 }
 
-if(isset($_REQUEST['editId'])){
+if(isset($_COOKIE['editId'])){
     $mode = 'edit';
     $editId = $_COOKIE['editId'];
     $stmt = $obj->con1->prepare("SELECT * FROM `privacy_policy` where id=?");

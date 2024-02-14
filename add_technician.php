@@ -1,8 +1,8 @@
 <?php
 include "header.php";
-if (isset($_REQUEST["editId"])) {
+if (isset($_COOKIE['editId'])) {
     $mode = 'edit';
-    $editId = $_REQUEST["editId"];
+    $editId = $_COOKIE['editId'];
     $stmt = $obj->con1->prepare("SELECT t1.*, s1.name AS service_center_name FROM technician t1, service_center s1 WHERE t1.service_center=s1.id And  t1.id=?");
     $stmt->bind_param('i', $editId);
     $stmt->execute();

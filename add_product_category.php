@@ -1,7 +1,7 @@
 <?php
 include "header.php";
 
-if(isset($_REQUEST['editId'])){
+if(isset($_COOKIE['editId'])){
     $mode = 'edit';
     $editId = $_COOKIE['editId']; 
 

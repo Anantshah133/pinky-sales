@@ -12,9 +12,9 @@ if (isset($_REQUEST["viewId"])) {
     $stmt->close();
 }
 
-if (isset($_REQUEST["editId"])) {
+if (isset($_COOKIE['editId'])) {
     $mode = 'edit';
-    $editId = $_REQUEST["editId"];
+    $editId = $_COOKIE['editId'];
     $stmt = $obj->con1->prepare("SELECT ps1.*, pc1.name AS product_category, s1.name AS service_type FROM product_service ps1, product_category pc1, service_type s1 WHERE ps1.srno=? AND ps1.pid=pc1.id AND ps1.sid=s1.id");
     $stmt->bind_param('i', $editId);
     $stmt->execute();

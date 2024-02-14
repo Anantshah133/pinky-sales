@@ -12,9 +12,9 @@ if (isset($_REQUEST["viewId"])) {
     $stmt->close();
 }
 
-if (isset($_REQUEST["editId"])) {
+if (isset($_COOKIE['editId'])) {
     $mode = 'edit';
-    $editId = $_REQUEST["editId"];
+    $editId = $_COOKIE['editId'];
     $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg` where id=?");
     $stmt->bind_param('i', $editId);
     $stmt->execute();

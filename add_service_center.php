@@ -12,7 +12,7 @@ if(isset($_REQUEST['viewId'])){
     $stmt->close();
 }
 
-if(isset($_REQUEST['editId'])){
+if(isset($_COOKIE['editId'])){
     $mode = 'edit';
     $editId = $_COOKIE['editId'];
     $stmt = $obj->con1->prepare("SELECT sc1.*, c1.ctnm AS city, s1.id AS state_id FROM service_center sc1, city c1, state s1 WHERE c1.srno=sc1.area AND c1.state_id=s1.id AND sc1.id=?");
