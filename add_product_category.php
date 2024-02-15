@@ -78,7 +78,7 @@ if (isset($_REQUEST["save"])) {
             <form class="space-y-5" method="post" id="mainForm">
                 <div>
                     <label for="groupFname">Name</label>
-                    <input id="groupFname" name="name" type="text" class="form-input" onblur="checkName(this)" pattern="^(?=.*\S)(?=.*\s).+$" 
+                    <input id="groupFname" name="name" type="text" class="form-input" onblur="checkName(this)" pattern="^\s*\S.*$" 
                     value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
                 </div>
