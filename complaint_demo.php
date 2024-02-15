@@ -99,17 +99,17 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                             while ($row = mysqli_fetch_array($Resp)) {
                                 ?>
                                 [
-                                <?php echo $id ?>,
-                                '<?php echo $row['complaint_no'] ?>',
-                                '<?php echo $row['customer_name'] ?>',
-                                '<?php echo $row['contact'] ?>',
-                                '<?php echo $row['city'] ?>',
-                                '<?php echo $row['zipcode'] ?>',
-                                '<?php echo $row['service_type'] ?>',
-                                '<?php echo $row['product_category'] ?>',
-                                '<?php echo $row['datetime'] ?>',
-                                'New',
-                                getActions('<?php echo $row['id'] ?>', '<?php echo $row['complaint_no'] ?>')
+                                    <?php echo $id ?>,
+                                    '<?php echo $row['complaint_no'] ?>',
+                                    '<?php echo $row['customer_name'] ?>',
+                                    '<?php echo $row['contact'] ?>',
+                                    '<?php echo $row['city'] ?>',
+                                    '<?php echo $row['zipcode'] ?>',
+                                    '<?php echo $row['service_type'] ?>',
+                                    '<?php echo $row['product_category'] ?>',
+                                    '<?php echo $row['datetime'] ?>',
+                                    'New',
+                                    getActions('<?php echo $row['id'] ?>', '<?php echo $row['complaint_no'] ?>')
                                 ],
                                 <?php
                                 $id++;

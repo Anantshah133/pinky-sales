@@ -38,7 +38,7 @@ if(isset($_REQUEST['update'])){
     $product_category = $_REQUEST['product_category'];
     $dealer_name = $_REQUEST['dealer_name'];
     $complaint_date = $_REQUEST['complaint_date'];
-    $complaint_time = $_REQUEST['complaint_time'];
+    $complaint_time = date('h:i A', strtotime($_REQUEST['complaint_time']));
     $complaint_no = $data['complaint_no'];
 
     echo $complaint_date." ".$complaint_time; 
@@ -71,7 +71,7 @@ if (isset($_POST['save'])) {
     $product_category = $_REQUEST['product_category'];
     $dealer_name = $_REQUEST['dealer_name'];
     $complaint_date = $_REQUEST['complaint_date'];
-    $complaint_time = $_REQUEST['complaint_time'];
+    $complaint_time = date('h:i A', strtotime($_REQUEST['complaint_time']));
     $day = Date("d");
     $month = Date("m");
     $year = Date("y");
@@ -165,7 +165,7 @@ if (isset($_POST['save'])) {
                             <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
                         </div>
                         <div>
-                            <label for="contact_num"> Contact </label>
+                            <label for="contact_num">Contact </label>
                             <div class="flex">
                                 <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">+91</div>
                                 <input name="contact_num" id="contact_num" type="tel" placeholder="1234567890" class="form-input ltr:rounded-l-none rtl:rounded-r-none" onkeypress="return event.charCode >= 48 && event.charCode <= 57"
@@ -201,7 +201,7 @@ if (isset($_POST['save'])) {
                             </select>
                         </div>
                         <div>
-                            <label for="address"> Address </label>
+                            <label for="address">Address </label>
                             <textarea autocomplete="on" name="address" id="address" class="form-textarea" rows="2" value="" required
                             <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>><?php echo (isset($mode)) ? $data['address'] : '' ?></textarea>
                         </div>
@@ -235,7 +235,7 @@ if (isset($_POST['save'])) {
                             </select>
                         </div>
                         <div>
-                            <label for="product_category"> Product Category </label>
+                            <label for="product_category">Product Category </label>
                             <select name="product_category" id="product_category" class="form-select text-white-dark" required>
                                 <option value="">Choose Product Category</option>
                                 <?php 
@@ -266,7 +266,7 @@ if (isset($_POST['save'])) {
                         </div>
                         <div x-data="complaintTime">
                             <label>Time </label>
-                            <input name="complaint_time" id="complaint_time" class="form-input" value="" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> />
+                            <input name="complaint_time" id="complaint_time" class="form-input" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> />
                         </div>
                     </div>
                 </div>
@@ -317,10 +317,10 @@ if (isset($_POST['save'])) {
             <?php } ?>
             init() {
                 flatpickr(document.getElementById('complaint_time'), {
-                    defaultDate: '<?php echo isset($mode) ? $data['time'] : date("H:i A") ?>',
+                    defaultDate: '<?php echo isset($mode) ? $data['time'] : date("h:i a") ?>',
                     noCalendar: true,
                     enableTime: true,
-                    dateFormat: 'H:i'
+                    dateFormat: 'h:i K'
                 });
             }
         }));
