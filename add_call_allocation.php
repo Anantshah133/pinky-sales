@@ -52,7 +52,7 @@ if(isset($_REQUEST['update'])){
     $purchaseDate = $_REQUEST['purchase_date'];
     $technician = $_REQUEST['technician'];
     $callStatus = $_REQUEST['call_status'];
-    $reason = $_REQUEST['rson'];
+    // $reason = $_REQUEST['rson'];
     $allocationDate = $_REQUEST['allocation_date'];
     $allocationTime = $_REQUEST['allocation_time'];
     $editId = $_COOKIE['eid'];
@@ -111,7 +111,7 @@ if(isset($_REQUEST['update'])){
     try {
         $stmt = $obj->con1->prepare("UPDATE `call_allocation` SET complaint_no=?, service_center_id=?, product_serial_no=?, serial_no_img=?, product_model=?, product_model_img=?, purchase_date=?, purchase_date_img=?, technician=?, allocation_date=?, allocation_time=?, status=?, reason=? WHERE call_allocation.id=?");
 
-        $stmt->bind_param("sissssssissssi", $complaintNum, $serviceCenterId, $productSerialNum, $serialNumImg, $productModel, $productModelImg, $purchaseDate, $purchaseDateImg, $technician, $allocationDate, $allocationTime, $callStatus, $reason, $editId);
+        $stmt->bind_param("sissssssissssi", $complaintNum, $serviceCenterId, $productSerialNum, $serialNumImg, $productModel, $productModelImg, $purchaseDate, $purchaseDateImg, $technician, $allocationDate, $allocationTime, $callStatus, '', $editId);
         $Resp=$stmt->execute();
 
         if(!$Resp) {
@@ -141,7 +141,7 @@ if(isset($_REQUEST['save'])){
     $purchaseDate = $_REQUEST['purchase_date'];
     $technician = $_REQUEST['technician'];
     $callStatus = $_REQUEST['call_status'];
-    $reason = $_REQUEST['rson'];
+    // $reason = $_REQUEST['rson'];
     $allocationDate = $_REQUEST['allocation_date'];
     $allocationTime = $_REQUEST['allocation_time'];
 
@@ -152,7 +152,7 @@ if(isset($_REQUEST['save'])){
         $purchaseDateImg = uploadImage('purchase_date_img', 'images/purchase_date_img');
 
         $stmt = $obj->con1->prepare("INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `serial_no_img`, `product_model`, `product_model_img`, `purchase_date`, `purchase_date_img`, `technician`, `allocation_date`, `allocation_time`, `status`, `reason`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("sissssssissss", $complaintNum, $serviceCenterId, $productSerialNum, $serialNumImg, $productModel, $productModelImg, $purchaseDate, $purchaseDateImg, $technician, $allocationDate, $allocationTime, $callStatus, $reason);
+        $stmt->bind_param("sissssssissss", $complaintNum, $serviceCenterId, $productSerialNum, $serialNumImg, $productModel, $productModelImg, $purchaseDate, $purchaseDateImg, $technician, $allocationDate, $allocationTime, $callStatus, '');
         $Resp=$stmt->execute();
 
         if(!$Resp) {
@@ -348,12 +348,6 @@ function uploadImage($inputName, $uploadDirectory) {
                                     Allocated
                                 </option>
                             </select>
-                        </div>
-                        <div>
-                            <label for="rson">Reason </label>
-                            <input id="rson" name="rson" type="text" class="form-input" required
-                                <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?>
-                                value="<?php echo isset($mode) ? $data['reason'] : "" ?>" />
                         </div>
 
                         <div x-data="allocationDate">
