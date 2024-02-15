@@ -4,7 +4,6 @@ include "header.php";
 
 $mode="save";
 $complaint_no=$_COOKIE["comp_no"];
-//echo "$complaint_no";
 $stmt = $obj->con1->prepare("SELECT * FROM `call_allocation` WHERE complaint_no=?");
 $stmt->bind_param("s",$complaint_no);
 $stmt->execute();
@@ -70,26 +69,23 @@ if(isset($_REQUEST["save"])) {
             <div>
                 <label for="groupFname"> Service Center</label>
                 <select class="form-select text-white-dark" name="service_center" required>
-
                     <?php
-                            $stmt = $obj->con1->prepare(
-                                "SELECT * FROM `service_center` WHERE status='enable'"
-                            );
-                            $stmt->execute();
-                            $Res = $stmt->get_result();
-                            $stmt->close();
+                        $stmt = $obj->con1->prepare(
+                            "SELECT * FROM `service_center` WHERE status='enable'"
+                        );
+                        $stmt->execute();
+                        $Res = $stmt->get_result();
+                        $stmt->close();
 
-                            while ($result = mysqli_fetch_assoc($Res)) { 
-
-                                if($service_id==$result["id"])
-                                {
-                        ?>
-                    <option value="<?php echo $result["id"]; ?>" selected readonly><?php echo $result["name"]; ?>
-                    </option>
+                        while ($result = mysqli_fetch_assoc($Res)) { 
+                            if($service_id==$result["id"]){
+                    ?>
+                        <option value="<?php echo $result["id"]; ?>" selected readonly><?php echo $result["name"]; ?>
+                        </option>
                     <?php 
-                                }
-                            } 
-                        ?>
+                            }
+                        } 
+                    ?>
                 </select>
             </div>
             <div>
@@ -174,8 +170,7 @@ if(isset($_REQUEST["save"])) {
 
             <div class="relative inline-flex align-middle gap-3 mt-4">
                 <button type="submit" class="btn btn-success" name="save" id="save">Save</button>
-                <button type="button" class="btn btn-danger"
-                    onclick="window.location='call_alloction.php'">Close</button>
+            <button type="button" class="btn btn-danger" onclick="window.location='call_alloction.php'">Close</button>
             </div>
         </form>
     </div>

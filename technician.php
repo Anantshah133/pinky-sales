@@ -45,6 +45,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
             </div>
         </div>
         <table id="myTable" class="table-hover whitespace-nowrap"></table>
+        <?php echo $_SESSION['username']; ?>
     </div>
 </div>
 
@@ -86,13 +87,25 @@ document.addEventListener('alpine:init', () => {
                     ],
                     data: [
                         <?php
-                            $stmt = $obj->con1->prepare(
-                                "SELECT t1.*, s1.name AS service_center_name FROM technician t1, service_center s1 WHERE t1.service_center=s1.id"
-                            );
-                            $stmt->execute();
-                            $res_stmt = $stmt->get_result();
-                            $stmt->close();
-                            $id = 1;
+                            if($_SESSION['type'] == "center"){
+                                $user_id = $_SESSION['username'];
+                                $stmt = $obj->con1->prepare(
+                                    "SELECT t1.*, s1.name AS service_center_name FROM technician t1, service_center s1 WHERE t1.service_center=s1.id AND s1.userid=?"
+                                );
+                                $stmt->bind_param("s", $user_id);
+                                $stmt->execute();
+                                $res_stmt = $stmt->get_result();
+                                $stmt->close();
+                                $id = 1;
+                            } else {
+                                $stmt = $obj->con1->prepare(
+                                    "SELECT t1.*, s1.name AS service_center_name FROM technician t1, service_center s1 WHERE t1.service_center=s1.id"
+                                );
+                                $stmt->execute();
+                                $res_stmt = $stmt->get_result();
+                                $stmt->close();
+                                $id = 1;
+                            }
                             while ($row = mysqli_fetch_array($res_stmt)) { 
                         ?>
                             [
