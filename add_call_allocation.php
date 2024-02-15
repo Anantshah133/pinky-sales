@@ -1,13 +1,11 @@
 <?php
 include "header.php";
-error_reporting(E_ALL);
 ?>
 <script>
-function addHistory()
-{
-cno = document.getElementById("complaint_num").value;
-  document.cookie = "comp_no="+cno;
-  window.location = "add_call_history.php";
+function addHistory(){
+    cno = document.getElementById("complaint_num").value;
+    document.cookie = "comp_no="+cno;
+    window.location = "add_call_history.php";
 }
 </script>
 
@@ -527,7 +525,6 @@ document.addEventListener('alpine:init', () => {
                             '<?php echo $row['status'] ?>',
                             '<?php echo $row['reason'] ?>',
                             '<?php echo $row['date_time'] ?>',
-
                         ],
                         <?php
                         $id++;

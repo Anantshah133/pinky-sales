@@ -31,8 +31,11 @@ if (isset($_REQUEST['save'])) {
 
         if($service_center_data){
             $_SESSION['type'] = "center";
-            $_SESSION['username'] = $service_center_data['username'];
+            $_SESSION['username'] = $service_center_data['userid'];
             $_SESSION['name'] = $service_center_data['name'];
+            $_SESSION['scid'] = $service_center_data['id'];
+            $_SESSION['sc_city'] = $service_center_data['area'];
+            
             setcookie("msg", "sc_login", time() + 3600, "/");
             header("location:index.php");
         } else {

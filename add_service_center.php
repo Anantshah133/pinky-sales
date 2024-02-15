@@ -187,7 +187,7 @@ if (isset($_REQUEST["save"])) {
                 class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
                 <button type="submit" class="btn btn-success" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save'; ?>" id="save" onclick="return validateAndDisable()"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save'; ?></button>
                 <button type="button" class="btn btn-danger"
-                    onclick="window.location='service_type.php'">Close</button>
+                    onclick="window.location='service_center.php'">Close</button>
             </div>
         </form>
     </div>
