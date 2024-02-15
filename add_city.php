@@ -107,7 +107,7 @@ if (isset($_REQUEST["save"])) {
                 <div>
                     <label for="city_name">City Name </label>
                     <input id="city_name" name="city_name" type="text" class="form-input" onblur="checkCity(this)"
-                    value="<?php echo isset($mode) ? $data["ctnm"] : ""; ?>" pattern="^\S+$"
+                    value="<?php echo isset($mode) ? $data["ctnm"] : ""; ?>" pattern="^(?=.*\S)(?=.*\s).+$"
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
                     required />
                     <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
