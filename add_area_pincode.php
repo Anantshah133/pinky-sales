@@ -136,7 +136,7 @@ if (isset($_REQUEST["save"])) {
             {
                 c1.value="";
                 c1.focus();
-                document.getElementById("demo").innerHTML = "Sorry the name alredy exist!";
+                document.getElementById("demo").innerHTML = "Sorry the pincode alredy exist!";
             }
             else{
                 document.getElementById("demo").innerHTML = "";
