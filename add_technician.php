@@ -1,7 +1,7 @@
 <?php
 include "header.php";
 
-$center_id = $_SESSION['type'] == 'center' ? $_SESSION["scid"] : '';
+$center_id = $_SESSION["type"] == 'center' ? $_SESSION["scid"] : null;
 if (isset($_COOKIE['editId'])) {
     $mode = 'edit';
     $editId = $_COOKIE['editId'];
@@ -170,7 +170,7 @@ function uploadImage($inputName, $uploadDirectory)
                     value="<?php echo (isset($mode)) ? $data['email'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
             </div>
             <div>
-                <label for="contact_num"> Contact </label>
+                <label for="contact_num">Contact </label>
                 <div class="flex">
                     <div
                         class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
@@ -183,25 +183,24 @@ function uploadImage($inputName, $uploadDirectory)
                 </div>
             </div>
             <div>
-                <label for="groupFname"> Service Center</label>
-
-                <select class="form-select text-white-dark" name="service_center" <?php echo (isset($mode) && $mode == 'view') || isset($center_id) ? 'disabled' : '' ?>>
+                <label for="groupFname">Service Center</label>
+                <select class="form-select text-white-dark" name="service_center" <?php echo (isset($mode) && $mode == 'view') || isset($center_id) ? 'disabled' : '' ?> required>
                     <option value="">Choose service center</option>
                     <?php
-                    $stmt = $obj->con1->prepare(
-                        "SELECT * FROM `service_center` WHERE status='enable'"
-                    );
-                    $stmt->execute();
-                    $Res = $stmt->get_result();
-                    $stmt->close();
+                        $stmt = $obj->con1->prepare(
+                            "SELECT * FROM `service_center` WHERE status='enable'"
+                        );
+                        $stmt->execute();
+                        $Res = $stmt->get_result();
+                        $stmt->close();
 
-                    while ($result = mysqli_fetch_assoc($Res)) {
-                        ?>
+                        while ($result = mysqli_fetch_assoc($Res)) {
+                    ?>
                         <option value="<?php echo $result["id"]; ?>" <?php echo isset($mode) && $result['id'] == $data['service_center'] || isset($center_id) && $center_id == $result['id'] ? 'selected' : '' ?>>
                             <?php echo $result["name"]; ?>
                         </option>
-                        <?php
-                    }
+                    <?php
+                        }
                     ?>
                 </select>
             </div>
@@ -218,13 +217,9 @@ function uploadImage($inputName, $uploadDirectory)
             </div>
             <div>
                 <label for="idproof_img"> Id Proof </label>
-                <input name="idproof_img" id="idproof_img" type="file" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>
-                    class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
-                    value="<?php echo isset($mode) ? $data['id_proof'] : "" ?>" required
-                    onchange="readURL(this, 'previewModalImage', 'errModalImg')" />
+                <input name="idproof_img" id="idproof_img" type="file" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary" value="<?php echo isset($mode) ? $data['id_proof'] : "" ?>" <?php echo !isset($mode) ? 'required' : '' ?> onchange="readURL(this, 'previewModalImage', 'errModalImg')" />
 
-                <img src="<?php echo (isset($mode)) ? 'images/technician_idproof/' . $data['id_proof'] : '' ?>"
-                    class="mt-8 w-80 preview-img hidden" alt="" id="previewModalImage" value="">
+                <img src="<?php echo isset($mode) ? 'images/technician_idproof/' . $data['id_proof'] : '' ?>" class="mt-8 w-80 preview-img <?php echo isset($mode) ? '' : 'hidden'; ?>" alt="" id="previewModalImage" value="">
                 <h6 id='errModalImg' class='error-elem'></h6>
             </div>
             <div>

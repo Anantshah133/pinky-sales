@@ -98,7 +98,9 @@ document.addEventListener('alpine:init', () => {
                                 `<?php echo $row["contact"]; ?>`,
                                 `<?php echo $row["address"]; ?>`,
                                 `<?php echo $row["city"]; ?>`,
-                                `<?php echo $row["status"]; ?>`,
+                                `<span class="badge badge-outline-<?php echo $row["status"] == "enable" ? 'success' : 'danger'?>">
+                                    <?php echo ucfirst($row["status"]); ?>
+                                </span>`,
                                 `<?php echo $row["date_time"]; ?>`, 
                                 getActions(<?php echo $row["id"] ?>, '<?php echo $row["name"]; ?>'),
                             ],

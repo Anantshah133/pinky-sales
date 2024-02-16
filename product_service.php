@@ -96,7 +96,9 @@ document.addEventListener('alpine:init', () => {
                             <?php echo $i; ?>,
                             '<?php echo $row["product"]; ?>', 
                             '<?php echo $row["service"]; ?>',
-                            '<?php echo $row["status"]; ?>', 
+                            `<span class="badge badge-outline-<?php echo $row["status"] == "enable" ? 'success' : 'danger'?>">
+                                <?php echo ucfirst($row["status"]); ?>
+                            </span>`,
                             getActions(<?php echo $row["srno"]; ?> ,'<?php  echo $row["product"];?>','<?php echo $row["service"];?>')
                         ],
                         <?php 
