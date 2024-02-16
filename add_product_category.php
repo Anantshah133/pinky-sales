@@ -78,7 +78,7 @@ if (isset($_REQUEST["save"])) {
             <form class="space-y-5" method="post" id="mainForm">
                 <div>
                     <label for="groupFname">Name</label>
-                    <input id="groupFname" name="name" type="text" class="form-input" onblur="checkName(this)" pattern="^\s*\S.*$" 
+                    <input id="groupFname" name="name" type="text" class="form-input" onblur="checkName(this,<?php echo isset($mode) ? $data['id'] : 0 ?>)" pattern="^\s*\S.*$" 
                     value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
                 </div>
@@ -94,12 +94,12 @@ if (isset($_REQUEST["save"])) {
 </div>
 
 <script>
-    function checkName(c1){
+    function checkName(c1,id){
         let n = c1.value;
         const obj = new XMLHttpRequest();
         obj.onload = function(){
             let x = obj.responseText;
-
+            console.log(n, id);
             if(x==1)
             {
                 c1.value="";
@@ -110,10 +110,10 @@ if (isset($_REQUEST["save"])) {
                 document.getElementById("demo").innerHTML = "";
             }
         }
-        obj.open("GET","./ajax/check_product.php?name="+n,true);
+        obj.open("GET","./ajax/check_product.php?name=" + n + "&pid=" + id,true);
         obj.send();
     }
-
+   
 </script>
 
 <?php

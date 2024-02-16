@@ -80,7 +80,7 @@ if (isset($_REQUEST["save"])) {
             <form class="space-y-5" method="post" id="mainForm">
                 <div>
                     <label for="groupFname"> Name</label>
-                    <input id="groupFname" name="name" type="text" class="form-input" onblur="checkServicetype(this)"
+                    <input id="groupFname" name="name" type="text" class="form-input" onblur="checkServicetype(this,<?php echo isset($mode) ? $data['id'] : 0 ?>)"
                     required value="<?php echo isset($mode) ? $data['name'] : '' ?>" pattern="^\s*\S.*$"
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                     <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
@@ -112,12 +112,12 @@ if (isset($_REQUEST["save"])) {
     </div>
 </div>
 <script>
-    function checkServicetype(c1){
+    function checkServicetype(c1,id){
         let n = c1.value;
         const obj = new XMLHttpRequest();
         obj.onload = function(){
             let x = obj.responseText;
-
+            console.log(n, id);
             if(x>=1)
             {
                 c1.value="";
@@ -128,10 +128,9 @@ if (isset($_REQUEST["save"])) {
                 document.getElementById("demo").innerHTML = "";
             }
         }
-        obj.open("GET","./ajax/check_servicetype.php?name="+n,true);
+        obj.open("GET","./ajax/check_servicetype.php?name=" + n +"&sid=" + id,true);
         obj.send();
     }
-
 </script>
 
 <?php

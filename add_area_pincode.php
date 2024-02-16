@@ -112,9 +112,10 @@ if (isset($_REQUEST["save"])) {
                 </div>
                 <div>
                     <label for="groupFname"> Pincode </label>
-                    <input id="groupFname" name="pincode" type="text" class="form-input" pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" 
+                    <input id="groupFname" name="pincode" type="text" class="form-input" onblur="checkName(this)"  pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" 
                     onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['pincode'] : '' ?>" required />
+                    <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
                 </div>
                 <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
                     <button type="submit" name="<?php echo isset($mode) == 'edit' ? 'update' : 'save'; ?>" id="save" onclick="return validateAndDisable()" class="btn btn-success"><?php echo isset($mode) == 'edit' ? 'Update' : 'Save'; ?></button>
@@ -125,7 +126,27 @@ if (isset($_REQUEST["save"])) {
     </div>
 </div>
 
-
+<script>
+    function checkName(c1){
+        let n = c1.value;
+        const obj = new XMLHttpRequest();
+        obj.onload = function(){
+            let x = obj.responseText;
+            if(x==1)
+            {
+                c1.value="";
+                c1.focus();
+                document.getElementById("demo").innerHTML = "Sorry the name alredy exist!";
+            }
+            else{
+                document.getElementById("demo").innerHTML = "";
+            }
+        }
+        obj.open("GET","./ajax/check_pincode.php?pincode=" + n ,true);
+        obj.send();
+    }
+   
+</script>
 <script>
     function loadCities(stid, ctid = 0) {
         const xhttp = new XMLHttpRequest();
@@ -146,6 +167,7 @@ if (isset($_REQUEST["save"])) {
             </script>
         ";
     }
+  
 ?>
 <?php
 include "footer.php";
