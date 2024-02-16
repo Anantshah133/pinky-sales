@@ -74,10 +74,8 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     }
 
     function updateRecord(id) {
-
-        document.cookie = "eid=" + id;
+        document.cookie = "editId=" + id;
         window.location = "add_call_allocation.php";
-        //  alert(id);
     }
 
     document.addEventListener('alpine:init', () => {

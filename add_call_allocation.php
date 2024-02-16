@@ -28,9 +28,9 @@ if(isset($_COOKIE['viewId'])){
     $query->close();
 }
 
-if(isset($_COOKIE['eid'])){
+if(isset($_COOKIE['editId'])){
     $mode = 'edit';
-    $editId = $_COOKIE['eid'];
+    $editId = $_COOKIE['editId'];
     $query = $obj->con1->prepare("SELECT c1.*, sc1.name AS service_center, t1.name AS tech 
     FROM call_allocation c1 
         INNER JOIN service_center sc1 ON c1.service_center_id=sc1.id
@@ -53,9 +53,10 @@ if(isset($_REQUEST['update'])){
     $technician = $_REQUEST['technician'];
     $callStatus = $_REQUEST['call_status'];
     // $reason = $_REQUEST['rson'];
+    $reason = "";
     $allocationDate = $_REQUEST['allocation_date'];
     $allocationTime = $_REQUEST['allocation_time'];
-    $editId = $_COOKIE['eid'];
+    $editId = $_COOKIE['editId'];
 
     if($_FILES['srno_img']['size'] > 0) {
         // Process image upload
@@ -111,7 +112,7 @@ if(isset($_REQUEST['update'])){
     try {
         $stmt = $obj->con1->prepare("UPDATE `call_allocation` SET complaint_no=?, service_center_id=?, product_serial_no=?, serial_no_img=?, product_model=?, product_model_img=?, purchase_date=?, purchase_date_img=?, technician=?, allocation_date=?, allocation_time=?, status=?, reason=? WHERE call_allocation.id=?");
 
-        $stmt->bind_param("sissssssissssi", $complaintNum, $serviceCenterId, $productSerialNum, $serialNumImg, $productModel, $productModelImg, $purchaseDate, $purchaseDateImg, $technician, $allocationDate, $allocationTime, $callStatus, '', $editId);
+        $stmt->bind_param("sissssssissssi", $complaintNum, $serviceCenterId, $productSerialNum, $serialNumImg, $productModel, $productModelImg, $purchaseDate, $purchaseDateImg, $technician, $allocationDate, $allocationTime, $callStatus, $reason, $editId);
         $Resp=$stmt->execute();
 
         if(!$Resp) {
@@ -142,6 +143,7 @@ if(isset($_REQUEST['save'])){
     $technician = $_REQUEST['technician'];
     $callStatus = $_REQUEST['call_status'];
     // $reason = $_REQUEST['rson'];
+    $reason = "";
     $allocationDate = $_REQUEST['allocation_date'];
     $allocationTime = $_REQUEST['allocation_time'];
 
@@ -152,7 +154,7 @@ if(isset($_REQUEST['save'])){
         $purchaseDateImg = uploadImage('purchase_date_img', 'images/purchase_date_img');
 
         $stmt = $obj->con1->prepare("INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `serial_no_img`, `product_model`, `product_model_img`, `purchase_date`, `purchase_date_img`, `technician`, `allocation_date`, `allocation_time`, `status`, `reason`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("sissssssissss", $complaintNum, $serviceCenterId, $productSerialNum, $serialNumImg, $productModel, $productModelImg, $purchaseDate, $purchaseDateImg, $technician, $allocationDate, $allocationTime, $callStatus, '');
+        $stmt->bind_param("sissssssissss", $complaintNum, $serviceCenterId, $productSerialNum, $serialNumImg, $productModel, $productModelImg, $purchaseDate, $purchaseDateImg, $technician, $allocationDate, $allocationTime, $callStatus, $reason);
         $Resp=$stmt->execute();
 
         if(!$Resp) {
@@ -247,11 +249,7 @@ function uploadImage($inputName, $uploadDirectory) {
                         </div>
                         <div>
                             <label for="srno_img">Serial NO. Image</label>
-                            <input name="srno_img" id="srno_img" type="file"
-                                <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>
-                                class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
-                                value="<?php echo isset($mode) ? $data['serial_no_img'] : "" ?>" required
-                                onchange="readURL(this, 'srNoImg', 'errSrNoImg')">
+                            <input name="srno_img" id="srno_img" type="file" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary" value="<?php echo isset($mode) ? $data['serial_no_img'] : "" ?>" <?php echo isset($mode) ? '' : 'required' ?> onchange="readURL(this, 'srNoImg', 'errSrNoImg')">
 
                             <img src="<?php echo isset($mode) && isset($data['serial_no_img']) ? 'images/serial_no_img/'.$data['serial_no_img'] : '' ?>"
                                 class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img"
@@ -269,8 +267,7 @@ function uploadImage($inputName, $uploadDirectory) {
                             <input name="product_model_img" id="product_model_img" type="file"
                                 <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>
                                 class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
-                                value="<?php echo isset($mode) ? $data['product_model_img'] : "" ?>" required
-                                onchange="readURL(this, 'previewModalImage', 'errModalImg')" />
+                                value="<?php echo isset($mode) ? $data['product_model_img'] : "" ?>" <?php echo isset($mode) ? '' : 'required' ?> onchange="readURL(this, 'previewModalImage', 'errModalImg')" />
 
                             <img src="<?php echo isset($mode) && isset($data['product_model_img']) ? 'images/product_model_img/'.$data['product_model_img'] : '' ?>"
                                 class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img"
@@ -280,7 +277,7 @@ function uploadImage($inputName, $uploadDirectory) {
                     </div>
                     <div class="w-6/12 px-3 space-y-5">
                         <div x-data="purchaseDate">
-                            <label for="purchase_date"> Purchase Date </label>
+                            <label for="purchase_date">Purchase Date </label>
                             <input x-model="date1" name="purchase_date" id="purchase_date" class="form-input"
                                 <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>
                                 value="<?php echo isset($mode) && isset($data['purchase_data']) ? $data['purchase_data'] : '' ?>" />
@@ -290,8 +287,7 @@ function uploadImage($inputName, $uploadDirectory) {
                             <input id="purchase_date_img" name="purchase_date_img" type="file"
                                 <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>
                                 class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
-                                value="<?php echo isset($mode) ? $data['purchase_date_img'] : "" ?>" required
-                                onchange="readURL(this, 'purDateImg', 'errPurDateImg')" />
+                                value="<?php echo isset($mode) ? $data['purchase_date_img'] : "" ?>" <?php echo isset($mode) ? '' : 'required' ?> onchange="readURL(this, 'purDateImg', 'errPurDateImg')" />
 
                             <img src="<?php echo isset($mode) && isset($data['purchase_date_img']) ? 'images/purchase_date_img/'.$data['purchase_date_img'] : '' ?>"
                                 class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img"
@@ -358,8 +354,8 @@ function uploadImage($inputName, $uploadDirectory) {
 
                         <div x-data="allocationTime">
                             <label for="allocation_time"> Allocation Time </label>
-                            <input x-model="time" name="allocation_time" id="allocation_time" class="form-input"
-                                value="" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
+                            <input name="allocation_time" id="allocation_time" class="form-input"
+                            <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
                         </div>
                     </div>
                 </div>
@@ -432,17 +428,19 @@ document.addEventListener("alpine:init", () => {
     }));
 
     Alpine.data("allocationTime", () => ({
-        time: todayDate.toLocaleTimeString('en-GB', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-        }),
+        <?php if(!isset($mode)){ ?>
+            time: todayDate.toLocaleTimeString('en-GB', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            }),
+        <?php } ?>
         init() {
             flatpickr(document.getElementById('allocation_time'), {
-                defaultDate: this.time,
+                defaultDate: '<?php echo isset($mode) ? $data['allocation_time'] : date("h:i a") ?>',
                 noCalendar: true,
                 enableTime: true,
-                dateFormat: 'H:i'
+                dateFormat: 'h:i K'
             });
         }
     }));
@@ -500,28 +498,31 @@ document.addEventListener('alpine:init', () => {
                     ],
                     data: [
                         <?php 
-                            $stmt = $obj->con1->prepare("SELECT * FROM `call_history` where complaint_no=?");
+                            $stmt = $obj->con1->prepare("SELECT a.*,b.name as technician_name,c.name as service_center_name from call_history as a,technician as b,service_center as c where b.id = a.technician and a.service_center=c.id and complaint_no=?");
                             $stmt->bind_param("s",$cno);
                             $stmt->execute();
 
                             $Resp=$stmt->get_result();
                             $id=1;
                             while($row = mysqli_fetch_array($Resp)){
-                        ?>[
-                            <?php echo $id ?>,
-                            '<?php echo $row['complaint_no'] ?>',
-                            '<?php echo $row['service_center'] ?>',
-                            '<?php echo $row['technician'] ?>',
-                            '<?php echo $row['parts_used'] ?>',
-                            '<?php echo $row['call_type'] ?>',
-                            '<?php echo $row['service_charge'] ?>',
-                            '<?php echo $row['parts_charge'] ?>',
-                            '<?php echo $row['status'] ?>',
-                            '<?php echo $row['reason'] ?>',
-                            '<?php echo $row['date_time'] ?>',
-                        ],
+                        ?>
+                            [
+                                <?php echo $id ?>,
+                                '<?php echo $row['complaint_no'] ?>',
+                                '<?php echo $row['service_center_name'] ?>',
+                                '<?php echo $row['technician_name'] ?>',
+                                '<?php echo $row['parts_used'] ?>',
+                                '<?php echo $row['call_type'] ?>',
+                                '<?php echo $row['service_charge'] ?>',
+                                '<?php echo $row['parts_charge'] ?>',
+                                `<span class="badge badge-outline-<?php echo $row["status"] == "enable" ? 'success' : 'danger'?>">
+                                    <?php echo ucfirst($row["status"]); ?>
+                                </span>`,
+                                '<?php echo $row['reason'] ?>',
+                                '<?php echo $row['date_time'] ?>',
+                            ],
                         <?php
-                        $id++;
+                                $id++;
                             }
                         ?>
                     ],
