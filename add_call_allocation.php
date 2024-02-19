@@ -1,5 +1,7 @@
 <?php
 include "header.php";
+setcookie("callEditId", "", time() - 3600);
+setcookie("callViewId", "", time() - 3600);
 ?>
 <script>
 function addHistory(){
@@ -264,10 +266,7 @@ function uploadImage($inputName, $uploadDirectory) {
                         </div>
                         <div>
                             <label for="product_model_img"> Product Model Image </label>
-                            <input name="product_model_img" id="product_model_img" type="file"
-                                <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>
-                                class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
-                                value="<?php echo isset($mode) ? $data['product_model_img'] : "" ?>" <?php echo isset($mode) ? '' : 'required' ?> onchange="readURL(this, 'previewModalImage', 'errModalImg')" />
+                            <input name="product_model_img" id="product_model_img" type="file" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary" value="<?php echo isset($mode) ? $data['product_model_img'] : "" ?>" <?php echo isset($mode) ? '' : 'required' ?> onchange="readURL(this, 'previewModalImage', 'errModalImg')" />
 
                             <img src="<?php echo isset($mode) && isset($data['product_model_img']) ? 'images/product_model_img/'.$data['product_model_img'] : '' ?>"
                                 class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img"
@@ -278,16 +277,13 @@ function uploadImage($inputName, $uploadDirectory) {
                     <div class="w-6/12 px-3 space-y-5">
                         <div x-data="purchaseDate">
                             <label for="purchase_date">Purchase Date </label>
-                            <input x-model="date1" name="purchase_date" id="purchase_date" class="form-input"
-                                <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>
-                                value="<?php echo isset($mode) && isset($data['purchase_data']) ? $data['purchase_data'] : '' ?>" />
+                            <input x-model="date1" name="purchase_date" id="purchase_date" class="form-input" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> value="<?php echo isset($mode) && isset($data['purchase_data']) ? $data['purchase_data'] : '' ?>" />
                         </div>
                         <div>
                             <label for="purchase_date_img">Purchase Date Image</label>
                             <input id="purchase_date_img" name="purchase_date_img" type="file"
                                 <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>
-                                class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary"
-                                value="<?php echo isset($mode) ? $data['purchase_date_img'] : "" ?>" <?php echo isset($mode) ? '' : 'required' ?> onchange="readURL(this, 'purDateImg', 'errPurDateImg')" />
+                                class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary" value="<?php echo isset($mode) ? $data['purchase_date_img'] : "" ?>" <?php echo isset($mode) ? '' : 'required' ?> onchange="readURL(this, 'purDateImg', 'errPurDateImg')" />
 
                             <img src="<?php echo isset($mode) && isset($data['purchase_date_img']) ? 'images/purchase_date_img/'.$data['purchase_date_img'] : '' ?>"
                                 class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img"
@@ -354,13 +350,11 @@ function uploadImage($inputName, $uploadDirectory) {
 
                         <div x-data="allocationTime">
                             <label for="allocation_time"> Allocation Time </label>
-                            <input name="allocation_time" id="allocation_time" class="form-input"
-                            <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
+                            <input name="allocation_time" id="allocation_time" class="form-input" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
                         </div>
                     </div>
                 </div>
-                <div
-                    class="relative inline-flex align-middle gap-3 mt-10 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
+                <div class="relative inline-flex align-middle gap-3 mt-10 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
                     <button type="submit" id="save"
                         name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" class="btn btn-success"
                         onclick="return validateAndDisable()"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?></button>
@@ -374,7 +368,29 @@ function uploadImage($inputName, $uploadDirectory) {
     </div>
 </div>
 
+<?php
+if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
+    try {
+        $stmt_del = $obj->con1->prepare(
+            "delete from call_history where id='" . $_REQUEST["n_historyid"] . "'"
+        );
+        $Resp = $stmt_del->execute();
+        if (!$Resp) {
+            if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row") {
+                throw new Exception("City is already in use!");
+            }
+        }
+        $stmt_del->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
+    }
 
+    if ($Resp) {
+        setcookie("msg", "data_del", time() + 3600, "/");
+    }
+    header("location:add_call_allocation.php");
+}
+?>
 <div class='px-6 py-4' x-data='exportTable'>
     <div class="panel">
         <div class='flex items-center justify-between mb-3'>
@@ -397,191 +413,223 @@ function uploadImage($inputName, $uploadDirectory) {
 </div>
 
 <script>
-document.addEventListener("alpine:init", () => {
-    let todayDate = new Date();
-    let formattedToday = todayDate.toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-    }).split('/').join('-');
+    function updateCallRecord(id, url) {
+        document.cookie = "callEditId=" + id;
+        window.location = url;
+    }
+
+    function viewCallRecord(id, url) {
+        document.cookie = "callViewId=" + id;
+        window.location = url;
+    }
+
+    checkCookies();
+
+    function getActions(id, number) {
+        return `<ul class="flex items-center gap-4">
+            <li>
+                <a href="javascript:viewCallRecord(${id}, 'add_call_history.php');" class='text-xl' x-tooltip="View">
+                    <i class="ri-eye-line text-primary"></i>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:updateCallRecord(${id}, 'add_call_history.php');" class='text-xl' x-tooltip="Edit">
+                    <i class="ri-pencil-line text text-success"></i>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(${id}, '${number}',)">
+                    <i class="ri-delete-bin-line text-danger"></i>
+                </a>
+            </li>
+        </ul>`
+    }
+
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('exportTable', () => ({
+            datatable: null,
+            init() {
+                console.log('Initalizing datatable')
+                this.datatable = new simpleDatatables.DataTable('#myTable', {
+                    data: {
+                        headings: ['Sr.no', 'Complaint No.', 'Service Center', 'Technician',
+                            'Parts Used', 'Call Type', 'Service Charges', 'Parts Charges',
+                            'Status', 'Reason', 'Date Time','Action'
+                        ],
+                        data: [
+                            <?php 
+                                $stmt = $obj->con1->prepare("SELECT a.*,b.name as technician_name,c.name as service_center_name from call_history as a,technician as b,service_center as c where b.id = a.technician and a.service_center=c.id and complaint_no=?");
+                                $stmt->bind_param("s",$cno);
+                                $stmt->execute();
+
+                                $Resp=$stmt->get_result();
+                                $id=1;
+                                while($row = mysqli_fetch_array($Resp)){
+                            ?>
+                                [
+                                    <?php echo $id ?>,
+                                    '<?php echo $row['complaint_no'] ?>',
+                                    '<?php echo $row['service_center_name'] ?>',
+                                    '<?php echo $row['technician_name'] ?>',
+                                    '<?php echo $row['parts_used'] ?>',
+                                    '<?php echo $row['call_type'] ?>',
+                                    '<?php echo $row['service_charge'] ?>',
+                                    '<?php echo $row['parts_charge'] ?>',
+                                    `<span class="badge badge-outline-<?php 
+                                    echo $row["status"] == "allocated"  || $row["status"] == "closed" ? 'success' : 'danger'?>">
+                                        <?php echo ucfirst($row["status"]); ?>
+                                    </span>`,
+                                    '<?php echo $row['reason'] ?>',
+                                    '<?php echo $row['date_time'] ?>',
+                                    getActions('<?php echo $row['id'] ?>', '<?php echo $row['complaint_no'] ?>')
+                                ],
+                            <?php
+                                    $id++;
+                                }
+                            ?>
+                        ],
+                    },
+                    perPage: 10,
+                        perPageSelect: [10, 20, 30, 50, 100],
+                        columns: [{
+                            select: 0,
+                            sort: 'asc',
+                        },],
+                        firstLast: true,
+                        firstText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M13 19L7 12L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M16.9998 19L10.9998 12L16.9998 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                        lastText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M11 19L17 12L11 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M6.99976 19L12.9998 12L6.99976 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                        prevText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M15 5L9 12L15 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                        nextText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M9 5L15 12L9 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                        labels: {
+                            perPage: '{select}',
+                        },
+                        layout: {
+                            top: '{search}',
+                            bottom: '{info}{select}{pager}',
+                        },
+                    });
+                },
+
+                exportTable(eType) {
+                    var data = {
+                        type: eType,
+                        filename: 'call_allocation',
+                        download: true,
+                    };
+
+                    if (data.type === 'csv') {
+                        data.lineDelimiter = '\n';
+                        data.columnDelimiter = ';';
+                    }
+                    this.datatable.export(data);
+                },
+
+                printTable() {
+                    this.datatable.print();
+                },
+
+                formatDate(date) {
+                    if (date) {
+                        const dt = new Date(date);
+                        const month = dt.getMonth() + 1 < 10 ? '0' + (dt.getMonth() + 1) : dt.getMonth() +
+                            1;
+                        const day = dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate();
+                        return day + '/' + month + '/' + dt.getFullYear();
+                    }
+                    return '';
+                },
+            }
+        ));
+        let todayDate = new Date();
+        let formattedToday = todayDate.toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        }).split('/').join('-');
 
 
-    Alpine.data("purchaseDate", () => ({
-        date1: formattedToday,
-        init() {
-            flatpickr(document.getElementById('purchase_date'), {
-                dateFormat: 'd-m-Y',
-                defaultDate: this.date1,
-            })
-        }
-    }));
+        Alpine.data("purchaseDate", () => ({
+            date1: formattedToday,
+            init() {
+                flatpickr(document.getElementById('purchase_date'), {
+                    dateFormat: 'd-m-Y',
+                    defaultDate: this.date1,
+                })
+            }
+        }));
 
-    Alpine.data("allocationDate", () => ({
-        date2: formattedToday,
-        init() {
-            flatpickr(document.getElementById('allocation_date'), {
-                dateFormat: 'd-m-Y',
-                minDate: formattedToday,
-                defaultDate: this.date2,
-            })
-        }
-    }));
+        Alpine.data("allocationDate", () => ({
+            date2: formattedToday,
+            init() {
+                flatpickr(document.getElementById('allocation_date'), {
+                    dateFormat: 'd-m-Y',
+                    minDate: formattedToday,
+                    defaultDate: this.date2,
+                })
+            }
+        }));
 
-    Alpine.data("allocationTime", () => ({
-        <?php if(!isset($mode)){ ?>
-            time: todayDate.toLocaleTimeString('en-GB', {
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true
-            }),
-        <?php } ?>
-        init() {
-            flatpickr(document.getElementById('allocation_time'), {
-                defaultDate: '<?php echo isset($mode) ? $data['allocation_time'] : date("h:i a") ?>',
-                noCalendar: true,
-                enableTime: true,
-                dateFormat: 'h:i K'
-            });
-        }
-    }));
-});
+        Alpine.data("allocationTime", () => ({
+            <?php if(!isset($mode)){ ?>
+                time: todayDate.toLocaleTimeString('en-GB', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                }),
+            <?php } ?>
+            init() {
+                flatpickr(document.getElementById('allocation_time'), {
+                    defaultDate: '<?php echo isset($mode) ? $data['allocation_time'] : date("h:i a") ?>',
+                    noCalendar: true,
+                    enableTime: true,
+                    dateFormat: 'h:i K'
+                });
+            }
+        }));
+    });
 
 
-function readURL(input, preview, errElement) {
-    if (input.files && input.files[0]) {
-        var filename = input.files[0].name;
-        var reader = new FileReader();
-        var extn = filename.split('.').pop().toLowerCase();
-
-        var allowedExtns = ["jpg", "jpeg", "png", "bmp", "webp"];
-
-        if (allowedExtns.includes(extn)) {
+    function readURL(input, preview, errElement) {
+        if (input.files && input.files[0]) {
+            var filename = input.files[0].name;
             var reader = new FileReader();
-            reader.onload = function(e) {
-                document.querySelector('#' + preview).src = e.target.result;
-                document.getElementById(preview).style.display = "block";
-            };
+            var extn = filename.split('.').pop().toLowerCase();
 
-            reader.readAsDataURL(input.files[0]);
-            document.getElementById(errElement).innerHTML = "";
-            document.getElementById('save').disabled = false;
-        } else {
-            document.getElementById(preview).style.display = "none";
-            document.getElementById(errElement).innerHTML = "Please Select Image Only";
-            document.getElementById('save').disabled = true;
+            var allowedExtns = ["jpg", "jpeg", "png", "bmp", "webp"];
+
+            if (allowedExtns.includes(extn)) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.querySelector('#' + preview).src = e.target.result;
+                    document.getElementById(preview).style.display = "block";
+                };
+
+                reader.readAsDataURL(input.files[0]);
+                document.getElementById(errElement).innerHTML = "";
+                document.getElementById('save').disabled = false;
+            } else {
+                document.getElementById(preview).style.display = "none";
+                document.getElementById(errElement).innerHTML = "Please Select Image Only";
+                document.getElementById('save').disabled = true;
+            }
         }
     }
-}
 
-const resetForm = (formElement) => {
-    formElement.reset();
-    let preview = document.querySelectorAll('.preview-img');
-    preview.forEach(img => img.style.display = 'none');
-}
-</script>
-
-
-<!-- script -->
-<script>
-checkCookies();
-
-document.addEventListener('alpine:init', () => {
-    Alpine.data('exportTable', () => ({
-        datatable: null,
-        init() {
-            console.log('Initalizing datatable')
-            this.datatable = new simpleDatatables.DataTable('#myTable', {
-                data: {
-                    headings: ['Sr.no', 'Complaint No.', 'Service Center', 'Technician',
-                        'Parts Used', 'Call Type', 'Service Charges', 'Parts Charges',
-                        'Status', 'Reason', 'Date Time'
-                    ],
-                    data: [
-                        <?php 
-                            $stmt = $obj->con1->prepare("SELECT a.*,b.name as technician_name,c.name as service_center_name from call_history as a,technician as b,service_center as c where b.id = a.technician and a.service_center=c.id and complaint_no=?");
-                            $stmt->bind_param("s",$cno);
-                            $stmt->execute();
-
-                            $Resp=$stmt->get_result();
-                            $id=1;
-                            while($row = mysqli_fetch_array($Resp)){
-                        ?>
-                            [
-                                <?php echo $id ?>,
-                                '<?php echo $row['complaint_no'] ?>',
-                                '<?php echo $row['service_center_name'] ?>',
-                                '<?php echo $row['technician_name'] ?>',
-                                '<?php echo $row['parts_used'] ?>',
-                                '<?php echo $row['call_type'] ?>',
-                                '<?php echo $row['service_charge'] ?>',
-                                '<?php echo $row['parts_charge'] ?>',
-                                `<span class="badge badge-outline-<?php echo $row["status"] == "enable" ? 'success' : 'danger'?>">
-                                    <?php echo ucfirst($row["status"]); ?>
-                                </span>`,
-                                '<?php echo $row['reason'] ?>',
-                                '<?php echo $row['date_time'] ?>',
-                            ],
-                        <?php
-                                $id++;
-                            }
-                        ?>
-                    ],
-                },
-                perPage: 10,
-                perPageSelect: [10, 20, 30, 50, 100],
-                columns: [{
-                    select: 0,
-                    sort: 'asc',
-                }, ],
-                firstLast: true,
-                firstText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M13 19L7 12L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M16.9998 19L10.9998 12L16.9998 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
-                lastText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M11 19L17 12L11 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M6.99976 19L12.9998 12L6.99976 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
-                prevText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M15 5L9 12L15 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
-                nextText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M9 5L15 12L9 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
-                labels: {
-                    perPage: '{select}',
-                },
-                layout: {
-                    top: '{search}',
-                    bottom: '{info}{select}{pager}',
-                },
-            });
-        },
-
-        exportTable(eType) {
-            var data = {
-                type: eType,
-                filename: 'table',
-                download: true,
-            };
-
-            if (data.type === 'csv') {
-                data.lineDelimiter = '\n';
-                data.columnDelimiter = ';';
+    function showAlert(id,complaint_no) {
+        new window.Swal({
+            title: 'Are you sure?',
+            text: `You want to delete Call :- ${complaint_no}!`,
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            padding: '2em',
+        }).then((result) => {
+            console.log(result)
+            if (result.isConfirmed) {
+                var loc = "add_call_allocation.php?flg=del&n_historyid=" + id;
+                window.location = loc;
             }
-            this.datatable.export(data);
-        },
-
-        printTable() {
-            this.datatable.print();
-        },
-
-        formatDate(date) {
-            if (date) {
-                const dt = new Date(date);
-                const month = dt.getMonth() + 1 < 10 ? '0' + (dt.getMonth() + 1) : dt.getMonth() +
-                    1;
-                const day = dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate();
-                return day + '/' + month + '/' + dt.getFullYear();
-            }
-            return '';
-        },
-    }));
-})
-
-
-
-
+        });
+    }
 </script>
 <?php 
 include "footer.php";
