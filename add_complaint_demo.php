@@ -259,6 +259,11 @@ if (isset($_POST['save'])) {
                             <input name="dealer_name" id="dealer_name" type="text" class="form-input" value="<?php echo (isset($mode)) ? $data['dealer_name'] : '' ?>" required
                             <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> /> 
                         </div>
+                        <div>
+                            <label for="barcode">Barcode </label>
+                            <input name="barcode" id="barcode" type="text" class="form-input" value="<?php echo (isset($mode)) ? $data['barcode'] : '' ?>" required
+                            <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> /> 
+                        </div>
                         <div x-data="cmplnDate">
                             <label>Date </label>
                             <input x-model="date2" name="complaint_date" id="complaint_date" class="form-input" value="" required
