@@ -1,5 +1,7 @@
 <?php
 include "header.php";
+setcookie("editId", "", time() - 3600);
+setcookie("viewId", "", time() - 3600);
 ?>
 <main class='p-6' x-data="sales">
     <div class="pt-5">
