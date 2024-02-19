@@ -108,7 +108,9 @@ if(isset($_REQUEST["save"])) {
 
     <div class="panel border shadow-md shadow-slate-200">
         <div class="mb-5 flex items-center justify-between">
-            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Call History-Add</h5>
+            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Call History-
+            <?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View' ) : 'Add' ?>
+            </h5>
         </div>
         <form class="space-y-5" method="post">
             <div>
