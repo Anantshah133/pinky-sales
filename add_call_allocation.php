@@ -218,9 +218,7 @@ function uploadImage($inputName, $uploadDirectory) {
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
                             <label for="complaint_num"> Complaint No. </label>
-                            <input name="complaint_num" id="complaint_num" type="text" class="form-input" required
-                                <?php echo isset($mode) ? 'readonly' : '' ?> 
-                                value="<?php echo isset($mode) ? $data['complaint_no'] : ''?>" />
+                            <input name="complaint_num" id="complaint_num" type="text" class="form-input" required <?php echo isset($mode) ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['complaint_no'] : ''?>" />
                         </div>
                         <div>
                             <label for="service_center">Service Center</label>
@@ -234,8 +232,7 @@ function uploadImage($inputName, $uploadDirectory) {
                                     $stmt->close();
                                     while ($result = mysqli_fetch_array($Resp)) { 
                                 ?>
-                                <option value="<?php echo $result["id"]; ?>"
-                                    <?php echo isset($mode) && $result['id'] == $data['service_center_id'] ? 'selected' : '' ?>>
+                                <option value="<?php echo $result["id"]; ?>" <?php echo isset($mode) && $result['id'] == $data['service_center_id'] ? 'selected' : '' ?>>
                                     <?php echo $result["name"]; ?>
                                 </option>
                                 <?php 
@@ -245,9 +242,7 @@ function uploadImage($inputName, $uploadDirectory) {
                         </div>
                         <div>
                             <label for="product_srno"> Product Serial NO. </label>
-                            <input name="product_srno" id="product_srno" type="text" class="form-input" required
-                                <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?>
-                                value="<?php echo isset($mode) ? $data['product_serial_no'] : ''?>" />
+                            <input name="product_srno" id="product_srno" type="text" class="form-input" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['product_serial_no'] : ''?>" />
                         </div>
                         <div>
                             <label for="srno_img">Serial NO. Image</label>
@@ -260,9 +255,7 @@ function uploadImage($inputName, $uploadDirectory) {
                         </div>
                         <div>
                             <label for="product_model"> Product Model </label>
-                            <input name="product_model" id="product_model" type="text" class="form-input" required
-                                <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?>
-                                value="<?php echo isset($mode) && isset($data['product_model']) ? $data['product_model'] : "" ?>" />
+                            <input name="product_model" id="product_model" type="text" class="form-input" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) && isset($data['product_model']) ? $data['product_model'] : "" ?>" />
                         </div>
                         <div>
                             <label for="product_model_img"> Product Model Image </label>
@@ -281,19 +274,14 @@ function uploadImage($inputName, $uploadDirectory) {
                         </div>
                         <div>
                             <label for="purchase_date_img">Purchase Date Image</label>
-                            <input id="purchase_date_img" name="purchase_date_img" type="file"
-                                <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>
-                                class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary" value="<?php echo isset($mode) ? $data['purchase_date_img'] : "" ?>" <?php echo isset($mode) ? '' : 'required' ?> onchange="readURL(this, 'purDateImg', 'errPurDateImg')" />
+                            <input id="purchase_date_img" name="purchase_date_img" type="file" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary" value="<?php echo isset($mode) ? $data['purchase_date_img'] : "" ?>" <?php echo isset($mode) ? '' : 'required' ?> onchange="readURL(this, 'purDateImg', 'errPurDateImg')" />
 
-                            <img src="<?php echo isset($mode) && isset($data['purchase_date_img']) ? 'images/purchase_date_img/'.$data['purchase_date_img'] : '' ?>"
-                                class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img"
-                                alt="" id="purDateImg">
+                            <img src="<?php echo isset($mode) && isset($data['purchase_date_img']) ? 'images/purchase_date_img/'.$data['purchase_date_img'] : '' ?>" class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img" alt="" id="purDateImg">
                             <h6 id='errPurDateImg' class='error-elem'></h6>
                         </div>
                         <div>
                             <label for="technician">Technician </label>
-                            <select class="form-select text-white-dark" name="technician" required
-                                <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
+                            <select class="form-select text-white-dark" name="technician" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
                                 <option value="">Choose Technician</option>
                                 <?php
                                     $stmt = $obj->con1->prepare(
@@ -305,8 +293,7 @@ function uploadImage($inputName, $uploadDirectory) {
 
                                     while ($result = mysqli_fetch_assoc($Res)) { 
                                 ?>
-                                <option value="<?php echo $result["id"]; ?>"
-                                    <?php echo isset($mode) && $result['id'] == $data['technician'] ? 'selected' : '' ?>>
+                                <option value="<?php echo $result["id"]; ?>" <?php echo isset($mode) && $result['id'] == $data['technician'] ? 'selected' : '' ?>>
                                     <?php echo $result["name"]; ?>
                                 </option>
                                 <?php 

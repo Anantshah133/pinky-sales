@@ -134,7 +134,7 @@ if (isset($_POST['save'])) {
     }
 }
 ?>
-<!-- git commit -m "Description field added in complaint demo" -->
+<!--  -->
 <div class='p-6'>
     <div class="panel mt-2">
         <div class='flex items-center justify-between mb-5'>
