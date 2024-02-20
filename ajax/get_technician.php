@@ -13,7 +13,7 @@
 <?php 
 while ($row = mysqli_fetch_assoc($Resp)) { 
 ?>
-    <option value="<?php echo $row["id"]; ?>"  >
+    <option value="<?php echo $row["id"]; ?>">
 		<?php echo $row["name"]; ?>
 	</option>
 <?php

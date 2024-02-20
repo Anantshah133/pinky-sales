@@ -88,7 +88,8 @@ if (isset($_POST['save'])) {
     $complaint_no = "ONL" . $day . $month . $year . $string;
     //--------------//
 
-    // echo $fname . " " . $lname . " " . $email . " " . $contact . " " . $alt_contact . " " . $area . " " . $map_location . " " . $address . " " . $pincode . " " . $complaint_no . " " . $service_type . " " . $product_category . " " . $dealer_name . " " . $description . " " . $complaint_date . " " . $complaint_time;
+    echo $complaint_no;
+    // echo "----Customer_reg".$fname . " " . $lname . " " . $email . " " . $contact . " " . $alt_contact . " " . $area . " " . $map_location . " " . $address . " " . $pincode . " " . $complaint_no . " " . $service_type . " " . $product_category . " " . $dealer_name . " " . $description . " " . $complaint_date . " " . $complaint_time;
 
     try {
         $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `area`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `source`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -96,25 +97,28 @@ if (isset($_POST['save'])) {
         $Resp = $stmt->execute();
         $stmt->close();
 
-        //allocate call -added by Rachna
+        // allocate call -added by Rachna
         // get service area
-
+        // echo "----Area = ".$area;
+        // echo "\n select * from service_center where area=".$area;
+        
         $stmt = $obj->con1->prepare("select * from service_center where area=?");
         $stmt->bind_param("i", $area);
         $stmt->execute();
         $service_center = $stmt->get_result()->fetch_assoc();
         $stmt->close();
-        //insert into call allocation
+        // insert into call allocation
         $product_serial_no = "";
         $product_model = "";
         $purchase_date = "";
-        $techinician = "";
+        $techinician = 0;
         $allocation_date = "";
         $allocation_time = "";
         $status = "new";
         //---------------//
+        // echo "----Call_allocation".$complaint_no." ".$service_center["id"]." ".$product_serial_no." ".$product_model." ".$purchase_date." ".$techinician." ".$allocation_date." ".$allocation_time." ".$status;
 
-        $stmt = $obj->con1->prepare("INSERT INTO `call_allocation`( `complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (?,?,?,?,?,?,?,?,?)");
+        $stmt = $obj->con1->prepare("INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (?,?,?,?,?,?,?,?,?)");
         $stmt->bind_param("sisssisss", $complaint_no, $service_center["id"], $product_serial_no, $product_model, $purchase_date, $techinician, $allocation_date, $allocation_time, $status);
         $result = $stmt->execute();
         $stmt->close();
@@ -123,6 +127,7 @@ if (isset($_POST['save'])) {
         }
     } catch (\Exception  $e) {
         setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
+        echo urlencode($e->getMessage());
     }
 
     if ($Resp) {
