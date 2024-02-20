@@ -108,7 +108,9 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                     '<?php echo $row['service_type'] ?>',
                                     '<?php echo $row['product_category'] ?>',
                                     '<?php echo $row['datetime'] ?>',
-                                    'New',
+                                    `<span class="badge badge-outline-success">
+                                        New
+                                    </span>`,
                                     getActions('<?php echo $row['id'] ?>', '<?php echo $row['complaint_no'] ?>')
                                 ],
                                 <?php

@@ -112,7 +112,10 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                     '<?php echo $row['service_center_name'] ?>',
                                     '<?php echo $row['technician_name'] ?>',
                                     '<?php echo $row['allocation_datetime'] ?>',
-                                    '<?php echo $row['status'] ?>',
+                                    `<span class="badge badge-outline-<?php 
+                                    echo $row["status"] == "allocated"  || $row["status"] == "closed"  || $row["status"] == "new" ? 'success' : 'danger'?>">
+                                        <?php echo ucfirst($row["status"]); ?>
+                                    </span>`,
                                     getActions(<?php echo $row['id'] ?>, '<?php echo $row['complaint_no'] ?>')
                                 ],
                                 <?php
