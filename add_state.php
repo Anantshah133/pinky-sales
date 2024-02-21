@@ -70,9 +70,9 @@ if (isset($_REQUEST["save"])) {
 }
 ?>
 <script>
-    document.addEventListener("", () => {
-        localStorage.setItem("Flag", "working")
-    });
+document.addEventListener("", () => {
+    localStorage.setItem("Flag", "working")
+});
 </script>
 <div class='p-6'>
     <div class="panel mt-2">
@@ -89,15 +89,19 @@ if (isset($_REQUEST["save"])) {
                         onblur="checkName(this,<?php echo isset($mode) ? $data['id'] : 0 ?>)" pattern="^\s*\S.*$"
                         value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required />
                     <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
-                    <div
-                        class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
+                    <div class="relative inline-flex align-middle gap-3 mt-4">
+                        <!-- Save/Update button -->
                         <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
-                            id="save" class="btn btn-success" onclick="return validateAndDisable()">
+                            id="save" class="btn btn-success" onclick="return validateAndDisable()"
+                            <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
                             <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
                         </button>
-                        <button type="button" class="btn btn-danger"
-                            onclick="window.location='state.php'">Close</button>
+                        <!-- Close button -->
+                        <button type="button" class="btn btn-danger" onclick="window.location='state.php'">
+                            Close
+                        </button>
                     </div>
+
                 </div>
             </form>
         </div>
@@ -105,26 +109,24 @@ if (isset($_REQUEST["save"])) {
 </div>
 
 <script>
-    function checkName(c1, id) {
-        let n = c1.value;
+function checkName(c1, id) {
+    let n = c1.value;
 
-        const obj = new XMLHttpRequest();
-        obj.onload = function () {
-            let x = obj.responseText;
-            console.log(n, id);
-            if (x == 1) {
-                c1.value = "";
-                c1.focus();
-                document.getElementById("demo").innerHTML = "Sorry the name alredy exist!";
-            }
-            else {
-                document.getElementById("demo").innerHTML = "";
-            }
+    const obj = new XMLHttpRequest();
+    obj.onload = function() {
+        let x = obj.responseText;
+        console.log(n, id);
+        if (x == 1) {
+            c1.value = "";
+            c1.focus();
+            document.getElementById("demo").innerHTML = "Sorry the name alredy exist!";
+        } else {
+            document.getElementById("demo").innerHTML = "";
         }
-        obj.open("GET", "./ajax/check_state.php?name=" + n + "&stid=" + id, true);
-        obj.send();
     }
-
+    obj.open("GET", "./ajax/check_state.php?name=" + n + "&stid=" + id, true);
+    obj.send();
+}
 </script>
 
 <?php
