@@ -31,19 +31,24 @@ $app->post('/customer_registeration', function () use ($app) {
 
     $alternate_contact = $req_data->alternate_contact;
     $address = $req_data->address;
-   // $area = $req_data->area;
-   // $map_location = $req_data->map_location;
+   
+    $map_location = $req_data->map_location;
     $zipcode = $req_data->zipcode;
     $service_type = $req_data->service_type;
     $product_category = $req_data->product_category;
     $email = $req_data->email;
     $dealer_name = $req_data->dealer_name;
+    $description = $req_data->description;
+    $barcode = $req_data->barcode;
+    $source = $req_data->source;
+    $area = $req_data->area;//city
     $device_token = isset($req_data->device_token)?$req_data->device_token:"";
     $type = isset($req_data->type)?$req_data->type:"";
     $day = Date("d");
     $month = Date("m");
     $year = Date("y");
     $db = new DbOperation();
+    
 
     $maxno = $db->getmaxcustomer();
     $row_max = $maxno->fetch_assoc();
@@ -60,19 +65,19 @@ $app->post('/customer_registeration', function () use ($app) {
      if($area_data->num_rows>0)
      {
         $area_row=$area_data->fetch_assoc();
-        $area=$area_row["service_area_id"];
+       // $area=$area_row["service_area_id"];
      }
      else
      {
-        $area=0;
+       // $area=0;
      }
 
 
      // get service center from zipcode
      
    // $complaint_no = "ORP".$day . $month . $year . $row_max["customer_id"].$string;
-     $complaint_no = "ORP".$day . $month . $year .$string;
-    $res = $db->do_reg_customer($fname, $lname, $email, $contact, $alternate_contact, $area, $zipcode, $address, $service_type, $product_category, $dealer_name, $complaint_no);
+     $complaint_no = "ONL".$day . $month . $year .$string;
+    $res = $db->do_reg_customer($fname, $lname, $email, $contact, $alternate_contact, $area, $zipcode, $address, $service_type, $product_category, $dealer_name, $complaint_no,$description,$barcode,$source,$map_location);
 
 
     if ($res == 0) {
@@ -386,6 +391,42 @@ $app->get('/get_privacy', function () use ($app) {
     echoResponse(200, $data);
 });
 
+
+
+/* service_center
+ *  param:
+ *  method:post
+ */
+$app->post('/product_service', function () use ($app) {
+
+    $product_category = $app->request->post('product_category');
+    $db = new DbOperation();
+    $data = array();
+
+    $area = $db->product_service($product_category);
+    if ($area->num_rows > 0) {
+
+
+        $data['result'] = true;
+        $data['message'] = "";
+        $data["response"] = array();
+
+        while ($area_list = $area->fetch_assoc()) {
+
+            $response = new stdClass();
+            foreach ($area_list as $key => $value) {
+                $response->$key = $value;
+            }
+            array_push($data["response"], $response);
+        }
+
+    } else {
+        $data['result'] = false;
+        $data['message'] = "Data not found";
+
+    }
+    echoResponse(200, $data);
+});
 
 function send_notification($data, $reg_ids)
 {
