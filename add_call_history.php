@@ -15,7 +15,7 @@ if (isset($_COOKIE['comp_no']) && !isset($_COOKIE["callEditId"]) && !isset($_COO
     $stmt->execute();
     $Resp = $stmt->get_result();
     $preData = $Resp->fetch_assoc();
-    echo $preData["t_name"] ." ". $preData["sc_name"];
+    $preData["t_name"] ." ". $preData["sc_name"];
     // $service_id = $preData["service_center_id"];
     // $tech_id = $preData["technician"];
     // $comp_no = $preData['complaint_no'];
@@ -260,14 +260,19 @@ if (isset($_REQUEST["save"])) {
                     value="<?php echo isset($mode) ? $data['reason'] : "" ?>" />
             </div>
 
-            <div
-                class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
-                <button type="submit" class="btn btn-success"
-                    name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save'; ?>" id="save"
-                    onclick="return validateAndDisable()"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save'; ?></button>
-                <button type="button" class="btn btn-danger"
-                    onclick="window.location='add_call_allocation.php'">Close</button>
-            </div>
+            <div class="relative inline-flex align-middle gap-3 mt-4">
+                        <!-- Save/Update button -->
+                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
+                            id="save" class="btn btn-success" onclick="return validateAndDisable()"
+                            <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
+                            <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
+                        </button>
+                        <!-- Close button -->
+                        <button type="button" class="btn btn-danger" onclick="window.location='call_allocation.php'">
+                            Close
+                        </button>
+                    </div>
+
         </form>
     </div>
 </div>
