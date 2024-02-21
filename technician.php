@@ -45,7 +45,6 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
             </div>
         </div>
         <table id="myTable" class="table-hover whitespace-nowrap"></table>
-        <?php echo $_SESSION['username']; ?>
     </div>
 </div>
 

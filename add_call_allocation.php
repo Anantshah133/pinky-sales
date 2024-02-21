@@ -278,23 +278,6 @@ function uploadImage($inputName, $uploadDirectory)
                         <div>
                             <label for="technician">Technician </label>
                             <select class="form-select text-white-dark" id="technician" name="technician" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
-                                <!-- <option value="">Choose Technician</option> -->
-                                <?php
-                                // $stmt = $obj->con1->prepare(
-                                //     "SELECT * FROM `technician` WHERE status='enable'"
-                                // );
-                                // $stmt->execute();
-                                // $Res = $stmt->get_result();
-                                // $stmt->close();
-                                
-                                // while ($result = mysqli_fetch_assoc($Res)) { 
-                                ?>
-                                <!-- <option value="<?php //echo $result["id"];   ?>" <?php //echo isset($mode) && $result['id'] == $data['technician'] ? 'selected' : ''   ?>>
-                                    <?php //echo $result["name"];   ?>
-                                </option> -->
-                                <?php
-                                // } 
-                                ?>
                             </select>
                         </div>
                         <div>

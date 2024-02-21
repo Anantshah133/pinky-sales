@@ -49,7 +49,8 @@ if ($_SESSION['type'] == "admin") {
         "technician.php",
         "add_call_allocation.php",
         "add_complaint_demo.php",
-        "add_technician.php"
+        "add_technician.php",
+        "add_call_history.php"
     );
 }
 

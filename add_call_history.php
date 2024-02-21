@@ -1,20 +1,50 @@
 <?php
 include "header.php";
 
-if(isset($_COOKIE['callViewId'])){
+if (isset($_COOKIE['comp_no']) && !isset($_COOKIE["callEditId"]) && !isset($_COOKIE["callEditId"])) {
+    // $mode = "view";
+    $complaint_no = $_COOKIE["comp_no"];
+    // $stmt = $obj->con1->prepare("SELECT * FROM `call_allocation` WHERE complaint_no=?");
+
+    $stmt = $obj->con1->prepare("SELECT ca.*, t.name as t_name, sc.name as sc_name
+        FROM `call_allocation` AS ca
+        JOIN `technician` AS t ON ca.technician = t.id
+        JOIN `service_center` AS sc ON ca.service_center_id = sc.id
+        WHERE ca.complaint_no=?");
+    $stmt->bind_param("s", $complaint_no);
+    $stmt->execute();
+    $Resp = $stmt->get_result();
+    $preData = $Resp->fetch_assoc();
+    echo $preData["t_name"] ." ". $preData["sc_name"];
+    // $service_id = $preData["service_center_id"];
+    // $tech_id = $preData["technician"];
+    // $comp_no = $preData['complaint_no'];
+    $stmt->close();
+}
+
+if (isset($_COOKIE['callViewId'])) {
     $mode = 'view';
     $callViewId = $_COOKIE['callViewId'];
-    $stmt = $obj->con1->prepare("SELECT * FROM `call_history` where id=?");
+    $stmt = $obj->con1->prepare("SELECT ca.*, t.name as t_name, sc.name as sc_name
+    FROM `call_allocation` AS ca
+    JOIN `technician` AS t ON ca.technician = t.id
+    JOIN `service_center` AS sc ON ca.service_center_id = sc.id
+    WHERE ca.complaint_no=?");
     $stmt->bind_param("i", $callViewId);
     $stmt->execute();
     $Resp = $stmt->get_result();
     $data = $Resp->fetch_assoc();
     $stmt->close();
 }
-if(isset($_COOKIE['callEditId'])){
+
+if (isset($_COOKIE['callEditId'])) {
     $mode = 'edit';
     $callEditId = $_COOKIE['callEditId'];
-    $stmt = $obj->con1->prepare("SELECT * FROM `call_history` where id=?");
+    $stmt = $obj->con1->prepare("SELECT ca.*, t.name as t_name, sc.name as sc_name
+        FROM `call_allocation` AS ca
+        JOIN `technician` AS t ON ca.technician = t.id
+        JOIN `service_center` AS sc ON ca.service_center_id = sc.id
+        WHERE ca.complaint_no=?");
     $stmt->bind_param("i", $callEditId);
     $stmt->execute();
     $Resp = $stmt->get_result();
@@ -22,11 +52,11 @@ if(isset($_COOKIE['callEditId'])){
     $stmt->close();
 }
 
-if(isset($_REQUEST['update'])){
+if (isset($_REQUEST['update'])) {
     $complaint_no = $_REQUEST["complaint_no"];
     $service_center = $_REQUEST["service_center"];
     $technician = $_REQUEST["technician"];
-    $parts_used= $_REQUEST["parts_used"];
+    $parts_used = $_REQUEST["parts_used"];
     $call_type = $_REQUEST["call_type"];
     $service_charge = $_REQUEST["service_charge"];
     $parts_charge = $_REQUEST["parts_charge"];
@@ -35,8 +65,9 @@ if(isset($_REQUEST['update'])){
     $date_time = date("d-m-Y h:i A");
 
     $stmt = $obj->con1->prepare(
-        "UPDATE call_history SET complaint_no=?,service_center=?,technician=?,parts_used=?,call_type=?,service_charge=?,parts_charge=?,status=?,reason=?,date_time=? WHERE id=?");
-    $stmt->bind_param("siisssssss",$complaint_no,$service_center,$technician,$parts_used,$call_type,$service_charge,$parts_charge,$status,$reason,$date_time);
+        "UPDATE call_history SET complaint_no=?,service_center=?,technician=?,parts_used=?,call_type=?,service_charge=?,parts_charge=?,status=?,reason=?,date_time=? WHERE id=?"
+    );
+    $stmt->bind_param("siisssssss", $complaint_no, $service_center, $technician, $parts_used, $call_type, $service_charge, $parts_charge, $status, $reason, $date_time);
     $Resp = $stmt->execute();
 
     if ($Resp) {
@@ -48,26 +79,11 @@ if(isset($_REQUEST['update'])){
     }
 }
 
-
-// if(isset($_COOKIE["callEditId"])){
-//     $mode="save";
-//     $complaint_no = $_COOKIE["comp_no"];
-//     $stmt = $obj->con1->prepare("SELECT * FROM `call_allocation` WHERE complaint_no=?");
-//     $stmt->bind_param("s",$complaint_no);
-//     $stmt->execute();
-//     $Resp = $stmt->get_result();
-//     $data = $Resp->fetch_assoc();
-//     $service_id= $data["service_center_id"];
-//     $tech_id = $data["technician"];
-//     $comp_no= $data['complaint_no'];
-//     $stmt->close();
-// // }
-
-if(isset($_REQUEST["save"])) {
+if (isset($_REQUEST["save"])) {
     $complaint_no = $_REQUEST["complaint_no"];
     $service_center = $_REQUEST["service_center"];
     $technician = $_REQUEST["technician"];
-    $parts_used= $_REQUEST["parts_used"];
+    $parts_used = $_REQUEST["parts_used"];
     $call_type = $_REQUEST["call_type"];
     $service_charge = $_REQUEST["service_charge"];
     $parts_charge = $_REQUEST["parts_charge"];
@@ -76,11 +92,11 @@ if(isset($_REQUEST["save"])) {
     $date_time = date("d-m-Y h:i A");
 
     try {
-        
+
         $stmt = $obj->con1->prepare(
             "INSERT INTO `call_history`(`complaint_no`,`service_center`,`technician`,`parts_used`,`call_type`,`service_charge`,`parts_charge`,`status`,`reason`,`date_time`) VALUES (?,?,?,?,?,?,?,?,?,?)"
         );
-        $stmt->bind_param("siisssssss",$complaint_no,$service_center,$technician,$parts_used,$call_type,$service_charge,$parts_charge,$status,$reason,$date_time);
+        $stmt->bind_param("siisssssss", $complaint_no, $service_center, $technician, $parts_used, $call_type, $service_charge, $parts_charge, $status, $reason, $date_time);
         $Resp = $stmt->execute();
 
         if (!$Resp) {
@@ -108,66 +124,72 @@ if(isset($_REQUEST["save"])) {
 
     <div class="panel border shadow-md shadow-slate-200">
         <div class="mb-5 flex items-center justify-between">
-            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Call History-
-            <?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View' ) : 'Add' ?>
+            <h5 class="text-xl text-primary font-semibold dark:text-white-light">Call History -
+                <?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View') : 'Add' ?>
             </h5>
         </div>
         <form class="space-y-5" method="post">
             <div>
                 <label for="name">Complaint No.</label>
                 <input id="complaint_no" type="text" name="complaint_no" placeholder="" class="form-input"
-                    value="<?php echo (isset($mode)) ? $data['complaint_no'] : '' ?>" required
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
-                    <?php echo isset($mode) ? $data['complaint_no'] : ''?> />
+                    value="<?php echo isset($mode) ? $data['complaint_no'] : $preData["complaint_no"] ?>" required
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : 'disabled' ?>
+                    <?php echo isset($mode) ? $data['complaint_no'] : '' ?> />
             </div>
             <div>
                 <label for="groupFname"> Service Center</label>
-                <select class="form-select text-white-dark" name="service_center" required>
+                <select class="form-select text-white-dark" name="service_center" value="<?php echo isset($mode) ? '' : '' ?>" required value="">
+                <option value="">
+                    <?php echo !isset($mode) ? $preData["sc_name"] : $data["sc_name"] ?>
+                </option>
                     <?php
-                        $stmt = $obj->con1->prepare(
-                            "SELECT * FROM `service_center` WHERE status='enable'"
-                        );
-                        $stmt->execute();
-                        $Res = $stmt->get_result();
-                        $stmt->close();
+                    // $stmt = $obj->con1->prepare(
+                    //     "SELECT * FROM `service_center` WHERE status='enable'"
+                    // );
+                    // $stmt->execute();
+                    // $Res = $stmt->get_result();
+                    // $stmt->close();
+                    
+                    // while ($result = mysqli_fetch_assoc($Res)) { 
+                    //     if($service_id==$result["id"]){
+                    ?>
+                    <!-- <option value="<?php //echo $result["id"];                     ?>"
+                        <?php //echo isset($mode) && $result['id'] == $data['service_center_id'] ? 'selected' : ''                     ?>>
+                        <?php //echo $result["name"];                     ?>
+                    </option> -->
+                    <?php
+                    //     }
+                    // } 
+                    ?>
 
-                        while ($result = mysqli_fetch_assoc($Res)) { 
-                            if($service_id==$result["id"]){
-                    ?>
-                    <option value="<?php echo $result["id"]; ?>"
-                        <?php echo isset($mode) && $result['id'] == $data['service_center_id'] ? 'selected' : '' ?>>
-                        <?php echo $result["name"]; ?>
-                    </option>
-                    <?php 
-                            }
-                        } 
-                    ?>
                 </select>
             </div>
             <div>
                 <label for="groupFname"> Technician</label>
                 <select class="form-select text-white-dark" name="technician" required>
-
-                    <?php
-                            $stmt = $obj->con1->prepare(
-                                "SELECT * FROM `technician` WHERE status='enable'"
-                            );
-                            $stmt->execute();
-                            $Res = $stmt->get_result();
-                            $stmt->close();
-
-                            while ($result = mysqli_fetch_assoc($Res)) { 
-                                if($tech_id==$result["id"])
-                                {
-                        ?>
-                    <option value="<?php echo $result["id"]; ?>"
-                        <?php echo isset($mode) && $result['id'] == $data['technician'] ? 'selected' : '' ?>>
-                        <?php echo $result["name"]; ?>
+                        <option value="">
+                            <?php !isset($mode) ? $preData["t_name"] : $data["t_name"] ?>
+                        </option>
+                    <!-- <?php
+                    // $stmt = $obj->con1->prepare(
+                    //     "SELECT * FROM `technician` WHERE status='enable'"
+                    // );
+                    // $stmt->execute();
+                    // $Res = $stmt->get_result();
+                    // $stmt->close();
+                    
+                    // while ($result = mysqli_fetch_assoc($Res)) { 
+                    //     if($tech_id==$result["id"])
+                    //     {
+                    ?>
+                    <option value="<?php //echo $result["id"];                     ?>"
+                        <?php //echo isset($mode) && $result['id'] == $data['technician'] ? 'selected' : ''                     ?>>
+                        <?php //echo $result["name"];                     ?>
                     </option>
-                    <?php 
-                                }
-                            } 
-                        ?>
+                    <?php
+                    //     }
+                    // } 
+                    ?> -->
                 </select>
             </div>
             <div>
@@ -203,12 +225,12 @@ if(isset($_REQUEST["save"])) {
                 <label for="name">Service Charge</label>
                 <input id="name" type="text" name="service_charge" placeholder="" class="form-input"
                     value="<?php echo (isset($mode) && isset($data['service_charge'])) ? $data['service_charge'] : '' ?>"
-                    required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
+                    required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
 
             </div>
             <div>
                 <label for="parts_charge">Parts Charge</label>
-                <input id="parts_charge" type="text" name="parts_charge" placeholder="" class="form-input" value="<?php echo isset($mode) && isset($data['parts_charge']) ? $data['parts_charge'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
+                <input id="parts_charge" type="text" name="parts_charge" placeholder="" class="form-input" value="<?php echo isset($mode) && isset($data['parts_charge']) ? $data['parts_charge'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
 
             </div>
             <div>
@@ -252,5 +274,5 @@ if(isset($_REQUEST["save"])) {
 
 
 <?php
-include "footer.php"; 
+include "footer.php";
 ?>

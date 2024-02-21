@@ -76,12 +76,9 @@ if (isset($_POST['save'])) {
     $year = Date("y");
     $description = $_REQUEST['description'];
     $source = "web";
-
-    // $fullDate = explode("-",$complaint_date);
     $joined_date = date("dmy", strtotime($complaint_date));
 
     // get max customer id - added by Rachna
-
     $stmt = $obj->con1->prepare("select IFNULL(count(id)+1,1) as customer_id from customer_reg where date ='" . date("d-m-Y", strtotime($complaint_date)) . "'");
     $stmt->execute();
     $row_dailycounter = $stmt->get_result()->fetch_assoc();
@@ -103,8 +100,6 @@ if (isset($_POST['save'])) {
 
         // allocate call -added by Rachna
         // get service area
-        // echo "----Area = ".$area;
-        // echo "\n select * from service_center where area=".$area;
 
         $stmt = $obj->con1->prepare("select * from service_center where area=?");
         $stmt->bind_param("i", $area);
@@ -121,6 +116,8 @@ if (isset($_POST['save'])) {
         $status = "new";
         //---------------//
         // echo "----Call_allocation".$complaint_no." ".$service_center["id"]." ".$product_serial_no." ".$product_model." ".$purchase_date." ".$techinician." ".$allocation_date." ".$allocation_time." ".$status;
+
+        // echo "INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (".$complaint_no." ". $service_center["id"]." ". $product_serial_no." ". $product_model." ". $purchase_date." ". $techinician." ". $allocation_date." ". $allocation_time." ". $status;
 
         $stmt = $obj->con1->prepare("INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (?,?,?,?,?,?,?,?,?)");
         $stmt->bind_param("sisssisss", $complaint_no, $service_center["id"], $product_serial_no, $product_model, $purchase_date, $techinician, $allocation_date, $allocation_time, $status);
@@ -143,7 +140,7 @@ if (isset($_POST['save'])) {
     }
 }
 ?>
-<!--  -->
+
 <div class='p-6'>
     <div class="panel mt-2">
         <div class='flex items-center justify-between mb-5'>
