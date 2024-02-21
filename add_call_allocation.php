@@ -13,9 +13,9 @@ function addHistory(){
 
 <!-- echo "UPDATE `call_allocation` SET complaint_no=$complaintNum, service_center_id=$serviceCenterId, product_serial_no=$productSerialNum, serial_no_img=$serialNumImg, product_model=$productModel, product_model_img=$productModelImg, purchase_date=$purchaseDate, purchase_date_img=$purchaseDateImg, technician=$technician, allocation_date=$allocationDate, allocation_time=$allocationTime, status=$callStatus, reason=$reason WHERE call_allocation.id=$editId"; -->
 
-<?php 
-$cno="";
-if(isset($_COOKIE['viewId'])){
+<?php
+$cno = "";
+if (isset($_COOKIE['viewId'])) {
     $mode = 'view';
     $viewId = $_COOKIE['viewId'];
     $query = $obj->con1->prepare("SELECT c1.*, sc1.name AS service_center, t1.name AS tech 
@@ -30,7 +30,7 @@ if(isset($_COOKIE['viewId'])){
     $query->close();
 }
 
-if(isset($_COOKIE['editId'])){
+if (isset($_COOKIE['editId'])) {
     $mode = 'edit';
     $editId = $_COOKIE['editId'];
     $query = $obj->con1->prepare("SELECT c1.*, sc1.name AS service_center, t1.name AS tech 
@@ -42,11 +42,11 @@ if(isset($_COOKIE['editId'])){
     $query->execute();
     $Res = $query->get_result();
     $data = $Res->fetch_assoc();
-    $cno= $data['complaint_no'];
+    $cno = $data['complaint_no'];
     $query->close();
 }
 
-if(isset($_REQUEST['update'])){
+if (isset($_REQUEST['update'])) {
     $complaintNum = $_REQUEST['complaint_num'];
     $serviceCenterId = $_REQUEST['service_center'];
     $productSerialNum = $_REQUEST['product_srno'];
@@ -60,42 +60,42 @@ if(isset($_REQUEST['update'])){
     $allocationTime = $_REQUEST['allocation_time'];
     $editId = $_COOKIE['editId'];
 
-    if($_FILES['srno_img']['size'] > 0) {
+    if ($_FILES['srno_img']['size'] > 0) {
         // Process image upload
         $serialNumImg = uploadImage('srno_img', 'images/serial_no_img');
-        
+
         // Update the image file name in the database
         $stmt = $obj->con1->prepare("UPDATE `call_allocation` SET serial_no_img=? WHERE call_allocation.id=?");
         $stmt->bind_param("si", $serialNumImg, $editId);
         $Resp = $stmt->execute();
         $stmt->close();
-        
+
         // Remove the old image file
-        if(isset($data['serial_no_img'])) {
+        if (isset($data['serial_no_img'])) {
             $oldSerialNumImg = $data['serial_no_img'];
-            unlink("images/serial_no_img/".$oldSerialNumImg);
+            unlink("images/serial_no_img/" . $oldSerialNumImg);
         }
-        
-        move_uploaded_file($_FILES['srno_img']['tmp_name'], "images/serial_no_img/".$serialNumImg);
+
+        move_uploaded_file($_FILES['srno_img']['tmp_name'], "images/serial_no_img/" . $serialNumImg);
     }
 
-    if($_FILES['product_model_img']['size'] > 0) {
+    if ($_FILES['product_model_img']['size'] > 0) {
         $productModelImg = uploadImage('product_model_img', 'images/product_model_img');
-        
+
         $stmt = $obj->con1->prepare("UPDATE `call_allocation` SET product_model_img=? WHERE call_allocation.id=?");
         $stmt->bind_param("si", $productModelImg, $editId);
         $Resp = $stmt->execute();
         $stmt->close();
-        
-        if(isset($data['product_model_img'])) {
+
+        if (isset($data['product_model_img'])) {
             $oldSerialNumImg = $data['product_model_img'];
-            unlink("images/product_model_img/".$oldSerialNumImg);
+            unlink("images/product_model_img/" . $oldSerialNumImg);
         }
-        
-        move_uploaded_file($_FILES['product_model_img']['tmp_name'], "images/product_model_img/".$productModelImg);
+
+        move_uploaded_file($_FILES['product_model_img']['tmp_name'], "images/product_model_img/" . $productModelImg);
     }
-    
-    if($_FILES['purchase_date_img']['size'] > 0) {
+
+    if ($_FILES['purchase_date_img']['size'] > 0) {
         $purchaseDateImg = uploadImage('purchase_date_img', 'images/purchase_date_img');
 
         $stmt = $obj->con1->prepare("UPDATE `call_allocation` SET purchase_date_img=? WHERE call_allocation.id=?");
@@ -103,40 +103,38 @@ if(isset($_REQUEST['update'])){
         $Resp = $stmt->execute();
         $stmt->close();
 
-        if(isset($data['purchase_date_img'])) {
+        if (isset($data['purchase_date_img'])) {
             $oldSerialNumImg = $data['purchase_date_img'];
-            unlink("images/purchase_date_img/".$oldSerialNumImg);
+            unlink("images/purchase_date_img/" . $oldSerialNumImg);
         }
 
-        move_uploaded_file($_FILES['purchase_date_img']['tmp_name'], "images/purchase_date_img/".$purchaseDateImg);
+        move_uploaded_file($_FILES['purchase_date_img']['tmp_name'], "images/purchase_date_img/" . $purchaseDateImg);
     }
 
     try {
         $stmt = $obj->con1->prepare("UPDATE `call_allocation` SET complaint_no=?, service_center_id=?, product_serial_no=?, serial_no_img=?, product_model=?, product_model_img=?, purchase_date=?, purchase_date_img=?, technician=?, allocation_date=?, allocation_time=?, status=?, reason=? WHERE call_allocation.id=?");
 
         $stmt->bind_param("sissssssissssi", $complaintNum, $serviceCenterId, $productSerialNum, $serialNumImg, $productModel, $productModelImg, $purchaseDate, $purchaseDateImg, $technician, $allocationDate, $allocationTime, $callStatus, $reason, $editId);
-        $Resp=$stmt->execute();
+        $Resp = $stmt->execute();
 
-        if(!$Resp) {
-            throw new Exception("Problem in adding! ". strtok($obj->con1-> error,  '('));
+        if (!$Resp) {
+            throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
         }
         $stmt->close();
-    }
-    catch(\Exception  $e) {
-        setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
     }
 
-    if($Resp) {
-        setcookie("msg", "update",time()+3600,"/");
+    if ($Resp) {
+        setcookie("msg", "update", time() + 3600, "/");
         header("location:call_allocation.php");
-    }
-    else {
-        setcookie("msg", "fail",time()+3600,"/");
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
         header("location:call_allocation.php");
     }
 }
 
-if(isset($_REQUEST['save'])){
+if (isset($_REQUEST['save'])) {
     $complaintNum = $_REQUEST['complaint_num'];
     $serviceCenterId = $_REQUEST['service_center'];
     $productSerialNum = $_REQUEST['product_srno'];
@@ -157,35 +155,34 @@ if(isset($_REQUEST['save'])){
 
         $stmt = $obj->con1->prepare("INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `serial_no_img`, `product_model`, `product_model_img`, `purchase_date`, `purchase_date_img`, `technician`, `allocation_date`, `allocation_time`, `status`, `reason`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
         $stmt->bind_param("sissssssissss", $complaintNum, $serviceCenterId, $productSerialNum, $serialNumImg, $productModel, $productModelImg, $purchaseDate, $purchaseDateImg, $technician, $allocationDate, $allocationTime, $callStatus, $reason);
-        $Resp=$stmt->execute();
+        $Resp = $stmt->execute();
 
-        if(!$Resp) {
-            throw new Exception("Problem in adding! ". strtok($obj->con1-> error,  '('));
+        if (!$Resp) {
+            throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
         }
         $stmt->close();
-    }
-    catch(\Exception  $e) {
-        setcookie("sql_error", urlencode($e->getMessage()),time()+3600,"/");
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
     }
 
-    if($Resp) {
-        move_uploaded_file($_FILES['srno_img']['tmp_name'], "images/serial_no_img/".$serialNumImg);
-        move_uploaded_file($_FILES['product_model_img']['tmp_name'], "images/product_model_img/".$productModelImg);
-        move_uploaded_file($_FILES['purchase_date_img']['tmp_name'], "images/purchase_date_img/".$purchaseDateImg);
+    if ($Resp) {
+        move_uploaded_file($_FILES['srno_img']['tmp_name'], "images/serial_no_img/" . $serialNumImg);
+        move_uploaded_file($_FILES['product_model_img']['tmp_name'], "images/product_model_img/" . $productModelImg);
+        move_uploaded_file($_FILES['purchase_date_img']['tmp_name'], "images/purchase_date_img/" . $purchaseDateImg);
 
-        setcookie("msg", "data",time()+3600,"/");
+        setcookie("msg", "data", time() + 3600, "/");
         header("location:call_allocation.php");
-    }
-    else {
-        setcookie("msg", "fail",time()+3600,"/");
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
         header("location:call_allocation.php");
     }
 }
 
-function uploadImage($inputName, $uploadDirectory) {
+function uploadImage($inputName, $uploadDirectory)
+{
     $fileName = $_FILES[$inputName]['name'];
     $tmpFilePath = $_FILES[$inputName]['tmp_name'];
-    echo $fileName.$tmpFilePath;
+    echo $fileName . $tmpFilePath;
     if ($fileName != "") {
         $targetDirectory = $uploadDirectory . '/';
         if (!file_exists($targetDirectory)) {
@@ -218,36 +215,36 @@ function uploadImage($inputName, $uploadDirectory) {
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
                             <label for="complaint_num"> Complaint No. </label>
-                            <input name="complaint_num" id="complaint_num" type="text" class="form-input" required <?php echo isset($mode) ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['complaint_no'] : ''?>" />
+                            <input name="complaint_num" id="complaint_num" type="text" class="form-input" required <?php echo isset($mode) ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['complaint_no'] : '' ?>" />
                         </div>
                         <div>
                             <label for="service_center">Service Center</label>
                             <select name="service_center" id="service_center" class="form-select text-white-dark" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> onchange="getTechnician(this.value);">
                                 <option value="">Choose service center</option>
                                 <?php
-                                    $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE status='enable'");
-                                    $stmt->execute();
-                                    $Resp = $stmt->get_result();
-                                    $stmt->close();
-                                    while ($result = mysqli_fetch_array($Resp)) { 
-                                ?>
-                                <option value="<?php echo $result["id"]; ?>" <?php echo isset($mode) && $result['id'] == $data['service_center_id'] ? 'selected' : '' ?>>
-                                    <?php echo $result["name"]; ?>
-                                </option>
-                                <?php 
-                                    } 
+                                $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE status='enable'");
+                                $stmt->execute();
+                                $Resp = $stmt->get_result();
+                                $stmt->close();
+                                while ($result = mysqli_fetch_array($Resp)) {
+                                    ?>
+                                        <option value="<?php echo $result["id"]; ?>" <?php echo isset($mode) && $result['id'] == $data['service_center_id'] ? 'selected' : '' ?>>
+                                            <?php echo $result["name"]; ?>
+                                        </option>
+                                    <?php
+                                }
                                 ?>
                             </select>
                         </div>
                         <div>
                             <label for="product_srno"> Product Serial NO. </label>
-                            <input name="product_srno" id="product_srno" type="text" class="form-input" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['product_serial_no'] : ''?>" />
+                            <input name="product_srno" id="product_srno" type="text" class="form-input" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['product_serial_no'] : '' ?>" />
                         </div>
                         <div>
                             <label for="srno_img">Serial NO. Image</label>
                             <input name="srno_img" id="srno_img" type="file" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary" value="<?php echo isset($mode) ? $data['serial_no_img'] : "" ?>" <?php echo isset($mode) ? '' : 'required' ?> onchange="readURL(this, 'srNoImg', 'errSrNoImg')">
 
-                            <img src="<?php echo isset($mode) && isset($data['serial_no_img']) ? 'images/serial_no_img/'.$data['serial_no_img'] : '' ?>"
+                            <img src="<?php echo isset($mode) && isset($data['serial_no_img']) ? 'images/serial_no_img/' . $data['serial_no_img'] : '' ?>"
                                 class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img"
                                 alt="" id="srNoImg">
                             <h6 id='errSrNoImg' class='error-elem'></h6>
@@ -260,7 +257,7 @@ function uploadImage($inputName, $uploadDirectory) {
                             <label for="product_model_img"> Product Model Image </label>
                             <input name="product_model_img" id="product_model_img" type="file" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary" value="<?php echo isset($mode) ? $data['product_model_img'] : "" ?>" <?php echo isset($mode) ? '' : 'required' ?> onchange="readURL(this, 'previewModalImage', 'errModalImg')" />
 
-                            <img src="<?php echo isset($mode) && isset($data['product_model_img']) ? 'images/product_model_img/'.$data['product_model_img'] : '' ?>"
+                            <img src="<?php echo isset($mode) && isset($data['product_model_img']) ? 'images/product_model_img/' . $data['product_model_img'] : '' ?>"
                                 class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img"
                                 alt="" id="previewModalImage">
                             <h6 id='errModalImg' class='error-elem'></h6>
@@ -275,28 +272,28 @@ function uploadImage($inputName, $uploadDirectory) {
                             <label for="purchase_date_img">Purchase Date Image</label>
                             <input id="purchase_date_img" name="purchase_date_img" type="file" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary" value="<?php echo isset($mode) ? $data['purchase_date_img'] : "" ?>" <?php echo isset($mode) ? '' : 'required' ?> onchange="readURL(this, 'purDateImg', 'errPurDateImg')" />
 
-                            <img src="<?php echo isset($mode) && isset($data['purchase_date_img']) ? 'images/purchase_date_img/'.$data['purchase_date_img'] : '' ?>" class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img" alt="" id="purDateImg">
+                            <img src="<?php echo isset($mode) && isset($data['purchase_date_img']) ? 'images/purchase_date_img/' . $data['purchase_date_img'] : '' ?>" class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img" alt="" id="purDateImg">
                             <h6 id='errPurDateImg' class='error-elem'></h6>
                         </div>
                         <div>
                             <label for="technician">Technician </label>
                             <select class="form-select text-white-dark" id="technician" name="technician" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
-                                <option value="">Choose Technician</option>
+                                <!-- <option value="">Choose Technician</option> -->
                                 <?php
-                                    $stmt = $obj->con1->prepare(
-                                        "SELECT * FROM `technician` WHERE status='enable'"
-                                    );
-                                    $stmt->execute();
-                                    $Res = $stmt->get_result();
-                                    $stmt->close();
-
-                                    while ($result = mysqli_fetch_assoc($Res)) { 
+                                // $stmt = $obj->con1->prepare(
+                                //     "SELECT * FROM `technician` WHERE status='enable'"
+                                // );
+                                // $stmt->execute();
+                                // $Res = $stmt->get_result();
+                                // $stmt->close();
+                                
+                                // while ($result = mysqli_fetch_assoc($Res)) { 
                                 ?>
-                                <option value="<?php echo $result["id"]; ?>" <?php echo isset($mode) && $result['id'] == $data['technician'] ? 'selected' : '' ?>>
-                                    <?php echo $result["name"]; ?>
-                                </option>
-                                <?php 
-                                    } 
+                                <!-- <option value="<?php //echo $result["id"];   ?>" <?php //echo isset($mode) && $result['id'] == $data['technician'] ? 'selected' : ''   ?>>
+                                    <?php //echo $result["name"];   ?>
+                                </option> -->
+                                <?php
+                                // } 
                                 ?>
                             </select>
                         </div>
@@ -347,8 +344,6 @@ function uploadImage($inputName, $uploadDirectory) {
                     <button type="button" id="close_btn" name="close_btn" class="btn btn-danger"
                         onclick="window.location=`call_allocation.php`">Close</button>
                 </div>
-                <!-- <input type="hidden" name="allocation_date" x-bind:value="date2"> -->
-                <!-- <input type="hidden" name="allocation_time" x-bind:value="time"> -->
             </form>
         </div>
     </div>
@@ -378,27 +373,27 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 }
 ?>
 
-<?php if(isset($mode) && $mode != 'view'){ ?>
-    <div class='px-6 py-4' x-data='exportTable'>
-        <div class="panel">
-            <div class='flex items-center justify-between mb-3'>
-                <h1 class='text-primary text-2xl font-bold'>Call History</h1>
+<?php if (isset($mode) && $mode != 'view') { ?>
+            <div class='px-6 py-4' x-data='exportTable'>
+                <div class="panel">
+                    <div class='flex items-center justify-between mb-3'>
+                        <h1 class='text-primary text-2xl font-bold'>Call History</h1>
 
-                <div class="flex flex-wrap items-center">
-                    <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="addHistory()">
-                        <i class="ri-add-line mr-1"></i> Add Call History
-                    </button>
-                    <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
-                        <i class="ri-printer-line mr-1"></i> PRINT
-                    </button>
-                    <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="exportTable('csv')">
-                        <i class="ri-file-line mr-1"></i> CSV
-                    </button>
+                        <div class="flex flex-wrap items-center">
+                            <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="addHistory()">
+                                <i class="ri-add-line mr-1"></i> Add Call History
+                            </button>
+                            <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
+                                <i class="ri-printer-line mr-1"></i> PRINT
+                            </button>
+                            <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="exportTable('csv')">
+                                <i class="ri-file-line mr-1"></i> CSV
+                            </button>
+                        </div>
+                    </div>
+                    <table id="myTable" class="table-hover whitespace-nowrap"></table>
                 </div>
             </div>
-            <table id="myTable" class="table-hover whitespace-nowrap"></table>
-        </div>
-    </div>
 <?php } ?>
 <script>
     function updateCallRecord(id, url) {
@@ -411,9 +406,9 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         window.location = url;
     }
 
-    function getTechnician(id){
+    function getTechnician(id, tid = 0){
         const http = new XMLHttpRequest();
-        http.open("GET", `./ajax/get_technician.php?scid=${id}`);
+        http.open("GET", `./ajax/get_technician.php?scid=${id}&tid=${tid}`);
         http.send();
         http.onload = function(){
             document.getElementById("technician").innerHTML = http.responseText;
@@ -444,101 +439,101 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     }
 
     document.addEventListener('alpine:init', () => {
-        <?php if(isset($mode) && $mode != "view"){ ?>
-            Alpine.data('exportTable', () => ({
-                datatable: null,
-                init() {
-                    console.log('Initalizing datatable')
-                    this.datatable = new simpleDatatables.DataTable('#myTable', {
-                        data: {
-                            headings: ['Sr.no', 'Complaint No.', 'Service Center', 'Technician',
-                                'Parts Used', 'Call Type', 'Service Charges', 'Parts Charges',
-                                'Status', 'Reason', 'Date Time','Action'
-                            ],
-                            data: [
-                                <?php 
-                                    $stmt = $obj->con1->prepare("SELECT a.*,b.name as technician_name,c.name as service_center_name from call_history as a,technician as b,service_center as c where b.id = a.technician and a.service_center=c.id and complaint_no=?");
-                                    $stmt->bind_param("s",$cno);
-                                    $stmt->execute();
-
-                                    $Resp=$stmt->get_result();
-                                    $id=1;
-                                    while($row = mysqli_fetch_array($Resp)){
-                                ?>
-                                    [
-                                        <?php echo $id ?>,
-                                        '<?php echo $row['complaint_no'] ?>',
-                                        '<?php echo $row['service_center_name'] ?>',
-                                        '<?php echo $row['technician_name'] ?>',
-                                        '<?php echo $row['parts_used'] ?>',
-                                        '<?php echo $row['call_type'] ?>',
-                                        '<?php echo $row['service_charge'] ?>',
-                                        '<?php echo $row['parts_charge'] ?>',
-                                        `<span class="badge badge-outline-<?php 
-                                        echo $row["status"] == "allocated"  || $row["status"] == "closed" ? 'success' : 'danger'?>">
-                                            <?php echo ucfirst($row["status"]); ?>
-                                        </span>`,
-                                        '<?php echo $row['reason'] ?>',
-                                        '<?php echo $row['date_time'] ?>',
-                                        getActions('<?php echo $row['id'] ?>', '<?php echo $row['complaint_no'] ?>')
+        <?php if (isset($mode) && $mode != "view") { ?>
+                    Alpine.data('exportTable', () => ({
+                        datatable: null,
+                        init() {
+                            console.log('Initalizing datatable')
+                            this.datatable = new simpleDatatables.DataTable('#myTable', {
+                                data: {
+                                    headings: ['Sr.no', 'Complaint No.', 'Service Center', 'Technician',
+                                        'Parts Used', 'Call Type', 'Service Charges', 'Parts Charges',
+                                        'Status', 'Reason', 'Date Time','Action'
                                     ],
-                                <?php
-                                        $id++;
-                                    }
-                                ?>
-                            ],
-                        },
-                        perPage: 10,
-                            perPageSelect: [10, 20, 30, 50, 100],
-                            columns: [{
-                                select: 0,
-                                sort: 'asc',
-                            },],
-                            firstLast: true,
-                            firstText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M13 19L7 12L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M16.9998 19L10.9998 12L16.9998 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
-                            lastText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M11 19L17 12L11 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M6.99976 19L12.9998 12L6.99976 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
-                            prevText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M15 5L9 12L15 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
-                            nextText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M9 5L15 12L9 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
-                            labels: {
-                                perPage: '{select}',
+                                    data: [
+                                        <?php
+                                        $stmt = $obj->con1->prepare("SELECT a.*,b.name as technician_name,c.name as service_center_name from call_history as a,technician as b,service_center as c where b.id = a.technician and a.service_center=c.id and complaint_no=?");
+                                        $stmt->bind_param("s", $cno);
+                                        $stmt->execute();
+
+                                        $Resp = $stmt->get_result();
+                                        $id = 1;
+                                        while ($row = mysqli_fetch_array($Resp)) {
+                                            ?>
+                                                    [
+                                                        <?php echo $id ?>,
+                                                        '<?php echo $row['complaint_no'] ?>',
+                                                        '<?php echo $row['service_center_name'] ?>',
+                                                        '<?php echo $row['technician_name'] ?>',
+                                                        '<?php echo $row['parts_used'] ?>',
+                                                        '<?php echo $row['call_type'] ?>',
+                                                        '<?php echo $row['service_charge'] ?>',
+                                                        '<?php echo $row['parts_charge'] ?>',
+                                                        `<span class="badge badge-outline-<?php
+                                                        echo $row["status"] == "allocated" || $row["status"] == "closed" ? 'success' : 'danger' ?>">
+                                                            <?php echo ucfirst($row["status"]); ?>
+                                                        </span>`,
+                                                        '<?php echo $row['reason'] ?>',
+                                                        '<?php echo $row['date_time'] ?>',
+                                                        getActions('<?php echo $row['id'] ?>', '<?php echo $row['complaint_no'] ?>')
+                                                    ],
+                                                <?php
+                                                $id++;
+                                        }
+                                        ?>
+                                    ],
+                                },
+                                perPage: 10,
+                                    perPageSelect: [10, 20, 30, 50, 100],
+                                    columns: [{
+                                        select: 0,
+                                        sort: 'asc',
+                                    },],
+                                    firstLast: true,
+                                    firstText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M13 19L7 12L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M16.9998 19L10.9998 12L16.9998 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                                    lastText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M11 19L17 12L11 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M6.99976 19L12.9998 12L6.99976 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                                    prevText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M15 5L9 12L15 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                                    nextText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M9 5L15 12L9 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
+                                    labels: {
+                                        perPage: '{select}',
+                                    },
+                                    layout: {
+                                        top: '{search}',
+                                        bottom: '{info}{select}{pager}',
+                                    },
+                                });
                             },
-                            layout: {
-                                top: '{search}',
-                                bottom: '{info}{select}{pager}',
+
+                            exportTable(eType) {
+                                var data = {
+                                    type: eType,
+                                    filename: 'call_allocation',
+                                    download: true,
+                                };
+
+                                if (data.type === 'csv') {
+                                    data.lineDelimiter = '\n';
+                                    data.columnDelimiter = ';';
+                                }
+                                this.datatable.export(data);
                             },
-                        });
-                    },
 
-                    exportTable(eType) {
-                        var data = {
-                            type: eType,
-                            filename: 'call_allocation',
-                            download: true,
-                        };
+                            printTable() {
+                                this.datatable.print();
+                            },
 
-                        if (data.type === 'csv') {
-                            data.lineDelimiter = '\n';
-                            data.columnDelimiter = ';';
+                            formatDate(date) {
+                                if (date) {
+                                    const dt = new Date(date);
+                                    const month = dt.getMonth() + 1 < 10 ? '0' + (dt.getMonth() + 1) : dt.getMonth() +
+                                        1;
+                                    const day = dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate();
+                                    return day + '/' + month + '/' + dt.getFullYear();
+                                }
+                                return '';
+                            },
                         }
-                        this.datatable.export(data);
-                    },
-
-                    printTable() {
-                        this.datatable.print();
-                    },
-
-                    formatDate(date) {
-                        if (date) {
-                            const dt = new Date(date);
-                            const month = dt.getMonth() + 1 < 10 ? '0' + (dt.getMonth() + 1) : dt.getMonth() +
-                                1;
-                            const day = dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate();
-                            return day + '/' + month + '/' + dt.getFullYear();
-                        }
-                        return '';
-                    },
-                }
-            ));
+                    ));
         <?php } ?>
         let todayDate = new Date();
         let formattedToday = todayDate.toLocaleDateString('en-GB', {
@@ -570,7 +565,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         }));
 
         Alpine.data("allocationTime", () => ({
-            <?php if(!isset($mode)){ ?>
+            <?php if (!isset($mode)) { ?>
                 time: todayDate.toLocaleTimeString('en-GB', {
                     hour: '2-digit',
                     minute: '2-digit',
@@ -631,6 +626,18 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         });
     }
 </script>
-<?php 
+<?php
+if (isset($mode) && $mode == 'edit') {
+    echo "
+            <script>
+                const scid = document.getElementById('service_center').value;
+                const tid =" . json_encode($data['technician']) . ";
+                console.log(scid, tid);
+                getTechnician(scid, tid);
+            </script>
+        ";
+}
+?>
+<?php
 include "footer.php";
 ?>

@@ -77,23 +77,27 @@ if (isset($_POST['save'])) {
     $description = $_REQUEST['description'];
     $source = "web";
 
+    // $fullDate = explode("-",$complaint_date);
+    $joined_date = date("dmy", strtotime($complaint_date));
+
     // get max customer id - added by Rachna
-    $stmt = $obj->con1->prepare("select IFNULL(count(id)+1,1) as customer_id from customer_reg where date ='" . date("d-m-Y") . "'");
+
+    $stmt = $obj->con1->prepare("select IFNULL(count(id)+1,1) as customer_id from customer_reg where date ='" . date("d-m-Y", strtotime($complaint_date)) . "'");
     $stmt->execute();
     $row_dailycounter = $stmt->get_result()->fetch_assoc();
     $stmt->close();
 
     $dailycounter = (int) $row_dailycounter["customer_id"];
     $string = str_pad($dailycounter, 4, '0', STR_PAD_LEFT);
-    $complaint_no = "ONL" . $day . $month . $year . $string;
+    // $complaint_no = "ONL" . $day . $month . $year . $string;
+    $complaint_no = "ONL" . $joined_date . $string;
     //--------------//
 
-    echo $complaint_no;
     // echo "----Customer_reg".$fname . " " . $lname . " " . $email . " " . $contact . " " . $alt_contact . " " . $area . " " . $map_location . " " . $address . " " . $pincode . " " . $complaint_no . " " . $service_type . " " . $product_category . " " . $dealer_name . " " . $description . " " . $complaint_date . " " . $complaint_time;
 
     try {
         $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `area`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `source`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("sssssisssssisssss", $fname, $lname, $email, $contact, $alt_contact, $area, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $source,$complaint_date, $complaint_time);
+        $stmt->bind_param("sssssisssssisssss", $fname, $lname, $email, $contact, $alt_contact, $area, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $source, $complaint_date, $complaint_time);
         $Resp = $stmt->execute();
         $stmt->close();
 
@@ -101,7 +105,7 @@ if (isset($_POST['save'])) {
         // get service area
         // echo "----Area = ".$area;
         // echo "\n select * from service_center where area=".$area;
-        
+
         $stmt = $obj->con1->prepare("select * from service_center where area=?");
         $stmt->bind_param("i", $area);
         $stmt->execute();
@@ -113,7 +117,7 @@ if (isset($_POST['save'])) {
         $purchase_date = "";
         $techinician = 0;
         $allocation_date = "";
-        $allocation_time = "";
+        $allocation_time = date("h:i A");
         $status = "new";
         //---------------//
         // echo "----Call_allocation".$complaint_no." ".$service_center["id"]." ".$product_serial_no." ".$product_model." ".$purchase_date." ".$techinician." ".$allocation_date." ".$allocation_time." ".$status;
@@ -123,9 +127,9 @@ if (isset($_POST['save'])) {
         $result = $stmt->execute();
         $stmt->close();
         if (!$Resp) {
-            throw new Exception("Problem in adding! " . strtok($obj->con1->error,  '('));
+            throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
         }
-    } catch (\Exception  $e) {
+    } catch (\Exception $e) {
         setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
         echo urlencode($e->getMessage());
     }
@@ -204,10 +208,10 @@ if (isset($_POST['save'])) {
                                 $Resp = $query->get_result();
                                 while ($row = mysqli_fetch_array($Resp)) {
                                     ?>
-                                    <option value="<?php echo $row['srno'] ?>" <?php echo isset($mode) && $row['srno'] == $data['area'] ? 'selected' : '' ?>>
-                                        <?php echo $row['ctnm'] ?>
-                                    </option>
-                                <?php
+                                        <option value="<?php echo $row['srno'] ?>" <?php echo isset($mode) && $row['srno'] == $data['area'] ? 'selected' : '' ?>>
+                                            <?php echo $row['ctnm'] ?>
+                                        </option>
+                                    <?php
                                 }
                                 $query->close();
                                 ?>
@@ -237,10 +241,10 @@ if (isset($_POST['save'])) {
                                 $Resp = $query->get_result();
                                 while ($row = mysqli_fetch_array($Resp)) {
                                     ?>
-                                    <option value="<?php echo $row["id"]; ?>" <?php echo isset($mode) && $row['id'] == $data['service_type'] ? 'selected' : '' ?>>
-                                        <?php echo $row["name"]; ?>
-                                    </option>
-                                <?php
+                                        <option value="<?php echo $row["id"]; ?>" <?php echo isset($mode) && $row['id'] == $data['service_type'] ? 'selected' : '' ?>>
+                                            <?php echo $row["name"]; ?>
+                                        </option>
+                                    <?php
                                 }
                                 $query->close();
                                 ?>
@@ -257,10 +261,10 @@ if (isset($_POST['save'])) {
                                 $Resp = $query->get_result();
                                 while ($row = mysqli_fetch_array($Resp)) {
                                     ?>
-                                    <option value="<?php echo $row["id"]; ?>" <?php echo isset($mode) && $row['id'] == $data['product_category'] ? 'selected' : '' ?>>
-                                        <?php echo $row["name"]; ?>
-                                    </option>
-                                <?php
+                                        <option value="<?php echo $row["id"]; ?>" <?php echo isset($mode) && $row['id'] == $data['product_category'] ? 'selected' : '' ?>>
+                                            <?php echo $row["name"]; ?>
+                                        </option>
+                                    <?php
                                 }
                                 $query->close();
                                 ?>
@@ -336,11 +340,11 @@ if (isset($_POST['save'])) {
 
         Alpine.data("complaintTime", () => ({
             <?php if (!isset($mode)) { ?>
-                    time: todayDate.toLocaleTimeString('en-GB', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true
-                }),
+                        time: todayDate.toLocaleTimeString('en-GB', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true
+                    }),
             <?php } ?>
             init() {
                 flatpickr(document.getElementById('complaint_time'), {
