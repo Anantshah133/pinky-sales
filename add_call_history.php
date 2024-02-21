@@ -25,11 +25,7 @@ if (isset($_COOKIE['comp_no']) && !isset($_COOKIE["callEditId"]) && !isset($_COO
 if (isset($_COOKIE['callViewId'])) {
     $mode = 'view';
     $callViewId = $_COOKIE['callViewId'];
-    $stmt = $obj->con1->prepare("SELECT ca.*, t.name as t_name, sc.name as sc_name
-    FROM `call_allocation` AS ca
-    JOIN `technician` AS t ON ca.technician = t.id
-    JOIN `service_center` AS sc ON ca.service_center_id = sc.id
-    WHERE ca.complaint_no=?");
+    $stmt = $obj->con1->prepare("SELECT a.*,b.name as technician_name,c.name as service_center_name from call_history as a,technician as b,service_center as c where b.id = a.technician and a.service_center=c.id and a.id=?");
     $stmt->bind_param("i", $callViewId);
     $stmt->execute();
     $Resp = $stmt->get_result();
@@ -40,11 +36,7 @@ if (isset($_COOKIE['callViewId'])) {
 if (isset($_COOKIE['callEditId'])) {
     $mode = 'edit';
     $callEditId = $_COOKIE['callEditId'];
-    $stmt = $obj->con1->prepare("SELECT ca.*, t.name as t_name, sc.name as sc_name
-        FROM `call_allocation` AS ca
-        JOIN `technician` AS t ON ca.technician = t.id
-        JOIN `service_center` AS sc ON ca.service_center_id = sc.id
-        WHERE ca.complaint_no=?");
+    $stmt = $obj->con1->prepare("SELECT a.*,b.name as technician_name,c.name as service_center_name from call_history as a,technician as b,service_center as c where b.id = a.technician and a.service_center=c.id and a.id=?");
     $stmt->bind_param("i", $callEditId);
     $stmt->execute();
     $Resp = $stmt->get_result();
@@ -53,7 +45,7 @@ if (isset($_COOKIE['callEditId'])) {
 }
 
 if (isset($_REQUEST['update'])) {
-    $complaint_no = $_REQUEST["complaint_no"];
+    $complaint_number = $_REQUEST["complaint_no"];
     $service_center = $_REQUEST["service_center"];
     $technician = $_REQUEST["technician"];
     $parts_used = $_REQUEST["parts_used"];
@@ -67,7 +59,7 @@ if (isset($_REQUEST['update'])) {
     $stmt = $obj->con1->prepare(
         "UPDATE call_history SET complaint_no=?,service_center=?,technician=?,parts_used=?,call_type=?,service_charge=?,parts_charge=?,status=?,reason=?,date_time=? WHERE id=?"
     );
-    $stmt->bind_param("siisssssss", $complaint_no, $service_center, $technician, $parts_used, $call_type, $service_charge, $parts_charge, $status, $reason, $date_time);
+    $stmt->bind_param("siisssssss", $complaint_number, $service_center, $technician, $parts_used, $call_type, $service_charge, $parts_charge, $status, $reason, $date_time);
     $Resp = $stmt->execute();
 
     if ($Resp) {
@@ -80,7 +72,7 @@ if (isset($_REQUEST['update'])) {
 }
 
 if (isset($_REQUEST["save"])) {
-    $complaint_no = $_REQUEST["complaint_no"];
+    $complaint_number = $_REQUEST["complaint_no"];
     $service_center = $_REQUEST["service_center"];
     $technician = $_REQUEST["technician"];
     $parts_used = $_REQUEST["parts_used"];
@@ -96,7 +88,7 @@ if (isset($_REQUEST["save"])) {
         $stmt = $obj->con1->prepare(
             "INSERT INTO `call_history`(`complaint_no`,`service_center`,`technician`,`parts_used`,`call_type`,`service_charge`,`parts_charge`,`status`,`reason`,`date_time`) VALUES (?,?,?,?,?,?,?,?,?,?)"
         );
-        $stmt->bind_param("siisssssss", $complaint_no, $service_center, $technician, $parts_used, $call_type, $service_charge, $parts_charge, $status, $reason, $date_time);
+        $stmt->bind_param("siisssssss", $complaint_number, $service_center, $technician, $parts_used, $call_type, $service_charge, $parts_charge, $status, $reason, $date_time);
         $Resp = $stmt->execute();
 
         if (!$Resp) {
@@ -133,14 +125,14 @@ if (isset($_REQUEST["save"])) {
                 <label for="name">Complaint No.</label>
                 <input id="complaint_no" type="text" name="complaint_no" placeholder="" class="form-input"
                     value="<?php echo isset($mode) ? $data['complaint_no'] : $preData["complaint_no"] ?>" required
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : 'disabled' ?>
+                    <?php echo isset($mode) && $mode == 'view' ? 'disabled' : 'readonly' ?>
                     <?php echo isset($mode) ? $data['complaint_no'] : '' ?> />
             </div>
             <div>
                 <label for="groupFname"> Service Center</label>
-                <select class="form-select text-white-dark" name="service_center" value="<?php echo isset($mode) ? '' : '' ?>" required value="">
-                <option value="">
-                    <?php echo !isset($mode) ? $preData["sc_name"] : $data["sc_name"] ?>
+                <select class="form-select text-white-dark" name="service_center" value="<?php echo isset($mode) ? '' : '' ?>" required >
+                <option value="<?php echo !isset($mode) ? $preData["service_center_id"] : $data["service_center"] ?>">
+                    <?php echo !isset($mode) ? $preData["sc_name"] : $data["service_center_name"] ?>
                 </option>
                     <?php
                     // $stmt = $obj->con1->prepare(
@@ -167,8 +159,8 @@ if (isset($_REQUEST["save"])) {
             <div>
                 <label for="groupFname"> Technician</label>
                 <select class="form-select text-white-dark" name="technician" required>
-                    <option value="">
-                        <?php echo !isset($mode) ? $preData["t_name"] : $data["t_name"] ?>
+                    <option value="<?php echo !isset($mode) ? $preData["technician"] : $data["technician"] ?>">
+                        <?php echo !isset($mode) ? $preData["t_name"] : $data["technician_name"] ?>
                     </option>
                     <!-- <?php
                     // $stmt = $obj->con1->prepare(
