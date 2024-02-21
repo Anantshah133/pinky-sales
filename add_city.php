@@ -130,10 +130,17 @@ if (isset($_REQUEST["save"])) {
                     </label>
                 </div>
                     
-                    <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($viewId)? "hidden" : ""; ?>">
-                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success" onclick="return validateAndDisable()"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?> </button>
-                        <button type="button" class="btn btn-danger" 
-                        onclick="window.location='city.php'">Close</button>
+                <div class="relative inline-flex align-middle gap-3 mt-4">
+                        <!-- Save/Update button -->
+                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
+                            id="save" class="btn btn-success" onclick="return validateAndDisable()"
+                            <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
+                            <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
+                        </button>
+                        <!-- Close button -->
+                        <button type="button" class="btn btn-danger" onclick="window.location='city.php'">
+                            Close
+                        </button>
                     </div>
                 </div>
             </form>
