@@ -167,9 +167,9 @@ if (isset($_REQUEST["save"])) {
             <div>
                 <label for="groupFname"> Technician</label>
                 <select class="form-select text-white-dark" name="technician" required>
-                        <option value="">
-                            <?php !isset($mode) ? $preData["t_name"] : $data["t_name"] ?>
-                        </option>
+                    <option value="">
+                        <?php echo !isset($mode) ? $preData["t_name"] : $data["t_name"] ?>
+                    </option>
                     <!-- <?php
                     // $stmt = $obj->con1->prepare(
                     //     "SELECT * FROM `technician` WHERE status='enable'"
