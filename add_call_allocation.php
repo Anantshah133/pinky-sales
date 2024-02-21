@@ -222,8 +222,7 @@ function uploadImage($inputName, $uploadDirectory) {
                         </div>
                         <div>
                             <label for="service_center">Service Center</label>
-                            <select name="service_center" id="service_center" class="form-select text-white-dark"
-                                required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
+                            <select name="service_center" id="service_center" class="form-select text-white-dark" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> onchange="getTechnician(this.value);">
                                 <option value="">Choose service center</option>
                                 <?php
                                     $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE status='enable'");
@@ -281,7 +280,7 @@ function uploadImage($inputName, $uploadDirectory) {
                         </div>
                         <div>
                             <label for="technician">Technician </label>
-                            <select class="form-select text-white-dark" name="technician" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
+                            <select class="form-select text-white-dark" id="technician" name="technician" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
                                 <option value="">Choose Technician</option>
                                 <?php
                                     $stmt = $obj->con1->prepare(
@@ -410,6 +409,16 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     function viewCallRecord(id, url) {
         document.cookie = "callViewId=" + id;
         window.location = url;
+    }
+
+    function getTechnician(id){
+        const http = new XMLHttpRequest();
+        http.open("GET", `./ajax/get_technician.php?scid=${id}`);
+        http.send();
+        http.onload = function(){
+            document.getElementById("technician").innerHTML = http.responseText;
+            console.log(http.responseText)
+        }
     }
 
     checkCookies();
