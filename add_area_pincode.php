@@ -112,7 +112,7 @@ if (isset($_REQUEST["save"])) {
                 </div>
                 <div>
                     <label for="groupFname"> Pincode </label>
-                    <input id="groupFname" name="pincode" type="text" class="form-input" onblur="checkName(this)"  pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" 
+                    <input id="groupFname" name="pincode" type="text" class="form-input" onkeyup="checkName(this)"  pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" 
                     onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['pincode'] : '' ?>" required />
                     <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
@@ -140,7 +140,7 @@ if (isset($_REQUEST["save"])) {
         const obj = new XMLHttpRequest();
         obj.onload = function(){
             let x = obj.responseText;
-            if(x==1)
+            if(x>1)
             {
                 c1.value="";
                 c1.focus();
