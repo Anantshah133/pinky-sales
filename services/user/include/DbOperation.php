@@ -50,8 +50,7 @@ class DbOperation
 
             //if (!$this->isContactExists($contact)) {
 
-      
-
+     
 
                 $stmt = $this->con->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`,`contact`,`alternate_contact`, `area`,`map_location`, `address`,`zipcode`, `complaint_no`, `service_type`, `product_category`,  `dealer_name`,`description`,`barcode`,`source`,`date`,`time`)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
                 $stmt->bind_param("sssssisssssissssss", $fname, $lname,$email, $contact,$alternate_contact, $area,$map_location,$address,$zipcode,$complaint_no,$service_type,$product_category,$dealer_name,$description,$barcode,$source,$date,$time);
@@ -91,8 +90,8 @@ class DbOperation
     // get service center
     public function get_service_center($area)
     {
-
-        $stmt = $this->con->prepare("select * from service_center where area=? ");
+       
+        $stmt = $this->con->prepare("select * from service_center where area=?");
         $stmt->bind_param("i",$area);
         $stmt->execute();
         $results = $stmt->get_result()->fetch_assoc();
@@ -184,7 +183,7 @@ class DbOperation
     public function call_allocation_add($complaint_no,$service_center_id, $product_serial_no, $product_model, $purchase_date, $techinician,$allocation_date,$allocation_time,$status)
     {
 
-
+       
         $stmt = $this->con->prepare("INSERT INTO `call_allocation`( `complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (?,?,?,?,?,?,?,?,?)");
         $stmt->bind_param("sisssisss",$complaint_no,$service_center_id, $product_serial_no, $product_model, $purchase_date, $techinician,$allocation_date,$allocation_time,$status);
         $result = $stmt->execute();
@@ -290,6 +289,18 @@ class DbOperation
         $stmt->execute();
         $states = $stmt->get_result();
         $stmt->close();
+    }
+
+    public function city_list()
+    {
+
+        
+        $stmt = $this->con->prepare("select * from city where `status`='enable'");
+        $stmt->bind_param("s",$complaint_no);
+        $stmt->execute();
+        $results = $stmt->get_result();
+        $stmt->close();
+        return $results;
     }
 
 }

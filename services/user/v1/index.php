@@ -41,9 +41,11 @@ $app->post('/customer_registeration', function () use ($app) {
     $description = $req_data->description;
     $barcode = $req_data->barcode;
     $source = $req_data->source;
-    $area = $req_data->area;//city
-    $device_token = isset($req_data->device_token)?$req_data->device_token:"";
-    $type = isset($req_data->type)?$req_data->type:"";
+    
+   // $device_token = isset($req_data->device_token)?$req_data->device_token:"";
+   // $type = isset($req_data->type)?$req_data->type:"";
+   $device_token="";
+   $type="";
     $day = Date("d");
     $month = Date("m");
     $year = Date("y");
@@ -65,25 +67,32 @@ $app->post('/customer_registeration', function () use ($app) {
      if($area_data->num_rows>0)
      {
         $area_row=$area_data->fetch_assoc();
-       // $area=$area_row["service_area_id"];
+        $city=$area_row["city_id"];
      }
-     else
-     {
-       // $area=0;
+     else{
+        $city=21;
      }
-
+     
 
      // get service center from zipcode
      
    // $complaint_no = "ORP".$day . $month . $year . $row_max["customer_id"].$string;
      $complaint_no = "ONL".$day . $month . $year .$string;
-    $res = $db->do_reg_customer($fname, $lname, $email, $contact, $alternate_contact, $area, $zipcode, $address, $service_type, $product_category, $dealer_name, $complaint_no,$description,$barcode,$source,$map_location);
+    $res = $db->do_reg_customer($fname, $lname, $email, $contact, $alternate_contact, $city, $zipcode, $address, $service_type, $product_category, $dealer_name, $complaint_no,$description,$barcode,$source,$map_location);
 
 
     if ($res == 0) {
         // get sercive center
-        $service_center=$db->get_service_center($area);
-        //print_r($service_center);
+        $service_center=$db->get_service_center($city);
+        if($service_center["id"]=="")
+        {
+            $service_center_id=0;
+        }
+        else{
+            $service_center_id=$service_center["id"];
+
+        }
+       
         
         //insert into call allocation
         $product_serial_no="";
@@ -93,7 +102,7 @@ $app->post('/customer_registeration', function () use ($app) {
         $allocation_date="";
         $allocation_time="";
         $status="new";
-        $res = $db->call_allocation_add($complaint_no,$service_center["id"], $product_serial_no, $product_model, $purchase_date, $techinician,$allocation_date,$allocation_time,$status);
+        $res = $db->call_allocation_add($complaint_no,$service_center_id, $product_serial_no, $product_model, $purchase_date, $techinician,$allocation_date,$allocation_time,$status);
 
         $user = $db->getUser($contact);
 
@@ -336,28 +345,28 @@ $app->post('/get_product_category', function () use ($app) {
     echoResponse(200, $data);
 });
 
-/* service_center
+/* city
  *  param:
  *  method:post
  */
-$app->get('/service_area_list', function () use ($app) {
+$app->get('/city_list', function () use ($app) {
 
     //verifyRequiredParams(array(''));
     $db = new DbOperation();
     $data = array();
 
-    $area = $db->service_area_list();
-    if ($area->num_rows > 0) {
+    $city = $db->city_list();
+    if ($city->num_rows > 0) {
 
 
         $data['result'] = true;
         $data['message'] = "";
         $data["response"] = array();
 
-        while ($area_list = $area->fetch_assoc()) {
+        while ($city_list = $city->fetch_assoc()) {
 
             $response = new stdClass();
-            foreach ($area_list as $key => $value) {
+            foreach ($city_list as $key => $value) {
                 $response->$key = $value;
             }
             array_push($data["response"], $response);
@@ -635,3 +644,6 @@ function verifyRequiredParams_json($required_fields,$data)
 
 
 $app->run();
+
+
+?>
