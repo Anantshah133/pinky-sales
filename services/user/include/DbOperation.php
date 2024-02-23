@@ -138,16 +138,7 @@ class DbOperation
         return $results;
     }
 
-    public function service_area_list()
-    {
-
-        $stmt = $this->con->prepare("select * from service_area");
-
-        $stmt->execute();
-        $results = $stmt->get_result();
-        $stmt->close();
-        return $results;
-    }
+    
 
     public function get_product_category()
     {
@@ -159,16 +150,7 @@ class DbOperation
         $stmt->close();
         return $results;
     }
-    public function get_led_product_category()
-    {
-
-        $stmt = $this->con->prepare("select * from product_category where LOWER(name) LIKE '%led%' ");
-
-        $stmt->execute();
-        $results = $stmt->get_result();
-        $stmt->close();
-        return $results;
-    }
+    
 
     public function get_privacy()
     {
@@ -291,17 +273,7 @@ class DbOperation
         $stmt->close();
     }
 
-    public function city_list()
-    {
-
-        
-        $stmt = $this->con->prepare("select * from city where `status`='enable'");
-        $stmt->bind_param("s",$complaint_no);
-        $stmt->execute();
-        $results = $stmt->get_result();
-        $stmt->close();
-        return $results;
-    }
+   
 
 }
 	
