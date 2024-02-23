@@ -260,7 +260,7 @@ if (isset($_REQUEST["save"])) {
                             <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
                         </button>
                         <!-- Close button -->
-                        <button type="button" class="btn btn-danger" onclick="window.location='call_allocation.php'">
+                        <button type="button" class="btn btn-danger" onclick="window.location='add_call_allocation.php'">
                             Close
                         </button>
                     </div>
