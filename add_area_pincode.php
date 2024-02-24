@@ -112,7 +112,8 @@ if (isset($_REQUEST["save"])) {
                 </div>
                 <div>
                     <label for="groupFname"> Pincode </label>
-                    <input id="groupFname" name="pincode" type="text" class="form-input" onblur="checkName(this)"  pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" 
+                    <input type="hidden" id="pid" value="<?php echo (isset($mode)) ? $data['id'] : '' ?>">
+                    <input id="pincode" name="pincode" type="text" class="form-input"  pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" 
                     onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['pincode'] : '' ?>" required />
                     <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
@@ -120,7 +121,7 @@ if (isset($_REQUEST["save"])) {
                 <div class="relative inline-flex align-middle gap-3 mt-4">
                         <!-- Save/Update button -->
                         <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
-                            id="save" class="btn btn-success" onclick="return validateAndDisable()"
+                            id="save" class="btn btn-success" 
                             <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
                             <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
                         </button>
@@ -135,25 +136,47 @@ if (isset($_REQUEST["save"])) {
 </div>
 
 <script>
-    function checkName(c1){
-        let n = c1.value;
-        const obj = new XMLHttpRequest();
-        obj.onload = function(){
-            let x = obj.responseText;
-            if(x==1)
-            {
-                c1.value="";
-                c1.focus();
-                document.getElementById("demo").innerHTML = "Sorry the pincode alredy exist!";
+    document.addEventListener('DOMContentLoaded', function() {
+        const submitButton = document.getElementById('save');
+        const form = document.getElementById('mainForm');
+
+        submitButton.addEventListener('click', function() {
+            const c1 = document.getElementById("pincode");
+            const id = document.getElementById("pid");
+            // if (!validateAndDisable()) {
+            //     return false;
+            // }
+            if (!checkName(c1,id)) {
+                return false;
             }
-            else{
-                document.getElementById("demo").innerHTML = "";
-            }
+        });
+    });
+
+function checkName(c1,id) {
+    const n = c1.value;
+    const pid = id.value;
+
+    const obj = new XMLHttpRequest();
+    obj.open("GET", "./ajax/check_pincode.php?pincode=" + n +"&pid="+pid, false); // synchronous request
+    obj.send();
+
+    if (obj.status == 200) {
+        const x = obj.responseText;
+        if (x >= 1) {
+            c1.value = "";
+            c1.focus();
+            document.getElementById("demo").innerHTML = "Sorry the pincode already exists!";
+            return false;
+        } else {
+            document.getElementById("demo").innerHTML = "";
+            return true;
         }
-        obj.open("GET","./ajax/check_pincode.php?pincode=" + n ,true);
-        obj.send();
+    } else {
+        // Handle errors
+        return false;
     }
-   
+}
+
 </script>
 <script>
     function loadCities(stid, ctid = 0) {

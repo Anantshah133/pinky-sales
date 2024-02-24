@@ -85,15 +85,16 @@ document.addEventListener("", () => {
             <form class="space-y-5" method="post" id="mainForm">
                 <div>
                     <label for="groupFname">Name </label>
-                    <input id="groupFname" name="name" type="text" class="form-input"
-                        onblur="checkName(this,<?php echo isset($mode) ? $data['id'] : 0 ?>)" pattern="^\s*\S.*$"
+                    <input type="hidden" id="stid" value="<?php echo (isset($mode)) ? $data['id'] : '' ?>">
+                    <input id="name" name="name" type="text" class="form-input"
+                        pattern="^\s*\S.*$"
                         value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required />
                     <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
                     <div class="relative inline-flex align-middle gap-3 mt-4">
                         <!-- Save/Update button -->
                         <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
-                            id="save" class="btn btn-success" onclick="return validateAndDisable()"
-                            <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
+                            id="save" class="btn btn-success" 
+                            <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;" disabled' : '' ?>>
                             <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
                         </button>
                         <!-- Close button -->
@@ -109,24 +110,48 @@ document.addEventListener("", () => {
 </div>
 
 <script>
-function checkName(c1, id) {
-    let n = c1.value;
+
+document.addEventListener('DOMContentLoaded', function() {
+        const submitButton = document.getElementById('save');
+        const form = document.getElementById('mainForm');
+
+        submitButton.addEventListener('click', function() {
+            const c1 = document.getElementById("name");
+            const id = document.getElementById("stid");
+            // if (!validateAndDisable()) {
+            //     return false;
+            // }
+            if (!checkName(c1,id)) {
+                return false;
+            }
+        });
+    });
+
+function checkName(c1,id) {
+    const n = c1.value;
+    const stid = id.value;
 
     const obj = new XMLHttpRequest();
-    obj.onload = function() {
-        let x = obj.responseText;
-        console.log(n, id);
-        if (x == 1) {
+    obj.open("GET", "./ajax/check_state.php?name=" + n +"&stid="+stid, false); // synchronous request
+    obj.send();
+
+    if (obj.status == 200) {
+        const x = obj.responseText;
+        if (x >= 1) {
             c1.value = "";
             c1.focus();
-            document.getElementById("demo").innerHTML = "Sorry the name alredy exist!";
+            document.getElementById("demo").innerHTML = "Sorry the state already exists!";
+            return false;
         } else {
             document.getElementById("demo").innerHTML = "";
+            return true;
         }
+    } else {
+        // Handle errors
+        return false;
     }
-    obj.open("GET", "./ajax/check_state.php?name=" + n + "&stid=" + id, true);
-    obj.send();
 }
+
 </script>
 
 <?php

@@ -2,8 +2,9 @@
 	include "../db_connect.php";
 	$obj = new DB_Connect();
     $pincode=$_REQUEST["pincode"];
-    $stmt = $obj->con1->prepare("SELECT count(*) as tot FROM `area_pincode` WHERE pincode=?");
-    $stmt->bind_param("s", $pincode);
+    $id=$_REQUEST["pid"];
+    $stmt = $obj->con1->prepare("SELECT count(*) as tot FROM `area_pincode` WHERE pincode=? AND id!=?");
+    $stmt->bind_param("si", $pincode,$id);
     $stmt->execute();
     $Resp = $stmt->get_result();
     $data = $Resp->fetch_assoc();
