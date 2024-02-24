@@ -112,15 +112,23 @@ if (isset($_REQUEST["save"])) {
                 </div>
                 <div>
                     <label for="groupFname"> Pincode </label>
-                    <input id="groupFname" name="pincode" type="text" class="form-input" onblur="checkName(this)"  pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" 
+                    <input id="groupFname" name="pincode" type="text" class="form-input" onkeyup="checkName(this)"  pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" 
                     onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['pincode'] : '' ?>" required />
                     <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
                 </div>
-                <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
-                    <button type="submit" name="<?php echo isset($mode) == 'edit' ? 'update' : 'save'; ?>" id="save" onclick="return validateAndDisable()" class="btn btn-success"><?php echo isset($mode) == 'edit' ? 'Update' : 'Save'; ?></button>
-                    <button type="button" class="btn btn-danger" onclick="window.location='area_pincode.php'">Close</button>
-                </div>
+                <div class="relative inline-flex align-middle gap-3 mt-4">
+                        <!-- Save/Update button -->
+                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
+                            id="save" class="btn btn-success" onclick="return validateAndDisable()"
+                            <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
+                            <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
+                        </button>
+                        <!-- Close button -->
+                        <button type="button" class="btn btn-danger" onclick="window.location='area_pincode.php'">
+                            Close
+                        </button>
+                    </div>
             </form>
         </div>
     </div>
@@ -132,7 +140,7 @@ if (isset($_REQUEST["save"])) {
         const obj = new XMLHttpRequest();
         obj.onload = function(){
             let x = obj.responseText;
-            if(x==1)
+            if(x>1)
             {
                 c1.value="";
                 c1.focus();

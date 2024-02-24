@@ -43,17 +43,17 @@ class DbOperation
         return $results;
     }
     
-    public function do_reg_customer($fname, $lname,$email, $contact,$alternate_contact, $area,$zipcode,$address,$service_type,$product_category,$dealer_name,$complaint_no)
+    public function do_reg_customer($fname, $lname,$email, $contact,$alternate_contact, $area,$zipcode,$address,$service_type,$product_category,$dealer_name,$complaint_no,$description,$barcode,$source,$map_location)
     {
             $date=date("Y-m-d");
             $time=date("h:i A");
 
             //if (!$this->isContactExists($contact)) {
 
-      
+     
 
-                $stmt = $this->con->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`,`contact`,`alternate_contact`, `area`, `address`,`zipcode`, `complaint_no`, `service_type`, `product_category`,  `dealer_name`,`date`,`time`)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-                $stmt->bind_param("sssssissssisss", $fname, $lname,$email, $contact,$alternate_contact, $area,$address,$zipcode,$complaint_no,$service_type,$product_category,$dealer_name,$date,$time);
+                $stmt = $this->con->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`,`contact`,`alternate_contact`, `area`,`map_location`, `address`,`zipcode`, `complaint_no`, `service_type`, `product_category`,  `dealer_name`,`description`,`barcode`,`source`,`date`,`time`)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                $stmt->bind_param("sssssisssssissssss", $fname, $lname,$email, $contact,$alternate_contact, $area,$map_location,$address,$zipcode,$complaint_no,$service_type,$product_category,$dealer_name,$description,$barcode,$source,$date,$time);
                 $result = $stmt->execute();
                 $stmt->close();
                 if ($result) {
@@ -90,8 +90,8 @@ class DbOperation
     // get service center
     public function get_service_center($area)
     {
-
-        $stmt = $this->con->prepare("select * from service_center where area=? ");
+       
+        $stmt = $this->con->prepare("select * from service_center where area=?");
         $stmt->bind_param("i",$area);
         $stmt->execute();
         $results = $stmt->get_result()->fetch_assoc();
@@ -117,8 +117,8 @@ class DbOperation
     // track complaint
     public function track_complaint($complaint_no)
     {
-
-        $stmt = $this->con->prepare("select * from customer_reg where contact=? or alternate_contact=? or complaint_no=? order by id desc");
+       
+        $stmt = $this->con->prepare("SELECT c1.*,s1.name as service_type_name,p1.name as product_category_name FROM `customer_reg` c1,service_type s1,product_category p1 where c1.service_type=s1.id and c1.product_category=p1.id and ( c1.contact=? or c1.alternate_contact=? or c1.complaint_no=?) order by id desc");
         $stmt->bind_param("sss",$complaint_no,$complaint_no,$complaint_no);
         $stmt->execute();
         $results = $stmt->get_result();
@@ -138,16 +138,7 @@ class DbOperation
         return $results;
     }
 
-    public function service_area_list()
-    {
-
-        $stmt = $this->con->prepare("select * from service_area");
-
-        $stmt->execute();
-        $results = $stmt->get_result();
-        $stmt->close();
-        return $results;
-    }
+    
 
     public function get_product_category()
     {
@@ -159,16 +150,7 @@ class DbOperation
         $stmt->close();
         return $results;
     }
-    public function get_led_product_category()
-    {
-
-        $stmt = $this->con->prepare("select * from product_category where LOWER(name) LIKE '%led%' ");
-
-        $stmt->execute();
-        $results = $stmt->get_result();
-        $stmt->close();
-        return $results;
-    }
+    
 
     public function get_privacy()
     {
@@ -183,7 +165,7 @@ class DbOperation
     public function call_allocation_add($complaint_no,$service_center_id, $product_serial_no, $product_model, $purchase_date, $techinician,$allocation_date,$allocation_time,$status)
     {
 
-
+       
         $stmt = $this->con->prepare("INSERT INTO `call_allocation`( `complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (?,?,?,?,?,?,?,?,?)");
         $stmt->bind_param("sisssisss",$complaint_no,$service_center_id, $product_serial_no, $product_model, $purchase_date, $techinician,$allocation_date,$allocation_time,$status);
         $result = $stmt->execute();
@@ -195,6 +177,16 @@ class DbOperation
         }
             
 
+    }
+    public function product_service($product_category)
+    {
+
+        $stmt = $this->con->prepare("select p1.srno,p2.name as product_category,s1.name as service_type from product_service p1,product_category p2,service_type s1 where p1.pid=p2.id and p1.sid=s1.id and p1.pid=? and p1.status='enable' ");
+        $stmt->bind_param("i",$product_category);
+        $stmt->execute();
+        $results = $stmt->get_result();
+        $stmt->close();
+        return $results;
     }
 
     public function send_mail($complaint_no)
@@ -280,6 +272,8 @@ class DbOperation
         $states = $stmt->get_result();
         $stmt->close();
     }
+
+   
 
 }
 	

@@ -320,13 +320,18 @@ function uploadImage($inputName, $uploadDirectory)
                         </div>
                     </div>
                 </div>
-                <div class="relative inline-flex align-middle gap-3 mt-10 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
-                    <button type="submit" id="save"
-                        name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" class="btn btn-success"
-                        onclick="return validateAndDisable()"><?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?></button>
-                    <button type="button" id="close_btn" name="close_btn" class="btn btn-danger"
-                        onclick="window.location=`call_allocation.php`">Close</button>
-                </div>
+                <div class="relative inline-flex align-middle gap-3 mt-4">
+                        <!-- Save/Update button -->
+                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
+                            id="save" class="btn btn-success" onclick="return validateAndDisable()"
+                            <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
+                            <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
+                        </button>
+                        <!-- Close button -->
+                        <button type="button" class="btn btn-danger" onclick="window.location='call_allocation.php'">
+                            Close
+                        </button>
+                    </div>
             </form>
         </div>
     </div>
