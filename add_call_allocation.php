@@ -385,7 +385,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     }
 
     function viewCallRecord(id, url) {
-        document.cookie = "callViewId=" + id;
+    document.cookie = "callViewId=" + id;
         window.location = url;
     }
 

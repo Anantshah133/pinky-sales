@@ -31,7 +31,7 @@ if (isset($_REQUEST['update'])) {
     $contact = $_REQUEST['contact_num'];
     $alt_contact = $_REQUEST['alt_contact_num'];
     $map_location = $_REQUEST['map_location'];
-    $area = $_REQUEST['area'];
+    // $area = $_REQUEST['area'];
     $address = $_REQUEST['address'];
     $pincode = $_REQUEST['pincode'];
     $service_type = $_REQUEST['service_type'];
@@ -92,9 +92,10 @@ if (isset($_POST['save'])) {
 
     // echo "----Customer_reg".$fname . " " . $lname . " " . $email . " " . $contact . " " . $alt_contact . " " . $area . " " . $map_location . " " . $address . " " . $pincode . " " . $complaint_no . " " . $service_type . " " . $product_category . " " . $dealer_name . " " . $description . " " . $complaint_date . " " . $complaint_time;
 
+    $complaint_date = date("Y-m-d", strtotime($complaint_date));
     try {
-        $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `area`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `source`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("sssssisssssisssss", $fname, $lname, $email, $contact, $alt_contact, $area, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $source, $complaint_date, $complaint_time);
+        $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `source`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param("sssssssssiisssss", $fname, $lname, $email, $contact, $alt_contact, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $source, $complaint_date, $complaint_time);
         $Resp = $stmt->execute();
         $stmt->close();
 
@@ -154,138 +155,115 @@ if (isset($_POST['save'])) {
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
                             <label for="fname"> First Name </label>
-                            <input name="fname" id="fname" type="text" class="form-input"
-                                value="<?php echo (isset($mode)) ? $data['fname'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                            <input name="fname" id="fname" type="text" class="form-input" value="<?php echo (isset($mode)) ? $data['fname'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                         </div>
                         <div>
                             <label for="lname"> Last Name </label>
-                            <input name="lname" id="lname" type="text" class="form-input"
-                                value="<?php echo (isset($mode)) ? $data['lname'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                            <input name="lname" id="lname" type="text" class="form-input" value="<?php echo (isset($mode)) ? $data['lname'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                         </div>
                         <div>
                             <label for="mail">Email</label>
-                            <input name="mail" id="mail" type="email" class="form-input"
-                                pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
-                                title="Invalid Email Format" value="<?php echo (isset($mode)) ? $data['email'] : '' ?>"
-                                required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                            <input name="mail" id="mail" type="email" class="form-input" pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" title="Invalid Email Format" value="<?php echo (isset($mode)) ? $data['email'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                         </div>
                         <div>
                             <label for="contact_num">Contact </label>
                             <div class="flex">
-                                <div
-                                    class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
-                                    +91</div>
-                                <input name="contact_num" id="contact_num" type="tel" placeholder="1234567890"
-                                    class="form-input ltr:rounded-l-none rtl:rounded-r-none"
-                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                    value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> maxlength="10" minlength="10" pattern="[0-9]+"
-                                    title="Please enter numbers only" required />
+                                <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">+91</div>
+                                <input name="contact_num" id="contact_num" type="tel" placeholder="1234567890" class="form-input ltr:rounded-l-none rtl:rounded-r-none" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> maxlength="10" minlength="10" pattern="[0-9]+" title="Please enter numbers only" required />
                             </div>
                         </div>
                         <div>
                             <label for="alt_contact_num"> Alternate Contact </label>
                             <div class="flex">
-                                <div
-                                    class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
-                                    +91</div>
-                                <input name="alt_contact_num" id="alt_contact_num" type="tel" placeholder="1234567890"
-                                    class="form-input ltr:rounded-l-none rtl:rounded-r-none"
-                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                    value="<?php echo (isset($mode)) ? $data['alternate_contact'] : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> maxlength="10" minlength="10"
-                                    pattern="[0-9]+" title="Please enter numbers only" />
+                                <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">+91</div>
+                                <input name="alt_contact_num" id="alt_contact_num" type="tel" placeholder="1234567890" class="form-input ltr:rounded-l-none rtl:rounded-r-none"
+                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo (isset($mode)) ? $data['alternate_contact'] : '' ?>" <?php echo isset ($mode) && $mode == 'view' ? 'readonly' : '' ?> maxlength="10" minlength="10" pattern="[0-9]+" title="Please enter numbers only" />
                             </div>
                         </div>
-                        <div>
+                        <!-- <div>
                             <label for="area"> City </label>
                             <select name="area" id="area" class="form-select text-white-dark" required>
                                 <option value="">Choose City</option>
                                 <?php
-                                $query = $obj->con1->prepare("SELECT * FROM `city` WHERE status='enable'");
-                                $query->execute();
-                                $Resp = $query->get_result();
-                                while ($row = mysqli_fetch_array($Resp)) {
-                                    ?>
-                                        <option value="<?php echo $row['srno'] ?>" <?php echo isset($mode) && $row['srno'] == $data['area'] ? 'selected' : '' ?>>
-                                            <?php echo $row['ctnm'] ?>
-                                        </option>
-                                    <?php
-                                }
-                                $query->close();
+                                    $query = $obj->con1->prepare("SELECT * FROM `city` WHERE status='enable'");
+                                    $query->execute();
+                                    $Resp = $query->get_result();
+                                    while ($row = mysqli_fetch_array($Resp)) {
+                                        ?>
+                                            <option value="<?php echo $row['srno'] ?>" <?php echo isset($mode) && $row['srno'] == $data['area'] ? 'selected' : '' ?>>
+                                                <?php echo $row['ctnm'] ?>
+                                            </option>
+                                        <?php
+                                    }
+                                    $query->close();
                                 ?>
                             </select>
-                        </div>
+                        </div> -->
                         <div>
                             <label for="address">Address </label>
                             <textarea autocomplete="on" name="address" id="address" class="form-textarea" rows="2"
-                                value="" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?>><?php echo (isset($mode)) ? $data['address'] : '' ?></textarea>
+                                value="" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?>><?php echo isset($mode) ? $data['address'] : '' ?></textarea>
+                        </div>
+                        <div>
+                            <label for="pincode"> Pincode </label>
+                            <input name="pincode" id="pincode" type="text" class="form-input" pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo (isset($mode)) ? $data['zipcode'] : '' ?>"  <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                         </div>
                     </div>
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
-                            <label for="pincode"> Pincode </label>
-                            <input name="pincode" id="pincode" type="text" class="form-input" pattern="^[1-9][0-9]{5}$"
-                                title="enter valid pincode" maxlength="6"
-                                onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                value="<?php echo (isset($mode)) ? $data['zipcode'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
-                        </div>
-                        <div>
-                            <label for="service_type"> Service Type </label>
-                            <select name="service_type" id="service_type" class="form-select text-white-dark" required>
-                                <option value="">Choose Service Type</option>
+                            <label for="product_category">Product Category </label>
+                            <select name="product_category" id="product_category" class="form-select text-white-dark" <?php echo isset($mode) && isset($mode) == 'view' ? 'disabled' : ''?>
+                                required onchange="getServiceType(this.value)">
+                                <option value="">Choose Product Category</option>
                                 <?php
-                                $query = $obj->con1->prepare("SELECT * FROM `service_type` WHERE status='enable'");
-                                $query->execute();
-                                $Resp = $query->get_result();
-                                while ($row = mysqli_fetch_array($Resp)) {
-                                    ?>
-                                        <option value="<?php echo $row["id"]; ?>" <?php echo isset($mode) && $row['id'] == $data['service_type'] ? 'selected' : '' ?>>
-                                            <?php echo $row["name"]; ?>
-                                        </option>
-                                    <?php
-                                }
-                                $query->close();
+                                    $query = $obj->con1->prepare("SELECT * FROM `product_category`");
+                                    $query->execute();
+                                    $Resp = $query->get_result();
+                                    while ($row = mysqli_fetch_array($Resp)) {
+                                        ?>
+                                            <option value="<?php echo $row["id"]; ?>" <?php echo isset($mode) && $row['id'] == $data['product_category'] ? 'selected' : '' ?>>
+                                                <?php echo $row["name"]; ?>
+                                            </option>
+                                        <?php
+                                    }
+                                    $query->close();
                                 ?>
                             </select>
                         </div>
                         <div>
-                            <label for="product_category">Product Category </label>
-                            <select name="product_category" id="product_category" class="form-select text-white-dark"
-                                required>
-                                <option value="">Choose Product Category</option>
+                            <label for="service_type"> Service Type </label>
+                            <select name="service_type" id="service_type" class="form-select text-white-dark" required <?php echo isset($mode) && isset($mode) == 'view' ? 'disabled' : ''?>>
+                                <option value="">Choose Service Type</option>
                                 <?php
-                                $query = $obj->con1->prepare("SELECT * FROM `product_category`");
-                                $query->execute();
-                                $Resp = $query->get_result();
-                                while ($row = mysqli_fetch_array($Resp)) {
-                                    ?>
-                                        <option value="<?php echo $row["id"]; ?>" <?php echo isset($mode) && $row['id'] == $data['product_category'] ? 'selected' : '' ?>>
-                                            <?php echo $row["name"]; ?>
-                                        </option>
-                                    <?php
-                                }
-                                $query->close();
+                                    // $query = $obj->con1->prepare("SELECT * FROM `service_type` WHERE status='enable'");
+                                    // $query->execute();
+                                    // $Resp = $query->get_result();
+                                    // while ($row = mysqli_fetch_array($Resp)) {
+                                        ?>
+                                            <!-- <option value="<?php echo $row["id"]; ?>" <?php echo isset($mode) && $row['id'] == $data['service_type'] ? 'selected' : '' ?>> -->
+                                                <!-- <?php echo $row["name"]; ?> -->
+                                            <!-- </option> -->
+                                        <?php
+                                    // }
+                                    // $query->close();
                                 ?>
                             </select>
                         </div>
                         <div>
                             <label for="description">Description </label>
-                            <input name="description" id="description" type="text" class="form-input"
-                                value="<?php echo isset($mode) ? $data['description'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                            <input name="description" id="description" type="text" class="form-input" value="<?php echo isset($mode) ? $data['description'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                         </div>
                         <div>
                             <label for="dealer_name">Dealer Name </label>
-                            <input name="dealer_name" id="dealer_name" type="text" class="form-input"
-                                value="<?php echo (isset($mode)) ? $data['dealer_name'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                            <input name="dealer_name" id="dealer_name" type="text" class="form-input" value="<?php echo (isset($mode)) ? $data['dealer_name'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                         </div>
                         <div>
                             <label for="barcode">Barcode </label>
-                            <input name="barcode" id="barcode" type="text" class="form-input"
-                                value="<?php echo (isset($mode)) ? $data['barcode'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                            <input name="barcode" id="barcode" type="text" class="form-input" value="<?php echo (isset($mode)) ? $data['barcode'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                         </div>
                         <div x-data="cmplnDate">
                             <label>Date </label>
-                            <input x-model="date2" name="complaint_date" id="complaint_date" class="form-input" value=""
-                                required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
+                            <input x-model="date2" name="complaint_date" id="complaint_date" class="form-input" value="" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
                         </div>
                         <div x-data="complaintTime">
                             <label>Time </label>
@@ -313,6 +291,16 @@ if (isset($_POST['save'])) {
 <script>
     function resetForm() {
         window.location = "complaint_demo.php"
+    }
+
+    function getServiceType(pid){
+        const http = new XMLHttpRequest();
+        http.open("GET", `ajax/get_services.php?pid=${pid}`);
+        http.send();
+        http.onload = function(){
+            document.getElementById("service_type").innerHTML = http.responseText;
+            // console.log(http.responseText)
+        }
     }
 
     document.addEventListener("alpine:init", () => {

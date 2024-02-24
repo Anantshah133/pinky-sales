@@ -18,8 +18,3 @@ while ($row = mysqli_fetch_assoc($Resp)) {
 <?php
     }
 ?>
-
-
-<?php 
-// echo isset($ctid) && $ctid == $row['id'] ? 'selected' : '' 
-?>
