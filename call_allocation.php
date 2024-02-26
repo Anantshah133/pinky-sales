@@ -112,7 +112,13 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                     '<?php echo $row['product_category_name'] ?>',
                                     '<?php echo $row['service_center_name'] ?>',
                                     '<?php echo $row['technician_name'] ?>',
-                                    '<?php echo $row['allocation_datetime'] ?>',
+                                    '<?php 
+                                        // echo $fetch_date = $row['allocation_datetime'] != "" ? $row['allocation_datetime'] : '------';
+                                        // echo $fetch_date ? date_format($fetch_date, "d-m-Y h:i A") : '';
+                                        // echo "--".$row["allocation_datetime"]."---";
+                                        $fetch_date = trim($row['allocation_datetime']) != "" ? date_format(date_create($row['allocation_datetime']), "d-m-Y h:i A") : '';
+                                        echo $fetch_date;
+                                    ?>',
                                     `<span class="badge badge-outline-<?php 
                                     echo $row["status"] == "allocated"  || $row["status"] == "closed"  || $row["status"] == "new" ? 'success' : 'danger'?>">
                                         <?php echo ucfirst($row["status"]); ?>

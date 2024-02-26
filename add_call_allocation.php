@@ -54,9 +54,8 @@ if (isset($_REQUEST['update'])) {
     $purchaseDate = $_REQUEST['purchase_date'];
     $technician = $_REQUEST['technician'];
     $callStatus = $_REQUEST['call_status'];
-    // $reason = $_REQUEST['rson'];
     $reason = "";
-    $allocationDate = $_REQUEST['allocation_date'];
+    $allocationDate = date("Y-m-d", strtotime($_REQUEST['allocation_date']));
     $allocationTime = $_REQUEST['allocation_time'];
     $editId = $_COOKIE['editId'];
 
@@ -142,9 +141,8 @@ if (isset($_REQUEST['save'])) {
     $purchaseDate = $_REQUEST['purchase_date'];
     $technician = $_REQUEST['technician'];
     $callStatus = $_REQUEST['call_status'];
-    // $reason = $_REQUEST['rson'];
     $reason = "";
-    $allocationDate = $_REQUEST['allocation_date'];
+    $allocationDate = date("Y-m-d", strtotime($_REQUEST['allocation_date']));
     $allocationTime = $_REQUEST['allocation_time'];
 
 
@@ -542,7 +540,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         }));
 
         Alpine.data("allocationDate", () => ({
-            date2: formattedToday,
+            date2: '<?php echo isset($mode) && trim($data["allocation_date"]) != "" ? date("d-m-Y", strtotime($data["allocation_date"])) : date("d-m-Y") ?>',
             init() {
                 flatpickr(document.getElementById('allocation_date'), {
                     dateFormat: 'd-m-Y',
@@ -562,7 +560,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
             <?php } ?>
             init() {
                 flatpickr(document.getElementById('allocation_time'), {
-                    defaultDate: '<?php echo isset($mode) ? $data['allocation_time'] : date("h:i a") ?>',
+                    defaultDate: '<?php echo isset($mode) && trim($data['allocation_time']) != ""? $data['allocation_time'] : date("h:i A") ?>',
                     noCalendar: true,
                     enableTime: true,
                     dateFormat: 'h:i K'
