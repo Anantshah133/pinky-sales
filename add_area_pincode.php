@@ -11,7 +11,7 @@ if (isset($_COOKIE['viewId'])) {
     $stmt->close();
 }
 
-if(isset($_COOKIE['editId'])){
+if (isset($_COOKIE['editId'])) {
     $mode = 'edit';
     $editId = $_COOKIE['editId'];
     $stmt = $obj->con1->prepare("SELECT a1.*, s1.name AS state, c1.ctnm AS city FROM `area_pincode` a1, `state` s1, `city` c1 WHERE a1.id=? AND a1.state_id=s1.id AND a1.city_id=c1.srno");
@@ -22,7 +22,7 @@ if(isset($_COOKIE['editId'])){
     $stmt->close();
 }
 
-if(isset($_REQUEST['update'])){
+if (isset($_REQUEST['update'])) {
     $editId = $_COOKIE['editId'];
     $state_name = $_REQUEST["state_id"];
     $city_name = $_REQUEST["area_id"];
@@ -76,35 +76,35 @@ if (isset($_REQUEST["save"])) {
 <div class='p-6'>
     <div class="panel mt-2">
         <div class='flex items-center justify-between mb-3'>
-            <h5 class="text-2xl text-primary font-semibold dark:text-white-light">Area Pincode - 
-                <?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View' ) : 'Add' ?>
+            <h5 class="text-2xl text-primary font-semibold dark:text-white-light">Area Pincode -
+                <?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View') : 'Add' ?>
             </h5>
         </div>
         <div class="mb-5">
             <form class="space-y-5" method="post" id="mainForm">
                 <div>
                     <label for="groupFname">State Name</label>
-                    <select class="form-select text-white-dark" onchange="loadCities(this.value)" name="state_id" id="stateId" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
+                    <select class="form-select text-white-dark" onchange="loadCities(this.value)" name="state_id"
+                        id="stateId" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
                         <option value="">Choose State</option>
                         <?php
-                            $stmt = $obj->con1->prepare("SELECT * FROM `state`");
-                            $stmt->execute();
-                            $Resp = $stmt->get_result();
-                            $stmt->close();
-                            while ($result = mysqli_fetch_array($Resp)) { 
-                        ?>
+                        $stmt = $obj->con1->prepare("SELECT * FROM `state`");
+                        $stmt->execute();
+                        $Resp = $stmt->get_result();
+                        $stmt->close();
+                        while ($result = mysqli_fetch_array($Resp)) {
+                            ?>
                             <option value="<?php echo $result["id"]; ?>" <?php echo isset($mode) && $result['id'] == $data['state_id'] ? 'selected' : '' ?>>
                                 <?php echo $result["name"]; ?>
                             </option>
-                        <?php 
-                            }
+                        <?php
+                        }
                         ?>
                     </select>
                 </div>
                 <div>
                     <label for="groupFname">City Name</label>
-                    <select class="form-select text-white-dark" name="area_id" id="area_id" 
-                    required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
+                    <select class="form-select text-white-dark" name="area_id" id="area_id" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
                         <option value="">
                             <?php echo isset($mode) && $mode == 'view' ? $data['city'] : 'Choose City'; ?>
                         </option>
@@ -112,73 +112,93 @@ if (isset($_REQUEST["save"])) {
                 </div>
                 <div>
                     <label for="groupFname"> Pincode </label>
-                    <input id="groupFname" name="pincode" type="text" class="form-input" onblur="checkName(this)"  pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" 
-                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['pincode'] : '' ?>" required />
+                    <input type="hidden" id="pid" value="<?php echo (isset($mode)) ? $data['id'] : '' ?>">
+                    <input id="pincode" name="pincode" type="text" class="form-input" pattern="^[1-9][0-9]{5}$"
+                        title="enter valid pincode" maxlength="6"
+                        onkeypress="return event.charCode >= 48 && event.charCode <= 57" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['pincode'] : '' ?>"
+                        required />
                     <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
                 </div>
                 <div class="relative inline-flex align-middle gap-3 mt-4">
-                        <!-- Save/Update button -->
-                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
-                            id="save" class="btn btn-success" 
-                            <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
-                            <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
-                        </button>
-                        <!-- Close button -->
-                        <button type="button" class="btn btn-danger" onclick="window.location='area_pincode.php'">
-                            Close
-                        </button>
-                    </div>
+                    <!-- Save/Update button -->
+                    <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
+                        id="save" class="btn btn-success" <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
+                        <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
+                    </button>
+                    <!-- Close button -->
+                    <button type="button" class="btn btn-danger" onclick="window.location='area_pincode.php'">
+                        Close
+                    </button>
+                </div>
             </form>
         </div>
     </div>
 </div>
 
 <script>
-    function checkName(c1){
-        let n = c1.value;
-        const obj = new XMLHttpRequest();
-        obj.onload = function(){
-            let x = obj.responseText;
-            if(x==1)
-            {
-                c1.value="";
-                c1.focus();
-                document.getElementById("demo").innerHTML = "Sorry the pincode alredy exist!";
-            }
-            else{
-                document.getElementById("demo").innerHTML = "";
-            }
-        }
-    } else {
-        // Handle errors
-        return false;
-    }
-}
+    document.addEventListener('DOMContentLoaded', function () {
+        const submitButton = document.getElementById('save');
+        const form = document.getElementById('mainForm');
 
+        submitButton.addEventListener('click', function () {
+            const c1 = document.getElementById("pincode");
+            const id = document.getElementById("pid");
+            // if (!validateAndDisable()) {
+            //     return false;
+            // }
+            if (!checkName(c1, id)) {
+                return false;
+            }
+        });
+    });
+
+    function checkName(c1, id) {
+        const n = c1.value;
+        const pid = id.value;
+
+        const obj = new XMLHttpRequest();
+        obj.open("GET", "./ajax/check_pincode.php?pincode=" + n + "&pid=" + pid, false); // synchronous request
+        obj.send();
+
+        if (obj.status == 200) {
+            const x = obj.responseText;
+            if (x >= 1) {
+                c1.value = "";
+                c1.focus();
+                document.getElementById("demo").innerHTML = "Sorry the pincode already exists!";
+                return false;
+            } else {
+                document.getElementById("demo").innerHTML = "";
+                return true;
+            }
+        } else {
+            // Handle errors
+            return false;
+        }
+    }
 </script>
 <script>
     function loadCities(stid, ctid = 0) {
         const xhttp = new XMLHttpRequest();
         xhttp.open("GET", `getcities.php?sid=${stid}&ctid=${ctid}`);
         xhttp.send();
-        xhttp.onload = function() {
+        xhttp.onload = function () {
             document.getElementById("area_id").innerHTML = xhttp.responseText;
         }
     }
 </script>
-<?php 
-    if(isset($mode) && $mode == 'edit'){
-        echo "
+<?php
+if (isset($mode) && $mode == 'edit') {
+    echo "
             <script>
                 const stid = document.getElementById('stateId').value;
-                const ctid =". json_encode($data['city_id']) .";
+                const ctid =" . json_encode($data['city_id']) . ";
                 loadCities(stid, ctid);
             </script>
         ";
-    }
-  
+}
 ?>
+
 <?php
 include "footer.php";
 ?>
