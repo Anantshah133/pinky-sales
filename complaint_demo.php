@@ -79,19 +79,23 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 console.log('Initalizing datatable')
                 this.datatable = new simpleDatatables.DataTable('#myTable', {
                     data: {
-                        headings: ['Sr.No.', 'Complaint No.', 'Customer name', 'Contact', 'City', 'Pincode',
+                        // headings: ['Sr.No.', 'Complaint No.', 'Customer name', 'Contact', 'City', 'Pincode',
+                        //     'Service Type', 'Product Category', 'Date Time', 'Status', 'Action'],
+                        headings: ['Sr.No.', 'Complaint No.', 'Customer name', 'Contact', 'Pincode',
                             'Service Type', 'Product Category', 'Date Time', 'Status', 'Action'],
                         data: [
                             <?php
                             if ($_SESSION['type'] == 'center') {
                                 $city_id = $_SESSION['sc_city'];
-                                $stmt = $obj->con1->prepare("select c1.*,s1.name as service_type,p1.name as product_category,c2.ctnm as city, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1,service_type s1,product_category p1,city c2 where c1.area=c2.srno and c1.service_type=s1.id and c1.product_category=p1.id AND c1.area=? order by c1.id desc");
+                                // $stmt = $obj->con1->prepare("select c1.*,s1.name as service_type,p1.name as product_category,c2.ctnm as city, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1,service_type s1,product_category p1,city c2 where c1.area=c2.srno and c1.service_type=s1.id and c1.product_category=p1.id AND c1.area=? order by c1.id desc");
+                                $stmt = $obj->con1->prepare("select c1.*,s1.name as service_type,p1.name as product_category, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1,service_type s1,product_category p1 where c1.service_type=s1.id and c1.product_category=p1.id AND c1.area=? order by c1.id desc");
                                 $stmt->bind_param("i", $city_id);
                                 $stmt->execute();
                                 $Resp = $stmt->get_result();
                                 $id = 1;
                             } else {
-                                $stmt = $obj->con1->prepare("select c1.*,s1.name as service_type,p1.name as product_category,c2.ctnm as city, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1,service_type s1,product_category p1,city c2 where c1.area=c2.srno and c1.service_type=s1.id and c1.product_category=p1.id order by c1.id desc");
+                                // $stmt = $obj->con1->prepare("select c1.*,s1.name as service_type,p1.name as product_category,c2.ctnm as city, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1,service_type s1,product_category p1,city c2 where c1.area=c2.srno and c1.service_type=s1.id and c1.product_category=p1.id order by c1.id desc");
+                                $stmt = $obj->con1->prepare("select c1.*,s1.name as service_type,p1.name as product_category, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1,service_type s1,product_category p1 where c1.service_type=s1.id and c1.product_category=p1.id order by c1.id desc");
                                 $stmt->execute();
                                 $Resp = $stmt->get_result();
                                 $id = 1;
@@ -103,7 +107,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                     '<?php echo $row['complaint_no'] ?>',
                                     '<?php echo $row['customer_name'] ?>',
                                     '<?php echo $row['contact'] ?>',
-                                    '<?php echo $row['city'] ?>',
+                                    // '<?php //echo $row['city'] ?>',
                                     '<?php echo $row['zipcode'] ?>',
                                     '<?php echo $row['service_type'] ?>',
                                     '<?php echo $row['product_category'] ?>',

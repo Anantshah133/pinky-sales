@@ -31,7 +31,6 @@ if (isset($_REQUEST['update'])) {
     $contact = $_REQUEST['contact_num'];
     $alt_contact = $_REQUEST['alt_contact_num'];
     $map_location = $_REQUEST['map_location'];
-    // $area = $_REQUEST['area'];
     $address = $_REQUEST['address'];
     $pincode = $_REQUEST['pincode'];
     $service_type = $_REQUEST['service_type'];
@@ -42,8 +41,8 @@ if (isset($_REQUEST['update'])) {
     $complaint_no = $data['complaint_no'];
     $description = $_REQUEST['description'];
 
-    $stmt = $obj->con1->prepare("UPDATE `customer_reg` SET fname=?,lname=?,email=?,contact=?,alternate_contact=?,area=?,map_location=?,address=?,zipcode=?,complaint_no=?,service_type=?,product_category=?,dealer_name=?,description=?, date=?,time=?  WHERE id=?");
-    $stmt->bind_param("sssssisssssissssi", $fname, $lname, $email, $contact, $alt_contact, $area, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $complaint_date, $complaint_time, $editId);
+    $stmt = $obj->con1->prepare("UPDATE `customer_reg` SET fname=?,lname=?,email=?,contact=?,alternate_contact=?,map_location=?,address=?,zipcode=?,complaint_no=?,service_type=?,product_category=?,dealer_name=?,description=?, date=?,time=?  WHERE id=?");
+    $stmt->bind_param("ssssssssssissssi", $fname, $lname, $email, $contact, $alt_contact, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $complaint_date, $complaint_time, $editId);
     $Res = $stmt->execute();
     $stmt->close();
 
@@ -63,7 +62,6 @@ if (isset($_POST['save'])) {
     $contact = $_REQUEST['contact_num'];
     $alt_contact = $_REQUEST['alt_contact_num'];
     $map_location = $_REQUEST['map_location'];
-    $area = $_REQUEST['area'];
     $address = $_REQUEST['address'];
     $pincode = $_REQUEST['pincode'];
     $service_type = $_REQUEST['service_type'];
@@ -75,61 +73,73 @@ if (isset($_POST['save'])) {
     $month = Date("m");
     $year = Date("y");
     $description = $_REQUEST['description'];
+    $barcode = $_REQUEST['barcode'];
     $source = "web";
     $joined_date = date("dmy", strtotime($complaint_date));
 
     // get max customer id - added by Rachna
-    $stmt = $obj->con1->prepare("select IFNULL(count(id)+1,1) as customer_id from customer_reg where date ='" . date("d-m-Y", strtotime($complaint_date)) . "'");
+    $stmt = $obj->con1->prepare("select IFNULL(count(id)+1,1) as customer_id from customer_reg where date ='" . date("Y-m-d", strtotime($complaint_date)) . "'");
     $stmt->execute();
     $row_dailycounter = $stmt->get_result()->fetch_assoc();
     $stmt->close();
 
     $dailycounter = (int) $row_dailycounter["customer_id"];
     $string = str_pad($dailycounter, 4, '0', STR_PAD_LEFT);
-    // $complaint_no = "ONL" . $day . $month . $year . $string;
     $complaint_no = "ONL" . $joined_date . $string;
+
     //--------------//
-
-    // echo "----Customer_reg".$fname . " " . $lname . " " . $email . " " . $contact . " " . $alt_contact . " " . $area . " " . $map_location . " " . $address . " " . $pincode . " " . $complaint_no . " " . $service_type . " " . $product_category . " " . $dealer_name . " " . $description . " " . $complaint_date . " " . $complaint_time;
-
     $complaint_date = date("Y-m-d", strtotime($complaint_date));
     try {
-        $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `source`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("sssssssssiisssss", $fname, $lname, $email, $contact, $alt_contact, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $source, $complaint_date, $complaint_time);
+        $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `barcode`, `source`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param("sssssssssiissssss", $fname, $lname, $email, $contact, $alt_contact, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $barcode, $source, $complaint_date, $complaint_time);
         $Resp = $stmt->execute();
         $stmt->close();
 
-        // allocate call -added by Rachna
-        // get service area
+        // echo "<br/> Insert Customer_reg :- INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `barcode`,`source`, `date`, `time`) VALUES (". $fname.", ". $lname.", ". $email.", ". $contact.", ". $alt_contact.", ". $map_location.", ". $address.", ". $pincode.", ". $complaint_no.", ". $service_type.", ". $product_category.", ". $dealer_name.", ". $description.", ". $barcode.", ". $source.", ". $complaint_date.", ". $complaint_time.")";
 
-        $stmt = $obj->con1->prepare("select * from service_center where area=?");
-        $stmt->bind_param("i", $area);
+
+        // allocate call - added by Rachna
+        // ------- get city by anant
+
+        $stmt = $obj->con1->prepare("SELECT c1.ctnm,a1.* FROM area_pincode a1, city c1 WHERE a1.city_id=c1.srno AND a1.pincode=?");
+        $stmt->bind_param("s", $pincode);
+        $stmt->execute();
+        $city_data = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+        // ------- get service center from city by anant
+        $fetched_city_id = $city_data["city_id"];
+
+        $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE area=?");
+        $stmt->bind_param("i", $fetched_city_id);
         $stmt->execute();
         $service_center = $stmt->get_result()->fetch_assoc();
         $stmt->close();
+
         // insert into call allocation
         $product_serial_no = "";
         $product_model = "";
         $purchase_date = "";
         $techinician = 0;
         $allocation_date = "";
-        $allocation_time = date("h:i A");
+        $allocation_time = "";
         $status = "new";
         //---------------//
-        // echo "----Call_allocation".$complaint_no." ".$service_center["id"]." ".$product_serial_no." ".$product_model." ".$purchase_date." ".$techinician." ".$allocation_date." ".$allocation_time." ".$status;
-
-        // echo "INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (".$complaint_no." ". $service_center["id"]." ". $product_serial_no." ". $product_model." ". $purchase_date." ". $techinician." ". $allocation_date." ". $allocation_time." ". $status;
 
         $stmt = $obj->con1->prepare("INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (?,?,?,?,?,?,?,?,?)");
         $stmt->bind_param("sisssisss", $complaint_no, $service_center["id"], $product_serial_no, $product_model, $purchase_date, $techinician, $allocation_date, $allocation_time, $status);
         $result = $stmt->execute();
         $stmt->close();
+
+        // echo "<br/> Insert Call allocation :- INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (" . $complaint_no . " " . $service_center['id'] . " " . $product_serial_no . " " . $product_model . " " . $purchase_date . " " . $techinician . " " . $allocation_date . " " . $allocation_time . " " . $status . ")";
+
         if (!$Resp) {
+            echo $obj->con1->error;
             throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
         }
     } catch (\Exception $e) {
         setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
-        echo urlencode($e->getMessage());
+        echo "<br/>".urlencode($e->getMessage());
     }
 
     if ($Resp) {
@@ -155,21 +165,21 @@ if (isset($_POST['save'])) {
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
                             <label for="fname"> First Name </label>
-                            <input name="fname" id="fname" type="text" class="form-input" value="<?php echo (isset($mode)) ? $data['fname'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                            <input name="fname" id="fname" type="text" class="form-input" value="<?php echo isset($mode) ? $data['fname'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                         </div>
                         <div>
                             <label for="lname"> Last Name </label>
-                            <input name="lname" id="lname" type="text" class="form-input" value="<?php echo (isset($mode)) ? $data['lname'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                            <input name="lname" id="lname" type="text" class="form-input" value="<?php echo isset($mode) ? $data['lname'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                         </div>
                         <div>
                             <label for="mail">Email</label>
-                            <input name="mail" id="mail" type="email" class="form-input" pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" title="Invalid Email Format" value="<?php echo (isset($mode)) ? $data['email'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                            <input name="mail" id="mail" type="email" class="form-input" pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" title="Invalid Email Format" value="<?php echo isset($mode) ? $data['email'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                         </div>
                         <div>
                             <label for="contact_num">Contact </label>
                             <div class="flex">
                                 <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">+91</div>
-                                <input name="contact_num" id="contact_num" type="tel" placeholder="1234567890" class="form-input ltr:rounded-l-none rtl:rounded-r-none" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> maxlength="10" minlength="10" pattern="[0-9]+" title="Please enter numbers only" required />
+                                <input name="contact_num" id="contact_num" type="tel" placeholder="1234567890" class="form-input ltr:rounded-l-none rtl:rounded-r-none" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo isset($mode) ? $data['contact'] : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> maxlength="10" minlength="10" pattern="[0-9]+" title="Please enter numbers only" required />
                             </div>
                         </div>
                         <div>
@@ -177,28 +187,9 @@ if (isset($_POST['save'])) {
                             <div class="flex">
                                 <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">+91</div>
                                 <input name="alt_contact_num" id="alt_contact_num" type="tel" placeholder="1234567890" class="form-input ltr:rounded-l-none rtl:rounded-r-none"
-                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo (isset($mode)) ? $data['alternate_contact'] : '' ?>" <?php echo isset ($mode) && $mode == 'view' ? 'readonly' : '' ?> maxlength="10" minlength="10" pattern="[0-9]+" title="Please enter numbers only" />
+                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo isset($mode) ? $data['alternate_contact'] : '' ?>" <?php echo isset ($mode) && $mode == 'view' ? 'readonly' : '' ?> maxlength="10" minlength="10" pattern="[0-9]+" title="Please enter numbers only" />
                             </div>
                         </div>
-                        <!-- <div>
-                            <label for="area"> City </label>
-                            <select name="area" id="area" class="form-select text-white-dark" required>
-                                <option value="">Choose City</option>
-                                <?php
-                                    $query = $obj->con1->prepare("SELECT * FROM `city` WHERE status='enable'");
-                                    $query->execute();
-                                    $Resp = $query->get_result();
-                                    while ($row = mysqli_fetch_array($Resp)) {
-                                        ?>
-                                            <option value="<?php echo $row['srno'] ?>" <?php echo isset($mode) && $row['srno'] == $data['area'] ? 'selected' : '' ?>>
-                                                <?php echo $row['ctnm'] ?>
-                                            </option>
-                                        <?php
-                                    }
-                                    $query->close();
-                                ?>
-                            </select>
-                        </div> -->
                         <div>
                             <label for="address">Address </label>
                             <textarea autocomplete="on" name="address" id="address" class="form-textarea" rows="2"
@@ -206,14 +197,13 @@ if (isset($_POST['save'])) {
                         </div>
                         <div>
                             <label for="pincode"> Pincode </label>
-                            <input name="pincode" id="pincode" type="text" class="form-input" pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo (isset($mode)) ? $data['zipcode'] : '' ?>"  <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                            <input name="pincode" id="pincode" type="text" class="form-input" pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo isset($mode) ? $data['zipcode'] : '' ?>"  <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                         </div>
                     </div>
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
                             <label for="product_category">Product Category </label>
-                            <select name="product_category" id="product_category" class="form-select text-white-dark" <?php echo isset($mode) && isset($mode) == 'view' ? 'disabled' : ''?>
-                                required onchange="getServiceType(this.value)">
+                            <select name="product_category" id="product_category" class="form-select text-white-dark" <?php echo isset($mode) && isset($mode) == 'view' ? 'disabled' : ''?> required onchange="getServiceType(this.value)">
                                 <option value="">Choose Product Category</option>
                                 <?php
                                     $query = $obj->con1->prepare("SELECT * FROM `product_category`");
@@ -234,19 +224,6 @@ if (isset($_POST['save'])) {
                             <label for="service_type"> Service Type </label>
                             <select name="service_type" id="service_type" class="form-select text-white-dark" required <?php echo isset($mode) && isset($mode) == 'view' ? 'disabled' : ''?>>
                                 <option value="">Choose Service Type</option>
-                                <?php
-                                    // $query = $obj->con1->prepare("SELECT * FROM `service_type` WHERE status='enable'");
-                                    // $query->execute();
-                                    // $Resp = $query->get_result();
-                                    // while ($row = mysqli_fetch_array($Resp)) {
-                                        ?>
-                                            <!-- <option value="<?php echo $row["id"]; ?>" <?php echo isset($mode) && $row['id'] == $data['service_type'] ? 'selected' : '' ?>> -->
-                                                <!-- <?php echo $row["name"]; ?> -->
-                                            <!-- </option> -->
-                                        <?php
-                                    // }
-                                    // $query->close();
-                                ?>
                             </select>
                         </div>
                         <div>
@@ -255,11 +232,11 @@ if (isset($_POST['save'])) {
                         </div>
                         <div>
                             <label for="dealer_name">Dealer Name </label>
-                            <input name="dealer_name" id="dealer_name" type="text" class="form-input" value="<?php echo (isset($mode)) ? $data['dealer_name'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                            <input name="dealer_name" id="dealer_name" type="text" class="form-input" value="<?php echo isset($mode) ? $data['dealer_name'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                         </div>
                         <div>
                             <label for="barcode">Barcode </label>
-                            <input name="barcode" id="barcode" type="text" class="form-input" value="<?php echo (isset($mode)) ? $data['barcode'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                            <input name="barcode" id="barcode" type="text" class="form-input" value="<?php echo isset($mode) ? $data['barcode'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                         </div>
                         <div x-data="cmplnDate">
                             <label>Date </label>
@@ -273,9 +250,7 @@ if (isset($_POST['save'])) {
                 </div>
                 <div class="relative inline-flex align-middle gap-3 mt-4">
                         <!-- Save/Update button -->
-                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
-                            id="save" class="btn btn-success" onclick="return validateAndDisable()"
-                            <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
+                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success" onclick="return validateAndDisable()" <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
                             <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
                         </button>
                         <!-- Close button -->
@@ -315,7 +290,7 @@ if (isset($_POST['save'])) {
         }).split('/').join('-')
 
         Alpine.data("cmplnDate", () => ({
-            date2: '<?php echo (isset($mode)) ? $data['date'] : date("d-m-Y") ?>',
+            date2: '<?php echo isset($mode) ? date("d-m-Y", strtotime($data['date'])) : date("d-m-Y") ?>',
             init() {
                 flatpickr(document.getElementById('complaint_date'), {
                     dateFormat: 'd-m-Y',

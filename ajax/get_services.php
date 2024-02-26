@@ -11,7 +11,7 @@
 <?php 
 while ($row = mysqli_fetch_assoc($Resp)) { 
 ?>
-    <option value="<?php echo $row["srno"]; ?>"><?php echo $row["service"]; ?></option>
+    <option value="<?php echo $row["sid"]; ?>"><?php echo $row["service"]; ?></option>
 <?php
     }
 ?>
