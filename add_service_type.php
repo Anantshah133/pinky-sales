@@ -81,8 +81,9 @@ if (isset($_REQUEST["save"])) {
                 <div>
                     <label for="groupFname"> Name</label>
                     <input type="hidden" id="sid" value="<?php echo (isset($mode)) ? $data['id'] : '' ?>">
-                    <input id="name" name="name" type="text" class="form-input" pattern="^\s*\S.*$"
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                    <input id="name" name="name" type="text" class="form-input" 
+                    value="<?php echo isset($mode) ? $data["name"] : ""; ?>" pattern="^\s*\S.*$"
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
                     <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
                 </div>
                 <div>
