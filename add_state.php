@@ -88,7 +88,8 @@ document.addEventListener("", () => {
                     <input type="hidden" id="stid" value="<?php echo (isset($mode)) ? $data['id'] : '' ?>">
                     <input id="name" name="name" type="text" class="form-input"
                         pattern="^\s*\S.*$"
-                        value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required />
+                        value="<?php echo isset($mode) ? $data["name"] : ""; ?>" pattern="^\s*\S.*$"
+                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> required />
                     <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
                     <div class="relative inline-flex align-middle gap-3 mt-4">
                         <!-- Save/Update button -->
