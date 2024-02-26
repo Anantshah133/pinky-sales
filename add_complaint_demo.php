@@ -104,16 +104,30 @@ if (isset($_POST['save'])) {
         $stmt = $obj->con1->prepare("SELECT c1.ctnm,a1.* FROM area_pincode a1, city c1 WHERE a1.city_id=c1.srno AND a1.pincode=?");
         $stmt->bind_param("s", $pincode);
         $stmt->execute();
+        $num_area=$stmt->num_rows;
         $city_data = $stmt->get_result()->fetch_assoc();
+        if($num_area>0)
+        {
+             
+             $fetched_city_id = $city_data["city_id"];
+        }
+        else{
+            $fetched_city_id = 21;
+        }
+
         $stmt->close();
 
         // ------- get service center from city by anant
-        $fetched_city_id = $city_data["city_id"];
+       
+      
 
         $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE area=?");
         $stmt->bind_param("i", $fetched_city_id);
         $stmt->execute();
+       
+        
         $service_center = $stmt->get_result()->fetch_assoc();
+        
         $stmt->close();
 
         // insert into call allocation
@@ -131,7 +145,7 @@ if (isset($_POST['save'])) {
         $result = $stmt->execute();
         $stmt->close();
 
-        // echo "<br/> Insert Call allocation :- INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (" . $complaint_no . " " . $service_center['id'] . " " . $product_serial_no . " " . $product_model . " " . $purchase_date . " " . $techinician . " " . $allocation_date . " " . $allocation_time . " " . $status . ")";
+       //  echo "<br/> Insert Call allocation :- INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (" . $complaint_no . " " . $service_center['id'] . " " . $product_serial_no . " " . $product_model . " " . $purchase_date . " " . $techinician . " " . $allocation_date . " " . $allocation_time . " " . $status . ")";
 
         if (!$Resp) {
             echo $obj->con1->error;
