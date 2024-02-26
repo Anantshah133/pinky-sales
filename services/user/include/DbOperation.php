@@ -50,8 +50,7 @@ class DbOperation
 
             //if (!$this->isContactExists($contact)) {
 
-      
-
+     
 
                 $stmt = $this->con->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`,`contact`,`alternate_contact`, `area`,`map_location`, `address`,`zipcode`, `complaint_no`, `service_type`, `product_category`,  `dealer_name`,`description`,`barcode`,`source`,`date`,`time`)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
                 $stmt->bind_param("sssssisssssissssss", $fname, $lname,$email, $contact,$alternate_contact, $area,$map_location,$address,$zipcode,$complaint_no,$service_type,$product_category,$dealer_name,$description,$barcode,$source,$date,$time);
@@ -91,8 +90,8 @@ class DbOperation
     // get service center
     public function get_service_center($area)
     {
-
-        $stmt = $this->con->prepare("select * from service_center where area=? ");
+       
+        $stmt = $this->con->prepare("select * from service_center where area=?");
         $stmt->bind_param("i",$area);
         $stmt->execute();
         $results = $stmt->get_result()->fetch_assoc();
@@ -139,16 +138,7 @@ class DbOperation
         return $results;
     }
 
-    public function service_area_list()
-    {
-
-        $stmt = $this->con->prepare("select * from service_area");
-
-        $stmt->execute();
-        $results = $stmt->get_result();
-        $stmt->close();
-        return $results;
-    }
+    
 
     public function get_product_category()
     {
@@ -160,16 +150,7 @@ class DbOperation
         $stmt->close();
         return $results;
     }
-    public function get_led_product_category()
-    {
-
-        $stmt = $this->con->prepare("select * from product_category where LOWER(name) LIKE '%led%' ");
-
-        $stmt->execute();
-        $results = $stmt->get_result();
-        $stmt->close();
-        return $results;
-    }
+    
 
     public function get_privacy()
     {
@@ -184,7 +165,7 @@ class DbOperation
     public function call_allocation_add($complaint_no,$service_center_id, $product_serial_no, $product_model, $purchase_date, $techinician,$allocation_date,$allocation_time,$status)
     {
 
-
+       
         $stmt = $this->con->prepare("INSERT INTO `call_allocation`( `complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (?,?,?,?,?,?,?,?,?)");
         $stmt->bind_param("sisssisss",$complaint_no,$service_center_id, $product_serial_no, $product_model, $purchase_date, $techinician,$allocation_date,$allocation_time,$status);
         $result = $stmt->execute();
@@ -291,6 +272,8 @@ class DbOperation
         $states = $stmt->get_result();
         $stmt->close();
     }
+
+   
 
 }
 	

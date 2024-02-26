@@ -41,9 +41,11 @@ $app->post('/customer_registeration', function () use ($app) {
     $description = $req_data->description;
     $barcode = $req_data->barcode;
     $source = $req_data->source;
-    $area = $req_data->area;//city
-    $device_token = isset($req_data->device_token)?$req_data->device_token:"";
-    $type = isset($req_data->type)?$req_data->type:"";
+    
+   // $device_token = isset($req_data->device_token)?$req_data->device_token:"";
+   // $type = isset($req_data->type)?$req_data->type:"";
+   $device_token="";
+   $type="";
     $day = Date("d");
     $month = Date("m");
     $year = Date("y");
@@ -65,25 +67,32 @@ $app->post('/customer_registeration', function () use ($app) {
      if($area_data->num_rows>0)
      {
         $area_row=$area_data->fetch_assoc();
-       // $area=$area_row["service_area_id"];
+        $city=$area_row["city_id"];
      }
-     else
-     {
-       // $area=0;
+     else{
+        $city=21;
      }
-
+     
 
      // get service center from zipcode
      
    // $complaint_no = "ORP".$day . $month . $year . $row_max["customer_id"].$string;
      $complaint_no = "ONL".$day . $month . $year .$string;
-    $res = $db->do_reg_customer($fname, $lname, $email, $contact, $alternate_contact, $area, $zipcode, $address, $service_type, $product_category, $dealer_name, $complaint_no,$description,$barcode,$source,$map_location);
+    $res = $db->do_reg_customer($fname, $lname, $email, $contact, $alternate_contact, $city, $zipcode, $address, $service_type, $product_category, $dealer_name, $complaint_no,$description,$barcode,$source,$map_location);
 
 
     if ($res == 0) {
         // get sercive center
-        $service_center=$db->get_service_center($area);
-        //print_r($service_center);
+        $service_center=$db->get_service_center($city);
+        if($service_center["id"]=="")
+        {
+            $service_center_id=0;
+        }
+        else{
+            $service_center_id=$service_center["id"];
+
+        }
+       
         
         //insert into call allocation
         $product_serial_no="";
@@ -93,7 +102,7 @@ $app->post('/customer_registeration', function () use ($app) {
         $allocation_date="";
         $allocation_time="";
         $status="new";
-        $res = $db->call_allocation_add($complaint_no,$service_center["id"], $product_serial_no, $product_model, $purchase_date, $techinician,$allocation_date,$allocation_time,$status);
+        $res = $db->call_allocation_add($complaint_no,$service_center_id, $product_serial_no, $product_model, $purchase_date, $techinician,$allocation_date,$allocation_time,$status);
 
         $user = $db->getUser($contact);
 
@@ -205,9 +214,7 @@ $app->post('/track_complaint', function () use ($app) {
 
             }
             $complaint_number=$complaint_data["complaint_no"];
-            /*$response->serial_no = "456";
-            $response->product_model = "model134";
-            $response->purchase_date = "02/09/2021";*/
+            
             $response->serial_no = "";
             $response->product_model = "";
             $response->purchase_date = "";
@@ -215,15 +222,7 @@ $app->post('/track_complaint', function () use ($app) {
 
 
             $call_allocation = new stdClass();
-            /*$call_allocation->technician_name = "xyz";
-            $call_allocation->technician_phone = "9876546210";
-            $call_allocation->date = "01/09/2021";
-            $call_allocation->time = "05:00 PM";
-            $call_allocation->parts_used = "abc";
-            $call_allocation->call_type = "xyz";
-            $call_allocation->service_charge = "500";
-            $call_allocation->parts_charge = "1000";
-            $call_allocation->status = "Closed";*/
+            
             // fetch call detail
 
             $call_detail=$db->call_detail($complaint_number);
@@ -251,42 +250,9 @@ $app->post('/track_complaint', function () use ($app) {
     echoResponse(200, $data);
 });
 
-/* area list
- *  param:
- *  method:post
- */
-$app->get('/service_area_list', function () use ($app) {
-
-    //verifyRequiredParams(array(''));
-    $db = new DbOperation();
-    $data = array();
-
-    $area = $db->service_area_list();
-    if ($area->num_rows > 0) {
 
 
-        $data['result'] = true;
-        $data['message'] = "";
-        $data["response"] = array();
-
-        while ($area_list = $area->fetch_assoc()) {
-
-            $response = new stdClass();
-            foreach ($area_list as $key => $value) {
-                $response->$key = $value;
-            }
-            array_push($data["response"], $response);
-        }
-
-    } else {
-        $data['result'] = false;
-        $data['message'] = "Data not found";
-
-    }
-    echoResponse(200, $data);
-});
-
-/* area list
+/* product category list
  *  param:
  *  method:post
  */
@@ -299,14 +265,10 @@ $app->post('/get_product_category', function () use ($app) {
     $data = array();
 
 
-    if($service_type=="Complaint")
-    {
-        $area = $db->get_product_category();
-    }
-    else
-    {
-        $area = $db->get_led_product_category();
-    }
+    
+    $area = $db->get_product_category();
+    
+    
     
     if ($area->num_rows > 0) {
 
@@ -336,40 +298,6 @@ $app->post('/get_product_category', function () use ($app) {
     echoResponse(200, $data);
 });
 
-/* service_center
- *  param:
- *  method:post
- */
-$app->get('/service_area_list', function () use ($app) {
-
-    //verifyRequiredParams(array(''));
-    $db = new DbOperation();
-    $data = array();
-
-    $area = $db->service_area_list();
-    if ($area->num_rows > 0) {
-
-
-        $data['result'] = true;
-        $data['message'] = "";
-        $data["response"] = array();
-
-        while ($area_list = $area->fetch_assoc()) {
-
-            $response = new stdClass();
-            foreach ($area_list as $key => $value) {
-                $response->$key = $value;
-            }
-            array_push($data["response"], $response);
-        }
-
-    } else {
-        $data['result'] = false;
-        $data['message'] = "Data not found";
-
-    }
-    echoResponse(200, $data);
-});
 
 
 // get privacy policy
@@ -430,8 +358,7 @@ $app->post('/product_service', function () use ($app) {
 
 function send_notification($data, $reg_ids)
 {
-    //$reg_id[0]="c9beC3MaCzE:APA91bEytaqMetycls1bkCtEV1cLuiXfypk8SrT3mlJWEpfYh8FMzBQw6dl4eKqMUtB3drOOdSfn4J8udzqg8WTEqdxiYcIjg5g6T1ZUjVpSSgXumhDvvqXn-KpemjmBCMrfDHIQntlX";
-    //print_r( $reg_ids);
+    
     $url = 'https://fcm.googleapis.com/fcm/send';
     $api_key = 'AAAAdlMKxlc:APA91bGTsTmJMO1EAicBqWTRdZEQOpxJmn_4VRtd7GrVEaJMrZCO-XGKTfzQdk5DGFfmE6ZAbyvRNLbN7Iao13qaSRgv6ia6KdLziszNSj4-oiuc9p-K1IXPJ9Unxdj0FEpVFkpJ0g2n';
     /*$msg = array(
@@ -474,7 +401,7 @@ function send_notification($data, $reg_ids)
 // fcm notification code
 function send_notification_ios($data, $reg_ids, $title, $body)
 {
-    //$reg_ids[0]="esR5GsVCeEBljF0hszij-k:APA91bEq7A2QCl6Rrt8-__t7OlUemcQOIy_KRe0Zm6h50b8ffZcciHDdnT8f9poGAiW6gcqywi438TWt_aOLN0yk7YKgbOakkvrmTlvVUEtr98aiz69BsgoACxfHXztRmFx-0HprNxLy";
+    
     $url = 'https://fcm.googleapis.com/fcm/send';
     $api_key = 'AAAAdlMKxlc:APA91bGTsTmJMO1EAicBqWTRdZEQOpxJmn_4VRtd7GrVEaJMrZCO-XGKTfzQdk5DGFfmE6ZAbyvRNLbN7Iao13qaSRgv6ia6KdLziszNSj4-oiuc9p-K1IXPJ9Unxdj0FEpVFkpJ0g2n';
 
@@ -635,3 +562,6 @@ function verifyRequiredParams_json($required_fields,$data)
 
 
 $app->run();
+
+
+?>

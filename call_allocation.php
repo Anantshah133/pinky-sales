@@ -55,13 +55,11 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 
     function getActions(id, complaint_no) {
     return `<ul class="flex items-center justify-center gap-4">
-        <?php if ($_SESSION['type'] != "center") { ?>
         <li>
             <a href="javascript:viewRecord('${id}', 'add_call_allocation.php')" class='text-xl' x-tooltip="View">
                 <i class="ri-eye-line text-primary"></i>
             </a>
         </li>
-        <?php } ?>
         <li>
             <a href="javascript:updateRecord('${id}', 'add_call_allocation.php')" class='text-xl' x-tooltip="Edit">
                 <i class="ri-pencil-line text text-success"></i>
