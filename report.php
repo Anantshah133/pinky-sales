@@ -1,5 +1,33 @@
 <?php
 include "header.php";
+if(isset($_REQUEST["btnReport"]))
+{
+    
+    $Daterange = isset($_REQUEST["daterange"])?explode(" to ",$_REQUEST["daterange"]):"";
+    $fromDate=isset($_REQUEST["daterange"])?$Daterange[0]:"";
+    $toDate=isset($_REQUEST["daterange"])?$Daterange[1]:"";
+	$service_center = isset($_REQUEST["service_center"])?$_REQUEST["service_center"]:"";
+	$technician = isset($_REQUEST["technician"])?$_REQUEST["technician"]:"";
+	$status = isset($_REQUEST["status"])?$_REQUEST["status"]:"";
+	$complaint_no = isset($_REQUEST["complaint_no"])?$_REQUEST["complaint_no"]:"";
+	$contact_no = isset($_REQUEST["contact_no"])?$_REQUEST["contact_no"]:"";
+	
+	
+	$fromDateFilter = (!empty($fromDate))?" and ( c2.allocation_date  >= '".$fromDate."'  or c1.date  >= '".$fromDate."' ) ":"";
+	$toDateFiler = (!empty($toDate))?" and ( c2.allocation_date  <= '".$toDate."'  or c1.date  <= '".$toDate."' )":"";
+	$service_centerFilter = (!empty($service_center))?" and c2.service_center_id='".$service_center."' ":"";
+	$technicianFilter = (!empty($technician))?" and c2.technician='".$technician."' ":"";
+	$statusFilter = (!empty($status))?" and c2.status='".$status."' ":"";
+	$complaint_noFilter = (!empty($complaint_no))?" and c2.complaint_no='".$complaint_no." '":"";
+	$contact_noFilter = (!empty($contact_no))?" and c1.contact='".$contact_no."' ":"";
+
+    
+    $stmt = $obj->con1->prepare("select tbl1.*,t1.name as technician_name from (SELECT c2.*,c1.fname,c1.lname,c1.contact,s1.name as service_center_name FROM customer_reg c1,`call_allocation` c2,service_center s1 where c2.complaint_no=c1.complaint_no and c2.service_center_id=s1.id  ".$fromDateFilter.$toDateFiler.$service_centerFilter.$technicianFilter.$statusFilter.$complaint_noFilter.$contact_noFilter." order by c2.id desc) as tbl1 LEFT JOIN technician t1 on tbl1.technician=t1.id");
+    $stmt->execute();
+    $results = $stmt->get_result();
+    $stmt->close();
+
+}
 ?>
 
 <div class='p-6'>
@@ -9,13 +37,13 @@ include "header.php";
             <h5 class="text-xl text-primary font-semibold dark:text-white-light">Report</h5>
         </div>
 
-        <form x-data="form" class="space-y-5">
+        <form x-data="form" class="space-y-5" method="post">
 
             <div class="flex">
                 <div class="w-6/12 px-4">
                     <label for="groupFname">Service Center</label>
 
-                    <select class="form-select text-white-dark" name="service_center" onchange="getTechnician(this)" required>
+                    <select class="form-select text-white-dark" name="service_center" onchange="getTechnician(this)" >
                         <option value="">Choose Service center</option>
                         <?php
                             $stmt = $obj->con1->prepare(
@@ -37,7 +65,7 @@ include "header.php";
                 <div class="w-6/12 px-4 ">
                     <label for="groupFname"> Technician</label>
 
-                    <select class="form-select text-white-dark" name="" required>
+                    <select class="form-select text-white-dark" name="technician" >
                         <option value="">Choose Technician</option>
                         <?php
                             // $stmt = $obj->con1->prepare(
@@ -59,7 +87,7 @@ include "header.php";
             <div class="flex">
                 <div class="w-6/12 px-4">
                     <label for="range-calendar">Date Range</label>
-                    <input id="range-calendar" x-model="date3" class="form-input" />
+                    <input id="range-calendar" name="daterange" x-model="date3" class="form-input" />
                 </div>
 
                 <div class="w-6/12  px-4 ">
@@ -98,7 +126,7 @@ include "header.php";
                 <div class="w-6/12 px-4">
                     <label for="groupFname"> Complaint No</label>
 
-                    <select class="form-select text-white-dark" name="" required>
+                    <select class="form-select text-white-dark" name="complaint_no" >
                         <option value="">Choose...</option>
                         <?php
                             $stmt = $obj->con1->prepare(
@@ -120,7 +148,7 @@ include "header.php";
                 <div class="w-6/12 px-4 ">
                     <label for="groupFname"> Contact No</label>
 
-                    <select class="form-select text-white-dark" name="" required>
+                    <select class="form-select text-white-dark" name="contact_no" >
                         <option value="">Choose...</option>
                         <?php
                             $stmt = $obj->con1->prepare(
@@ -140,7 +168,7 @@ include "header.php";
                 </div>
             </div>
             <div class="px-4">
-                <button type="button" class="btn btn-success ">Submit</button>
+                <button type="submit" class="btn btn-success " name="btnReport">Submit</button>
             </div>
         </form>
     </div>
@@ -194,11 +222,35 @@ document.addEventListener('alpine:init', () => {
             this.datatable = new simpleDatatables.DataTable('#call-table', {
                 data: {
                     headings: ['Sr.No.', 'Complaint No.', 'Customer Name', 'Customer Contact', 'Service Center', 'Technician', 'Allocation Date',
-                        , 'Allocation Time', 'Status', 'Action'],
+                         'Allocation Time', 'Status', 'Action'],
                     data: [
+                        <?php
+                            if($results)
+                            {   
+                                $i=1;
+                                while ($row = mysqli_fetch_array($results)) {
+                                    ?>
+                                        [
+                                            <?php echo $i; ?>, 
+                                            `<?php echo $row["complaint_no"]; ?>`,
+                                            `<?php echo $row["fname"]." ".$row["lname"]; ?>`,
+                                            `<?php echo $row["contact"]; ?>`,
+                                            `<?php echo $row["service_center_name"]; ?>`,
+                                            `<?php echo $row["technician_name"]; ?>`,
+                                            `<?php echo $row["allocation_date"]; ?>`,
+                                            `<?php echo $row["allocation_time"]; ?>`,
+                                            `<?php echo $row["status"]; ?>`,
+                                            
+                                           
+                                            getActions(<?php echo $row["id"] ?>, '<?php echo $row["fname"]; ?>'),
+                                        ],
+                                    <?php 
+                                        $i++;
+                                        }
+                            }
+                        ?>
                         
-                        ['Sr.No.', 'Complaint No.', 'Customer Name', 'Customer Contact', 'Service Center', 'Technician', 'Allocation Date',
-                        , 'Allocation Time', 'Status', 'Action'],
+                       
                     ],
                 },
                 perPage: 10,
