@@ -106,7 +106,8 @@ if (isset($_REQUEST["save"])) {
                 </div>
                 <div>
                     <label for="city_name">City Name </label>
-                    <input id="city_name" name="city_name" type="text" class="form-input" onblur="checkCity(this)"
+                    <input type="hidden" id="state_id" value="<?php echo (isset($mode)) ? $data['srno'] : '' ?>">
+                    <input id="city_name" name="city_name" type="text" class="form-input" 
                     value="<?php echo isset($mode) ? $data["ctnm"] : ""; ?>" pattern="^\s*\S.*$"
                     <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?>
                     required />
@@ -133,7 +134,7 @@ if (isset($_REQUEST["save"])) {
                 <div class="relative inline-flex align-middle gap-3 mt-4">
                         <!-- Save/Update button -->
                         <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
-                            id="save" class="btn btn-success" onclick="return validateAndDisable()"
+                            id="save" class="btn btn-success"
                             <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
                             <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
                         </button>
@@ -148,30 +149,50 @@ if (isset($_REQUEST["save"])) {
     </div>
 </div>
 <script>
-    function checkCity(c1){
-        let n = c1.value;
-        var state_id=document.getElementById('state_id').value;
-        const obj = new XMLHttpRequest();
-        obj.onload = function(){
-            let x = obj.responseText;
-            if(x>=1)
-            {
-                c1.value="";
-                c1.focus();
-                document.getElementById("demo").innerHTML = "Sorry the name alredy exist!";
-            }
-            else{
-               
-                document.getElementById("demo").innerHTML = "";
-            }
-        }
-        obj.open("GET","./ajax/check_city.php?city_name="+n+"&state_id="+state_id,true);
-        obj.send();
-    }
+    document.addEventListener('DOMContentLoaded', function () {
+        const submitButton = document.getElementById('save');
+        const form = document.getElementById('mainForm');
 
+        submitButton.addEventListener('click', function () {
+            const c1 = document.getElementById("city_name");
+            const id = document.getElementById("state_id");
+            // if (!validateAndDisable()) {
+            //     return false;
+            // }
+            if (!checkName(c1, id)) {
+                return false;
+            }
+        });
+    });
+
+    function checkName(c1, id) {
+        const n = c1.value;
+        const state_id = id.value;
+
+        const obj = new XMLHttpRequest();
+        obj.open("GET", "./ajax/check_city.php?city_name=" + n + "&state_id=" + state_id, false); // synchronous request
+        obj.send();
+
+        if (obj.status == 200) {
+            const x = obj.responseText;
+            if (x >= 1) {
+                c1.value = "";
+                c1.focus();
+                document.getElementById("demo").innerHTML = "Sorry the city already exists!";
+                return false;
+            } else {
+                document.getElementById("demo").innerHTML = "";
+                return true;
+            }
+        } else {
+            // Handle errors
+            return false;
+        }
+    }
 </script>
 
 
 <?php
 include "footer.php";
 ?>
+
