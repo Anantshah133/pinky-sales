@@ -1,7 +1,6 @@
 <?php
 include "header.php";
 
-
 if (isset($_COOKIE['editId'])) {
     $mode = 'edit';
     $editId = $_COOKIE['editId'];
@@ -69,11 +68,6 @@ if (isset($_REQUEST["save"])) {
     exit();
 }
 ?>
-<script>
-document.addEventListener("", () => {
-    localStorage.setItem("Flag", "working")
-});
-</script>
 <div class='p-6'>
     <div class="panel mt-2">
         <div class='flex items-center justify-between mb-3'>
@@ -85,25 +79,19 @@ document.addEventListener("", () => {
             <form class="space-y-5" method="post" id="mainForm">
                 <div>
                     <label for="groupFname">Name </label>
-                    <input type="hidden" id="stid" value="<?php echo (isset($mode)) ? $data['id'] : '' ?>">
-                    <input id="name" name="name" type="text" class="form-input"
-                        pattern="^\s*\S.*$"
-                        value="<?php echo isset($mode) ? $data["name"] : ""; ?>" pattern="^\s*\S.*$"
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> required />
+                    <input id="groupFname" name="name" type="text" class="form-input"
+                        onblur="checkName(this,<?php echo isset($mode) ? $data['id'] : 0 ?>)" pattern="^\s*\S.*$"
+                        value="<?php echo isset($mode) ? $data['name'] : '' ?>" required />
                     <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
-                    <div class="relative inline-flex align-middle gap-3 mt-4">
-                        <!-- Save/Update button -->
+                    <div
+                        class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
                         <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
-                            id="save" class="btn btn-success" 
-                            <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;" disabled' : '' ?>>
+                            id="save" class="btn btn-success" onclick="return localValidate()">
                             <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
                         </button>
-                        <!-- Close button -->
-                        <button type="button" class="btn btn-danger" onclick="window.location='state.php'">
-                            Close
-                        </button>
+                        <button type="button" class="btn btn-danger"
+                            onclick="window.location='state.php'">Close</button>
                     </div>
-
                 </div>
             </form>
         </div>
@@ -111,47 +99,40 @@ document.addEventListener("", () => {
 </div>
 
 <script>
+    function localValidate(){
+        let form = document.getElementById('mainForm');
+        let submitButton = document.getElementById('save');
+        let nameEle = document.getElementById('groupFname');
+        if (form.checkValidity() && checkName(nameEle, <?php echo isset($mode) ? $data['id'] : 0 ?>)) {
+            setTimeout(() => {
+                submitButton.disabled = true;
+            }, 0);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-document.addEventListener('DOMContentLoaded', function() {
-        const submitButton = document.getElementById('save');
-        const form = document.getElementById('mainForm');
-
-        submitButton.addEventListener('click', function() {
-            const c1 = document.getElementById("name");
-            const id = document.getElementById("stid");
-            // if (!validateAndDisable()) {
-            //     return false;
-            // }
-            if (!checkName(c1,id)) {
+    function checkName(c1, id) {
+        let n = c1.value;
+        const obj = new XMLHttpRequest();
+        obj.open("GET", "./ajax/check_state.php?name=" + n + "&stid=" + id, false);
+        obj.send();
+        if(obj.status == 200){
+            let x = obj.responseText;
+            console.log(n, id);
+            if (x >= 1) {
+                c1.value = "";
+                c1.focus();
+                document.getElementById("demo").innerHTML = "Sorry the name alredy exist!";
                 return false;
             }
-        });
-    });
-
-function checkName(c1,id) {
-    const n = c1.value;
-    const stid = id.value;
-
-    const obj = new XMLHttpRequest();
-    obj.open("GET", "./ajax/check_state.php?name=" + n +"&stid="+stid, false); // synchronous request
-    obj.send();
-
-    if (obj.status == 200) {
-        const x = obj.responseText;
-        if (x >= 1) {
-            c1.value = "";
-            c1.focus();
-            document.getElementById("demo").innerHTML = "Sorry the state already exists!";
-            return false;
-        } else {
-            document.getElementById("demo").innerHTML = "";
-            return true;
+            else {
+                document.getElementById("demo").innerHTML = "";
+                return true;
+            }
         }
-    } else {
-        // Handle errors
-        return false;
     }
-}
 
 </script>
 
