@@ -256,6 +256,7 @@ if (isset($_POST['save'])) {
                             <label>Date </label>
                             <input x-model="date2" name="complaint_date" id="complaint_date" class="form-input" value="" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
                         </div>
+                        
                         <div x-data="complaintTime">
                             <label>Time </label>
                             <input name="complaint_time" id="complaint_time" class="form-input" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
