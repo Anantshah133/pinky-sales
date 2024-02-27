@@ -129,8 +129,8 @@ if(isset($_REQUEST["btnReport"]))
                 <div class="w-6/12 px-4 ">
                     <label for="groupFname"> Contact No</label>
 
-                    <select class="form-select text-white-dark" name="contact_no" >
-                        <option value="">Choose...</option>
+                    <select id="seachable-select" name="contact_no" >
+                        <!-- <option value="">Choose Contact Number</option> -->
                         <?php
                             $stmt = $obj->con1->prepare(
                                 "SELECT CONCAT(fname, ' ', lname) as fullName, contact FROM `customer_reg`"
@@ -201,6 +201,14 @@ function getTechnician(id,tid = 0){
         document.getElementById("technician").innerHTML = http.responseText;
     }
 }
+
+document.addEventListener("DOMContentLoaded", function(e) {
+    var options = {
+        searchable: true
+    };
+    NiceSelect.bind(document.getElementById("seachable-select"), options);
+});
+
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('exportTable', () => ({
