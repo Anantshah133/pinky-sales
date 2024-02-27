@@ -104,8 +104,9 @@ if (isset($_POST['save'])) {
         $stmt = $obj->con1->prepare("SELECT c1.ctnm,a1.* FROM area_pincode a1, city c1 WHERE a1.city_id=c1.srno AND a1.pincode=?");
         $stmt->bind_param("s", $pincode);
         $stmt->execute();
-        $num_area=$stmt->num_rows;
-        $city_data = $stmt->get_result()->fetch_assoc();
+        $res_area=$stmt->get_result();
+        $num_area=$res_area->num_rows;
+        $city_data = $res_area->fetch_assoc();
         if($num_area>0)
         {
              
@@ -256,7 +257,6 @@ if (isset($_POST['save'])) {
                             <label>Date </label>
                             <input x-model="date2" name="complaint_date" id="complaint_date" class="form-input" value="" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
                         </div>
-                        
                         <div x-data="complaintTime">
                             <label>Time </label>
                             <input name="complaint_time" id="complaint_time" class="form-input" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
