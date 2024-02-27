@@ -85,12 +85,14 @@ if (isset($_REQUEST['logout'])) {
     <link defer rel="stylesheet" type="text/css" media="screen" href="assets/css/animate.css" />
     <link rel="stylesheet" href="assets/css/flatpickr.min.css">
     <link rel="stylesheet" href="./style-main.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/nice-select2.css" />
     <script src="assets/js/mainScript.js"></script>
     <script src="assets/js/simple-datatables.js"></script>
     <script src="assets/js/perfect-scrollbar.min.js"></script>
     <script defer src="assets/js/popper.min.js"></script>
     <script defer src="assets/js/tippy-bundle.umd.min.js"></script>
     <script src="assets/js/sweetalert.min.js"></script>
+    <script src="assets/js/nice-select2.js"></script>
     <script>
         window.onload = () => {
             checkCookies();
