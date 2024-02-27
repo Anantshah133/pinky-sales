@@ -615,13 +615,13 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 <?php
 if (isset($mode) && $mode == 'edit') {
     echo "
-            <script>
-                const scid = document.getElementById('service_center').value;
-                const tid =" . json_encode($data['technician']) . ";
-                console.log(scid, tid);
-                getTechnician(scid, tid);
-            </script>
-        ";
+        <script>
+            const scid = document.getElementById('service_center').value;
+            const tid =" . json_encode($data['technician']) . ";
+            console.log(scid, tid);
+            getTechnician(scid, tid);
+        </script>
+    ";
 }
 ?>
 <?php

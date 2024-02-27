@@ -211,13 +211,13 @@ if (isset($_POST['save'])) {
                         </div>
                         <div>
                             <label for="pincode"> Pincode </label>
-                            <input name="pincode" id="pincode" type="text" class="form-input" pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo isset($mode) ? $data['zipcode'] : '' ?>"  <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                            <input name="pincode" id="pincode" type="text" class="form-input" pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" required onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo isset($mode) ? $data['zipcode'] : '' ?>"  <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
                         </div>
                     </div>
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
                             <label for="product_category">Product Category </label>
-                            <select name="product_category" id="product_category" class="form-select text-white-dark" <?php echo isset($mode) && isset($mode) == 'view' ? 'disabled' : ''?> required onchange="getServiceType(this.value)">
+                            <select name="product_category" id="product_category" class="form-select text-white-dark" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> required onchange="getServiceType(this.value)">
                                 <option value="">Choose Product Category</option>
                                 <?php
                                     $query = $obj->con1->prepare("SELECT * FROM `product_category`");
@@ -236,7 +236,7 @@ if (isset($_POST['save'])) {
                         </div>
                         <div>
                             <label for="service_type"> Service Type </label>
-                            <select name="service_type" id="service_type" class="form-select text-white-dark" required <?php echo isset($mode) && isset($mode) == 'view' ? 'disabled' : ''?>>
+                            <select name="service_type" id="service_type" class="form-select text-white-dark" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>>
                                 <option value="">Choose Service Type</option>
                             </select>
                         </div>
@@ -283,16 +283,15 @@ if (isset($_POST['save'])) {
 
 <script>
     function resetForm() {
-        window.location = "complaint_demo.php"
+        window.location = "complaint_demo.php";
     }
 
-    function getServiceType(pid){
+    function getServiceType(pid, stid = 0){
         const http = new XMLHttpRequest();
-        http.open("GET", `ajax/get_services.php?pid=${pid}`);
+        http.open("GET", `ajax/get_services.php?pid=${pid}&stid=${stid}`);
         http.send();
         http.onload = function(){
             document.getElementById("service_type").innerHTML = http.responseText;
-            // console.log(http.responseText)
         }
     }
 
@@ -354,6 +353,17 @@ if (isset($_POST['save'])) {
         getLocation();
     });
 </script>
+
+<?php
+if (isset($mode) && $mode == 'edit') {
+    echo "<script>
+        const pid = document.getElementById('product_category').value;
+        const stid =" . json_encode($data['service_type']) . ";
+        console.log(pid, stid);
+        getServiceType(pid, stid);
+    </script>";
+}
+?>
 
 <?php
 include "footer.php";
