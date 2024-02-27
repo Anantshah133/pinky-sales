@@ -181,7 +181,7 @@ class DbOperation
     public function product_service($product_category)
     {
 
-        $stmt = $this->con->prepare("select p1.srno,p2.name as product_category,s1.name as service_type from product_service p1,product_category p2,service_type s1 where p1.pid=p2.id and p1.sid=s1.id and p1.pid=? and p1.status='enable' ");
+        $stmt = $this->con->prepare("select p1.*,p2.name as product_category,s1.name as service_type from product_service p1,product_category p2,service_type s1 where p1.pid=p2.id and p1.sid=s1.id and p1.pid=? and p1.status='enable' ");
         $stmt->bind_param("i",$product_category);
         $stmt->execute();
         $results = $stmt->get_result();
