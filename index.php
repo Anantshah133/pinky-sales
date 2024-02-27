@@ -2,6 +2,18 @@
 include "header.php";
 setcookie("editId", "", time() - 3600);
 setcookie("viewId", "", time() - 3600);
+
+$stmt = $obj->con1->prepare("SELECT 
+    SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) AS new_num,
+    SUM(CASE WHEN status='allocated' THEN 1 ELSE 0 END) AS allocated_num,
+    SUM(CASE WHEN status='pending' THEN 1 ELSE 0 END) AS pending_num,
+    SUM(CASE WHEN status='closed' THEN 1 ELSE 0 END) AS closed_num
+    FROM call_allocation");
+$stmt->execute();
+$Resp = $stmt->get_result();
+$data = $Resp->fetch_assoc();
+$stmt->close();
+
 ?>
 <main class='p-6' x-data="sales">
     <div class="pt-5">
@@ -12,8 +24,10 @@ setcookie("viewId", "", time() - 3600);
                     <div class="text-md font-semibold ltr:mr-1 rtl:ml-1">New calls</div>
                 </div>
                 <div class="mt-5 flex items-center">
-                    <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">35</div>
-                    <div class="badge bg-white/30">+ 2.35%</div>
+                    <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">
+                        <?php echo $data["new_num"]; ?>
+                    </div>
+                    <!-- <div class="badge bg-white/30">+ 2.35%</div> -->
                 </div>
             </div>
 
@@ -23,8 +37,10 @@ setcookie("viewId", "", time() - 3600);
                     <div class="text-md font-semibold ltr:mr-1 rtl:ml-1">Allocated Call</div>
                 </div>
                 <div class="mt-5 flex items-center">
-                    <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">24</div>
-                    <div class="badge bg-white/30">- 2.35%</div>
+                    <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">
+                        <?php echo $data["allocated_num"]; ?>
+                    </div>
+                    <!-- <div class="badge bg-white/30">- 2.35%</div> -->
                 </div>
             </div>
 
@@ -34,8 +50,10 @@ setcookie("viewId", "", time() - 3600);
                     <div class="text-md font-semibold ltr:mr-1 rtl:ml-1">Pending Call</div>
                 </div>
                 <div class="mt-5 flex items-center">
-                    <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">148</div>
-                    <div class="badge bg-white/30">+ 1.35%</div>
+                    <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">
+                        <?php echo $data["pending_num"]; ?>
+                    </div>
+                    <!-- <div class="badge bg-white/30">+ 1.35%</div> -->
                 </div>
             </div>
 
@@ -45,8 +63,10 @@ setcookie("viewId", "", time() - 3600);
                     <div class="text-md font-semibold ltr:mr-1 rtl:ml-1">Closed call</div>
                 </div>
                 <div class="mt-5 flex items-center">
-                    <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">70</div>
-                    <div class="badge bg-white/30">- 0.35%</div>
+                    <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">
+                        <?php echo $data["closed_num"]; ?>
+                    </div>
+                    <!-- <div class="badge bg-white/30">- 0.35%</div> -->
                 </div>
             </div>
         </div>
@@ -130,7 +150,12 @@ document.addEventListener('alpine:init', () => {
 
         get salesByCategoryOptions() {
             return {
-                series: [20, 138, 70, 126],
+                series: [
+                    <?php echo $data["new_num"]; ?>,
+                    <?php echo $data["allocated_num"]; ?>,
+                    <?php echo $data["pending_num"]; ?>,
+                    <?php echo $data["closed_num"]; ?>
+                ],
                 chart: {
                     type: 'donut',
                     height: 400,
@@ -144,8 +169,8 @@ document.addEventListener('alpine:init', () => {
                     width: 25,
                     colors: isDark ? '#0e1726' : '#fff',
                 },
-                colors: isDark ? ['#5c1ac3', '#e2a03f', '#e7515a', '#e2a03f'] : ['#e2a03f',
-                    '#5c1ac3', '#e7515a', '#2eb384'
+                colors: isDark ? ['#5c1ac3', '#e2a03f', '#e7515a', '#e2a03f'] : ['#2eb384',
+                    '#e2a03f', '#e7515a', '#5c1ac3'
                 ],
                 legend: {
                     position: 'bottom',
