@@ -103,13 +103,12 @@ if (isset($_REQUEST["save"])) {
         let form = document.getElementById('mainForm');
         let submitButton = document.getElementById('save');
         let nameEle = document.getElementById('groupFname');
+        
         if (form.checkValidity() && checkName(nameEle, <?php echo isset($mode) ? $data['id'] : 0 ?>)) {
             setTimeout(() => {
                 submitButton.disabled = true;
             }, 0);
             return true;
-        } else {
-            return false;
         }
     }
 
