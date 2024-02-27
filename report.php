@@ -26,7 +26,6 @@ if(isset($_REQUEST["btnReport"]))
     $stmt->execute();
     $results = $stmt->get_result();
     $stmt->close();
-
 }
 ?>
 
@@ -43,7 +42,7 @@ if(isset($_REQUEST["btnReport"]))
                 <div class="w-6/12 px-4">
                     <label for="groupFname">Service Center</label>
 
-                    <select class="form-select text-white-dark" name="service_center" onchange="getTechnician(this)" >
+                    <select class="form-select text-white-dark" name="service_center" onchange="getTechnician(this.value);" >
                         <option value="">Choose Service center</option>
                         <?php
                             $stmt = $obj->con1->prepare(
@@ -64,23 +63,8 @@ if(isset($_REQUEST["btnReport"]))
 
                 <div class="w-6/12 px-4 ">
                     <label for="groupFname"> Technician</label>
-
-                    <select class="form-select text-white-dark" name="technician" >
+                    <select id="technician" class="form-select text-white-dark" name="technician" >
                         <option value="">Choose Technician</option>
-                        <?php
-                            // $stmt = $obj->con1->prepare(
-                            //     "SELECT * FROM `technician` WHERE status='enable'"
-                            // );
-                            // $stmt->execute();
-                            // $Res = $stmt->get_result();
-                            // $stmt->close();
-
-                            // while ($result = mysqli_fetch_assoc($Res)) { 
-                        ?>
-                            <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
-                        <?php 
-                            // } 
-                        ?>
                     </select>
                 </div>
             </div>
@@ -129,16 +113,13 @@ if(isset($_REQUEST["btnReport"]))
                     <select class="form-select text-white-dark" name="complaint_no" >
                         <option value="">Choose...</option>
                         <?php
-                            $stmt = $obj->con1->prepare(
-                                "SELECT * FROM `complaint` "
-                            );
+                            $stmt = $obj->con1->prepare("SELECT complaint_no, id FROM `customer_reg`");
                             $stmt->execute();
                             $Res = $stmt->get_result();
                             $stmt->close();
-
                             while ($result = mysqli_fetch_assoc($Res)) { 
                         ?>
-                        <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                            <option value="<?php echo $result["id"]; ?>"><?php echo $result["complaint_no"]; ?></option>
                         <?php 
                             } 
                         ?>
@@ -152,7 +133,7 @@ if(isset($_REQUEST["btnReport"]))
                         <option value="">Choose...</option>
                         <?php
                             $stmt = $obj->con1->prepare(
-                                "SELECT * FROM `contact` "
+                                "SELECT CONCAT(fname, ' ', lname) as fullName, contact FROM `customer_reg`"
                             );
                             $stmt->execute();
                             $Res = $stmt->get_result();
@@ -160,7 +141,12 @@ if(isset($_REQUEST["btnReport"]))
 
                             while ($result = mysqli_fetch_assoc($Res)) { 
                         ?>
-                        <option value="<?php echo $result["id"]; ?>"><?php echo $result["name"]; ?></option>
+                        <option value="<?php echo $result["contact"]; ?>">
+                            <?php
+                                echo $result["fullName"]." - ";
+                                echo $result["contact"];
+                            ?>
+                        </option>
                         <?php 
                             } 
                         ?>
@@ -207,11 +193,13 @@ function getActions(id) {
     </ul>`
 }
 
-function getTechnician(con){
-    let idx = con.value;
-    const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", `./ajax/get_technician.php?`)
-    console.log(idx);
+function getTechnician(id,tid = 0){
+    const http = new XMLHttpRequest();
+    http.open("GET", `./ajax/get_technician.php?scid=${id}&tid=${tid}`);
+    http.send();
+    http.onload = function(){
+        document.getElementById("technician").innerHTML = http.responseText;
+    }
 }
 
 document.addEventListener('alpine:init', () => {
@@ -225,32 +213,30 @@ document.addEventListener('alpine:init', () => {
                          'Allocation Time', 'Status', 'Action'],
                     data: [
                         <?php
-                            if($results)
+                            if(isset($results))
                             {   
                                 $i=1;
                                 while ($row = mysqli_fetch_array($results)) {
-                                    ?>
-                                        [
-                                            <?php echo $i; ?>, 
-                                            `<?php echo $row["complaint_no"]; ?>`,
-                                            `<?php echo $row["fname"]." ".$row["lname"]; ?>`,
-                                            `<?php echo $row["contact"]; ?>`,
-                                            `<?php echo $row["service_center_name"]; ?>`,
-                                            `<?php echo $row["technician_name"]; ?>`,
-                                            `<?php echo $row["allocation_date"]; ?>`,
-                                            `<?php echo $row["allocation_time"]; ?>`,
-                                            `<?php echo $row["status"]; ?>`,
-                                            
-                                           
-                                            getActions(<?php echo $row["id"] ?>, '<?php echo $row["fname"]; ?>'),
-                                        ],
-                                    <?php 
-                                        $i++;
-                                        }
+                        ?>
+                            [
+                                <?php echo $i; ?>, 
+                                `<?php echo $row["complaint_no"]; ?>`,
+                                `<?php echo $row["fname"]." ".$row["lname"]; ?>`,
+                                `<?php echo $row["contact"]; ?>`,
+                                `<?php echo $row["service_center_name"]; ?>`,
+                                `<?php echo $row["technician_name"]; ?>`,
+                                `<?php echo $row["allocation_date"]; ?>`,
+                                `<?php echo $row["allocation_time"]; ?>`,
+                                `<?php echo $row["status"]; ?>`,
+                                getActions(<?php echo $row["id"] ?>, '<?php echo $row["fname"]; ?>'),
+                            ],
+                        <?php 
+                                $i++;
+                                }
+                            } else {
+
                             }
                         ?>
-                        
-                       
                     ],
                 },
                 perPage: 10,
@@ -321,7 +307,6 @@ document.addEventListener("alpine:init", () => {
                 defaultDate: this.date3,
                 dateFormat: 'd-m-Y',
                 mode: 'range',
-                minDate: formattedToday,
             })
         }
     }));
