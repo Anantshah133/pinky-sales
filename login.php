@@ -17,8 +17,10 @@ if (isset($_REQUEST['save'])) {
 
     if ($admin_data) {
         $_SESSION['type'] = "admin";
-        $_SESSION['username'] = $admin_data['username'];
-        $_SESSION['name'] = $admin_data['name'];
+        // $_SESSION['username'] = $admin_data['username'];
+        // $_SESSION['name'] = $admin_data['name'];
+        $_SESSION['admin_username'] = $admin_data['username'];
+        $_SESSION['admin_name'] = $admin_data['name'];
         setcookie("msg", "login", time() + 3600, "/");
         header("location:index.php");
     } else {

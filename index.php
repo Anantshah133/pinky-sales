@@ -166,7 +166,7 @@ document.addEventListener('alpine:init', () => {
                 },
                 stroke: {
                     show: true,
-                    width: 25,
+                    width: 10,
                     colors: isDark ? '#0e1726' : '#fff',
                 },
                 colors: isDark ? ['#5c1ac3', '#e2a03f', '#e7515a', '#e2a03f'] : ['#2eb384',
@@ -187,7 +187,7 @@ document.addEventListener('alpine:init', () => {
                 plotOptions: {
                     pie: {
                         donut: {
-                            size: '65%',
+                            size: '75%',
                             background: 'transparent',
                             labels: {
                                 show: true,
