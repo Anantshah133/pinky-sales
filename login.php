@@ -16,7 +16,7 @@ if (isset($_REQUEST['save'])) {
     $stmt->close();
 
     if ($admin_data) {
-        $_SESSION['type'] = "admin";
+        $_SESSION['type_admin'] = true;
         // $_SESSION['username'] = $admin_data['username'];
         // $_SESSION['name'] = $admin_data['name'];
         $_SESSION['admin_username'] = $admin_data['username'];
@@ -32,7 +32,7 @@ if (isset($_REQUEST['save'])) {
         $stmt->close();
 
         if($service_center_data){
-            $_SESSION['type'] = "center";
+            $_SESSION['type_center'] = true;
             $_SESSION['username'] = $service_center_data['userid'];
             $_SESSION['name'] = $service_center_data['name'];
             $_SESSION['scid'] = $service_center_data['id'];

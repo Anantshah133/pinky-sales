@@ -4,14 +4,14 @@ $obj = new DB_Connect();
 date_default_timezone_set('Asia/Kolkata');
 session_start();
 
-if (!isset($_SESSION['type'])) {
+if (!isset($_SESSION['type_admin']) && !isset($_SESSION['type_center'])) {
     header("location:login.php");
     exit;
 }
 
 $allowed_pages = array();
 
-if ($_SESSION['type'] == "admin") {
+if (isset($_SESSION['type_admin']) && $_SESSION['type_admin']) {
     $allowed_pages = array(
         "index.php",
         "user_profile.php",
@@ -40,7 +40,7 @@ if ($_SESSION['type'] == "admin") {
         "add_product_service.php",
         "add_privacy.php"
     );
-} elseif ($_SESSION['type'] == "center") {
+} elseif (isset($_SESSION['type_center']) && $_SESSION['type_center']) {
     $allowed_pages = array(
         "index.php",
         "user_profile.php",
@@ -217,7 +217,7 @@ if (isset($_REQUEST['logout'])) {
                         <h2 class='-mx-4 mb-1 flex items-center bg-white-light/30 py-3 px-7 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]'>
                             Admin Controls
                         </h2>
-                        <?php if ($_SESSION['type'] == "admin") { ?>
+                        <?php if (isset($_SESSION['type_admin']) && $_SESSION['type_admin']) { ?>
                                 <li class="menu nav-item">
                                     <a href="state.php" class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "state.php" ? "active" : "" ?>">
                                         <div class="flex items-center">
@@ -316,7 +316,7 @@ if (isset($_REQUEST['logout'])) {
                         </li>
                         <!------ Technician Page ------>
 
-                        <?php if ($_SESSION['type'] == "admin") { ?>
+                        <?php if (isset($_SESSION['type_admin']) && $_SESSION['type_admin']) { ?>
                                 <li class="menu nav-item">
                                     <a href="service_type.php" class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "service_type.php" ? "active" : "" ?>">
                                         <div class="flex items-center">
@@ -467,7 +467,7 @@ if (isset($_REQUEST['logout'])) {
                                 </div>
                             </div>
                             <div>
-                                <h3 class="text-[28px] margin-minus font-bold text-logo"><?php echo isset($_SESSION["type"]) && $_SESSION["type"] == "center" ? $_SESSION["name"] : 'SuperAdmin' ?></h3>
+                                <h3 class="text-[28px] margin-minus font-bold text-logo"><?php echo isset($_SESSION['type_center']) && $_SESSION['type_center'] ? $_SESSION["name"] : 'SuperAdmin' ?></h3>
                             </div>
                             <div class="flex gap-2">
                                 <div class="dropdown" x-data="dropdown" @click.outside="open = false">

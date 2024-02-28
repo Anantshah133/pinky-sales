@@ -89,7 +89,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                         headings: ['Sr.No.', 'Complaint No.','Customer Name', 'Customer Contact', 'Product Category', 'Service Center', 'Technician', 'Allocation Date Time', 'Status', 'Action'],
                         data: [
                             <?php
-                            if ($_SESSION['type'] == "center") {
+                            if (isset($_SESSION['type_center']) && $_SESSION['type_center']) {
                                 $center_id = $_SESSION['scid'];
                                 $stmt = $obj->con1->prepare("select tbl.*,t1.name as technician_name from (select c1.*,s1.name as service_center_name,p1.name as product_category_name,CONCAT(c2.fname,' ',c2.lname) as customer_name,c2.contact as customer_contact, CONCAT(c1.allocation_date, ' ', c1.allocation_time) as allocation_datetime FROM call_allocation c1,customer_reg c2,service_center s1,product_category p1 where c1.complaint_no=c2.complaint_no and c1.service_center_id=s1.id and c2.product_category=p1.id AND s1.id=?) as tbl LEFT JOIN technician t1 on tbl.technician=t1.id order by tbl.id DESC");
                                 $stmt->bind_param("i", $center_id);
