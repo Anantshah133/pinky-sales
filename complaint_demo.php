@@ -80,7 +80,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 this.datatable = new simpleDatatables.DataTable('#myTable', {
                     data: {
                         headings: ['Sr.No.', 'Complaint No.', 'Customer name', 'Contact', 'Pincode',
-                            'Service Type', 'Product Category', 'Dealer Name', 'Date Time','Status', 'Action'],
+                            'Service Type', 'Product Category', 'Dealer Name', 'Date Time', 'Source', 'Action'],
                         data: [
                             <?php
                             if (isset($_SESSION['type_center']) && $_SESSION['type_center']) {
@@ -121,8 +121,8 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                         $date = date_create($row['datetime']);
                                         echo date_format($date, "d-m-Y h:i A");
                                      ?>',
-                                    `<span class="badge badge-outline-success">
-                                        New
+                                    `<span class="badge badge-outline-<?php echo $row['source'] == 'web' ? 'secondary' : 'danger' ?>">
+                                        <?php echo ucfirst($row['source']) ?>
                                     </span>`,
                                     getActions('<?php echo $row['id'] ?>', '<?php echo $row['complaint_no'] ?>')
                                 ],
