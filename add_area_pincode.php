@@ -112,17 +112,17 @@ if (isset($_REQUEST["save"])) {
                 </div>
                 <div>
                     <label for="groupFname"> Pincode </label>
-                    <input type="hidden" id="pid" value="<?php echo (isset($mode)) ? $data['id'] : '' ?>">
-                    <input id="pincode" name="pincode" type="text" class="form-input" pattern="^[1-9][0-9]{5}$"
-                        title="enter valid pincode" maxlength="6"
-                        onkeypress="return event.charCode >= 48 && event.charCode <= 57" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['pincode'] : '' ?>"
+                    <input id="pincode" name="pincode" type="text" class="form-input"onblur="checkName(this,<?php echo isset($mode) ? $data['id'] : 0 ?>)" 
+                     pattern="^[1-9][0-9]{5}$"title="enter valid pincode" maxlength="6"
+                        onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 13" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['pincode'] : '' ?>"
                         required />
                     <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
                 </div>
                 <div class="relative inline-flex align-middle gap-3 mt-4">
                     <!-- Save/Update button -->
                     <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
-                        id="save" class="btn btn-success" <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
+                        id="save" class="btn btn-success" <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>
+                        onclick="return localValidate()">
                         <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
                     </button>
                     <!-- Close button -->
@@ -136,46 +136,46 @@ if (isset($_REQUEST["save"])) {
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const submitButton = document.getElementById('save');
-        const form = document.getElementById('mainForm');
-
-        submitButton.addEventListener('click', function () {
-            const c1 = document.getElementById("pincode");
-            const id = document.getElementById("pid");
-            // if (!validateAndDisable()) {
-            //     return false;
-            // }
-            if (!checkName(c1, id)) {
-                return false;
+    console.log(document.getElementById('stateId'))
+    let form = document.getElementById('mainForm');
+    function localValidate(){
+        let submitButton = document.getElementById('save');
+        let pincode = document.getElementById('pincode');
+        
+        if (form.checkValidity()) {
+            if(checkName(pincode, <?php echo isset($mode) ? $data['id'] : 0 ?>)){
+                setTimeout(() => {
+                    submitButton.disabled = true;
+                }, 0);
+                return true;
             }
-        });
-    });
+        }
+    }
 
     function checkName(c1, id) {
-        const n = c1.value;
-        const pid = id.value;
-
+        if(!form.checkValidity()) return;
+        let n = c1.value;
+        
         const obj = new XMLHttpRequest();
-        obj.open("GET", "./ajax/check_pincode.php?pincode=" + n + "&pid=" + pid, false); // synchronous request
+        obj.open("GET", `./ajax/check_pincode.php?pincode=${n}&pid=${id}`, false);
         obj.send();
+        console.log(n, id);
 
-        if (obj.status == 200) {
-            const x = obj.responseText;
+        if(obj.status == 200){
+            let x = obj.responseText;
             if (x >= 1) {
                 c1.value = "";
                 c1.focus();
-                document.getElementById("demo").innerHTML = "Sorry the pincode already exists!";
+                document.getElementById("demo").innerHTML = "Sorry the name alredy exist!";
                 return false;
-            } else {
+            }
+            else {
                 document.getElementById("demo").innerHTML = "";
                 return true;
             }
-        } else {
-            // Handle errors
-            return false;
         }
     }
+
 </script>
 <script>
     function loadCities(stid, ctid = 0) {
