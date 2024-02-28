@@ -103,7 +103,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                 $i = 1;
                             }
                             while ($row = mysqli_fetch_array($Resp)) {
-                                ?>
+                            ?>
                                 [
                                     '<?php echo $i ?>', 
                                     '<?php echo $row['complaint_no'] ?>',
@@ -112,15 +112,32 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                     '<?php echo $row['product_category_name'] ?>',
                                     '<?php echo $row['service_center_name'] ?>',
                                     '<?php echo $row['technician_name'] ?>',
-                                    '<?php 
-                                        // echo $fetch_date = $row['allocation_datetime'] != "" ? $row['allocation_datetime'] : '------';
-                                        // echo $fetch_date ? date_format($fetch_date, "d-m-Y h:i A") : '';
-                                        // echo "--".$row["allocation_datetime"]."---";
-                                        $fetch_date = trim($row['allocation_datetime']) != "" ? date_format(date_create($row['allocation_datetime']), "d-m-Y h:i A") : '';
-                                        echo $fetch_date;
+                                    '<?php
+                                    $fetch_date = trim($row['allocation_datetime']) != "" ? date_format(date_create($row['allocation_datetime']), "d-m-Y h:i A") : '';
+                                    echo $fetch_date;
                                     ?>',
-                                    `<span class="badge badge-outline-<?php 
-                                    echo $row["status"] == "allocated"  || $row["status"] == "closed"  || $row["status"] == "new" ? 'success' : 'danger'?>">
+                                    `<span class="badge badge-outline-<?php
+                                        switch ($row["status"]) {
+                                            case 'new':
+                                                echo 'secondary';
+                                                break;
+                                            case 'allocated':
+                                                echo 'warning';
+                                                break;
+                                            case 'closed':
+                                                echo 'success';
+                                                break;
+                                            case 'cancelled':
+                                                echo 'danger';
+                                                break;
+                                            case 'pending':
+                                                echo 'dark';
+                                                break;
+                                            default:
+                                                echo 'primary';
+                                                break;
+                                        }
+                                    ?>">
                                         <?php echo ucfirst($row["status"]); ?>
                                     </span>`,
                                     getActions(<?php echo $row['id'] ?>, '<?php echo $row['complaint_no'] ?>')
