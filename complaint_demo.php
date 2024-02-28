@@ -116,7 +116,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                     '<?php echo $row['zipcode'] ?>',
                                     '<?php echo $row['service_type'] ?>',
                                     '<?php echo $row['product_category'] ?>',
-                                    '<?php echo $row['dealer_name'] ?>',
+                                    `<?php echo $row['dealer_name'] ?>`,
                                     '<?php 
                                         $date = date_create($row['datetime']);
                                         echo date_format($date, "d-m-Y h:i A");
