@@ -86,7 +86,8 @@ if (isset($_REQUEST["save"])) {
                     <div class="relative inline-flex align-middle gap-3 mt-4">
                     <!-- Save/Update button -->
                     <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
-                        id="save" class="btn btn-success" <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
+                        id="save" class="btn btn-success" <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>
+                        onclick="return localValidate()">
                         <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
                     </button>
                     <!-- Close button -->
