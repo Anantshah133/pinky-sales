@@ -276,6 +276,7 @@ function uploadImage($inputName, $uploadDirectory)
                         <div>
                             <label for="technician">Technician </label>
                             <select class="form-select text-white-dark" id="technician" name="technician" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
+                                <option value=""><?php echo isset($mode) && $mode == "view" ? (isset($data["tech"]) ? $data["tech"] : 'No Technician') : 'Choose Technician' ?></option>
                             </select>
                         </div>
                         <div>
@@ -363,7 +364,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
             <div class='px-6 py-4' x-data='exportTable'>
                 <div class="panel">
                     <div class='flex items-center justify-between mb-3'>
-                        <h1 class='text-primary text-2xl font-bold'>Call History</h1>
+                        <h1 class='text-primary text-2xl font-semibold'>Call History</h1>
 
                         <div class="flex flex-wrap items-center">
                             <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="addHistory()">

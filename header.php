@@ -467,7 +467,7 @@ if (isset($_REQUEST['logout'])) {
                                 </div>
                             </div>
                             <div>
-                                <h3 class="text-2xl font-bold text-primary"><?php echo isset($_SESSION["type"]) && $_SESSION["type"] == "center" ? $_SESSION["name"] : 'SuperAdmin' ?></h3>
+                                <h3 class="text-[28px] margin-minus font-bold text-logo"><?php echo isset($_SESSION["type"]) && $_SESSION["type"] == "center" ? $_SESSION["name"] : 'SuperAdmin' ?></h3>
                             </div>
                             <div class="flex gap-2">
                                 <div class="dropdown" x-data="dropdown" @click.outside="open = false">

@@ -27,7 +27,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-2">
         <div class='flex items-center justify-between mb-3'>
-            <h1 class='text-primary text-2xl font-bold'>Service Center</h1>
+            <h1 class='text-primary text-2xl font-semibold'>Service Center</h1>
 
             <div class="flex flex-wrap items-center">
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1"
@@ -78,7 +78,7 @@ document.addEventListener('alpine:init', () => {
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
                     headings: ['Sr.No.', 'Name', '	Email', 'Contact',
-                        'Adress', 'Area', 'Status', 'Date Time',
+                        'Adress', 'City', 'Status', 'Date Time',
                         'Action'
                     ],
                     data: [

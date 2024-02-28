@@ -31,7 +31,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-2">
         <div class='flex items-center justify-between mb-3'>
-            <h1 class='text-primary text-2xl font-bold'>Privacy Policy</h1>
+            <h1 class='text-primary text-2xl font-semibold'>Privacy Policy</h1>
 
             <div class="flex flex-wrap items-center">
                 <a href="add_privacy.php"> <button type="button" class="p-2 btn btn-primary btn-sm m-1">

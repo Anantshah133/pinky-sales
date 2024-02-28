@@ -4,7 +4,7 @@ include "header.php";
 if (isset($_COOKIE['viewId'])) {
     $mode = 'view';
     $viewId = $_COOKIE['viewId'];
-    $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg` where id=?");
+    $stmt = $obj->con1->prepare("SELECT c1.*, s1.name as service_type_name FROM `customer_reg` c1, service_type s1 WHERE c1.service_type=s1.id AND c1.id=?");
     $stmt->bind_param("i", $viewId);
     $stmt->execute();
     $Resp = $stmt->get_result();
@@ -238,7 +238,7 @@ if (isset($_POST['save'])) {
                         <div>
                             <label for="service_type"> Service Type </label>
                             <select name="service_type" id="service_type" class="form-select text-white-dark" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>>
-                                <option value="">Choose Service Type</option>
+                                <option value=""><?php echo isset($mode) && $mode == 'view' ? $data["service_type_name"] : 'Choose Service Type' ?></option>
                             </select>
                         </div>
                         <div>

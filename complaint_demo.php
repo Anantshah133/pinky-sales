@@ -29,7 +29,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-2">
         <div class='flex items-center justify-between mb-3'>
-            <h1 class='text-primary text-2xl font-bold'>Complaint / Demo</h1>
+            <h1 class='text-primary text-2xl font-semibold'>Complaint / Demo</h1>
 
             <div class="flex flex-wrap items-center">
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1"
@@ -80,7 +80,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 this.datatable = new simpleDatatables.DataTable('#myTable', {
                     data: {
                         headings: ['Sr.No.', 'Complaint No.', 'Customer name', 'Contact', 'Pincode',
-                            'Service Type', 'Product Category', 'Date Time', 'Status', 'Action'],
+                            'Service Type', 'Product Category', 'Dealer Name', 'Date Time','Status', 'Action'],
                         data: [
                             <?php
                             if ($_SESSION['type'] == 'center') {
@@ -113,10 +113,10 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                     '<?php echo $row['complaint_no'] ?>',
                                     '<?php echo $row['customer_name'] ?>',
                                     '<?php echo $row['contact'] ?>',
-                                    // '<?php //echo $row['city'] ?>',
                                     '<?php echo $row['zipcode'] ?>',
                                     '<?php echo $row['service_type'] ?>',
                                     '<?php echo $row['product_category'] ?>',
+                                    '<?php echo $row['dealer_name'] ?>',
                                     '<?php 
                                         $date = date_create($row['datetime']);
                                         echo date_format($date, "d-m-Y h:i A");

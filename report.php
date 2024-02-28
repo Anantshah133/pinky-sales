@@ -163,7 +163,7 @@ if(isset($_REQUEST["btnReport"]))
 <div class='px-6' x-data='exportTable'>
     <div class="panel mt-2 shadow-md shadow-slate-200 border">
         <div class='flex items-center justify-between mb-3'>
-            <h1 class='text-primary text-2xl font-bold'>Report</h1>
+            <h1 class='text-primary text-2xl font-semibold'>Report</h1>
             <div class="flex flex-wrap items-center">
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT

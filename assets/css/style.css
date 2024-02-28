@@ -3,6 +3,9 @@
     height: 176px;
     width: 256px
 }
+.margin-minus{
+    margin-left: -100px;
+}
 
 .ltr .ql-snow .ql-editor img {
     margin-left: 0
@@ -7233,6 +7236,10 @@ pre {
     font-size: 50px
 }
 
+.text-\[28px\] {
+    font-size: 28px
+}
+
 .text-base {
     font-size: 1rem;
     line-height: 1.5rem
@@ -7314,6 +7321,10 @@ pre {
 .\!text-primary {
     --tw-text-opacity: 1 !important;
     color: rgb(67 97 238/var(--tw-text-opacity)) !important
+}
+
+.text-logo{
+    color: #001e6b;
 }
 
 .text-\[\#009688\] {
