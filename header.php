@@ -582,7 +582,7 @@ if (isset($_REQUEST['logout'])) {
                                                         <span class="rounded bg-success-light px-1 text-xs text-success ltr:ml-2 rtl:ml-2">Pro</span>
                                                     </h4>
                                                     <a class="text-black/60 hover:text-primary dark:text-dark-light/60 dark:hover:text-white"
-                                                        href="javascript:;">johndoe@gmail.com</a>
+                                                        href="javascript:;"><?php echo isset($_SESSION['admin_username']) && $_SESSION['admin_username'] ? $_SESSION['admin_username'] : $_SESSION['username'] ?></a>
                                                 </div>
                                             </div>
                                         </li>
