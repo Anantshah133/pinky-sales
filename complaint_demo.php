@@ -83,7 +83,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                             'Service Type', 'Product Category', 'Dealer Name', 'Date Time','Status', 'Action'],
                         data: [
                             <?php
-                            if ($_SESSION['type'] == 'center') {
+                            if (isset($_SESSION['type_center']) && $_SESSION['type_center']) {
                                 $city_id = $_SESSION['sc_city'];
 
                                 $stmt = $obj->con1->prepare("SELECT pincode FROM area_pincode WHERE city_id=?");

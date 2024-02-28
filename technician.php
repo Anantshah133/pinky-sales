@@ -86,7 +86,7 @@ document.addEventListener('alpine:init', () => {
                     ],
                     data: [
                         <?php
-                            if($_SESSION['type'] == "center"){
+                            if(isset($_SESSION['type_center']) && $_SESSION['type_center']){
                                 $user_id = $_SESSION['username'];
                                 $stmt = $obj->con1->prepare(
                                     "SELECT t1.*, s1.name AS service_center_name FROM technician t1, service_center s1 WHERE t1.service_center=s1.id AND s1.userid=?"

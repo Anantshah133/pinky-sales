@@ -35,8 +35,8 @@
                     <h2 class="mb-8 text-[50px] font-bold leading-none md:text-[80px]">Error 404</h2>
                     <h4 class="mb-5 text-xl font-semibold text-primary sm:text-5xl">Ooops!</h4>
                     <p class="text-base">The page you requested was not found!</p>
-                    <a href="<?php echo isset($_SESSION['type']) ? 'index.php' : 'login.php' ?>" class="btn btn-primary mx-auto mt-10 w-max">
-                        <?php echo isset($_SESSION['type']) ? 'Home' : 'Login' ?>
+                    <a href="<?php echo (isset($_SESSION['type_admin']) && $_SESSION['type_admin']) || (isset($_SESSION['type_center']) && $_SESSION['type_center']) ? 'index.php' : 'login.php' ?>" class="btn btn-primary mx-auto mt-10 w-max">
+                        Go Back
                     </a>
                 </div>
             </div>

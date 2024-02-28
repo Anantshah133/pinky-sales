@@ -1,7 +1,7 @@
 <?php
 include "header.php";
 
-$center_id = $_SESSION["type"] == 'center' ? $_SESSION["scid"] : null;
+$center_id = isset($_SESSION['type_center']) && $_SESSION['type_center'] ? $_SESSION["scid"] : null;
 if (isset($_COOKIE['editId'])) {
     $mode = 'edit';
     $editId = $_COOKIE['editId'];
