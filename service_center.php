@@ -84,7 +84,7 @@ document.addEventListener('alpine:init', () => {
                     data: [
                         <?php
                             $stmt = $obj->con1->prepare(
-                                "SELECT sc1.*, c1.ctnm AS city FROM service_center sc1, city c1 WHERE c1.srno=sc1.area"
+                                "SELECT sc1.*, c1.ctnm AS city FROM service_center sc1, city c1 WHERE c1.srno=sc1.area AND sc1.id!=0"
                             );
                             $stmt->execute();
                             $res_stmt = $stmt->get_result();

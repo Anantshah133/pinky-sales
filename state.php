@@ -79,7 +79,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                         headings: ['Sr.No.', 'Name', 'Action'],
                         data: [
                             <?php
-                            $stmt = $obj->con1->prepare("SELECT * FROM `state`");
+                            $stmt = $obj->con1->prepare("SELECT * FROM `state` WHERE name != 'no state'");
                             $stmt->execute();
                             $Resp = $stmt->get_result();
                             $i = 1;

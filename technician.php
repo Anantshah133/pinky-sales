@@ -98,7 +98,7 @@ document.addEventListener('alpine:init', () => {
                                 $id = 1;
                             } else {
                                 $stmt = $obj->con1->prepare(
-                                    "SELECT t1.*, s1.name AS service_center_name FROM technician t1, service_center s1 WHERE t1.service_center=s1.id"
+                                    "SELECT t1.*, s1.name AS service_center_name FROM technician t1, service_center s1 WHERE t1.service_center=s1.id AND t1.name!='no technician'"
                                 );
                                 $stmt->execute();
                                 $res_stmt = $stmt->get_result();
