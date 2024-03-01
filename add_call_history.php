@@ -81,7 +81,7 @@ if (isset($_REQUEST["save"])) {
     $parts_charge = $_REQUEST["parts_charge"];
     $status = $_REQUEST["status"];
     $reason = $_REQUEST['reason'];
-    $date_time = date("d-m-Y h:i A");
+    $date_time = date("Y-m-d h:i A");
 
     try {
 

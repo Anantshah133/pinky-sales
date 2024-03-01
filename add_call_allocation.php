@@ -461,7 +461,10 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                                             <?php echo ucfirst($row["status"]); ?>
                                                         </span>`,
                                                         '<?php echo $row['reason'] ?>',
-                                                        '<?php echo $row['date_time'] ?>',
+                                                        '<?php 
+                                                            // $date = date_create($row['datetime']);
+                                                            echo date("d-m-Y h:i A",strtotime($row["date_time"]));
+                                                        ?>',
                                                         getActions('<?php echo $row['id'] ?>', '<?php echo $row['complaint_no'] ?>')
                                                     ],
                                                 <?php
