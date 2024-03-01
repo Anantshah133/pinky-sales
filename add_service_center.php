@@ -33,7 +33,7 @@ if(isset($_REQUEST['update'])){
     $address = $_REQUEST["address"];
     $state = $_REQUEST["state"];
     $city = $_REQUEST['cityName'];
-    $date_time = date("d-m-Y h:i A");
+    $date_time = date("Y-m-d H:i:s");
 
     $stmt = $obj->con1->prepare(
         "UPDATE service_center SET name=?, email=?, contact=?, userid=?, password=?, status=?, address=?, area=?, date_time=? WHERE id=?"
@@ -59,7 +59,7 @@ if (isset($_REQUEST["save"])) {
     $status = $_REQUEST["default_radio"];
     $address = $_REQUEST["address"];
     $city = $_REQUEST['cityName'];
-    $date_time = date("d-m-Y h:i A");
+    $date_time = date("Y-m-d  h:i A");
 
     echo "INSERT INTO `service_center`(`name`,`email`,`contact`,`userid`,`password`,`status`,`address`,`area`,`date_time`) VALUES ($name,$email,$contact,$user_id,$pass,$status,$address,$city,$date_time)";
 

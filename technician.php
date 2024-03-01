@@ -116,7 +116,8 @@ document.addEventListener('alpine:init', () => {
                                 `<span class="badge badge-outline-<?php echo $row["status"] == "enable" ? 'success' : 'danger' ?>">
                                     <?php echo ucfirst($row["status"]); ?>
                                 </span>`,
-                                '<?php echo $row["date_time"]; ?>', 
+                                '<?php //echo $row["date_time"]; 
+                                 echo date("d-m-Y h:i A", strtotime($row["date_time"]));?>', 
                                 getActions(<?php echo $row["id"]; ?>,'<?php echo $row["name"];?>')
                             ],
                         <?php 

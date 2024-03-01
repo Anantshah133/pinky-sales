@@ -32,7 +32,7 @@ if (isset($_REQUEST['update'])) {
     $user_id = $_REQUEST["userid"];
     $pass = $_REQUEST["password"];
     $status = $_REQUEST["default_radio"];
-    $date_time = date("d-m-Y h:i A");
+    $date_time = date("Y-m-d  h:i A");
 
     if ($_FILES['idproof_img']['size'] > 0) {
         $serialNumImg = uploadImage('idproof_img', 'images/technician_idproof');
@@ -82,7 +82,7 @@ if (isset($_REQUEST["save"])) {
 
     $pass = $_REQUEST["password"];
     $status = $_REQUEST["default_radio"];
-    $date_time = date("d-m-Y h:i A");
+    $date_time = date("Y-m-d  h:i A");
     $idproofImg = "123";
 
     echo "INSERT INTO `technician`(`name`,`email`,`contact`,`service_center`,`userid`,`password`,`id_proof`,`status`,`date_time`) VALUES ($name,$email,$contact,$serviceCenterId,$user_id,$pass,$status,$date_time,$idproofImg)";
