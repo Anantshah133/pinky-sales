@@ -54,7 +54,7 @@ if (isset($_REQUEST['update'])) {
     $parts_charge = $_REQUEST["parts_charge"];
     $status = $_REQUEST["status"];
     $reason = $_REQUEST['reason'];
-    $date_time = date("d-m-Y h:i A");
+    $date_time = date("Y-m-d h:i A");
 
     $stmt = $obj->con1->prepare(
         "UPDATE call_history SET complaint_no=?,service_center=?,technician=?,parts_used=?,call_type=?,service_charge=?,parts_charge=?,status=?,reason=?,date_time=? WHERE id=?"
