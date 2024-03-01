@@ -96,6 +96,12 @@ if (isset($_REQUEST["save"])) {
                 "Problem in adding! " . strtok($obj->con1->error, "(")
             );
         }
+        else
+        {
+            $stmt2 = $obj->con1->prepare("update call_allocation set status=? where complaint_no=?");
+            $stmt2->bind_param("ss",$status,$complaint_number);
+            $stmt2->execute();
+        }
         $stmt->close();
     } catch (\Exception $e) {
         setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");

@@ -3,18 +3,24 @@ include "header.php";
 setcookie("editId", "", time() - 3600);
 setcookie("viewId", "", time() - 3600);
 
-
+if(isset($_SESSION["scid"]))
+{
 $stmt = $obj->con1->prepare("SELECT 
     SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) AS new_num,
     SUM(CASE WHEN status='allocated' THEN 1 ELSE 0 END) AS allocated_num,
     SUM(CASE WHEN status='pending' THEN 1 ELSE 0 END) AS pending_num,
     SUM(CASE WHEN status='closed' THEN 1 ELSE 0 END) AS closed_num
     FROM call_allocation where service_center_id=?");
-
-    //echo $_SESSION["scid"];
-    $stmt->bind_param("i",$_SESSION["scid"]);
-
-    
+     $stmt->bind_param("i",$_SESSION["scid"]);
+}
+else{
+    $stmt = $obj->con1->prepare("SELECT 
+    SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) AS new_num,
+    SUM(CASE WHEN status='allocated' THEN 1 ELSE 0 END) AS allocated_num,
+    SUM(CASE WHEN status='pending' THEN 1 ELSE 0 END) AS pending_num,
+    SUM(CASE WHEN status='closed' THEN 1 ELSE 0 END) AS closed_num
+    FROM call_allocation");
+}
 $stmt->execute();
 $Resp = $stmt->get_result();
 $data = $Resp->fetch_assoc();
