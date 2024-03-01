@@ -4,8 +4,10 @@ if(isset($_REQUEST["btnReport"]))
 {
     
     $Daterange = isset($_REQUEST["daterange"])?explode(" to ",$_REQUEST["daterange"]):"";
-    $fromDate=isset($_REQUEST["daterange"])?$Daterange[0]:"";
-    $toDate=isset($_REQUEST["daterange"])?$Daterange[1]:"";
+   
+       $fromDate=isset($Daterange[0])? $Daterange[0]:"";
+       $toDate=isset($Daterange[1])? $Daterange[1]:"";
+    
 	$service_center = isset($_REQUEST["service_center"])?$_REQUEST["service_center"]:"";
 	$technician = isset($_REQUEST["technician"])?$_REQUEST["technician"]:"";
 	$status = isset($_REQUEST["status"])?$_REQUEST["status"]:"";
@@ -119,7 +121,7 @@ if(isset($_REQUEST["btnReport"]))
                             $stmt->close();
                             while ($result = mysqli_fetch_assoc($Res)) { 
                         ?>
-                            <option value="<?php echo $result["id"]; ?>"><?php echo $result["complaint_no"]; ?></option>
+                            <option value="<?php echo $result["complaint_no"]; ?>"><?php echo $result["complaint_no"]; ?></option>
                         <?php 
                             } 
                         ?>
@@ -130,7 +132,7 @@ if(isset($_REQUEST["btnReport"]))
                     <label for="groupFname"> Contact No</label>
 
                     <select id="seachable-select" name="contact_no" >
-                        <!-- <option value="">Choose Contact Number</option> -->
+                        <option value="">Choose Contact Number</option> 
                         <?php
                             $stmt = $obj->con1->prepare(
                                 "SELECT CONCAT(fname, ' ', lname) as fullName, contact FROM `customer_reg`"
