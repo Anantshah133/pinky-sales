@@ -83,6 +83,11 @@ function checkCookies(){
         eraseCookie("msg")
         return;
     }
+    if(readCookie("msg") == "passChange"){
+        coloredToast("success", 'Password Changed Successfully !');
+        eraseCookie("msg")
+        return;
+    }
 }
 
 function validateAndDisable() {
