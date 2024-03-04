@@ -85,16 +85,8 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                             <?php
                             if (isset($_SESSION['type_center']) && $_SESSION['type_center']) {
                                 $city_id = $_SESSION['sc_city'];
-
-                                $stmt = $obj->con1->prepare("SELECT pincode FROM area_pincode WHERE city_id=?");
+                                $stmt = $obj->con1->prepare("select c1.*,s1.name as service_type,p1.name as product_category, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1,service_type s1,product_category p1 where c1.service_type=s1.id and c1.product_category=p1.id AND c1.area=? order by c1.id desc");
                                 $stmt->bind_param("i", $city_id);
-                                $stmt->execute();
-                                $data = $stmt->get_result()->fetch_assoc();
-                                $stmt->close();
-
-                                $zipcode = $data["pincode"];
-                                $stmt = $obj->con1->prepare("select c1.*,s1.name as service_type,p1.name as product_category, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1,service_type s1,product_category p1 where c1.service_type=s1.id and c1.product_category=p1.id AND c1.zipcode=? order by c1.id desc");
-                                $stmt->bind_param("i", $zipcode);
                                 $stmt->execute();
                                 $Resp = $stmt->get_result();
                                 $stmt->close();

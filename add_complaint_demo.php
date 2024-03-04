@@ -89,18 +89,10 @@ if (isset($_POST['save'])) {
 
     //--------------//
     $complaint_date = date("Y-m-d", strtotime($complaint_date));
+    
     try {
-        $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `barcode`, `source`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("sssssssssiissssss", $fname, $lname, $email, $contact, $alt_contact, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $barcode, $source, $complaint_date, $complaint_time);
-        $Resp = $stmt->execute();
-        $stmt->close();
-
-        // echo "<br/> Insert Customer_reg :- INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `barcode`,`source`, `date`, `time`) VALUES (". $fname.", ". $lname.", ". $email.", ". $contact.", ". $alt_contact.", ". $map_location.", ". $address.", ". $pincode.", ". $complaint_no.", ". $service_type.", ". $product_category.", ". $dealer_name.", ". $description.", ". $barcode.", ". $source.", ". $complaint_date.", ". $complaint_time.")";
-
-
         // allocate call - added by Rachna
         // ------- get city by anant
-
         $stmt = $obj->con1->prepare("SELECT c1.ctnm,a1.* FROM area_pincode a1, city c1 WHERE a1.city_id=c1.srno AND a1.pincode=?");
         $stmt->bind_param("s", $pincode);
         $stmt->execute();
@@ -109,26 +101,26 @@ if (isset($_POST['save'])) {
         $city_data = $res_area->fetch_assoc();
         if($num_area>0)
         {
-             
-             $fetched_city_id = $city_data["city_id"];
+            $fetched_city_id = $city_data["city_id"];
         }
         else{
-            $fetched_city_id = 21;
+            $fetched_city_id = 0;
         }
-
         $stmt->close();
 
-        // ------- get service center from city by anant
-       
-      
+        $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `area`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `barcode`, `source`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param("sssssissssiissssss", $fname, $lname, $email, $contact, $alt_contact, $fetched_city_id, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $barcode, $source, $complaint_date, $complaint_time);
+        $Resp = $stmt->execute();
+        $stmt->close();
 
+        // echo "<br/> Insert Customer_reg :- INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `barcode`,`source`, `date`, `time`) VALUES (". $fname.", ". $lname.", ". $email.", ". $contact.", ". $alt_contact.", ". $map_location.", ". $address.", ". $pincode.", ". $complaint_no.", ". $service_type.", ". $product_category.", ". $dealer_name.", ". $description.", ". $barcode.", ". $source.", ". $complaint_date.", ". $complaint_time.")";
+
+        // ------- get service center from city by anant
+        
         $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE area=?");
         $stmt->bind_param("i", $fetched_city_id);
         $stmt->execute();
-       
-        
         $service_center = $stmt->get_result()->fetch_assoc();
-        
         $stmt->close();
 
         // insert into call allocation

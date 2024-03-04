@@ -32,10 +32,6 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         <div class='flex items-center justify-between mb-3'>
             <h1 class='text-primary text-2xl font-semibold'>Call Allocation</h1>
             <div class="flex flex-wrap items-center">
-                <!-- <button type="button" class="p-2 btn btn-primary btn-sm m-1"
-                    onclick="location.href='add_call_allocation.php'">
-                    <i class="ri-add-line mr-1"></i> Add Call
-                </button> -->
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
                 </button>
@@ -95,11 +91,13 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                 $stmt->bind_param("i", $center_id);
                                 $stmt->execute();
                                 $Resp = $stmt->get_result();
+                                $stmt->close();
                                 $i = 1;
                             } else {
                                 $stmt = $obj->con1->prepare("select tbl.*,t1.name as technician_name from (select c1.*,s1.name as service_center_name,p1.name as product_category_name,CONCAT(c2.fname,' ',c2.lname) as customer_name,c2.contact as customer_contact,CONCAT(c1.allocation_date, ' ', c1.allocation_time) as allocation_datetime FROM call_allocation c1,customer_reg c2,service_center s1,product_category p1 where c1.complaint_no=c2.complaint_no and c1.service_center_id=s1.id and c2.product_category=p1.id ) as tbl LEFT JOIN technician t1 on tbl.technician=t1.id order by tbl.id desc");
                                 $stmt->execute();
                                 $Resp = $stmt->get_result();
+                                $stmt->close();
                                 $i = 1;
                             }
                             while ($row = mysqli_fetch_array($Resp)) {

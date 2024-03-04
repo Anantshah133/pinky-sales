@@ -112,14 +112,31 @@ if (isset($_REQUEST['update'])) {
 
     try {
         $stmt = $obj->con1->prepare("UPDATE `call_allocation` SET complaint_no=?, service_center_id=?, product_serial_no=?, serial_no_img=?, product_model=?, product_model_img=?, purchase_date=?, purchase_date_img=?, technician=?, allocation_date=?, allocation_time=?, status=?, reason=? WHERE call_allocation.id=?");
-
         $stmt->bind_param("sissssssissssi", $complaintNum, $serviceCenterId, $productSerialNum, $serialNumImg, $productModel, $productModelImg, $purchaseDate, $purchaseDateImg, $technician, $allocationDate, $allocationTime, $callStatus, $reason, $editId);
         $Resp = $stmt->execute();
-
         if (!$Resp) {
             throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
         }
         $stmt->close();
+
+        if($serviceCenterId != 0){
+            $stmt = $obj->con1->prepare("SELECT area FROM service_center WHERE id=?");
+            $stmt->bind_param("i", $serviceCenterId);
+            $stmt->execute();
+            $Res = $stmt->get_result();
+            $temp = $Res->fetch_assoc();
+            $update_area_id = $temp['area'];
+            $stmt->close();
+
+            $stmt = $obj->con1->prepare("UPDATE customer_reg SET area=? WHERE complaint_no=?");
+            $stmt->bind_param("is", $update_area_id, $complaintNum);
+            $Result = $stmt->execute();
+            $stmt->close();
+
+            if(!$Result){
+                throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
+            }
+        }
     } catch (\Exception $e) {
         setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
     }

@@ -15,7 +15,7 @@ if (isset($_COOKIE['comp_no']) && !isset($_COOKIE["callEditId"]) && !isset($_COO
     $stmt->execute();
     $Resp = $stmt->get_result();
     $preData = $Resp->fetch_assoc();
-    $preData["t_name"] ." ". $preData["sc_name"];
+    $preData["t_name"] . " " . $preData["sc_name"];
     // $service_id = $preData["service_center_id"];
     // $tech_id = $preData["technician"];
     // $comp_no = $preData['complaint_no'];
@@ -95,11 +95,9 @@ if (isset($_REQUEST["save"])) {
             throw new Exception(
                 "Problem in adding! " . strtok($obj->con1->error, "(")
             );
-        }
-        else
-        {
+        } else {
             $stmt2 = $obj->con1->prepare("update call_allocation set status=? where complaint_no=?");
-            $stmt2->bind_param("ss",$status,$complaint_number);
+            $stmt2->bind_param("ss", $status, $complaint_number);
             $stmt2->execute();
         }
         $stmt->close();
@@ -137,29 +135,9 @@ if (isset($_REQUEST["save"])) {
             <div>
                 <label for="groupFname"> Service Center</label>
                 <select class="form-select text-white-dark" name="service_center" value="<?php echo isset($mode) ? '' : '' ?>" required >
-                <option value="<?php echo !isset($mode) ? $preData["service_center_id"] : $data["service_center"] ?>">
-                    <?php echo !isset($mode) ? $preData["sc_name"] : $data["service_center_name"] ?>
-                </option>
-                    <?php
-                    // $stmt = $obj->con1->prepare(
-                    //     "SELECT * FROM `service_center` WHERE status='enable'"
-                    // );
-                    // $stmt->execute();
-                    // $Res = $stmt->get_result();
-                    // $stmt->close();
-                    
-                    // while ($result = mysqli_fetch_assoc($Res)) { 
-                    //     if($service_id==$result["id"]){
-                    ?>
-                    <!-- <option value="<?php //echo $result["id"];                     ?>"
-                        <?php //echo isset($mode) && $result['id'] == $data['service_center_id'] ? 'selected' : ''                     ?>>
-                        <?php //echo $result["name"];                     ?>
-                    </option> -->
-                    <?php
-                    //     }
-                    // } 
-                    ?>
-
+                    <option value="<?php echo !isset($mode) ? $preData["service_center_id"] : $data["service_center"] ?>">
+                        <?php echo !isset($mode) ? $preData["sc_name"] : $data["service_center_name"] ?>
+                    </option>
                 </select>
             </div>
             <div>
@@ -168,68 +146,37 @@ if (isset($_REQUEST["save"])) {
                     <option value="<?php echo !isset($mode) ? $preData["technician"] : $data["technician"] ?>">
                         <?php echo !isset($mode) ? $preData["t_name"] : $data["technician_name"] ?>
                     </option>
-                    <!-- <?php
-                    // $stmt = $obj->con1->prepare(
-                    //     "SELECT * FROM `technician` WHERE status='enable'"
-                    // );
-                    // $stmt->execute();
-                    // $Res = $stmt->get_result();
-                    // $stmt->close();
-                    
-                    // while ($result = mysqli_fetch_assoc($Res)) { 
-                    //     if($tech_id==$result["id"])
-                    //     {
-                    ?>
-                    <option value="<?php //echo $result["id"];                     ?>"
-                        <?php //echo isset($mode) && $result['id'] == $data['technician'] ? 'selected' : ''                     ?>>
-                        <?php //echo $result["name"];                     ?>
-                    </option>
-                    <?php
-                    //     }
-                    // } 
-                    ?> -->
                 </select>
             </div>
             <div>
-                <label for="groupFname"> Parts Used</label>
+                <label for="groupFname">Parts Used</label>
                 <select class="form-select text-white-dark" name="parts_used" required>
-                    <option value="part call"
-                        <?php echo (isset($mode) && isset($data['parts_used']) && $data['parts_used'] == 'part call') ? 'selected' : '' ?>>
+                    <option value="part call" <?php echo (isset($mode) && isset($data['parts_used']) && $data['parts_used'] == 'part call') ? 'selected' : '' ?>>
                         Part Call
                     </option>
-                    <option value="non-part call"
-                        <?php echo (isset($mode) && isset($data['parts_used']) && $data['parts_used'] == 'non-part call') ? 'selected' : '' ?>>
+                    <option value="non-part call" <?php echo (isset($mode) && isset($data['parts_used']) && $data['parts_used'] == 'non-part call') ? 'selected' : '' ?>>
                         Non-Part Call
                     </option>
                 </select>
-
             </div>
             <div>
-                <label for="groupFname"> Call Type</label>
-
+                <label for="groupFname">Call Type</label>
                 <select class="form-select text-white-dark" name="call_type" required>
-                    <option value="warranty"
-                        <?php echo (isset($mode) && isset($data['call_type']) && $data['call_type'] == 'Warranty') ? 'selected' : '' ?>>
+                    <option value="warranty" <?php echo (isset($mode) && isset($data['call_type']) && $data['call_type'] == 'Warranty') ? 'selected' : '' ?>>
                         Warranty
                     </option>
-                    <option value="out of warranty"
-                        <?php echo (isset($mode) && isset($data['call_type']) && $data['call_type'] == 'Out Of Warranty') ? 'selected' : '' ?>>
+                    <option value="out of warranty" <?php echo (isset($mode) && isset($data['call_type']) && $data['call_type'] == 'Out Of Warranty') ? 'selected' : '' ?>>
                         Out Of Warranty
                     </option>
                 </select>
-
             </div>
             <div>
                 <label for="name">Service Charge</label>
-                <input id="name" type="text" name="service_charge" placeholder="" class="form-input"
-                    value="<?php echo (isset($mode) && isset($data['service_charge'])) ? $data['service_charge'] : '' ?>"
-                    required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
-
+                <input id="name" type="text" name="service_charge" placeholder="" class="form-input" value="<?php echo (isset($mode) && isset($data['service_charge'])) ? $data['service_charge'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
             </div>
             <div>
                 <label for="parts_charge">Parts Charge</label>
                 <input id="parts_charge" type="text" name="parts_charge" placeholder="" class="form-input" value="<?php echo isset($mode) && isset($data['parts_charge']) ? $data['parts_charge'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
-
             </div>
             <div>
                 <label for="call_status">Status</label>
@@ -237,12 +184,10 @@ if (isset($_REQUEST["save"])) {
                     <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>>
                     <option value="">Choose Status</option>
 
-                    <option value="pending"
-                        <?php echo isset($mode) && $data['status'] == 'pending' ? 'selected' : '' ?>>
+                    <option value="pending" <?php echo isset($mode) && $data['status'] == 'pending' ? 'selected' : '' ?>>
                         Pending
                     </option>
-                    <option value="cancelled"
-                        <?php echo isset($mode) && $data['status'] == 'cancelled' ? 'selected' : '' ?>>
+                    <option value="cancelled" <?php echo isset($mode) && $data['status'] == 'cancelled' ? 'selected' : '' ?>>
                         Cancelled
                     </option>
                     <option value="closed" <?php echo isset($mode) && $data['status'] == 'closed' ? 'selected' : '' ?>>
@@ -259,18 +204,17 @@ if (isset($_REQUEST["save"])) {
             </div>
 
             <div class="relative inline-flex align-middle gap-3 mt-4">
-                        <!-- Save/Update button -->
-                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
-                            id="save" class="btn btn-success" onclick="return validateAndDisable()"
-                            <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
-                            <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
-                        </button>
-                        <!-- Close button -->
-                        <button type="button" class="btn btn-danger" onclick="window.location='add_call_allocation.php'">
-                            Close
-                        </button>
-                    </div>
-
+                <!-- Save/Update button -->
+                <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
+                    id="save" class="btn btn-success" onclick="return validateAndDisable()"
+                    <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
+                    <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
+                </button>
+                <!-- Close button -->
+                <button type="button" class="btn btn-danger" onclick="window.location='add_call_allocation.php'">
+                    Close
+                </button>
+            </div>
         </form>
     </div>
 </div>
