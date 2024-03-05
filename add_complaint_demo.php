@@ -168,7 +168,7 @@ if (isset($_POST['save'])) {
         </div>
         <div class="mb-5">
             <form method="post" id="mainForm" enctype="multipart/form-data">
-                <div class="flex flex-wrap">
+                <div class="flex flex-wrap mb-1">
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
                             <label for="fname"> First Name </label>
@@ -204,7 +204,8 @@ if (isset($_POST['save'])) {
                         </div>
                         <div>
                             <label for="pincode"> Pincode </label>
-                            <input name="pincode" id="pincode" type="text" class="form-input" pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" required onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo isset($mode) ? $data['zipcode'] : '' ?>"  <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                            <input name="pincode" id="pincode" type="text" class="form-input" pattern="^[1-9][0-9]{5}$" title="enter valid pincode" maxlength="6" required onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo isset($mode) ? $data['zipcode'] : '' ?>"  onblur="<?php echo isset($_SESSION['type_center']) ? 'checkPincode(this)' : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                            <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
                         </div>
                     </div>
                     <div class="w-6/12 px-3 space-y-5">
@@ -287,6 +288,28 @@ if (isset($_POST['save'])) {
         }
     }
 
+    function checkPincode(input){
+        let pincode = input.value;
+        let city_id = <?php echo $_SESSION['sc_city'] ?>;
+
+        if(input.value.length == 6){
+            const obj = new XMLHttpRequest();
+            obj.open("GET", `ajax/check_pincode_center.php?pincode=${pincode}&cityId=${city_id}`, false);
+            obj.send();
+
+            if(obj.status == 200){
+                let res = obj.responseText;
+                if(res < 1){
+                    input.value = "";
+                    input.focus();
+                    document.getElementById("demo").innerHTML = "Please enter the valid pincode for your center !";
+                }
+            } else {
+                document.getElementById("demo").innerHTML = "";
+            }
+        }
+    }
+
     document.addEventListener("alpine:init", () => {
         let todayDate = new Date();
         let formattedToday = todayDate.toLocaleDateString('en-GB', {
@@ -309,11 +332,11 @@ if (isset($_POST['save'])) {
 
         Alpine.data("complaintTime", () => ({
             <?php if (!isset($mode)) { ?>
-                        time: todayDate.toLocaleTimeString('en-GB', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: true
-                    }),
+                    time: todayDate.toLocaleTimeString('en-GB', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                }),
             <?php } ?>
             init() {
                 flatpickr(document.getElementById('complaint_time'), {

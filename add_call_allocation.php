@@ -461,10 +461,17 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                     console.log('Initalizing datatable')
                     this.datatable = new simpleDatatables.DataTable('#myTable', {
                         data: {
-                            headings: ['Sr.no', 'Complaint No.', 'Service Center', 'Technician',
-                                'Parts Used', 'Call Type', 'Service Charges', 'Parts Charges',
-                                'Status', 'Reason', 'Date Time','Action'
-                            ],
+                            headings: <?php 
+                                if(isset($_SESSION['type_center'])){
+                                    echo "['Sr.no', 'Complaint No.', 'Technician',
+                                    'Parts Used', 'Call Type', 'Service Charges', 'Parts Charges',
+                                    'Status', 'Reason', 'Date Time', 'Action']";
+                                } else {
+                                    echo "['Sr.no', 'Complaint No.', 'Service Center', 'Technician',
+                                    'Parts Used', 'Call Type', 'Service Charges', 'Parts Charges',
+                                    'Status', 'Reason', 'Date Time', 'Action']";
+                                }
+                            ?>,
                             data: [
                                 <?php
                                     $stmt = $obj->con1->prepare("SELECT a.*,b.name as technician_name,c.name as service_center_name from call_history as a,technician as b,service_center as c where b.id = a.technician and a.service_center=c.id and complaint_no=?");
@@ -478,7 +485,9 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                     [
                                         <?php echo $id ?>,
                                         '<?php echo $row['complaint_no'] ?>',
-                                        '<?php echo $row['service_center_name'] ?>',
+                                        <?php if(!isset($_SESSION['type_center'])){ ?>
+                                            '<?php echo $row['service_center_name'] ?>',
+                                        <?php } ?>
                                         '<?php echo $row['technician_name'] ?>',
                                         '<?php echo $row['parts_used'] ?>',
                                         '<?php echo $row['call_type'] ?>',
@@ -648,7 +657,6 @@ if (isset($mode) && $mode == 'edit') {
         <script>
             const scid = document.getElementById('service_center').value;
             const tid =" . json_encode($data['technician']) . ";
-            // console.log(scid, tid);
             getTechnician(scid, tid);
         </script>
     ";

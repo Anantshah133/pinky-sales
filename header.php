@@ -61,7 +61,17 @@ if (!in_array(basename($_SERVER['PHP_SELF']), $allowed_pages)) {
 
 if (isset($_REQUEST['logout'])) {
     setcookie("msg", "logout", time() + 3600, "/");
-    session_destroy();
+    if(isset($_SESSION['type_admin'])){
+        unset($_SESSION['type_admin']);
+        unset($_SESSION['admin_username']);
+        unset($_SESSION['admin_name']);
+    } else if(isset($_SESSION['type_center'])){
+        unset($_SESSION['type_center']);
+        unset($_SESSION['username']);
+        unset($_SESSION['name']);
+        unset($_SESSION['scid']);
+        unset($_SESSION['sc_city']);
+    }
     header("location:login.php");
     exit;
 }
