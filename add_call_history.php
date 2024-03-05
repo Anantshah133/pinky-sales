@@ -124,7 +124,7 @@ if (isset($_REQUEST["save"])) {
                 <?php echo isset($mode) ? ($mode == 'edit' ? 'Edit' : 'View') : 'Add' ?>
             </h5>
         </div>
-        <form class="space-y-5" method="post">
+        <form class="space-y-5" method="post" id="mainForm">
             <div>
                 <label for="name">Complaint No.</label>
                 <input id="complaint_no" type="text" name="complaint_no" placeholder="" class="form-input"
@@ -150,33 +150,41 @@ if (isset($_REQUEST["save"])) {
             </div>
             <div>
                 <label for="groupFname">Parts Used</label>
-                <select class="form-select text-white-dark" name="parts_used" required>
-                    <option value="part call" <?php echo (isset($mode) && isset($data['parts_used']) && $data['parts_used'] == 'part call') ? 'selected' : '' ?>>
+                <select class="form-select text-white-dark" name="parts_used" required onchange="changePartCharge(this.value, 'parts_charge')">
+                    <option value="">Select Please</option>
+                    <option value="part-call" <?php echo (isset($mode) && isset($data['parts_used']) && $data['parts_used'] == 'part call') ? 'selected' : '' ?>>
                         Part Call
                     </option>
-                    <option value="non-part call" <?php echo (isset($mode) && isset($data['parts_used']) && $data['parts_used'] == 'non-part call') ? 'selected' : '' ?>>
+                    <option value="non-part-call" <?php echo (isset($mode) && isset($data['parts_used']) && $data['parts_used'] == 'non-part call') ? 'selected' : '' ?>>
                         Non-Part Call
                     </option>
                 </select>
             </div>
             <div>
                 <label for="groupFname">Call Type</label>
-                <select class="form-select text-white-dark" name="call_type" required>
+                <select class="form-select text-white-dark" name="call_type" required onchange="changeServiceCharge(this.value, 'service_charge')">
+                    <option value="">Choose call type</option>
                     <option value="warranty" <?php echo (isset($mode) && isset($data['call_type']) && $data['call_type'] == 'Warranty') ? 'selected' : '' ?>>
                         Warranty
                     </option>
-                    <option value="out of warranty" <?php echo (isset($mode) && isset($data['call_type']) && $data['call_type'] == 'Out Of Warranty') ? 'selected' : '' ?>>
+                    <option value="Out of warranty" <?php echo (isset($mode) && isset($data['call_type']) && $data['call_type'] == 'Out Of Warranty') ? 'selected' : '' ?>>
                         Out Of Warranty
                     </option>
                 </select>
             </div>
-            <div>
-                <label for="name">Service Charge</label>
-                <input id="name" type="text" name="service_charge" placeholder="" class="form-input" value="<?php echo (isset($mode) && isset($data['service_charge'])) ? $data['service_charge'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
-            </div>
-            <div>
-                <label for="parts_charge">Parts Charge</label>
-                <input id="parts_charge" type="text" name="parts_charge" placeholder="" class="form-input" value="<?php echo isset($mode) && isset($data['parts_charge']) ? $data['parts_charge'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+            <div class="flex gap-10">
+                <div class="w-80">
+                    <label for="parts_charge">Parts Charge</label>
+                    <input id="parts_charge" type="text" name="parts_charge" placeholder="" class="form-input" value="<?php echo isset($mode) && isset($data['parts_charge']) ? $data['parts_charge'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> onblur="checkTotal()" />
+                </div>
+                <div class="w-80">
+                    <label for="service_charge">Service Charge</label>
+                    <input id="service_charge" type="text" name="service_charge" placeholder="" class="form-input" value="<?php echo (isset($mode) && isset($data['service_charge'])) ? $data['service_charge'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> onblur="checkTotal()" />
+                </div>
+                <div class="w-80">
+                    <label for="total">Total</label>
+                    <input id="total" type="text" name="total" placeholder="total" class="form-input" value="0" required readonly/>
+                </div>
             </div>
             <div>
                 <label for="call_status">Status</label>
@@ -220,6 +228,38 @@ if (isset($_REQUEST["save"])) {
 </div>
 
 
+
+<script>
+    const partInput = document.getElementById("parts_charge");
+    const serviceInput = document.getElementById("service_charge");
+    const totalInput = document.getElementById("total");
+
+    function checkTotal(){
+        totalInput.value = (parseInt(partInput.value) || 0) + (parseInt(serviceInput.value) || 0);
+    }
+
+    function changePartCharge(val, id){
+        if(val == "non-part-call"){
+            partInput.value = 0;
+            checkTotal();
+        } else {
+            if(partInput.value == 0){
+                partInput.value = "";
+            }
+        }
+    }
+
+    function changeServiceCharge(val, id){
+        if(val == "warranty"){
+            serviceInput.value = 0;
+            checkTotal();
+        } else {
+            if(serviceInput.value == 0){
+                serviceInput.value = "";
+            }
+        }
+    }
+</script>
 <?php
 include "footer.php";
 ?>
