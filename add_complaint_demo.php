@@ -321,6 +321,8 @@ if (isset($_POST['save'])) {
                     input.value = "";
                     input.focus();
                     document.getElementById("demo").innerHTML = "Please enter the valid pincode for your center !";
+                } else {
+                    document.getElementById("demo").innerHTML = "";
                 }
             } else {
                 document.getElementById("demo").innerHTML = "";
