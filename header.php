@@ -107,6 +107,17 @@ if (isset($_REQUEST['logout'])) {
         window.onload = () => {
             checkCookies();
         }
+        // function getNotifications(){
+        //     const http = new XMLHttpRequest();
+        //     http.onload = () => {
+        //         if(http.status === 200){
+        //             console.log(http.responseText);
+        //         }
+        //     }
+        //     http.open("GET", "./ajax/notifications.php?action=get_notification");
+        //     http.send();
+        // }
+        // getNotifications();
     </script>
 </head>
 

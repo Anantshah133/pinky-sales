@@ -175,14 +175,14 @@ if (isset($_REQUEST["save"])) {
             <div class="flex gap-10">
                 <div class="w-80">
                     <label for="parts_charge">Parts Charge</label>
-                    <input id="parts_charge" type="text" name="parts_charge" placeholder="" class="form-input" value="<?php echo isset($mode) && isset($data['parts_charge']) ? $data['parts_charge'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> onblur="checkTotal()" />
+                    <input id="parts_charge" type="number" name="parts_charge" placeholder="" class="form-input" value="<?php echo isset($mode) && isset($data['parts_charge']) ? $data['parts_charge'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> onblur="checkTotal()" />
                 </div>
                 <div class="w-80">
                     <label for="service_charge">Service Charge</label>
-                    <input id="service_charge" type="text" name="service_charge" placeholder="" class="form-input" value="<?php echo (isset($mode) && isset($data['service_charge'])) ? $data['service_charge'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> onblur="checkTotal()" />
+                    <input id="service_charge" type="number" name="service_charge" placeholder="" class="form-input" value="<?php echo (isset($mode) && isset($data['service_charge'])) ? $data['service_charge'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> onblur="checkTotal()" />
                 </div>
                 <div class="w-80">
-                    <label for="total">Total</label>
+                    <label for="total" class="font-bold">Total</label>
                     <input id="total" type="text" name="total" placeholder="total" class="form-input" value="0" required readonly/>
                 </div>
             </div>

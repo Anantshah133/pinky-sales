@@ -138,7 +138,25 @@ if (isset($_POST['save'])) {
         $result = $stmt->execute();
         $stmt->close();
 
-       //  echo "<br/> Insert Call allocation :- INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (" . $complaint_no . " " . $service_center['id'] . " " . $product_serial_no . " " . $product_model . " " . $purchase_date . " " . $techinician . " " . $allocation_date . " " . $allocation_time . " " . $status . ")";
+
+        //  echo "<br/> Insert Call allocation :- INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (" . $complaint_no . " " . $service_center['id'] . " " . $product_serial_no . " " . $product_model . " " . $purchase_date . " " . $techinician . " " . $allocation_date . " " . $allocation_time . " " . $status . ")";
+
+        // $noti_msg = "New Complaint recieved";
+        // $noti_type = "";
+        // $admin_status = 1;
+        // $admin_play_status = 1;
+        // $service_status = 0;
+        // $service_play_status = 0;
+
+        // $stmt = $obj->con1->prepare("INSERT INTO `notification`(`complaint_no`, `type`, `msg`, `admin_status`, `admin_play_status`, `service_status`, `service_play_status`) VALUES (?,?,?,?,?,?,?)");
+        // $stmt->bind_param("sssiiii", $complaint_no, $noti_type, $noti_type, $admin_status, $admin_play_status, $service_status, $service_play_status);
+        // $Response = $stmt->execute();
+        // $stmt->close();
+
+        // if(!$Response){
+        //     echo $obj->con1->error;
+        //     throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
+        // }
 
         if (!$Resp) {
             echo $obj->con1->error;
@@ -290,7 +308,7 @@ if (isset($_POST['save'])) {
 
     function checkPincode(input){
         let pincode = input.value;
-        let city_id = <?php echo $_SESSION['sc_city'] ?>;
+        let city_id = <?php echo isset($_SESSION['type_center']) ? $_SESSION['sc_city'] : 0 ?>;
 
         if(input.value.length == 6){
             const obj = new XMLHttpRequest();
