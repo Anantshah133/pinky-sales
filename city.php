@@ -11,16 +11,14 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         );
         $Resp = $stmt_del->execute();
         if (!$Resp) {
-            if (
-                strtok($obj->con1->error, ":") ==
-                "Cannot delete or update a parent row"
-            ) {
+            if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row") {
                 throw new Exception("City is already in use!");
             }
         }
         $stmt_del->close();
     } catch (\Exception $e) {
         setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
+        setcookie("msg", "cant_delete", time() + 3600, "/");
     }
 
     if ($Resp) {
