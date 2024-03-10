@@ -670,7 +670,7 @@ $app->post('/homepage', function () use ($app) {
 
         $data['result'] = true;
         $data['message'] = "";
-        $data["response"] = array();
+        $data["response"] = new stdClass();
 
         while ($call_list = $homepage_resp->fetch_assoc()) {
 
@@ -679,8 +679,9 @@ $app->post('/homepage', function () use ($app) {
                 $response->$key = $value;
             }
 
-            array_push($data["response"], $response);
+          
         }
+        $data["response"]=$response;
 
     } else {
         $data['result'] = false;
