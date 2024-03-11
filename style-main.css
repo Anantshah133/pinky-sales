@@ -8,3 +8,9 @@
     font-weight: 600;
     margin-top: 16px;
 }
+
+@media (max-width: 768px) {
+    .session-name{
+        display: none;
+    }
+}

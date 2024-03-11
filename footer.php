@@ -57,6 +57,7 @@
 
         // header section
         Alpine.data('header', () => ({
+            notifications: [],
             init() {
                 const selector = document.querySelector('ul.horizontal-menu a[href="' + window.location
                     .pathname + '"]');
@@ -73,30 +74,38 @@
                         }
                     }
                 }
+                this.getNotifications();
+                setInterval(() => {
+                    console.log("working");
+                    this.getNotifications();
+                }, 6000);
+            },
+            getNotifications() {
+                fetch('./ajax/notifications.php?action=get_notification')
+                    .then(response => response.json())
+                    .then(data => {
+                        this.notifications = data;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching notifications:', error);
+                    });
+            },
+            playNotificationSound(){
+                fetch('./ajax/notifications.php?action=play_noti_sound')
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error Playing sound:', error);
+                })
             },
 
-            notifications: [
-                {
-                    id: 1,
-                    message: '<strong class="text-sm mr-1">John Doe</strong>invite you to <strong>Prototyping</strong>',
-                    time: '45 min ago',
-                },
-                {
-                    id: 2,
-                    message: '<strong class="text-sm mr-1">Adam Nolan</strong>mentioned you to <strong>UX Basics</strong>',
-                    time: '9h Ago',
-                },
-                {
-                    id: 3,
-                    message: '<strong class="text-sm mr-1">Anna Morgan</strong>Upload a file',
-                    time: '9h Ago',
-                },
-            ],
-
-            removeNotification(value) {
-                this.notifications = this.notifications.filter((d) => d.id !== value);
+            removeNotification(id) {
+                this.notifications = this.notifications.filter(notification => notification.id !== id);
             },
         }));
+
     });
 </script>
 </body>
