@@ -155,6 +155,7 @@ if (isset($_REQUEST['logout'])) {
     <div class="main-container min-h-screen text-black dark:text-white-dark" :class="[$store.app.navbar]">
         <!-- start sidebar section -->
         <div :class="{'dark text-white-dark' : $store.app.semidark}">
+            <div id="sound" class="hidden"></div>
             <nav x-data="sidebar"
                 class="sidebar fixed top-0 bottom-0 z-50 h-full min-h-screen w-[260px] shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] transition-all duration-300">
                 <div class="h-full bg-white dark:bg-[#0e1726]">

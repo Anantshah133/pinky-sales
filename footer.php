@@ -76,36 +76,61 @@
                 }
                 this.getNotifications();
                 setInterval(() => {
-                    console.log("working");
                     this.getNotifications();
                 }, 6000);
             },
+
             getNotifications() {
                 fetch('./ajax/notifications.php?action=get_notification')
                     .then(response => response.json())
                     .then(data => {
-                        this.notifications = data;
+                        console.log('data.length');
+                        if(data.length > 0){
+                            this.notifications = data;
+                            this.playNotificationSound();
+                        }
                     })
                     .catch(error => {
                         console.error('Error fetching notifications:', error);
                     });
             },
+
             playNotificationSound(){
                 fetch('./ajax/notifications.php?action=play_noti_sound')
-                .then(res => res.json())
+                .then(res => res.text())
                 .then(data => {
-                    console.log(data);
+                    const [numNotifications, notificationIds] = data.split('@@@');
+                    if(numNotifications > 0){
+                        let audioSource = '<source src="./assets/sound.mp3" type="audio/mpeg">';
+                        document.getElementById("sound").innerHTML = `<audio autoplay>${audioSource}</audio>`;
+                        this.removeNotificationSound(notificationIds);
+                    }
                 })
                 .catch(error => {
                     console.error('Error Playing sound:', error);
                 })
             },
 
+            removeNotificationSound(id){
+                const http = new XMLHttpRequest();  
+                http.onload = () => {
+                    console.log()
+                }
+                http.open("GET", "./ajax/notifications.php?action=remove_noti_sound&ids="+id);
+                http.send();
+            },
+
             removeNotification(id) {
+                console.log(id);
+                const http = new XMLHttpRequest();  
+                http.onload = () => {
+                    console.log(http.responseText)
+                }
+                http.open("GET", "./ajax/notifications.php?action=remove_notification&id="+id);
+                http.send();
                 this.notifications = this.notifications.filter(notification => notification.id !== id);
             },
         }));
-
     });
 </script>
 </body>
