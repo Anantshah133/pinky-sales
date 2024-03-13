@@ -197,7 +197,7 @@ function uploadImage($inputName, $uploadDirectory)
 {
     $fileName = $_FILES[$inputName]['name'];
     $tmpFilePath = $_FILES[$inputName]['tmp_name'];
-    echo $fileName . $tmpFilePath;
+    // echo $fileName . $tmpFilePath;
     if ($fileName != "") {
         $targetDirectory = $uploadDirectory . '/';
         if (!file_exists($targetDirectory)) {
@@ -212,7 +212,6 @@ function uploadImage($inputName, $uploadDirectory)
         $targetFilePath = $targetDirectory . $newFileName;
         return $newFileName;
     }
-
     return null;
 }
 ?>
@@ -229,7 +228,7 @@ function uploadImage($inputName, $uploadDirectory)
                 <div class="flex flex-wrap">
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
-                            <label for="complaint_num"> Complaint No. </label>
+                            <label for="complaint_num">Complaint No. </label>
                             <input name="complaint_num" id="complaint_num" type="text" class="form-input" required <?php echo isset($mode) ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['complaint_no'] : '' ?>" />
                         </div>
                         <div>

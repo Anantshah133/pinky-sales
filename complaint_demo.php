@@ -80,26 +80,26 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 this.datatable = new simpleDatatables.DataTable('#myTable', {
                     data: {
                         headings: ['Sr.No.', 'Complaint No.', 'Customer name', 'Contact', 'Pincode',
-                            'Service Type', 'Product Category', 'Dealer Name', 'Date Time', 'Source', 'Action'],
+                            'Service Type', 'Product Category', 'Date Time', 'Status', 'Source', 'Action'],
                         data: [
                             <?php
-                            if (isset($_SESSION['type_center']) && $_SESSION['type_center']) {
-                                $city_id = $_SESSION['sc_city'];
-                                $stmt = $obj->con1->prepare("select c1.*,s1.name as service_type,p1.name as product_category, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1,service_type s1,product_category p1 where c1.service_type=s1.id and c1.product_category=p1.id AND c1.area=? order by c1.id desc");
-                                $stmt->bind_param("i", $city_id);
-                                $stmt->execute();
-                                $Resp = $stmt->get_result();
-                                $stmt->close();
+                                if (isset($_SESSION['type_center']) && $_SESSION['type_center']) {
+                                    $city_id = $_SESSION['sc_city'];
+                                    $stmt = $obj->con1->prepare("select c1.*, ca.status, s1.name as service_type, p1.name as product_category, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1, service_type s1, product_category p1, call_allocation ca where c1.service_type=s1.id and c1.complaint_no=ca.complaint_no and c1.product_category=p1.id and c1.area=? order by c1.id DESC");
+                                    $stmt->bind_param("i", $city_id);
+                                    $stmt->execute();
+                                    $Resp = $stmt->get_result();
+                                    $stmt->close();
 
-                                $id = 1;
-                            } else {
-                                $stmt = $obj->con1->prepare("select c1.*,s1.name as service_type,p1.name as product_category, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1,service_type s1,product_category p1 where c1.service_type=s1.id and c1.product_category=p1.id order by c1.id desc");
-                                $stmt->execute();
-                                $Resp = $stmt->get_result();
-                                $id = 1;
-                            }
-                            while ($row = mysqli_fetch_array($Resp)) {
-                                ?>
+                                    $id = 1;
+                                } else {
+                                    $stmt = $obj->con1->prepare("select c1.*, ca.status, s1.name as service_type, p1.name as product_category, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1, service_type s1, product_category p1, call_allocation ca where c1.service_type=s1.id and c1.complaint_no=ca.complaint_no and c1.product_category=p1.id order by c1.id DESC");
+                                    $stmt->execute();
+                                    $Resp = $stmt->get_result();
+                                    $id = 1;
+                                }
+                                while ($row = mysqli_fetch_array($Resp)) {
+                            ?>
                                 [
                                     <?php echo $id ?>,
                                     '<?php echo $row['complaint_no'] ?>',
@@ -108,11 +108,35 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                     '<?php echo $row['zipcode'] ?>',
                                     '<?php echo $row['service_type'] ?>',
                                     '<?php echo $row['product_category'] ?>',
-                                    `<?php echo $row['dealer_name'] ?>`,
+                                    // `<?php // echo $row['dealer_name'] ?>`,
                                     '<?php 
                                         $date = date_create($row['datetime']);
                                         echo date_format($date, "d-m-Y h:i A");
                                      ?>',
+                                    `<span class="badge badge-outline-<?php
+                                        switch ($row["status"]) {
+                                            case 'new':
+                                                echo 'secondary';
+                                                break;
+                                            case 'allocated':
+                                                echo 'warning';
+                                                break;
+                                            case 'closed':
+                                                echo 'success';
+                                                break;
+                                            case 'cancelled':
+                                                echo 'danger';
+                                                break;
+                                            case 'pending':
+                                                echo 'dark';
+                                                break;
+                                            default:
+                                                echo 'primary';
+                                                break;
+                                        }
+                                    ?>">
+                                        <?php echo ucfirst($row['status']) ?>
+                                    </span>`,
                                     `<span class="badge badge-outline-<?php echo $row['source'] == 'web' ? 'secondary' : 'danger' ?>">
                                         <?php echo ucfirst($row['source']) ?>
                                     </span>`,

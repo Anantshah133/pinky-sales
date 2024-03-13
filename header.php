@@ -104,9 +104,26 @@ if (isset($_REQUEST['logout'])) {
     <script src="assets/js/sweetalert.min.js"></script>
     <script src="assets/js/nice-select2.js"></script>
     <script>
+        // let main;
         window.onload = () => {
             checkCookies();
         }
+        // function getNotifications(){
+        //     const http = new XMLHttpRequest();
+        //     http.onload = () => {
+        //         if(http.status === 200){
+        //             main = JSON.parse(http.responseText);
+        //             console.log(main);
+        //         }
+        //     }
+        //     http.open("GET", "./ajax/notifications.php?action=get_notification");
+        //     http.send();
+        // }
+        // getNotifications();
+        // setInterval(() => {
+        //     getNotifications();
+        //     console.log("called");
+        // }, 5000);
     </script>
 </head>
 
@@ -138,6 +155,7 @@ if (isset($_REQUEST['logout'])) {
     <div class="main-container min-h-screen text-black dark:text-white-dark" :class="[$store.app.navbar]">
         <!-- start sidebar section -->
         <div :class="{'dark text-white-dark' : $store.app.semidark}">
+            <div id="sound" class="hidden"></div>
             <nav x-data="sidebar"
                 class="sidebar fixed top-0 bottom-0 z-50 h-full min-h-screen w-[260px] shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] transition-all duration-300">
                 <div class="h-full bg-white dark:bg-[#0e1726]">
@@ -477,7 +495,7 @@ if (isset($_REQUEST['logout'])) {
                                 </div>
                             </div>
                             <div>
-                                <h3 class="text-[28px] margin-minus font-bold text-logo"><?php echo isset($_SESSION['type_center']) && $_SESSION['type_center'] ? $_SESSION["name"] : 'SuperAdmin' ?></h3>
+                                <h3 class="text-[28px] margin-minus font-bold text-logo session-name"><?php echo isset($_SESSION['type_center']) && $_SESSION['type_center'] ? $_SESSION["name"] : 'SuperAdmin' ?></h3>
                             </div>
                             <div class="flex gap-2">
                                 <div class="dropdown" x-data="dropdown" @click.outside="open = false">
@@ -519,8 +537,6 @@ if (isset($_REQUEST['logout'])) {
                                                     <div class="flex flex-auto ltr:pl-3 rtl:pr-3">
                                                         <div class="ltr:pr-3 rtl:pl-3">
                                                             <h6 x-html="notification.message"></h6>
-                                                            <span class="block text-xs font-normal dark:text-gray-500"
-                                                                x-text="notification.time"></span>
                                                         </div>
                                                         <button type="button"
                                                             class="text-neutral-300 opacity-0 hover:text-danger group-hover:opacity-100 ltr:ml-auto rtl:mr-auto"

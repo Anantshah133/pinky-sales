@@ -63,6 +63,11 @@ function checkCookies(){
         eraseCookie("msg")
         return;
     }
+    if(readCookie("msg") == "cant_delete"){
+        coloredToast("danger", "Data is already in use can't delete it");
+        eraseCookie("msg")
+        return;
+    }
     if(readCookie("msg") == "login"){
         coloredToast("success", 'Admin Logged-In Successfully');
         eraseCookie("msg")

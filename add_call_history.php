@@ -2,10 +2,7 @@
 include "header.php";
 
 if (isset($_COOKIE['comp_no']) && !isset($_COOKIE["callEditId"]) && !isset($_COOKIE["callEditId"])) {
-    // $mode = "view";
     $complaint_no = $_COOKIE["comp_no"];
-    // $stmt = $obj->con1->prepare("SELECT * FROM `call_allocation` WHERE complaint_no=?");
-
     $stmt = $obj->con1->prepare("SELECT ca.*, t.name as t_name, sc.name as sc_name
         FROM `call_allocation` AS ca
         JOIN `technician` AS t ON ca.technician = t.id
@@ -16,9 +13,6 @@ if (isset($_COOKIE['comp_no']) && !isset($_COOKIE["callEditId"]) && !isset($_COO
     $Resp = $stmt->get_result();
     $preData = $Resp->fetch_assoc();
     $preData["t_name"] . " " . $preData["sc_name"];
-    // $service_id = $preData["service_center_id"];
-    // $tech_id = $preData["technician"];
-    // $comp_no = $preData['complaint_no'];
     $stmt->close();
 }
 
@@ -54,12 +48,13 @@ if (isset($_REQUEST['update'])) {
     $parts_charge = $_REQUEST["parts_charge"];
     $status = $_REQUEST["status"];
     $reason = $_REQUEST['reason'];
+    $callEditId = $_COOKIE['callEditId'];
     $date_time = date("Y-m-d h:i A");
 
     $stmt = $obj->con1->prepare(
         "UPDATE call_history SET complaint_no=?,service_center=?,technician=?,parts_used=?,call_type=?,service_charge=?,parts_charge=?,status=?,reason=?,date_time=? WHERE id=?"
     );
-    $stmt->bind_param("siisssssss", $complaint_number, $service_center, $technician, $parts_used, $call_type, $service_charge, $parts_charge, $status, $reason, $date_time);
+    $stmt->bind_param("siisssssssi", $complaint_number, $service_center, $technician, $parts_used, $call_type, $service_charge, $parts_charge, $status, $reason, $date_time, $callEditId);
     $Resp = $stmt->execute();
 
     if ($Resp) {
@@ -152,10 +147,10 @@ if (isset($_REQUEST["save"])) {
                 <label for="groupFname">Parts Used</label>
                 <select class="form-select text-white-dark" name="parts_used" required onchange="changePartCharge(this.value, 'parts_charge')">
                     <option value="">Select Please</option>
-                    <option value="part-call" <?php echo (isset($mode) && isset($data['parts_used']) && $data['parts_used'] == 'part call') ? 'selected' : '' ?>>
+                    <option value="part-call" <?php echo (isset($mode) && isset($data['parts_used']) && $data['parts_used'] == 'part-call') ? 'selected' : '' ?>>
                         Part Call
                     </option>
-                    <option value="non-part-call" <?php echo (isset($mode) && isset($data['parts_used']) && $data['parts_used'] == 'non-part call') ? 'selected' : '' ?>>
+                    <option value="non-part-call" <?php echo (isset($mode) && isset($data['parts_used']) && $data['parts_used'] == 'non-part-call') ? 'selected' : '' ?>>
                         Non-Part Call
                     </option>
                 </select>
@@ -164,10 +159,10 @@ if (isset($_REQUEST["save"])) {
                 <label for="groupFname">Call Type</label>
                 <select class="form-select text-white-dark" name="call_type" required onchange="changeServiceCharge(this.value, 'service_charge')">
                     <option value="">Choose call type</option>
-                    <option value="warranty" <?php echo (isset($mode) && isset($data['call_type']) && $data['call_type'] == 'Warranty') ? 'selected' : '' ?>>
+                    <option value="warranty" <?php echo (isset($mode) && isset($data['call_type']) && $data['call_type'] == 'warranty') ? 'selected' : '' ?>>
                         Warranty
                     </option>
-                    <option value="Out of warranty" <?php echo (isset($mode) && isset($data['call_type']) && $data['call_type'] == 'Out Of Warranty') ? 'selected' : '' ?>>
+                    <option value="Out of warranty" <?php echo (isset($mode) && isset($data['call_type']) && $data['call_type'] == 'Out of warranty') ? 'selected' : '' ?>>
                         Out Of Warranty
                     </option>
                 </select>
@@ -175,14 +170,14 @@ if (isset($_REQUEST["save"])) {
             <div class="flex gap-10">
                 <div class="w-80">
                     <label for="parts_charge">Parts Charge</label>
-                    <input id="parts_charge" type="text" name="parts_charge" placeholder="" class="form-input" value="<?php echo isset($mode) && isset($data['parts_charge']) ? $data['parts_charge'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> onblur="checkTotal()" />
+                    <input id="parts_charge" type="number" name="parts_charge" placeholder="" class="form-input" value="<?php echo isset($mode) && isset($data['parts_charge']) ? $data['parts_charge'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> onblur="checkTotal()" />
                 </div>
                 <div class="w-80">
                     <label for="service_charge">Service Charge</label>
-                    <input id="service_charge" type="text" name="service_charge" placeholder="" class="form-input" value="<?php echo (isset($mode) && isset($data['service_charge'])) ? $data['service_charge'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> onblur="checkTotal()" />
+                    <input id="service_charge" type="number" name="service_charge" placeholder="" class="form-input" value="<?php echo (isset($mode) && isset($data['service_charge'])) ? $data['service_charge'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> onblur="checkTotal()" />
                 </div>
                 <div class="w-80">
-                    <label for="total">Total</label>
+                    <label for="total" class="font-bold">Total</label>
                     <input id="total" type="text" name="total" placeholder="total" class="form-input" value="0" required readonly/>
                 </div>
             </div>
