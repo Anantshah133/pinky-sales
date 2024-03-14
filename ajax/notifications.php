@@ -50,6 +50,7 @@ if ($_REQUEST['action'] == "play_noti_sound") {
     
     $ids = "";
     $num = mysqli_num_rows($Resp);
+    
     while ($row = mysqli_fetch_array($Resp)) {
         $ids .= $row['id'] . ",";
     }
