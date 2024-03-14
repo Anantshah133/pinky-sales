@@ -141,8 +141,15 @@ if (isset($_POST['save'])) {
 
         //  echo "<br/> Insert Call allocation :- INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (" . $complaint_no . " " . $service_center['id'] . " " . $product_serial_no . " " . $product_model . " " . $purchase_date . " " . $techinician . " " . $allocation_date . " " . $allocation_time . " " . $status . ")";
 
+        $stmt = $obj->con1->prepare("SELECT name FROM service_type WHERE id=?");
+        $stmt->bind_param("i", $service_type);
+        $Name = $stmt->execute();
+        $service = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+
         $noti_msg = "New Complaint recieved";
-        $noti_type = $service_type;
+        $noti_type = $service['name'];
         $admin_status = isset($_SESSION['type_admin']) ? 1 : 0;
         $admin_play_status = 1;
         $service_status = 1;

@@ -85,6 +85,7 @@
                     .then(response => response.json())
                     .then(data => {
                         console.log('data.length');
+                        console.log(data);
                         if(data.length > 0){
                             this.notifications = data;
                             this.playNotificationSound();
@@ -114,7 +115,7 @@
             removeNotificationSound(id){
                 const http = new XMLHttpRequest();  
                 http.onload = () => {
-                    console.log()
+                    console.log(http.responseText);
                 }
                 http.open("GET", "./ajax/notifications.php?action=remove_noti_sound&ids="+id);
                 http.send();
