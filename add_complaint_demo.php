@@ -148,7 +148,7 @@ if (isset($_POST['save'])) {
         $stmt->close();
 
 
-        $noti_msg = "New Complaint recieved";
+        $noti_msg = "New Complaint recieved ";
         $noti_type = $service['name'];
         $admin_status = isset($_SESSION['type_admin']) ? 1 : 0;
         $admin_play_status = 1;

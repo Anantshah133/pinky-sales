@@ -116,6 +116,7 @@
                 const http = new XMLHttpRequest();  
                 http.onload = () => {
                     console.log(http.responseText);
+                    document.getElementById("sound").innerHTML = "";
                 }
                 http.open("GET", "./ajax/notifications.php?action=remove_noti_sound&ids="+id);
                 http.send();
