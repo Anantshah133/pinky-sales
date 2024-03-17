@@ -57,6 +57,7 @@
 
         // header section
         Alpine.data('header', () => ({
+            notifications: [],
             init() {
                 const selector = document.querySelector('ul.horizontal-menu a[href="' + window.location
                     .pathname + '"]');
@@ -73,28 +74,63 @@
                         }
                     }
                 }
+                this.getNotifications();
+                setInterval(() => {
+                    this.getNotifications();
+                }, 6000);
             },
 
-            notifications: [
-                {
-                    id: 1,
-                    message: '<strong class="text-sm mr-1">John Doe</strong>invite you to <strong>Prototyping</strong>',
-                    time: '45 min ago',
-                },
-                {
-                    id: 2,
-                    message: '<strong class="text-sm mr-1">Adam Nolan</strong>mentioned you to <strong>UX Basics</strong>',
-                    time: '9h Ago',
-                },
-                {
-                    id: 3,
-                    message: '<strong class="text-sm mr-1">Anna Morgan</strong>Upload a file',
-                    time: '9h Ago',
-                },
-            ],
+            getNotifications() {
+                fetch('./ajax/notifications.php?action=get_notification')
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('data.length');
+                        console.log(data);
+                        if(data.length > 0){
+                            this.notifications = data;
+                            this.playNotificationSound();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching notifications:', error);
+                    });
+            },
 
-            removeNotification(value) {
-                this.notifications = this.notifications.filter((d) => d.id !== value);
+            playNotificationSound(){
+                fetch('./ajax/notifications.php?action=play_noti_sound')
+                .then(res => res.text())
+                .then(data => {
+                    const [numNotifications, notificationIds] = data.split('@@@');
+                    if(numNotifications > 0){
+                        let audioSource = '<source src="./assets/sound.mp3" type="audio/mpeg">';
+                        document.getElementById("sound").innerHTML = `<audio autoplay>${audioSource}</audio>`;
+                        this.removeNotificationSound(notificationIds);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error Playing sound:', error);
+                })
+            },
+
+            removeNotificationSound(id){
+                const http = new XMLHttpRequest();  
+                http.onload = () => {
+                    console.log(http.responseText);
+                    document.getElementById("sound").innerHTML = "";
+                }
+                http.open("GET", "./ajax/notifications.php?action=remove_noti_sound&ids="+id);
+                http.send();
+            },
+
+            removeNotification(id) {
+                console.log(id);
+                const http = new XMLHttpRequest();  
+                http.onload = () => {
+                    console.log(http.responseText)
+                }
+                http.open("GET", "./ajax/notifications.php?action=remove_notification&id="+id);
+                http.send();
+                this.notifications = this.notifications.filter(notification => notification.id !== id);
             },
         }));
     });

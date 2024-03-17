@@ -104,20 +104,10 @@ if (isset($_REQUEST['logout'])) {
     <script src="assets/js/sweetalert.min.js"></script>
     <script src="assets/js/nice-select2.js"></script>
     <script>
+        // let main;
         window.onload = () => {
             checkCookies();
         }
-        // function getNotifications(){
-        //     const http = new XMLHttpRequest();
-        //     http.onload = () => {
-        //         if(http.status === 200){
-        //             console.log(http.responseText);
-        //         }
-        //     }
-        //     http.open("GET", "./ajax/notifications.php?action=get_notification");
-        //     http.send();
-        // }
-        // getNotifications();
     </script>
 </head>
 
@@ -138,7 +128,7 @@ if (isset($_REQUEST['logout'])) {
                     <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd"
                         d="M12 20.75C12.4142 20.75 12.75 20.4142 12.75 20L12.75 10.75L11.25 10.75L11.25 20C11.25 20.4142 11.5858 20.75 12 20.75Z"
                         fill="currentColor" />
-                    <path
+                    <path 
                         d="M6.00002 10.75C5.69667 10.75 5.4232 10.5673 5.30711 10.287C5.19103 10.0068 5.25519 9.68417 5.46969 9.46967L11.4697 3.46967C11.6103 3.32902 11.8011 3.25 12 3.25C12.1989 3.25 12.3897 3.32902 12.5304 3.46967L18.5304 9.46967C18.7449 9.68417 18.809 10.0068 18.6929 10.287C18.5768 10.5673 18.3034 10.75 18 10.75L6.00002 10.75Z"
                         fill="currentColor" />
                 </svg>
@@ -149,6 +139,7 @@ if (isset($_REQUEST['logout'])) {
     <div class="main-container min-h-screen text-black dark:text-white-dark" :class="[$store.app.navbar]">
         <!-- start sidebar section -->
         <div :class="{'dark text-white-dark' : $store.app.semidark}">
+            <div id="sound" class=""></div>
             <nav x-data="sidebar"
                 class="sidebar fixed top-0 bottom-0 z-50 h-full min-h-screen w-[260px] shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] transition-all duration-300">
                 <div class="h-full bg-white dark:bg-[#0e1726]">
@@ -488,7 +479,7 @@ if (isset($_REQUEST['logout'])) {
                                 </div>
                             </div>
                             <div>
-                                <h3 class="text-[28px] margin-minus font-bold text-logo"><?php echo isset($_SESSION['type_center']) && $_SESSION['type_center'] ? $_SESSION["name"] : 'SuperAdmin' ?></h3>
+                                <h3 class="text-[28px] margin-minus font-bold text-logo session-name"><?php echo isset($_SESSION['type_center']) && $_SESSION['type_center'] ? $_SESSION["name"] : 'SuperAdmin' ?></h3>
                             </div>
                             <div class="flex gap-2">
                                 <div class="dropdown" x-data="dropdown" @click.outside="open = false">
@@ -530,8 +521,6 @@ if (isset($_REQUEST['logout'])) {
                                                     <div class="flex flex-auto ltr:pl-3 rtl:pr-3">
                                                         <div class="ltr:pr-3 rtl:pl-3">
                                                             <h6 x-html="notification.message"></h6>
-                                                            <span class="block text-xs font-normal dark:text-gray-500"
-                                                                x-text="notification.time"></span>
                                                         </div>
                                                         <button type="button"
                                                             class="text-neutral-300 opacity-0 hover:text-danger group-hover:opacity-100 ltr:ml-auto rtl:mr-auto"
