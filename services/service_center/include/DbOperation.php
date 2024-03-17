@@ -11,6 +11,12 @@ class DbOperation
         $db = new DbConnect();
         $this->con = $db->connect();
     }
+
+    //generate a unique api key
+    public function generateApiKey(){
+        return md5(uniqid(rand(), true));
+    }
+
     // vendor reg
     public function service_center_reg($name, $email, $contact, $area, $status,$userid,$password)
     {
@@ -52,7 +58,7 @@ class DbOperation
     {
 
         //$password = md5($pass);
-        $stmt = $this->con->prepare("SELECT * FROM service_center WHERE userid=? and password =? ");
+        $stmt = $this->con->prepare("SELECT * FROM service_center WHERE userid=? and BINARY  password =? ");
         $stmt->bind_param("ss", $userid, $pass);
         $stmt->execute();
         $stmt->store_result();
@@ -98,14 +104,14 @@ class DbOperation
     }
 
 
-    // insert service device
+     // insert service device
 
-    public function insert_service_center_device($vid,$token,$type)
+    public function insert_service_center_device($vid,$token,$type,$api_key)
     {
-       
+      
          
-        $stmt = $this->con->prepare("INSERT INTO `service_center_device`(`uid`, `token`, `type`) VALUES (?,?,?)");
-        $stmt->bind_param("iss", $vid, $token, $type);
+        $stmt = $this->con->prepare("INSERT INTO `service_center_device`(`uid`, `token`, `type`,`api_key`) VALUES (?,?,?,?)");
+        $stmt->bind_param("isss", $vid, $token, $type,$api_key);
        
         $result = $stmt->execute();
         $stmt->close();
@@ -118,12 +124,12 @@ class DbOperation
     }
 
     //insert admin device
-    public function insert_admin_device($vid,$token,$type)
+    public function insert_admin_device($vid,$token,$type,$api_key)
     {
        
          
-        $stmt = $this->con->prepare("INSERT INTO `admin_device`(`uid`, `token`, `type`) VALUES (?,?,?)");
-        $stmt->bind_param("iss", $vid, $token, $type);
+        $stmt = $this->con->prepare("INSERT INTO `admin_device`(`uid`, `token`, `type`,`api_key`) VALUES (?,?,?,?)");
+        $stmt->bind_param("isss", $vid, $token, $type,$api_key);
        
         $result = $stmt->execute();
         $stmt->close();
@@ -468,6 +474,27 @@ class DbOperation
         return $data;
     }
 
+    //Checking the user is valid or not by api key
+    public function isValidUser($api_key) {
+        $stmt = $this->con->prepare("SELECT uid from service_center_device WHERE api_key = ?");
+        $stmt->bind_param("s", $api_key);
+        $stmt->execute();
+        $stmt->store_result();
+        $num_rows = $stmt->num_rows;
+        $stmt->close();
+        return $num_rows > 0;
+    }
+
+    //Checking the admin is valid or not by api key
+    public function isValidAdmin($api_key) {
+        $stmt = $this->con->prepare("SELECT uid from admin_device WHERE api_key = ?");
+        $stmt->bind_param("s", $api_key);
+        $stmt->execute();
+        $stmt->store_result();
+        $num_rows = $stmt->num_rows;
+        $stmt->close();
+        return $num_rows > 0;
+    }
 
 //---------------------------------------------------------------------------------------------//
 

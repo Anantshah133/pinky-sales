@@ -51,7 +51,7 @@ $app->post('/technician_reg', function () use ($app) {
         $MainFileName = $userid . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["id_proof"]["tmp_name"], "../../../orpel/uploads/" . $MainFileName)) {
+        if (move_uploaded_file($_FILES["id_proof"]["tmp_name"], "../../../images/technician_idproof/" . $MainFileName)) {
             $response->image_upload = "success";
         } else {
             $response->image_upload = "fail";
@@ -112,15 +112,20 @@ $app->post('/login', function () use ($app) {
     if ($db->Login($userid, $password)) {
         $user = $db->get_technician($userid);
 
-        if ($user['status'] == 'Enable') {
+        if (strtolower($user['status']) == 'enable') {
+
+            //generate api key
+            $api_key=$db->generateApiKey();
+
+
             $data['result'] = true;
             $data['message'] = "";
             $response->id = $user['id'];
             $response->name = $user['name'];            
             $response->email = $user['email'];
             $response->contact = $user['contact'];
-
-            $insert_device = $db->insert_technician_device($user["id"],$tokenid,$type);
+            $response->api_key=$api_key;
+            $insert_device = $db->insert_technician_device($user["id"],$tokenid,$type,$api_key);
         } else {
             $data['result'] = false;
             $data['message'] = "You are disabled";
@@ -176,7 +181,7 @@ $app->post('/logout', function () use ($app) {
 });
 
 //technician list
-$app->post('/technician_list', function () use ($app) {
+$app->post('/technician_list', 'authenticateUser', function () use ($app) {
 
     //verifyRequiredParams(array(''));
     //data={service_center_id:}
@@ -214,7 +219,7 @@ $app->post('/technician_list', function () use ($app) {
     echoResponse(200, $data);
 });
 
-$app->post('/homepage', function () use ($app) {
+$app->post('/homepage', 'authenticateUser', function () use ($app) {
 
    $data = array();
 
@@ -257,7 +262,7 @@ $app->post('/homepage', function () use ($app) {
     echoResponse(200, $data);
 });
 
-$app->post('/call_list', function () use ($app) {
+$app->post('/call_list', 'authenticateUser', function () use ($app) {
 
     $data = array();
 
@@ -333,7 +338,7 @@ if ($res->num_rows > 0) {
 echoResponse(200, $data);
 });
 
-$app->post('/call_allocation_add', function () use ($app) {
+$app->post('/call_allocation_add', 'authenticateUser', function () use ($app) {
 
    $data = array();
 
@@ -384,7 +389,7 @@ $app->post('/call_allocation_add', function () use ($app) {
         $serial_no_img = $complaint_no . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["serial_no_img"]["tmp_name"], "../../../orpel/uploads/" . $serial_no_img)) {
+        if (move_uploaded_file($_FILES["serial_no_img"]["tmp_name"], "../../../images/serial_no_img/" . $serial_no_img)) {
             $response->serial_no_img = "success";
         } else {
             $response->serial_no_img = "fail";
@@ -403,7 +408,7 @@ $app->post('/call_allocation_add', function () use ($app) {
         $product_model_img = $complaint_no . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["product_model_img"]["tmp_name"], "../../../orpel/uploads/" . $product_model_img)) {
+        if (move_uploaded_file($_FILES["product_model_img"]["tmp_name"], "../../../images/product_model_img/" . $product_model_img)) {
             $response->product_model_img = "success";
         } else {
             $response->product_model_img = "fail";
@@ -422,7 +427,7 @@ $app->post('/call_allocation_add', function () use ($app) {
         $purchase_date_img = $complaint_no . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["purchase_date_img"]["tmp_name"], "../../../orpel/uploads/" . $purchase_date_img)) {
+        if (move_uploaded_file($_FILES["purchase_date_img"]["tmp_name"], "../../../images/purchase_date_img/" . $purchase_date_img)) {
             $response->purchase_date_img = "success";
         } else {
             $response->purchase_date_img = "fail";
@@ -506,7 +511,7 @@ $app->post('/call_allocation_add', function () use ($app) {
 
 
 //product list
-$app->get('/product_category_list', function () use ($app) {
+$app->get('/product_category_list', 'authenticateUser', function () use ($app) {
 
    
 
@@ -538,6 +543,33 @@ $app->get('/product_category_list', function () use ($app) {
     }
     echoResponse(200, $data);
 });
+
+function authenticateUser(\Slim\Route $route)
+{
+    $headers = apache_request_headers();
+    $data = array();
+    $app = \Slim\Slim::getInstance();
+   // print_r($headers);
+    if (isset($headers['Apikey'])) {
+        
+        $db = new DbOperation();
+        $api_key = $headers['Apikey'];
+       
+            if (!$db->isValidTechnician($api_key)) {
+            $data["success"] = false;
+            $data["message"] = "Access Denied. Invalid Api key";
+            echoResponse(401, $data);
+            $app->stop();
+
+       }
+        
+    } else {
+        $data["success"] = false;
+        $data["message"] = "Api key is misssing";
+        echoResponse(400, $data);
+        $app->stop();
+    }
+}
 function send_notification($data, $reg_ids)
 {
     //$reg_id[0]="c9beC3MaCzE:APA91bEytaqMetycls1bkCtEV1cLuiXfypk8SrT3mlJWEpfYh8FMzBQw6dl4eKqMUtB3drOOdSfn4J8udzqg8WTEqdxiYcIjg5g6T1ZUjVpSSgXumhDvvqXn-KpemjmBCMrfDHIQntlX";
