@@ -269,7 +269,8 @@ if (isset($_POST['save'])) {
                         </div>
                         <div>
                             <label for="barcode">Barcode </label>
-                            <input name="barcode" id="barcode" type="text" class="form-input" value="<?php echo isset($mode) ? $data['barcode'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                            <input name="barcode" id="barcode" type="text" class="form-input" value="<?php echo isset($mode) ? $data['barcode'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> onblur="checkWarranty(this, 'complaint_date', 'service_type', 'product_category')" />
+                            <h6 id="warranty_status" class="text-lg mt-2"></h6>
                         </div>
                         <div x-data="cmplnDate">
                             <label>Date </label>
@@ -302,6 +303,31 @@ if (isset($_POST['save'])) {
 <script>
     function resetForm() {
         window.location = "complaint_demo.php";
+    }
+
+    function checkWarranty(bar, input, serviceIp, proIp){
+        let warrantyStatus = document.getElementById("warranty_status");
+        let date = document.getElementById(input).value;
+        let serviceType = document.getElementById(serviceIp).value;
+        let productCategory = document.getElementById(proIp).value;
+        let barcode = bar.value;
+        const http = new XMLHttpRequest();
+        http.onload = () => {
+            const warranty = http.responseText;
+            if(warranty == "new-entry"){
+                return;
+            } else if(warranty > 365){
+                warrantyStatus.classList.add('text-danger');
+                warrantyStatus.classList.remove('text-success');
+                warrantyStatus.innerHTML = "Product is out of Warranty period";
+            } else if(warranty < 365){
+                warrantyStatus.classList.add('text-success');
+                warrantyStatus.classList.remove('text-danger');
+                warrantyStatus.innerHTML = "Product is in Warranty period";
+            }
+        }
+        http.open("GET", `./ajax/check_warranty.php?date=${date}&barcode=${barcode}&service_type=${serviceType}&product_category=${productCategory}`);
+        http.send();
     }
 
     function getServiceType(pid, stid = 0){

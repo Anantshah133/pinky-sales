@@ -115,3 +115,15 @@ function viewRecord(id, url) {
     document.cookie = "viewId=" + id;
     window.location = url;
 }
+
+function viewNotificationRecord(caid, nid, url){
+    console.log(caid, nid, url);
+    const http = new XMLHttpRequest();
+    http.onload = () => {
+        console.log(http.responseText);
+    };
+    http.open("GET", `./ajax/notifications.php?action=remove_notification&id=${nid}`);
+    http.send("");
+    document.cookie = "viewId=" + caid;
+    window.location = url;
+}
