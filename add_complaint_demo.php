@@ -1,5 +1,6 @@
 <?php
 include "header.php";
+require_once('Mail/PHPMailer_v5.1/class.phpmailer.php');
 
 if (isset($_COOKIE['viewId'])) {
     $mode = 'view';
@@ -165,6 +166,20 @@ if (isset($_POST['save'])) {
             throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
         }
 
+        $subject = "Onelife Complaint No: ". $complaint_no;
+        $body = "Dear $fname $lname,
+        Your complaint has been registered successfully. Your complaint number is : $complaint_no
+        Techinician will be allocated soon.
+        
+        Regards,
+        OneLife Team.";
+        $from = "test@pragmanxt.com";
+        $from_name = "Onelife";
+
+        // echo $subject ." ". $body ." ". $email ." ". $from ." ". $from_name;
+        $mail_res = smtpmailer($subject, $body, $email, $from, $from_name);
+        setcookie("check", urlencode($mail_res), time() + 3600, "/");
+
         if (!$Resp) {
             echo $obj->con1->error;
             throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
@@ -180,6 +195,46 @@ if (isset($_POST['save'])) {
     } else {
         setcookie("msg", "fail", time() + 3600, "/");
         header("location:complaint_demo.php");
+    }
+}
+
+function smtpmailer($subject, $body, $to, $from, $from_name){
+    global $error;
+    $mail = new PHPMailer();
+    $mail->IsSMTP();
+    $mail->SMTPAuth = true;
+   
+    $mail->SMTPKeepAlive = true;
+    $mail->Mailer = "smtp";
+   
+    $mail->Host = 'mail.pragmanxt.com';
+    $mail->Port = 465;
+    $mail->SMTPSecure = 'ssl';
+    $mail->Username = $from;
+    $mail->Password = "Udwo?7zNuMU}";
+
+    $mail->IsHTML(true);
+    $mail->SMTPDebug = 1;
+   
+    $mail->From = $from;
+    $mail->FromName = $from_name;
+    $mail->Sender = $from; // indicates ReturnPath header
+    $mail->AddReplyTo($from, $from_name); // indicates ReplyTo headers
+
+    $mail->Subject = $subject;
+    $mail->Body = $body;
+    $mail->AddAddress($to);
+
+    $mail->Timeout = 60;
+
+    if (!$mail->Send()) {
+        $error = 'Mail error: ' . $mail->ErrorInfo;
+        echo $error;
+        return $error;
+    } else {
+        $error = 'Message sent!';
+        echo $error;
+        return "1";
     }
 }
 ?>
@@ -311,6 +366,7 @@ if (isset($_POST['save'])) {
         let serviceType = document.getElementById(serviceIp).value;
         let productCategory = document.getElementById(proIp).value;
         let barcode = bar.value;
+        if(!barcode.trim()) return;
         const http = new XMLHttpRequest();
         http.onload = () => {
             const warranty = http.responseText;

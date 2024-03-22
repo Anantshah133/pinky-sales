@@ -113,11 +113,10 @@ document.addEventListener('alpine:init', () => {
                                 '<?php echo $row["email"]; ?>', 
                                 '<?php echo $row["contact"]; ?>',
                                 '<?php echo $row["service_center_name"]; ?>',
-                                `<span class="badge badge-outline-<?php echo $row["status"] == "enable" ? 'success' : 'danger' ?>">
+                                `<span class="badge badge-outline-<?php echo trim($row["status"]) == "enable" ? 'success' : 'danger' ?>">
                                     <?php echo ucfirst($row["status"]); ?>
                                 </span>`,
-                                '<?php //echo $row["date_time"]; 
-                                 echo date("d-m-Y h:i A", strtotime($row["date_time"]));?>', 
+                                '<?php echo date("d-m-Y h:i A", strtotime($row["date_time"]));?>',
                                 getActions(<?php echo $row["id"]; ?>,'<?php echo $row["name"];?>')
                             ],
                         <?php 
