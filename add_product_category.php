@@ -1,33 +1,6 @@
 <?php
 include "header.php";
 
-if(isset($_COOKIE['editId'])){
-    $mode = 'edit';
-    $editId = $_COOKIE['editId']; 
-
-    $qry = $obj->con1->prepare("SELECT * FROM `product_category` WHERE  id=?");
-    $qry->bind_param("i", $editId);
-    $qry->execute();
-    $Res = $qry->get_result();
-    $data = $Res->fetch_assoc();
-    $qry->close();
-}
-if(isset($_REQUEST['update'])){
-    $name = $_REQUEST["name"];
-    
-    $qry = $obj->con1->prepare("UPDATE `product_category` SET name=? WHERE id=?");
-    $qry->bind_param("si", $name,$editId);
-    $Res = $qry->execute();
-    $qry->close();
-
-    if ($Res) {
-        setcookie("msg", "update", time() + 3600, "/");
-        header("location:product_category.php");
-    } else {
-        setcookie("msg", "fail", time() + 3600, "/");
-        header("location:product_category.php");
-    }
-}
 if (isset($_COOKIE['viewId'])) {
     $mode = 'view';
     $viewId = $_COOKIE['viewId'];
@@ -39,14 +12,44 @@ if (isset($_COOKIE['viewId'])) {
     $stmt->close();
 }
 
+if(isset($_COOKIE['editId'])){
+    $mode = 'edit';
+    $editId = $_COOKIE['editId'];
+    $qry = $obj->con1->prepare("SELECT * FROM `product_category` WHERE  id=?");
+    $qry->bind_param("i", $editId);
+    $qry->execute();
+    $Res = $qry->get_result();
+    $data = $Res->fetch_assoc();
+    $qry->close();
+}
+
+if(isset($_REQUEST['update'])){
+    $name = $_REQUEST["name"];
+    $warranty = $_REQUEST["warranty"];
+
+    $qry = $obj->con1->prepare("UPDATE `product_category` SET name=?, warranty_period=? WHERE id=?");
+    $qry->bind_param("ssi", $name, $warranty, $editId);
+    $Res = $qry->execute();
+    $qry->close();
+
+    if ($Res) {
+        setcookie("msg", "update", time() + 3600, "/");
+        header("location:product_category.php");
+    } else {
+        setcookie("msg", "fail", time() + 3600, "/");
+        header("location:product_category.php");
+    }
+}
+
 if (isset($_REQUEST["save"])) {
     $name = $_REQUEST["name"];
+    $warranty = $_REQUEST["warranty"];
 
     try {
         $stmt = $obj->con1->prepare(
-            "INSERT INTO `product_category`(`name`) VALUES (?)"
+            "INSERT INTO product_category(`name`, `warranty_period`) VALUES (?,?)"
         );
-        $stmt->bind_param("s", $name);
+        $stmt->bind_param("ss", $name, $warranty);
         $Resp = $stmt->execute();
         if (!$Resp) {
             throw new Exception(
@@ -77,27 +80,30 @@ if (isset($_REQUEST["save"])) {
         <div class="mb-5">
             <form class="space-y-5" method="post" id="mainForm">
                 <div>
-                    <label for="groupFname">Name</label>
-                    <input type="hidden" id="pid" value="<?php echo (isset($mode)) ? $data['id'] : '' ?>">
+                    <label for="name">Name</label>
+                    <input type="hidden" id="pid" value="<?php echo isset($mode) ? $data['id'] : '' ?>">
                     <input id="name" name="name" type="text" class="form-input" pattern="^\s*\S.*$" 
-                    value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required
-                    <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
+                    value="<?php echo (isset($mode)) ? $data['name'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> />
+                    <p class="mt-2 hidden text-danger text-base font-bold" id="demo"></p>
                 </div>
-               
-                <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
+                <div>
+                    <label for="warranty">Warranty Period (In months)</label>
+                    <input id="warranty" name="warranty" type="number" class="form-input" pattern="^\s*\S.*$" 
+                    value="<?php echo isset($mode) ? $data['warranty_period'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> placeholder="12" min="0" />
+                </div>
+
                 <div class="relative inline-flex align-middle gap-3 mt-4">
-                        <!-- Save/Update button -->
-                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
-                            id="save" class="btn btn-success" 
-                            <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
+                    
+                    <?php if(isset($mode) && $mode != "view"){ ?>
+                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success"> 
                             <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
                         </button>
-                        <!-- Close button -->
-                        <button type="button" class="btn btn-danger" onclick="window.location='product_category.php'">
-                            Close
-                        </button>
-                    </div>
+                    <?php } ?>
 
+                    <button type="button" class="btn btn-danger" onclick="window.location='product_category.php'">
+                        Close
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -112,9 +118,6 @@ document.addEventListener('DOMContentLoaded', function() {
         submitButton.addEventListener('click', function() {
             const c1 = document.getElementById("name");
             const id = document.getElementById("pid");
-            // if (!validateAndDisable()) {
-            //     return false;
-            // }
             if (!checkName(c1,id)) {
                 return false;
             }
@@ -135,9 +138,11 @@ function checkName(c1,id) {
             c1.value = "";
             c1.focus();
             document.getElementById("demo").innerHTML = "Sorry the product already exists!";
+            document.getElementById("demo").classList.remove("hidden");
             return false;
         } else {
             document.getElementById("demo").innerHTML = "";
+            document.getElementById("demo").classList.add("hidden");
             return true;
         }
     } else {

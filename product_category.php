@@ -6,14 +6,11 @@ setcookie("viewId", "", time() - 3600);
 if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     try {
         $stmt_del = $obj->con1->prepare(
-            "delete from product_category where id='" .
-                $_REQUEST["n_pcategoryid"] .
-                "'"
+            "delete from product_category where id='" . $_REQUEST["n_pcategoryid"] . "'"
         );
         $Resp = $stmt_del->execute();
         if (!$Resp) {
-            if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row"
-            ) {
+            if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row") {
                 throw new Exception("City is already in use!");
             }
         }
@@ -66,7 +63,7 @@ function getActions(id,name) {
             </a>
         </li>
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Delete"@click="showAlert(${id},'${name}')">
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(${id},'${name}')">
                 <i class="ri-delete-bin-line text-danger"></i>
             </a>
         </li>
@@ -80,19 +77,18 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.No.', 'Name', 'Action'],
+                    headings: ['Sr.No.', 'Name', 'Warranty period', 'Action'],
                     data: [
                         <?php
-                        $stmt = $obj->con1->prepare(
-                            "SELECT * FROM `product_category`"
-                        );
+                        $stmt = $obj->con1->prepare("SELECT * FROM `product_category`");
                         $stmt->execute();
                         $Resp = $stmt->get_result();
                         $i = 1;
                         while ($row = mysqli_fetch_array($Resp)) { ?>
                         [
                             <?php echo $i; ?>, 
-                            '<?php echo $row["name"]; ?>', 
+                            '<?php echo $row["name"]; ?>',
+                            '<?php echo $row["warranty_period"]; ?> Months',
                             getActions(<?php echo $row["id"]; ?>,'<?php  echo $row["name"];?>')
                         ],
                         <?php $i++;}
