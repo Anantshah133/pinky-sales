@@ -38,7 +38,7 @@ $app->post('/service_center_reg','authenticateUser', function () use ($app) {
     $password = $req_data->password;
 
     $area = $req_data->area;
-    $status='Enable';
+    $status='enable';
 
    
     $db = new DbOperation();

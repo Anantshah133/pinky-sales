@@ -178,7 +178,11 @@ if (isset($_POST['save'])) {
 
         // echo $subject ." ". $body ." ". $email ." ". $from ." ". $from_name;
         $mail_res = smtpmailer($subject, $body, $email, $from, $from_name);
-        setcookie("check", urlencode($mail_res), time() + 3600, "/");
+        if($mail_res == 1){
+            setcookie("mail", "successfull", time() + 3600, "/");
+        } else {
+            setcookie("mail", urlencode($mail_res), time() + 3600, "/");
+        }
 
         if (!$Resp) {
             echo $obj->con1->error;
@@ -211,7 +215,7 @@ function smtpmailer($subject, $body, $to, $from, $from_name){
     $mail->Port = 465;
     $mail->SMTPSecure = 'ssl';
     $mail->Username = $from;
-    $mail->Password = "Udwo?7zNuMU}";
+    $mail->Password = "Pragma@12345";
 
     $mail->IsHTML(true);
     $mail->SMTPDebug = 1;
