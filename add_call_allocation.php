@@ -337,11 +337,12 @@ function uploadImage($inputName, $uploadDirectory)
                 </div>
                 <div class="relative inline-flex align-middle gap-3 mt-4">
                     <!-- Save/Update button -->
-                    <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
-                        id="save" class="btn btn-success" onclick="return validateAndDisable()"
-                        <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
-                        <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
-                    </button>
+                    <?php if(isset($mode) && $mode != "view" || !isset($mode)){ ?>
+                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
+                        id="save" class="btn btn-success" onclick="return validateAndDisable()">
+                            <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
+                        </button>
+                    <?php } ?>
                     <!-- Close button -->
                     <button type="button" class="btn btn-danger" onclick="window.location='call_allocation.php'">
                         Close

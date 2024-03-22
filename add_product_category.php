@@ -93,8 +93,8 @@ if (isset($_REQUEST["save"])) {
                 </div>
 
                 <div class="relative inline-flex align-middle gap-3 mt-4">
-                    
-                    <?php if(isset($mode) && $mode != "view"){ ?>
+
+                    <?php if(isset($mode) && $mode != "view" || !isset($mode)){ ?>
                         <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success"> 
                             <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
                         </button>

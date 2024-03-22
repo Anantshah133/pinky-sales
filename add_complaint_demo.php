@@ -342,15 +342,17 @@ function smtpmailer($subject, $body, $to, $from, $from_name){
                     </div>
                 </div>
                 <div class="relative inline-flex align-middle gap-3 mt-4">
+                    <?php if(isset($mode) && $mode != "view" || !isset($mode)){ ?>
                         <!-- Save/Update button -->
-                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success" onclick="return validateAndDisable()" <?php echo isset($mode) && $mode == 'view' ? 'style="display:none;"' : '' ?>>
+                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success" onclick="return validateAndDisable()">
                             <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
                         </button>
-                        <!-- Close button -->
-                        <button type="button" class="btn btn-danger" onclick="window.location='complaint_demo.php'">
-                            Close
-                        </button>
-                    </div>
+                    <?php } ?>
+                    <!-- Close button -->
+                    <button type="button" class="btn btn-danger" onclick="window.location='complaint_demo.php'">
+                        Close
+                    </button>
+                </div>
                 <!------ Hidden Inputs ------>
                 <input type="hidden" name="map_location" id="map_location">
             </form>
@@ -370,7 +372,9 @@ function smtpmailer($subject, $body, $to, $from, $from_name){
         let serviceType = document.getElementById(serviceIp).value;
         let productCategory = document.getElementById(proIp).value;
         let barcode = bar.value;
+
         if(!barcode.trim()) return;
+
         const http = new XMLHttpRequest();
         http.onload = () => {
             const warranty = http.responseText;

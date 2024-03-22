@@ -84,8 +84,6 @@
                 fetch('./ajax/notifications.php?action=get_notification')
                     .then(response => response.json())
                     .then(data => {
-                        // console.log('data.length');
-                        // console.log(data);
                         if(data.length > 0){
                             this.notifications = data;
                             this.playNotificationSound();

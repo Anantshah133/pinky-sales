@@ -88,7 +88,7 @@ document.addEventListener('alpine:init', () => {
                         [
                             <?php echo $i; ?>, 
                             '<?php echo $row["name"]; ?>',
-                            '<?php echo $row["warranty_period"]; ?> Months',
+                            '<b><?php echo $row["warranty_period"]; ?></b> Months',
                             getActions(<?php echo $row["id"]; ?>,'<?php  echo $row["name"];?>')
                         ],
                         <?php $i++;}
