@@ -80,7 +80,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 this.datatable = new simpleDatatables.DataTable('#myTable', {
                     data: {
                         headings: ['Sr.No.', 'Complaint No.', 'Customer name', 'Contact', 'Pincode',
-                            'Service Type', 'Product Category', 'Date Time', 'Status', 'Source', 'Action'],
+                            'Service Type', 'Product Category', 'Date Time', 'Warranty-Status', 'Call Status', 'Source', 'Action'],
                         data: [
                             <?php
                                 if (isset($_SESSION['type_center']) && $_SESSION['type_center']) {
@@ -108,11 +108,13 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                     '<?php echo $row['zipcode'] ?>',
                                     '<?php echo $row['service_type'] ?>',
                                     '<?php echo $row['product_category'] ?>',
-                                    // `<?php // echo $row['dealer_name'] ?>`,
                                     '<?php 
                                         $date = date_create($row['datetime']);
                                         echo date_format($date, "d-m-Y h:i A");
                                      ?>',
+                                    `<span class="badge badge-outline-<?php echo $row['warranty'] == 1 ? 'success' : 'danger' ?>">
+                                        <?php echo $row['warranty'] == 1 ? 'In-Warranty' : 'Out-of-Warranty' ?>
+                                    </span>`,
                                     `<span class="badge badge-outline-<?php
                                         switch ($row["status"]) {
                                             case 'new':

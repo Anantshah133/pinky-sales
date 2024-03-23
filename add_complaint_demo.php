@@ -109,8 +109,43 @@ if (isset($_POST['save'])) {
         }
         $stmt->close();
 
-        $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `area`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `barcode`, `source`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("sssssissssiissssss", $fname, $lname, $email, $contact, $alt_contact, $fetched_city_id, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $barcode, $source, $complaint_date, $complaint_time);
+        $stmt = $obj->con1->prepare("SELECT * FROM customer_reg WHERE barcode=? AND service_type=23 AND product_category=?");
+        $stmt->bind_param("si", $barcode, $product_category);
+        $stmt->execute();
+        $Res = $stmt->get_result();
+        $war_data = $Res->fetch_assoc();
+        $stmt->close();
+
+        $pr_category = $war_data['product_category'];
+
+        if($Res->num_rows >= 1){
+            $stmt = $obj->con1->prepare("SELECT * FROM product_category WHERE id=?");
+            $stmt->bind_param("i", $pr_category);
+            $stmt->execute();
+            $Res = $stmt->get_result();
+            $pr_data = $Res->fetch_assoc();
+            $stmt->close();
+
+            $old_date = strtotime($war_data['date']);
+            $check_date = strtotime($complaint_date);
+            $warranty_period = $pr_data['warranty_period'];
+
+            $difference = $check_date - $old_date;
+            $warranty_duration = $warranty_period * 30 * 24 * 60 * 60;
+
+            if($difference <= $warranty_duration){
+                echo "In: - ". $warranty_status = 1;
+            } else {
+                echo "In: - ". $warranty_status = 0;
+            }
+        } else {
+            echo "Out: - ". $warranty_status = 1;
+        }
+
+
+
+        $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `area`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `barcode`, `source`, `warranty`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param("sssssissssiissssiss", $fname, $lname, $email, $contact, $alt_contact, $fetched_city_id, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $barcode, $source, $warranty_status, $complaint_date, $complaint_time);
         $Resp = $stmt->execute();
         $stmt->close();
 
@@ -166,23 +201,22 @@ if (isset($_POST['save'])) {
             throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
         }
 
-        $subject = "Onelife Complaint No: ". $complaint_no;
-        $body = "Dear $fname $lname,
-        Your complaint has been registered successfully. Your complaint number is : $complaint_no
-        Techinician will be allocated soon.
+        // $subject = "Onelife Complaint No: ". $complaint_no;
+        // $body = "Dear $fname $lname,
+        // Your complaint has been registered successfully. Your complaint number is : $complaint_no
+        // Techinician will be allocated soon.
         
-        Regards,
-        OneLife Team.";
-        $from = "test@pragmanxt.com";
-        $from_name = "Onelife";
+        // Regards,
+        // OneLife Team.";
+        // $from = "test@pragmanxt.com";
+        // $from_name = "Onelife";
 
-        // echo $subject ." ". $body ." ". $email ." ". $from ." ". $from_name;
-        $mail_res = smtpmailer($subject, $body, $email, $from, $from_name);
-        if($mail_res == 1){
-            setcookie("mail", "successfull", time() + 3600, "/");
-        } else {
-            setcookie("mail", urlencode($mail_res), time() + 3600, "/");
-        }
+        // $mail_res = smtpmailer($subject, $body, $email, $from, $from_name);
+        // if($mail_res == 1){
+        //     setcookie("mail", "successfull", time() + 3600, "/");
+        // } else {
+        //     setcookie("mail", urlencode($mail_res), time() + 3600, "/");
+        // }
 
         if (!$Resp) {
             echo $obj->con1->error;
@@ -379,18 +413,19 @@ function smtpmailer($subject, $body, $to, $from, $from_name){
         http.onload = () => {
             const warranty = http.responseText;
             if(warranty == "new-entry"){
+                warrantyStatus.innerHTML = "";
                 return;
-            } else if(warranty > 365){
+            } else if(warranty == "not-in-warranty"){
                 warrantyStatus.classList.add('text-danger');
                 warrantyStatus.classList.remove('text-success');
                 warrantyStatus.innerHTML = "Product is out of Warranty period";
-            } else if(warranty < 365){
+            } else if(warranty == "in-warranty"){
                 warrantyStatus.classList.add('text-success');
                 warrantyStatus.classList.remove('text-danger');
                 warrantyStatus.innerHTML = "Product is in Warranty period";
             }
         }
-        http.open("GET", `./ajax/check_warranty.php?date=${date}&barcode=${barcode}&service_type=${serviceType}&product_category=${productCategory}`);
+        http.open("GET", `./ajax/check_warranty.php?date=${date}&barcode=${barcode}&product_category=${productCategory}`);
         http.send();
     }
 
