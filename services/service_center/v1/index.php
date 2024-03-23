@@ -99,7 +99,7 @@ $app->post('/technician_reg','authenticateUser', function () use ($app) {
         $MainFileName = $userid . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["id_proof"]["tmp_name"], "../../../onelife/uploads/" . $MainFileName)) {
+        if (move_uploaded_file($_FILES["id_proof"]["tmp_name"], "../../../images/technician_idproof/" . $MainFileName)) {
             $response->image_upload = "success";
         } else {
             $response->image_upload = "fail";
@@ -316,6 +316,19 @@ if ($res->num_rows > 0) {
             $response = new stdClass();
             foreach ($call_list as $key => $value) {
                 $response->$key = strval($value);
+                if($key=="product_model_img" && $value!="")
+                {
+                    $response->$key = strval("product_model_img/".$value);
+                }
+                if($key=="serial_no_img" && $value!="")
+                {
+                    $response->$key = "serial_no_img/".strval($value);
+                }
+                if($key=="purchase_date_img" && $value!="")
+                {
+                    $response->$key = "purchase_date_img/".strval($value);
+                }
+                
 
             }
             // call history
@@ -383,7 +396,7 @@ $app->post('/call_allocation_add_old', function () use ($app) {
         $serial_no_img = $complaint_no . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["serial_no_img"]["tmp_name"], "../../../onelife/uploads/" . $serial_no_img)) {
+        if (move_uploaded_file($_FILES["serial_no_img"]["tmp_name"], "../../../images/product_model_img/" . $serial_no_img)) {
             $response->serial_no_img = "success";
         } else {
             $response->serial_no_img = "fail";
@@ -402,7 +415,7 @@ $app->post('/call_allocation_add_old', function () use ($app) {
         $product_model_img = $complaint_no . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["product_model_img"]["tmp_name"], "../../../onelife/uploads/" . $product_model_img)) {
+        if (move_uploaded_file($_FILES["product_model_img"]["tmp_name"], "../../../images/product_model_img/" . $product_model_img)) {
             $response->product_model_img = "success";
         } else {
             $response->product_model_img = "fail";
@@ -421,7 +434,7 @@ $app->post('/call_allocation_add_old', function () use ($app) {
         $purchase_date_img = $complaint_no . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["purchase_date_img"]["tmp_name"], "../../../onelife/uploads/" . $purchase_date_img)) {
+        if (move_uploaded_file($_FILES["purchase_date_img"]["tmp_name"], "../../../images/product_model_img/" . $purchase_date_img)) {
             $response->purchase_date_img = "success";
         } else {
             $response->purchase_date_img = "fail";
@@ -511,7 +524,7 @@ $app->post('/call_allocation_add','authenticateUser', function () use ($app) {
         $serial_no_img = $complaint_no . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["serial_no_img"]["tmp_name"], "../../../onelife/uploads/" . $serial_no_img)) {
+        if (move_uploaded_file($_FILES["serial_no_img"]["tmp_name"], "../../../images/product_model_img/" . $serial_no_img)) {
             $response->serial_no_img = "success";
         } else {
             $response->serial_no_img = "fail";
@@ -530,7 +543,7 @@ $app->post('/call_allocation_add','authenticateUser', function () use ($app) {
         $product_model_img = $complaint_no . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["product_model_img"]["tmp_name"], "../../../onelife/uploads/" . $product_model_img)) {
+        if (move_uploaded_file($_FILES["product_model_img"]["tmp_name"], "../../../images/product_model_img/" . $product_model_img)) {
             $response->product_model_img = "success";
         } else {
             $response->product_model_img = "fail";
@@ -549,7 +562,7 @@ $app->post('/call_allocation_add','authenticateUser', function () use ($app) {
         $purchase_date_img = $complaint_no . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["purchase_date_img"]["tmp_name"], "../../../onelife/uploads/" . $purchase_date_img)) {
+        if (move_uploaded_file($_FILES["purchase_date_img"]["tmp_name"], "../../../images/product_model_img/" . $purchase_date_img)) {
             $response->purchase_date_img = "success";
         } else {
             $response->purchase_date_img = "fail";
