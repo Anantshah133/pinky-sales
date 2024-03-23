@@ -201,22 +201,22 @@ if (isset($_POST['save'])) {
             throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
         }
 
-        // $subject = "Onelife Complaint No: ". $complaint_no;
-        // $body = "Dear $fname $lname,
-        // Your complaint has been registered successfully. Your complaint number is : $complaint_no
-        // Techinician will be allocated soon.
+        $subject = "Onelife Complaint No: ". $complaint_no;
+        $body = "Dear $fname $lname,
+        Your complaint has been registered successfully. Your complaint number is : $complaint_no
+        Techinician will be allocated soon.
         
-        // Regards,
-        // OneLife Team.";
-        // $from = "test@pragmanxt.com";
-        // $from_name = "Onelife";
+        Regards,
+        OneLife Team.";
+        $from = "test@pragmanxt.com";
+        $from_name = "Onelife";
 
-        // $mail_res = smtpmailer($subject, $body, $email, $from, $from_name);
-        // if($mail_res == 1){
-        //     setcookie("mail", "successfull", time() + 3600, "/");
-        // } else {
-        //     setcookie("mail", urlencode($mail_res), time() + 3600, "/");
-        // }
+        $mail_res = smtpmailer($subject, $body, $email, $from, $from_name);
+        if($mail_res == 1){
+            setcookie("mail", "successfull", time() + 3600, "/");
+        } else {
+            setcookie("mail", urlencode($mail_res), time() + 3600, "/");
+        }
 
         if (!$Resp) {
             echo $obj->con1->error;
