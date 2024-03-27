@@ -234,20 +234,24 @@ function uploadImage($inputName, $uploadDirectory)
                         <div>
                             <label for="service_center">Service Center</label>
                             <select name="service_center" id="service_center" class="form-select text-white-dark" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> onchange="getTechnician(this.value);">
-                                <option value="">Choose service center</option>
-                                <?php
-                                $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE status='enable'");
-                                $stmt->execute();
-                                $Resp = $stmt->get_result();
-                                $stmt->close();
-                                while ($result = mysqli_fetch_array($Resp)) {
+                                <?php if(isset($_SESSION['type_center'])){ ?>
+                                    <option value="<?php echo $_SESSION['scid']; ?>"><?php echo $_SESSION['name']; ?></option>
+                                <?php } else { ?>
+                                    <option value="">Choose service center</option>
+                                    <?php
+                                        $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE status='enable'");
+                                        $stmt->execute();
+                                        $Resp = $stmt->get_result();
+                                        $stmt->close();
+                                        while ($result = mysqli_fetch_array($Resp)) {
                                     ?>
                                         <option value="<?php echo $result["id"]; ?>" <?php echo isset($mode) && $result['id'] == $data['service_center_id'] ? 'selected' : '' ?>>
                                             <?php echo $result["name"]; ?>
                                         </option>
                                     <?php
-                                }
-                                ?>
+                                        }
+                                    ?>
+                                <?php } ?>
                             </select>
                         </div>
                         <div>

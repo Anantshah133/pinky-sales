@@ -56,10 +56,10 @@
         }));
 
         const readAllNotification = () => {
-            let centerId = <?php echo isset($_SESSION['scid']) ? $_SESSION['scid'] : '' ?>;
+            let centerId = '<?php echo isset($_SESSION['scid']) ? $_SESSION['scid'] : '' ?>';
             const http = new XMLHttpRequest();
             http.onload = () => {
-
+                
             }
             http.open("GET", "./ajax/notifications.php?action=read_all_notification&centerId="+centerId);
             http.send();
