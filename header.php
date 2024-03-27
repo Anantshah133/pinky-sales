@@ -542,7 +542,7 @@ if (isset($_REQUEST['logout'])) {
                                             <li>
                                                 <div class="p-4">
                                                     <button class="btn btn-primary btn-small block w-full"
-                                                        @click="toggle">Read All Notifications</button>
+                                                        @click="toggle" onclick="readAllNotification();">Read All Notifications</button>
                                                 </div>
                                             </li>
                                         </template>

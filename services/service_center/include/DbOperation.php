@@ -1148,7 +1148,7 @@ public function update_item_price($price,$discount_percent,$discount_price,$vend
     public function add_bussiness_time($day,$open_time,$close_time,$type,$vid)
     {
         $datetime=date("m/d/Y h:i A");
-        $status='Enable';
+        $status='enable';
         $operation='Added';
         $addedby=1;
        
@@ -1178,7 +1178,7 @@ public function update_item_price($price,$discount_percent,$discount_price,$vend
 public function add_city($city)
     {
         $datetime=date("m/d/Y h:i A");
-        $status='Enable';
+        $status='enable';
         $operation='Added';
         $addedby=1;
         $stmt = $this->con->prepare("INSERT INTO `city`(`city_name`, `stats`, `added_by`, `date_time`, `operation`) VALUES(?,?,?,?,?)");
@@ -1197,7 +1197,7 @@ public function add_city($city)
     public function insert_unique_area($zipcode,$cityid)
     {
         $datetime=date("m/d/Y h:i A");
-        $status='Enable';
+        $status='enable';
         $operation='Added';
         $addedby=1;
        
@@ -2084,7 +2084,7 @@ o1.order_id LIKE '%".$search."%' or c1.contact1 LIKE '%".$search."%') and o1.sel
     {
         $date_time = date("m/d/Y h:i A");
         $operation = 'Added';        
-        $stats='Enable';
+        $stats='enable';
         $is_verified='unverified';
        
       // echo "INSERT INTO `area`(`id`, `area_name`, `city`, `stats`, `added_by`, `date_time`, `operation`) VALUES ($pincode,  $area, $city_id,$stats,$vendor_id,$date_time,$operation)";

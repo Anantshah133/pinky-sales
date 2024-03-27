@@ -94,4 +94,22 @@ if($_REQUEST['action'] == "remove_notification"){
         echo 0;
     }
 }
+if($_REQUEST['action'] == "read_all_notification"){
+    if(isset($_SESSION['type_admin'])){
+        $stmt = $obj->con1->prepare("UPDATE notification SET admin_status=0, admin_play_status=0");
+        $stmt->bind_param("i", $id);
+        $Res = $stmt->execute();
+        $stmt->close();
+    } else {
+        $stmt = $obj->con1->prepare("UPDATE notification SET service_status=0, service_play_status=0 WHERE id=?");
+        $stmt->bind_param("i", $id);
+        $Res = $stmt->execute();
+        $stmt->close();
+    }
+    if($Res){
+        echo 1;
+    } else {
+        echo 0;
+    }
+}
 ?>

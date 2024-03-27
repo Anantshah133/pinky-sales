@@ -11,7 +11,7 @@
 <script src="assets/js/custom.js"></script>
 <script defer src="assets/js/apexcharts.js"></script>
 
-<script> 
+<script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('scrollToTop', () => ({
             showTopButton: false,
@@ -55,6 +55,16 @@
             },
         }));
 
+        const readAllNotification = () => {
+            let centerId = <?php echo isset($_SESSION['scid']) ? $_SESSION['scid'] : '' ?>;
+            const http = new XMLHttpRequest();
+            http.onload = () => {
+
+            }
+            http.open("GET", "./ajax/notifications.php?action=read_all_notification&centerId="+centerId);
+            http.send();
+        }
+
         // header section
         Alpine.data('header', () => ({
             notifications: [],
@@ -84,7 +94,7 @@
                 fetch('./ajax/notifications.php?action=get_notification')
                     .then(response => response.json())
                     .then(data => {
-                        if(data.length > 0){
+                        if (data.length > 0) {
                             this.notifications = data;
                             this.playNotificationSound();
                         }
@@ -94,39 +104,39 @@
                     });
             },
 
-            playNotificationSound(){
+            playNotificationSound() {
                 fetch('./ajax/notifications.php?action=play_noti_sound')
-                .then(res => res.text())
-                .then(data => {
-                    const [numNotifications, notificationIds] = data.split('@@@');
-                    if(numNotifications > 0){
-                        let audioSource = '<source src="./assets/sound.mp3" type="audio/mpeg">';
-                        document.getElementById("sound").innerHTML = `<audio autoplay>${audioSource}</audio>`;
-                        this.removeNotificationSound(notificationIds);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error Playing sound:', error);
-                })
+                    .then(res => res.text())
+                    .then(data => {
+                        const [numNotifications, notificationIds] = data.split('@@@');
+                        if (numNotifications > 0) {
+                            let audioSource = '<source src="./assets/sound.mp3" type="audio/mpeg">';
+                            document.getElementById("sound").innerHTML = `<audio autoplay>${audioSource}</audio>`;
+                            this.removeNotificationSound(notificationIds);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error Playing sound:', error);
+                    })
             },
 
-            removeNotificationSound(id){
-                const http = new XMLHttpRequest();  
+            removeNotificationSound(id) {
+                const http = new XMLHttpRequest();
                 http.onload = () => {
                     console.log(http.responseText);
                     document.getElementById("sound").innerHTML = "";
                 }
-                http.open("GET", "./ajax/notifications.php?action=remove_noti_sound&ids="+id);
+                http.open("GET", "./ajax/notifications.php?action=remove_noti_sound&ids=" + id);
                 http.send();
             },
 
             removeNotification(id) {
                 console.log(id);
-                const http = new XMLHttpRequest();  
+                const http = new XMLHttpRequest();
                 http.onload = () => {
                     console.log(http.responseText)
                 }
-                http.open("GET", "./ajax/notifications.php?action=remove_notification&id="+id);
+                http.open("GET", "./ajax/notifications.php?action=remove_notification&id=" + id);
                 http.send();
                 this.notifications = this.notifications.filter(notification => notification.id !== id);
             },

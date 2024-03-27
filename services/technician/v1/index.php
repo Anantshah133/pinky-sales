@@ -39,9 +39,8 @@ $app->post('/technician_reg', function () use ($app) {
     $password = $req_data->password;
 
     $service_center = $req_data->service_center;
-    $status='Enable';
-
-   
+    $status='enable';
+    
     $db = new DbOperation();
     if ($_FILES["id_proof"]["name"] != "") {
 
