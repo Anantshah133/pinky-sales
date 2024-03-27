@@ -55,16 +55,6 @@
             },
         }));
 
-        const readAllNotification = () => {
-            let centerId = '<?php echo isset($_SESSION['scid']) ? $_SESSION['scid'] : '' ?>';
-            const http = new XMLHttpRequest();
-            http.onload = () => {
-                
-            }
-            http.open("GET", "./ajax/notifications.php?action=read_all_notification&centerId="+centerId);
-            http.send();
-        }
-
         // header section
         Alpine.data('header', () => ({
             notifications: [],
@@ -102,6 +92,15 @@
                     .catch(error => {
                         console.error('Error fetching notifications:', error);
                     });
+            },
+
+            readAllNotification(){
+                const http = new XMLHttpRequest();
+                http.onload = () => {
+                    this.getNotifications();
+                }
+                http.open("GET", "./ajax/notifications.php?action=read_all_notification");
+                http.send();
             },
 
             playNotificationSound() {

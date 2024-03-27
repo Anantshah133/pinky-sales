@@ -13,7 +13,7 @@ if ($_REQUEST['action'] == "get_notification") {
         $stmt->close();
     } else {
         $center_id = $_SESSION['scid'];
-        $stmt = $obj->con1->prepare("SELECT n1.*, CONCAT(c1.date, ' ', c1.time) AS date_time, ca1.id AS ca_id FROM notification n1, customer_reg c1, call_allocation ca1 WHERE n1.admin_status='1' AND n1.complaint_no=c1.complaint_no AND n1.complaint_no=ca1.complaint_no and ca1.service_center_id=? ORDER BY id DESC");
+        $stmt = $obj->con1->prepare("SELECT n1.*, CONCAT(c1.date, ' ', c1.time) AS date_time, ca1.id AS ca_id FROM notification n1, customer_reg c1, call_allocation ca1 WHERE n1.service_status='1' AND n1.complaint_no=c1.complaint_no AND n1.complaint_no=ca1.complaint_no and ca1.service_center_id=? ORDER BY id DESC");
         $stmt->bind_param("i", $center_id);
         $stmt->execute();
         $Resp = $stmt->get_result();
@@ -95,14 +95,16 @@ if($_REQUEST['action'] == "remove_notification"){
     }
 }
 if($_REQUEST['action'] == "read_all_notification"){
+    $scid = $_REQUEST['centerId'];
     if(isset($_SESSION['type_admin'])){
         $stmt = $obj->con1->prepare("UPDATE notification SET admin_status=0, admin_play_status=0");
         $stmt->bind_param("i", $id);
         $Res = $stmt->execute();
         $stmt->close();
     } else {
-        $stmt = $obj->con1->prepare("UPDATE notification SET service_status=0, service_play_status=0 WHERE id=?");
-        $stmt->bind_param("i", $id);
+        $scid = $_SESSION['scid'];
+        $stmt = $obj->con1->prepare("UPDATE notification n1, call_allocation c1 SET service_status=0, service_play_status=0 WHERE n1.complaint_no=c1.complaint_no AND c1.service_center_id=?");
+        $stmt->bind_param("i", $scid);
         $Res = $stmt->execute();
         $stmt->close();
     }

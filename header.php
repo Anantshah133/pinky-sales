@@ -541,8 +541,7 @@ if (isset($_REQUEST['logout'])) {
                                         <template x-if="notifications.length">
                                             <li>
                                                 <div class="p-4">
-                                                    <button class="btn btn-primary btn-small block w-full"
-                                                        @click="toggle" onclick="readAllNotification();">Read All Notifications</button>
+                                                    <button class="btn btn-primary btn-small block w-full" @click="readAllNotification()">Read All Notifications</button>
                                                 </div>
                                             </li>
                                         </template>

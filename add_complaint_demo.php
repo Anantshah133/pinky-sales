@@ -41,9 +41,10 @@ if (isset($_REQUEST['update'])) {
     $complaint_time = date('h:i A', strtotime($_REQUEST['complaint_time']));
     $complaint_no = $data['complaint_no'];
     $description = $_REQUEST['description'];
+    $barcode = $_REQUEST['barcode'];
 
-    $stmt = $obj->con1->prepare("UPDATE `customer_reg` SET fname=?,lname=?,email=?,contact=?,alternate_contact=?,map_location=?,address=?,zipcode=?,complaint_no=?,service_type=?,product_category=?,dealer_name=?,description=?, date=?,time=?  WHERE id=?");
-    $stmt->bind_param("ssssssssssissssi", $fname, $lname, $email, $contact, $alt_contact, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $complaint_date, $complaint_time, $editId);
+    $stmt = $obj->con1->prepare("UPDATE `customer_reg` SET fname=?,lname=?,email=?,contact=?,alternate_contact=?,map_location=?,address=?,zipcode=?,complaint_no=?,service_type=?,product_category=?,dealer_name=?,description=?, barcode=?, date=?, time=?  WHERE id=?");
+    $stmt->bind_param("ssssssssssisssssi", $fname, $lname, $email, $contact, $alt_contact, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $barcode, $complaint_date, $complaint_time, $editId);
     $Res = $stmt->execute();
     $stmt->close();
 
