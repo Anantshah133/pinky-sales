@@ -499,8 +499,8 @@ $app->post('/call_allocation_add','authenticateUser', function () use ($app) {
     $call_type = isset($req_data->call_type)?$req_data->call_type:"";
     $service_charge = isset($req_data->service_charge)?$req_data->service_charge:"";
     $parts_charge = isset($req_data->parts_charge)?$req_data->parts_charge:"";
-    $history_status = isset($req_data->history_status)?$req_data->history_status:"";    
-    $status=(isset($req_data->history_status) && $req_data->history_status!="") ?$req_data->history_status:'allocated';
+    $history_status = isset($req_data->history_status)?strtolower($req_data->history_status):"";    
+    $status=(isset($req_data->history_status) && $req_data->history_status!="") ?strtolower($req_data->history_status):'allocated';
     $reason = isset($req_data->reason)?$req_data->reason:"";   
     $db = new DbOperation();
 
@@ -642,7 +642,7 @@ $app->post('/call_allocation_add','authenticateUser', function () use ($app) {
      }
 
         $data['result'] = true;
-        $data['message'] = "Call allocated successfully";
+        $data['message'] = "Call updated successfully";
         $data['response'] = $response;
 
         echoResponse(201, $data);
