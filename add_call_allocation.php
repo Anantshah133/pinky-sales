@@ -404,7 +404,6 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     </div>
 <?php } ?>
 <script>
-
     function changeStatus(tech, statusId){
         const statusSelect = document.getElementById(statusId);
         if(tech !== ""){
@@ -450,7 +449,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 </a>
             </li>
             <li>
-                <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(${id}, '${number}',)">
+                <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(${id}, '${number}')">
                     <i class="ri-delete-bin-line text-danger"></i>
                 </a>
             </li>
@@ -478,7 +477,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                             ?>,
                             data: [
                                 <?php
-                                    $stmt = $obj->con1->prepare("SELECT a.*,b.name as technician_name,c.name as service_center_name from call_history as a,technician as b,service_center as c where b.id = a.technician and a.service_center=c.id and complaint_no=?");
+                                    $stmt = $obj->con1->prepare("SELECT a.*,b.name as technician_name,c.name as service_center_name from call_history as a,technician as b,service_center as c where b.id = a.technician and a.service_center=c.id and complaint_no=? ORDER BY id DESC");
                                     $stmt->bind_param("s", $cno);
                                     $stmt->execute();
 
@@ -639,7 +638,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         }
     }
 
-    function showAlert(id,complaint_no) {
+    async function showAlert(id,complaint_no) {
         new window.Swal({
             title: 'Are you sure?',
             text: `You want to delete Call :- ${complaint_no}!`,

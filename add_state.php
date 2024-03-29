@@ -96,7 +96,6 @@ if (isset($_REQUEST["save"])) {
                         Close
                     </button>
                 </div>
-                </div>
             </form>
         </div>
     </div>

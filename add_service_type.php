@@ -95,15 +95,14 @@ if (isset($_REQUEST["save"])) {
                         <span>Enable</span>
                     </label>
                     <label class="inline-flex mr-3">
-                        <input type="radio" name="default_radio" value="disable" class="form-radio text-danger" required 
-                            <?php echo isset($mode) && $data["status"] == "disable" ? "checked" : ""; ?> 
-                            <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>
-                        />
+                        <input type="radio" name="default_radio" value="disable" class="form-radio text-danger" required <?php echo isset($mode) && $data["status"] == "disable" ? "checked" : ""; ?> <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?>/>
                         <span>Disable</span>
                     </label>
                 </div>
-                <div class="relative inline-flex align-middle gap-3 mt-4 <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>">
-                    <button type="submit" name="<?php echo isset($mode) == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success" onclick="return localValidate()"><?php echo isset($mode) == 'edit' ? 'Update' : 'Save' ?></button>
+                <div class="relative inline-flex align-middle gap-3 mt-4">
+                    <button type="submit" name="<?php echo isset($mode) == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success <?php echo isset($mode) && $mode == 'view' ? 'hidden' : '' ?>" onclick="return localValidate()">
+                        <?php echo isset($mode) == 'edit' ? 'Update' : 'Save' ?>
+                    </button>
                     <button type="button" class="btn btn-danger" onclick="window.location='service_type.php'"
                     >Close</button>
                 </div>

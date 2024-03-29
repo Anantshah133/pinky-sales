@@ -140,7 +140,7 @@ if (isset($_POST['save'])) {
                 echo "In: - ". $warranty_status = 0;
             }
         } else {
-            echo "Out: - ". $warranty_status = 1;
+            echo "Out: - ". $warranty_status = 2;
         }
 
 
@@ -368,7 +368,7 @@ function smtpmailer($subject, $body, $to, $from, $from_name){
                         </div>
                         <div x-data="cmplnDate">
                             <label>Date </label>
-                            <input x-model="date2" name="complaint_date" id="complaint_date" class="form-input" value="" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
+                            <input x-model="date2" name="complaint_date" id="complaint_date" class="form-input" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
                         </div>
                         <div x-data="complaintTime">
                             <label>Time </label>
