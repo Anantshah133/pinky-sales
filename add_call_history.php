@@ -51,11 +51,26 @@ if (isset($_REQUEST['update'])) {
     $callEditId = $_COOKIE['callEditId'];
     $date_time = date("Y-m-d h:i A");
 
-    $stmt = $obj->con1->prepare(
-        "UPDATE call_history SET complaint_no=?,service_center=?,technician=?,parts_used=?,call_type=?,service_charge=?,parts_charge=?,status=?,reason=?,date_time=? WHERE id=?"
-    );
-    $stmt->bind_param("siisssssssi", $complaint_number, $service_center, $technician, $parts_used, $call_type, $service_charge, $parts_charge, $status, $reason, $date_time, $callEditId);
-    $Resp = $stmt->execute();
+    try {
+        $stmt = $obj->con1->prepare(
+            "UPDATE call_history SET complaint_no=?,service_center=?,technician=?,parts_used=?,call_type=?,service_charge=?,parts_charge=?,status=?,reason=?,date_time=? WHERE id=?"
+        );
+        $stmt->bind_param("siisssssssi", $complaint_number, $service_center, $technician, $parts_used, $call_type, $service_charge, $parts_charge, $status, $reason, $date_time, $callEditId);
+        $Resp = $stmt->execute();
+    
+        if (!$Resp) {
+            throw new Exception(
+                "Problem in adding! " . strtok($obj->con1->error, "(")
+            );
+        } else {
+            $stmt2 = $obj->con1->prepare("update call_allocation set status=? where complaint_no=?");
+            $stmt2->bind_param("ss", $status, $complaint_number);
+            $stmt2->execute();
+            $stmt2->close();
+        }
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
+    }
 
     if ($Resp) {
         setcookie("msg", "update", time() + 3600, "/");
@@ -79,12 +94,12 @@ if (isset($_REQUEST["save"])) {
     $date_time = date("Y-m-d h:i A");
 
     try {
-
         $stmt = $obj->con1->prepare(
             "INSERT INTO `call_history`(`complaint_no`,`service_center`,`technician`,`parts_used`,`call_type`,`service_charge`,`parts_charge`,`status`,`reason`,`date_time`) VALUES (?,?,?,?,?,?,?,?,?,?)"
         );
         $stmt->bind_param("siisssssss", $complaint_number, $service_center, $technician, $parts_used, $call_type, $service_charge, $parts_charge, $status, $reason, $date_time);
         $Resp = $stmt->execute();
+        $stmt->close();
 
         if (!$Resp) {
             throw new Exception(
@@ -94,8 +109,8 @@ if (isset($_REQUEST["save"])) {
             $stmt2 = $obj->con1->prepare("update call_allocation set status=? where complaint_no=?");
             $stmt2->bind_param("ss", $status, $complaint_number);
             $stmt2->execute();
+            $stmt2->close();
         }
-        $stmt->close();
     } catch (\Exception $e) {
         setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
     }
@@ -222,8 +237,6 @@ if (isset($_REQUEST["save"])) {
     </div>
 </div>
 
-
-
 <script>
     const partInput = document.getElementById("parts_charge");
     const serviceInput = document.getElementById("service_charge");
@@ -232,6 +245,10 @@ if (isset($_REQUEST["save"])) {
     function checkTotal(){
         totalInput.value = (parseInt(partInput.value) || 0) + (parseInt(serviceInput.value) || 0);
     }
+
+    <?php if(isset($mode)){ ?>
+        checkTotal();
+    <?php } ?>
 
     function changePartCharge(val, id){
         if(val == "non-part-call"){
