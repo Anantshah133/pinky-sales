@@ -22,6 +22,70 @@ class DbOperation
         $stmt->close();
         return $faculty;
     }
+    
+    public function checkBarcode($barcode,$service_type) //added by jay 30-03-24
+    {
+        
+       if($service_type==23 && $barcode!="")
+       {
+            $stmt = $this->con->prepare("SELECT count(*) as cnt FROM `customer_reg` WHERE barcode=?");
+            $stmt->bind_param("s", $barcode);
+            $stmt->execute();
+            $row = $stmt->get_result()->fetch_assoc();
+            $stmt->close();
+            return $row["cnt"]; 
+       }
+       else if($barcode=="" && $service_type==23)
+       {
+            return -1;
+       }
+       return 0;
+    
+    }
+    
+    
+    
+    public function checkWarranty($barcode,$product_category) // by jay 30-03-24
+    {
+        
+        
+            $stmt = $this->con->prepare("SELECT c1.date , p1.warranty_period  FROM `customer_reg` c1 , product_category p1 where c1.product_category = p1.id and c1.warranty=2 and c1.barcode=? and product_category=?");
+            $stmt->bind_param("si", $barcode,$product_category);
+            $stmt->execute();
+            $row = $stmt->get_result()->fetch_assoc();
+            $dt=$row["date"];
+            $warranty_period = $row["warranty_period"];
+            $stmt->close();
+            
+            if($row["date"]==null)
+            {
+                return 0;
+            }
+            
+            
+            $stmt = $this->con->prepare("SELECT date_add('$dt', interval '$warranty_period' month) as warranty_end");
+            $stmt->execute();
+            $row = $stmt->get_result()->fetch_assoc();
+            $end_warranty_date=$row["warranty_end"];
+            $stmt->close();
+            
+            
+            $stmt=$this->con->prepare("SELECT datediff('$end_warranty_date',curdate()) as days");
+            $stmt->execute();
+            $row = $stmt->get_result()->fetch_assoc();
+            $remaining_days=$row["days"];
+            $stmt->close();
+            
+            
+            if($remaining_days<0)
+            {
+                return 0;
+            }
+            
+            return 1;
+      
+    
+    }
 
     public function getmaxcustomer()
     {
@@ -35,25 +99,27 @@ class DbOperation
     public function get_dailycounter()
     {
 
-      
-        $stmt = $this->con->prepare("select IFNULL(count(id)+1,1) as customer_id from customer_reg where  DATE(date) ='".date("Y-m-d")."'");
+    
+     //   $stmt = $this->con->prepare("select IFNULL(count(id)+1,1) as customer_id from customer_reg where  DATE(date) ='".date("Y-m-d")."'");
+        $stmt = $this->con->prepare("select 10000-(9999-right(complaint_no,4)) as customer_id from customer_reg where date='".date("Y-m-d")."' order by id desc limit 1");
         $stmt->execute();
         $results = $stmt->get_result();
         $stmt->close();
         return $results;
     }
     
-    public function do_reg_customer($fname, $lname,$email, $contact,$alternate_contact, $area,$zipcode,$address,$service_type,$product_category,$dealer_name,$complaint_no,$description,$barcode,$source,$map_location)
+    public function do_reg_customer($fname, $lname,$email, $contact,$alternate_contact, $area,$zipcode,$address,$service_type,$product_category,$dealer_name,$complaint_no,$description,$barcode,$source,$map_location,$warranty)
     {
             $date=date("Y-m-d");
             $time=date("h:i A");
 
             //if (!$this->isContactExists($contact)) {
 
+                
      
 
-                $stmt = $this->con->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`,`contact`,`alternate_contact`, `area`,`map_location`, `address`,`zipcode`, `complaint_no`, `service_type`, `product_category`,  `dealer_name`,`description`,`barcode`,`source`,`date`,`time`)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-                $stmt->bind_param("sssssisssssissssss", $fname, $lname,$email, $contact,$alternate_contact, $area,$map_location,$address,$zipcode,$complaint_no,$service_type,$product_category,$dealer_name,$description,$barcode,$source,$date,$time);
+                $stmt = $this->con->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`,`contact`,`alternate_contact`, `area`,`map_location`, `address`,`zipcode`, `complaint_no`, `service_type`, `product_category`,  `dealer_name`,`description`,`barcode`,`source`,`date`,`time`,`warranty`)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                $stmt->bind_param("sssssisssssissssssi", $fname, $lname,$email, $contact,$alternate_contact, $area,$map_location,$address,$zipcode,$complaint_no,$service_type,$product_category,$dealer_name,$description,$barcode,$source,$date,$time,$warranty);
                 $result = $stmt->execute();
                 $stmt->close();
                 if ($result) {

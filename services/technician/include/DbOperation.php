@@ -464,18 +464,18 @@ public function update_store_status($v_id,$status)
     {
         if($type=="pending")
         {
-            $stmt = $this->con->prepare("SELECT c1.*,c2.*,s1.name as service_center_name,pc1.name as product_category_name,s1.address as service_center_address,s1.contact as service_contact,a1.ctnm as service_area FROM customer_reg c1,call_allocation c2,service_center s1,product_category pc1,city a1 WHERE c2.complaint_no=c1.complaint_no and c2.service_center_id=s1.id and c1.product_category=pc1.id and s1.area=a1.srno and c2.status='pending'  and c2.technician=?");
+            $stmt = $this->con->prepare("SELECT c1.*,c2.*,s1.name as service_center_name,pc1.name as product_category_name,s1.address as service_center_address,s1.contact as service_contact,a1.ctnm as service_area, s2.name as service_type_name , t1.name as technician_name FROM customer_reg c1,call_allocation c2,service_center s1,product_category pc1,service_type s2,city a1, technician t1 WHERE c2.complaint_no=c1.complaint_no and c2.service_center_id=s1.id and c1.product_category=pc1.id and s1.area=a1.srno and s2.id = c1.service_type and t1.id = c2.technician and c2.status='pending' and c2.technician=?");
             $stmt->bind_param("i",$technician_id);
         }
         else if($type=="allocated")
         {
-            $stmt = $this->con->prepare("SELECT c1.*,c2.*,s1.name as service_center_name,pc1.name as product_category_name,s1.address as service_center_address,s1.contact as service_contact,a1.ctnm as service_area FROM customer_reg c1,call_allocation c2,service_center s1,product_category pc1,city a1 WHERE c2.complaint_no=c1.complaint_no and c2.service_center_id=s1.id and c1.product_category=pc1.id and s1.area=a1.srno and c2.status='allocated'  and c2.technician=? ");
+            $stmt = $this->con->prepare("SELECT c1.*,c2.*,s1.name as service_center_name,pc1.name as product_category_name,s1.address as service_center_address,s1.contact as service_contact,a1.ctnm as service_area, s2.name as service_type_name , t1.name as technician_name FROM customer_reg c1,call_allocation c2,service_center s1,product_category pc1,service_type s2,city a1, technician t1 WHERE c2.complaint_no=c1.complaint_no and c2.service_center_id=s1.id and c1.product_category=pc1.id and s1.area=a1.srno and s2.id = c1.service_type and t1.id = c2.technician and c2.status='allocated'  and c2.technician=? ");
             
             $stmt->bind_param("i", $technician_id);
         }
         else if($type=="closed")
         {
-            $stmt = $this->con->prepare("SELECT c1.*,c2.*,s1.name as service_center_name,pc1.name as product_category_name,s1.address as service_center_address,s1.contact as service_contact,a1.ctnm as service_area FROM customer_reg c1,call_allocation c2,service_center s1,product_category pc1,city a1 WHERE c2.complaint_no=c1.complaint_no and c2.service_center_id=s1.id and c1.product_category=pc1.id and s1.area=a1.srno and c2.status=?   and c2.allocation_date >='".date("Y-m-01")."' and c2.allocation_date <='".date("Y-m-t")."' and c2.technician=?");
+            $stmt = $this->con->prepare("SELECT c1.*,c2.*,s1.name as service_center_name,pc1.name as product_category_name,s1.address as service_center_address,s1.contact as service_contact,a1.ctnm as service_area, s2.name as service_type_name , t1.name as technician_name FROM customer_reg c1,call_allocation c2,service_center s1,product_category pc1,service_type s2,city a1, technician t1 WHERE c2.complaint_no=c1.complaint_no and c2.service_center_id=s1.id and c1.product_category=pc1.id and s1.area=a1.srno and s2.id = c1.service_type and t1.id = c2.technician and c2.status=?   and c2.allocation_date >='".date("Y-m-01")."' and c2.allocation_date <='".date("Y-m-t")."' and c2.technician=?");
             $stmt->bind_param("si", $type,$technician_id);
         }
         else if($type=="cancelled")
@@ -487,7 +487,7 @@ public function update_store_status($v_id,$status)
         else
         {
             
-            $stmt = $this->con->prepare("SELECT c1.*,c2.*,s1.name as service_center_name,pc1.name as product_category_name,s1.address as service_center_address,s1.contact as service_contact,a1.ctnm as service_area FROM customer_reg c1,call_allocation c2,service_center s1,product_category pc1,city a1 WHERE c2.complaint_no=c1.complaint_no and c2.service_center_id=s1.id and c1.product_category=pc1.id and s1.area=a1.srno and c2.allocation_date <= '".$date."' and c2.technician=? and c2.complaint_no not in (select complaint_no from call_history )");
+            $stmt = $this->con->prepare("SELECT c1.*,c2.*,s1.name as service_center_name,pc1.name as product_category_name,s1.address as service_center_address,s1.contact as service_contact,a1.ctnm as service_area, s2.name as service_type_name , t1.name as technician_name FROM customer_reg c1,call_allocation c2,service_center s1,product_category pc1,service_type s2,city a1, technician t1 WHERE c2.complaint_no=c1.complaint_no and c2.service_center_id=s1.id and c1.product_category=pc1.id and s1.area=a1.srno and s2.id = c1.service_type and t1.id = c2.technician and c2.allocation_date <= '".$date."' and c2.technician=? and c2.complaint_no not in (select complaint_no from call_history )");
             $stmt->bind_param("i", $technician_id);
             
         }
