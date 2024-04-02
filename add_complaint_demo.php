@@ -66,21 +66,19 @@ if (isset($_POST['save'])) {
     $map_location = $_REQUEST['map_location'];
     $address = $_REQUEST['address'];
     $pincode = $_REQUEST['pincode'];
-    $service_type = $_REQUEST['service_type'];
     $product_category = $_REQUEST['product_category'];
+    $service_type = $_REQUEST['service_type'];
     $dealer_name = $_REQUEST['dealer_name'];
     $complaint_date = $_REQUEST['complaint_date'];
     $complaint_time = date('h:i A', strtotime($_REQUEST['complaint_time']));
-    $day = Date("d");
-    $month = Date("m");
-    $year = Date("y");
     $description = $_REQUEST['description'];
     $barcode = $_REQUEST['barcode'];
     $source = "web";
     $joined_date = date("dmy", strtotime($complaint_date));
 
     // get max customer id - added by Rachna
-    $stmt = $obj->con1->prepare("select IFNULL(count(id)+1,1) as customer_id from customer_reg where date ='" . date("Y-m-d", strtotime($complaint_date)) . "'");
+    // $stmt = $obj->con1->prepare("select IFNULL(count(id)+1,1) as customer_id from customer_reg where date ='" . date("Y-m-d", strtotime($complaint_date)) . "'");
+    $stmt = $obj->con1->prepare("select 10000-(9999-right(complaint_no,4)) as customer_id from customer_reg where date='".date("Y-m-d")."' order by id desc limit 1");
     $stmt->execute();
     $row_dailycounter = $stmt->get_result()->fetch_assoc();
     $stmt->close();
@@ -90,7 +88,7 @@ if (isset($_POST['save'])) {
     $complaint_no = "ONL" . $joined_date . $string;
 
     //--------------//
-    $complaint_date = date("Y-m-d", strtotime($complaint_date));
+    $new_complaint_date = date("Y-m-d", strtotime($complaint_date));
     
     try {
         // allocate call - added by Rachna
@@ -123,12 +121,12 @@ if (isset($_POST['save'])) {
             $stmt = $obj->con1->prepare("SELECT * FROM product_category WHERE id=?");
             $stmt->bind_param("i", $pr_category);
             $stmt->execute();
-            $Res = $stmt->get_result();
-            $pr_data = $Res->fetch_assoc();
+            $Resi = $stmt->get_result();
+            $pr_data = $Resi->fetch_assoc();
             $stmt->close();
 
             $old_date = strtotime($war_data['date']);
-            $check_date = strtotime($complaint_date);
+            $check_date = strtotime($new_complaint_date);
             $warranty_period = $pr_data['warranty_period'];
 
             $difference = $check_date - $old_date;
@@ -143,14 +141,12 @@ if (isset($_POST['save'])) {
             echo "Out: - ". $warranty_status = 2;
         }
 
-
-
         $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `area`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `barcode`, `source`, `warranty`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("sssssissssiissssiss", $fname, $lname, $email, $contact, $alt_contact, $fetched_city_id, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $barcode, $source, $warranty_status, $complaint_date, $complaint_time);
+        $stmt->bind_param("sssssissssiissssiss", $fname, $lname, $email, $contact, $alt_contact, $fetched_city_id, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $barcode, $source, $warranty_status, $new_complaint_date, $complaint_time);
         $Resp = $stmt->execute();
         $stmt->close();
 
-        // echo "<br/> Insert Customer_reg :- INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `barcode`,`source`, `date`, `time`) VALUES (". $fname.", ". $lname.", ". $email.", ". $contact.", ". $alt_contact.", ". $map_location.", ". $address.", ". $pincode.", ". $complaint_no.", ". $service_type.", ". $product_category.", ". $dealer_name.", ". $description.", ". $barcode.", ". $source.", ". $complaint_date.", ". $complaint_time.")";
+        // echo "<br/> Insert Customer_reg :- INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `barcode`,`source`, `date`, `time`) VALUES (". $fname.", ". $lname.", ". $email.", ". $contact.", ". $alt_contact.", ". $map_location.", ". $address.", ". $pincode.", ". $complaint_no.", ". $service_type.", ". $product_category.", ". $dealer_name.", ". $description.", ". $barcode.", ". $source.", ". $new_complaint_date.", ". $complaint_time.")";
 
         // ------- get service center from city by anant
         
@@ -175,7 +171,6 @@ if (isset($_POST['save'])) {
         $result = $stmt->execute();
         $stmt->close();
 
-
         //  echo "<br/> Insert Call allocation :- INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (" . $complaint_no . " " . $service_center['id'] . " " . $product_serial_no . " " . $product_model . " " . $purchase_date . " " . $techinician . " " . $allocation_date . " " . $allocation_time . " " . $status . ")";
 
         $stmt = $obj->con1->prepare("SELECT name FROM service_type WHERE id=?");
@@ -183,7 +178,6 @@ if (isset($_POST['save'])) {
         $Name = $stmt->execute();
         $service = $stmt->get_result()->fetch_assoc();
         $stmt->close();
-
 
         $noti_msg = "New Complaint recieved ";
         $noti_type = $service['name'];
