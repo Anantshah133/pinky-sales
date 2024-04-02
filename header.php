@@ -25,6 +25,8 @@ if (isset($_SESSION['type_admin']) && $_SESSION['type_admin']) {
         "service_type.php",
         "product_category.php",
         "product_service.php",
+        "warranty.php",
+        "edit_view_warranty.php",
         "report.php",
         "privacy.php",
         "add_complaint_demo.php",
@@ -221,6 +223,19 @@ if (isset($_REQUEST['logout'])) {
                                     <span
                                         class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Call
                                         Allocation</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="menu nav-item">
+                            <a href="warranty.php" class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "warranty.php" ? "active" : "" ?>">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M3 11.9914C3 17.6294 7.23896 20.3655 9.89856 21.5273C10.62 21.8424 10.9807 22 12 22V8L3 11V11.9914Z" fill="#1C274C"/>
+                                        <path opacity="0.5" d="M14.1014 21.5273C16.761 20.3655 21 17.6294 21 11.9914V11L12 8V22C13.0193 22 13.38 21.8424 14.1014 21.5273Z" fill="#1C274C"/>
+                                        <path opacity="0.5" d="M8.83772 2.80472L8.26491 3.00079C5.25832 4.02996 3.75503 4.54454 3.37752 5.08241C3 5.62028 3 7.21907 3 10.4167V11L12 8V2C11.1886 2 10.405 2.26824 8.83772 2.80472Z" fill="#1C274C"/>
+                                        <path d="M15.7351 3.00079L15.1623 2.80472C13.595 2.26824 12.8114 2 12 2V8L21 11V10.4167C21 7.21907 21 5.62028 20.6225 5.08241C20.245 4.54454 18.7417 4.02996 15.7351 3.00079Z" fill="#1C274C"/>
+                                    </svg>
+                                    <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Warranty Details</span>
                                 </div>
                             </a>
                         </li>
