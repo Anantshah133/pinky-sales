@@ -85,7 +85,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                             <?php
                                 if (isset($_SESSION['type_center']) && $_SESSION['type_center']) {
                                     $city_id = $_SESSION['sc_city'];
-                                    $stmt = $obj->con1->prepare("select c1.*, ca.status, s1.name as service_type, p1.name as product_category, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1, service_type s1, product_category p1, call_allocation ca where c1.service_type=s1.id and c1.complaint_no=ca.complaint_no and c1.product_category=p1.id and c1.area=? order by c1.id DESC");
+                                    $stmt = $obj->con1->prepare("select c1.*, ca.status, s1.name as service_type, p1.name as product_category, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1, service_type s1, product_category p1, call_allocation ca where c1.warranty!=2 AND c1.service_type=s1.id and c1.complaint_no=ca.complaint_no and c1.product_category=p1.id and c1.area=? order by c1.id DESC");
                                     $stmt->bind_param("i", $city_id);
                                     $stmt->execute();
                                     $Resp = $stmt->get_result();
@@ -93,7 +93,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 
                                     $id = 1;
                                 } else {
-                                    $stmt = $obj->con1->prepare("select c1.*, ca.status, s1.name as service_type, p1.name as product_category, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1, service_type s1, product_category p1, call_allocation ca where c1.service_type=s1.id and c1.complaint_no=ca.complaint_no and c1.product_category=p1.id order by c1.id DESC");
+                                    $stmt = $obj->con1->prepare("select c1.*, ca.status, s1.name as service_type, p1.name as product_category, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1, service_type s1, product_category p1, call_allocation ca where c1.warranty!=2 AND c1.service_type=s1.id and c1.complaint_no=ca.complaint_no and c1.product_category=p1.id order by c1.id DESC");
                                     $stmt->execute();
                                     $Resp = $stmt->get_result();
                                     $id = 1;
@@ -113,7 +113,6 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                         echo date_format($date, "d-m-Y h:i A");
                                      ?>',
                                     `<span class="badge badge-outline-<?php echo $row['warranty'] == 1 ? 'success' : ($row['warranty'] == 2 ? 'warning' : 'danger') ?>">
-                                        <?php // echo $row['warranty'] == 1 ? 'In-Warranty' : 'Out-of-Warranty' ?>
                                         <?php echo $row['warranty'] == 1 ? 'In-Warranty' : ($row['warranty'] == 2 ? 'Warranty-start' : 'Out-of-Warranty') ?>
                                     </span>`,
                                     `<span class="badge badge-outline-<?php
