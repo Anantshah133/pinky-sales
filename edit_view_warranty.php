@@ -45,33 +45,6 @@ if (isset($_REQUEST['update'])) {
         header("location:warranty.php");
     }
 }
-
-// if (isset($_REQUEST["save"])) {
-//     $name = $_REQUEST["name"];
-//     $mode = "";
-//     try {
-//         $stmt = $obj->con1->prepare("INSERT INTO state(name) VALUES (?)");
-//         $stmt->bind_param("s", $name);
-//         $Resp = $stmt->execute();
-//         if (!$Resp) {
-//             throw new Exception(
-//                 "Problem in adding! " . strtok($obj->con1->error, "(")
-//             );
-//         }
-//         $stmt->close();
-//     } catch (\Exception $e) {
-//         setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
-//     }
-
-//     if ($Resp) {
-//         setcookie("msg", "data", time() + 3600, "/");
-//         header("location:state.php");
-//     } else {
-//         setcookie("msg", "fail", time() + 3600, "/");
-//         header("location:state.php");
-//     }
-//     exit();
-// }
 ?>
 
 <div class='p-6'>
@@ -128,6 +101,7 @@ if (isset($_REQUEST['update'])) {
                 flatpickr(document.getElementById('warranty_date'), {
                     dateFormat: 'd-m-Y',
                     defaultDate: this.date2,
+                    maxDate: '<?php echo date("d-m-Y"); ?>',
                 })
             }
         }));

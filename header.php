@@ -49,6 +49,8 @@ if (isset($_SESSION['type_admin']) && $_SESSION['type_admin']) {
         "call_allocation.php",
         "complaint_demo.php",
         "technician.php",
+        "warranty.php",
+        "edit_view_warranty.php",
         "add_call_allocation.php",
         "add_complaint_demo.php",
         "add_technician.php",
@@ -244,6 +246,7 @@ if (isset($_REQUEST['logout'])) {
                         <h2 class='-mx-4 mb-1 flex items-center bg-white-light/30 py-3 px-7 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]'>
                             Admin Controls
                         </h2>
+                        
                         <?php if (isset($_SESSION['type_admin']) && $_SESSION['type_admin']) { ?>
                                 <li class="menu nav-item">
                                     <a href="state.php" class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "state.php" ? "active" : "" ?>">
