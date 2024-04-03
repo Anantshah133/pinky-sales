@@ -406,6 +406,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 <script>
     function changeStatus(tech, statusId){
         const statusSelect = document.getElementById(statusId);
+        if(statusSelect.value != 'new') return;
         if(tech !== ""){
             const allocatedOption = statusSelect.querySelector("option[value='allocated']");
             allocatedOption.selected = true;
@@ -434,7 +435,6 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         }
     }
 
-    checkCookies();
 
     function getActions(id, number) {
         return `<ul class="flex items-center gap-4">

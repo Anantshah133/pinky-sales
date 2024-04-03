@@ -24,7 +24,7 @@ setcookie("viewId", "", time() - 3600);
 
 <!-- script -->
 <script>
-    checkCookies();
+    
     function getActions(id, name) {
         return `<ul class="flex items-center gap-4">
         <li>

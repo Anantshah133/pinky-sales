@@ -12,7 +12,7 @@
 <?php 
 while ($row = mysqli_fetch_assoc($Resp)) { 
 ?>
-    <option <?php echo isset($stid) && $stid == $row["sid"] ? 'selected' : $stid ?> value="<?php echo $row["sid"]; ?>"><?php echo $row["service"]; ?></option>
+    <option <?php echo isset($stid) && $stid == $row["sid"] ? 'selected' : "" ?> value="<?php echo $row["sid"]; ?>"><?php echo $row["service"]; ?></option>
 <?php
     }
 ?>

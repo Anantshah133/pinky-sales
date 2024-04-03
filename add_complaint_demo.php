@@ -78,6 +78,21 @@ if (isset($_POST['save'])) {
 
     // get max customer id - added by Rachna
     // $stmt = $obj->con1->prepare("select IFNULL(count(id)+1,1) as customer_id from customer_reg where date ='" . date("Y-m-d", strtotime($complaint_date)) . "'");
+
+    try {
+        $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg` WHERE barcode=? AND service_type=?");
+        $stmt->bind_param("si", $barcode, $service_type);
+        $stmt->execute();
+        $bar = $stmt->get_result();
+        if($bar->num_rows){
+            setcookie("msg", "warranty", time() + 3600, "/");
+            header("location:add_complaint_demo.php");
+            exit();
+        }
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
+    }
+
     $stmt = $obj->con1->prepare("select 10000-(9999-right(complaint_no,4)) as customer_id from customer_reg where date='".date("Y-m-d")."' order by id desc limit 1");
     $stmt->execute();
     $row_dailycounter = $stmt->get_result()->fetch_assoc();
@@ -108,37 +123,41 @@ if (isset($_POST['save'])) {
         }
         $stmt->close();
 
-        $stmt = $obj->con1->prepare("SELECT * FROM customer_reg WHERE barcode=? AND service_type=23 AND product_category=?");
-        $stmt->bind_param("si", $barcode, $product_category);
-        $stmt->execute();
-        $Res = $stmt->get_result();
-        $war_data = $Res->fetch_assoc();
-        $stmt->close();
-
-        $pr_category = $war_data['product_category'];
-
-        if($Res->num_rows >= 1){
-            $stmt = $obj->con1->prepare("SELECT * FROM product_category WHERE id=?");
-            $stmt->bind_param("i", $pr_category);
+        if(trim($barcode) !== ""){
+            $stmt = $obj->con1->prepare("SELECT * FROM customer_reg WHERE barcode=? AND service_type=23 AND product_category=?");
+            $stmt->bind_param("si", $barcode, $product_category);
             $stmt->execute();
-            $Resi = $stmt->get_result();
-            $pr_data = $Resi->fetch_assoc();
+            $Res = $stmt->get_result();
+            $war_data = $Res->fetch_assoc();
             $stmt->close();
 
-            $old_date = strtotime($war_data['date']);
-            $check_date = strtotime($new_complaint_date);
-            $warranty_period = $pr_data['warranty_period'];
+            $pr_category = $war_data['product_category'];
 
-            $difference = $check_date - $old_date;
-            $warranty_duration = $warranty_period * 30 * 24 * 60 * 60;
+            if($Res->num_rows >= 1){
+                $stmt = $obj->con1->prepare("SELECT * FROM product_category WHERE id=?");
+                $stmt->bind_param("i", $pr_category);
+                $stmt->execute();
+                $Resi = $stmt->get_result();
+                $pr_data = $Resi->fetch_assoc();
+                $stmt->close();
 
-            if($difference <= $warranty_duration){
-                echo "In: - ". $warranty_status = 1;
+                $old_date = strtotime($war_data['date']);
+                $check_date = strtotime($new_complaint_date);
+                $warranty_period = $pr_data['warranty_period'];
+
+                $difference = $check_date - $old_date;
+                $warranty_duration = $warranty_period * 30 * 24 * 60 * 60;
+
+                if($difference <= $warranty_duration){
+                    echo "In: - ". $warranty_status = 1;
+                } else {
+                    echo "In: - ". $warranty_status = 0;
+                }
             } else {
-                echo "In: - ". $warranty_status = 0;
+                echo "Out: - ". $warranty_status = 2;
             }
         } else {
-            echo "Out: - ". $warranty_status = 2;
+            $warranty_status = 3;
         }
 
         $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `area`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `barcode`, `source`, `warranty`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -343,7 +362,7 @@ function smtpmailer($subject, $body, $to, $from, $from_name){
                         </div>
                         <div>
                             <label for="service_type"> Service Type </label>
-                            <select name="service_type" id="service_type" class="form-select text-white-dark" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?>>
+                            <select name="service_type" id="service_type" class="form-select text-white-dark" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> onchange="requireBarcode(this, 'barcode');">
                                 <option value=""><?php echo isset($mode) && $mode == 'view' ? $data["service_type_name"] : 'Choose Service Type' ?></option>
                             </select>
                         </div>
@@ -357,7 +376,7 @@ function smtpmailer($subject, $body, $to, $from, $from_name){
                         </div>
                         <div>
                             <label for="barcode">Barcode </label>
-                            <input name="barcode" id="barcode" type="text" class="form-input" value="<?php echo isset($mode) ? $data['barcode'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> onblur="checkWarranty(this, 'complaint_date', 'service_type', 'product_category')" />
+                            <input name="barcode" id="barcode" type="text" class="form-input" value="<?php echo isset($mode) ? $data['barcode'] : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> onblur="checkWarranty(this, 'complaint_date', 'service_type', 'product_category')" />
                             <h6 id="warranty_status" class="text-lg mt-2"></h6>
                         </div>
                         <div x-data="cmplnDate">
@@ -422,6 +441,12 @@ function smtpmailer($subject, $body, $to, $from, $from_name){
         }
         http.open("GET", `./ajax/check_warranty.php?date=${date}&barcode=${barcode}&product_category=${productCategory}`);
         http.send();
+    }
+
+    function requireBarcode(service, barcode){
+        const barcodeControl = document.getElementById(barcode);
+        if(service.value == '23') barcodeControl.required = true;
+        else barcodeControl.required = false;
     }
 
     function getServiceType(pid, stid = 0){

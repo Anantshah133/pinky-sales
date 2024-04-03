@@ -43,53 +43,59 @@ coloredToast = (color, msg) => {
 };
 
 function checkCookies(){
-    if (readCookie("msg") == "data_del") {
+    const result = readCookie("msg");
+    if(result == "data_del") {
         coloredToast("success", 'Record Deleted Successfully.');
         eraseCookie("msg")
         return;
     }
-    if(readCookie("msg") == "data"){
+    if(result == "data"){
         coloredToast("success", 'Record Added Successfully.');
         eraseCookie("msg")
         return;
     }
-    if(readCookie("msg") == "update"){
+    if(result == "update"){
         coloredToast("success", 'Record Updated Successfully.');
         eraseCookie("msg")
         return;
     }
-    if(readCookie("msg") == "fail"){
+    if(result == "fail"){
         coloredToast("danger", 'Some Error Occured.');
         eraseCookie("msg")
         return;
     }
-    if(readCookie("msg") == "cant_delete"){
+    if(result == "cant_delete"){
         coloredToast("danger", "Data is already in use can't delete it");
         eraseCookie("msg")
         return;
     }
-    if(readCookie("msg") == "login"){
+    if(result == "login"){
         coloredToast("success", 'Admin Logged-In Successfully');
         eraseCookie("msg")
         return;
     }
-    if(readCookie("msg") == "logout"){
+    if(result == "logout"){
         coloredToast("success", 'Logged-Out Successfully');
         eraseCookie("msg")
         return;
     }
-    if(readCookie("msg") == "sc_login"){
+    if(result == "sc_login"){
         coloredToast("success", 'Logged-in successfully');
         eraseCookie("msg")
         return;
     }
-    if(readCookie("msg") == "wrong_cred"){
+    if(result == "wrong_cred"){
         coloredToast("danger", 'Wrong Username or Password !');
         eraseCookie("msg")
         return;
     }
-    if(readCookie("msg") == "passChange"){
+    if(result == "passChange"){
         coloredToast("success", 'Password Changed Successfully !');
+        eraseCookie("msg")
+        return;
+    }
+    if(result == "warranty"){
+        coloredToast("danger", 'Entry For This Barcode Exists');
         eraseCookie("msg")
         return;
     }

@@ -51,7 +51,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 <!-- script -->
 
 <script>
-checkCookies();
+
 function getActions(id,name) {
     return `<ul class="flex items-center justify-center gap-4">
         <li>

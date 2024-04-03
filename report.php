@@ -183,7 +183,7 @@ if(isset($_REQUEST["btnReport"]))
 <!-- script -->
 <script src="assets/js/flatpickr.js"></script>
 <script>
-checkCookies();
+
 function getActions(id) {
     return `
     <ul class="flex items-center justify-center gap-4">
