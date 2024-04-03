@@ -39,9 +39,8 @@ class DbOperation
     {
 
 
-        $date_time = date("Y-m-d  h:i A");   // added by jay 
-        $stmt = $this->con->prepare("INSERT INTO `technician`( `name`, `email`, `contact`, `service_center`, `status`,`userid`,`password`,`id_proof`,`date_time`) VALUES (?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("sssisssss", $name, $email, $contact, $service_center, $status,$userid,$password,$MainFileName,$date_time);
+        $stmt = $this->con->prepare("INSERT INTO `technician`( `name`, `email`, `contact`, `service_center`, `status`,`userid`,`password`,`id_proof`) VALUES (?,?,?,?,?,?,?,?)");
+        $stmt->bind_param("sssissss", $name, $email, $contact, $service_center, $status,$userid,$password,$MainFileName);
         $result = $stmt->execute();
         $stmt->close();
         if ($result) {
@@ -153,13 +152,12 @@ class DbOperation
 
         
 
-            $stmt = $this->con->prepare("select pending,allocated,closed,new  from(SELECT count(CASE WHEN c2.status='pending' THEN 1 END) as pending,count(CASE WHEN c2.status='allocated' and c2.complaint_no not in (select complaint_no from call_history ) THEN 1 END) as allocated,count(CASE WHEN (c2.status='closed' or c2.status='cancelled') and c1.date>=? and c1.date<=?  THEN 1 END) as closed,count(CASE WHEN c2.status='new'   THEN 1 END) as new  FROM customer_reg c1,call_allocation c2 WHERE c2.complaint_no=c1.complaint_no and c1.warranty!=2 and c2.service_center_id=?)as tbl1");  // added warranty!=2 by jay 30-03-24 , showing entries of specific date
-            $stmt->bind_param("ssi",$date,$date,$service_center_id);
+            $stmt = $this->con->prepare("select pending,allocated,closed,new  from(SELECT count(CASE WHEN c2.status='pending' THEN 1 END) as pending,count(CASE WHEN c2.status='allocated' and c2.complaint_no not in (select complaint_no from call_history ) THEN 1 END) as allocated,count(CASE WHEN (c2.status='closed' or c2.status='cancelled') and c1.date>='".date('Y-m-01')."' and c1.date<='".date('Y-m-t')."'  THEN 1 END) as closed,count(CASE WHEN c2.status='new'   THEN 1 END) as new  FROM customer_reg c1,call_allocation c2 WHERE c2.complaint_no=c1.complaint_no  and c2.service_center_id=?)as tbl1");
+            $stmt->bind_param("i", $service_center_id);
         }
         if($role_type=="admin")
         {
-            $stmt = $this->con->prepare("select pending,allocated,closed,new  from(SELECT count(CASE WHEN c2.status='pending' THEN 1 END) as pending,count(CASE WHEN c2.status='allocated' and c2.complaint_no not in (select complaint_no from call_history ) THEN 1 END) as allocated,count(CASE WHEN (c2.status='closed' or c2.status='cancelled') and c1.date>='".date('Y-m-01')."' and c1.date<='".date('Y-m-t')."'  THEN 1 END) as closed,count(CASE WHEN c2.status='new'   THEN 1 END) as new  FROM customer_reg c1,call_allocation c2 WHERE c2.complaint_no=c1.complaint_no and c1.warranty!=2 )as tbl1"); // added warranty!=2 by jay 30-03-24.
-            //showing entries of entire month
+            $stmt = $this->con->prepare("select pending,allocated,closed,new  from(SELECT count(CASE WHEN c2.status='pending' THEN 1 END) as pending,count(CASE WHEN c2.status='allocated' and c2.complaint_no not in (select complaint_no from call_history ) THEN 1 END) as allocated,count(CASE WHEN (c2.status='closed' or c2.status='cancelled') and c1.date>='".date('Y-m-01')."' and c1.date<='".date('Y-m-t')."'  THEN 1 END) as closed,count(CASE WHEN c2.status='new'   THEN 1 END) as new  FROM customer_reg c1,call_allocation c2 WHERE c2.complaint_no=c1.complaint_no  )as tbl1");
             
         }
         
@@ -231,23 +229,23 @@ class DbOperation
 
             if($type=="pending")
             {
-                $stmt = $this->con->prepare("SELECT c1.*,c2.*,s1.name as service_center_name,pc1.name as product_category_name,t1.name as technician_name,s2.name as service_type_name FROM customer_reg c1,call_allocation c2,service_center s1,product_category pc1,technician t1 ,service_type s2 WHERE c2.complaint_no=c1.complaint_no and c2.service_center_id=s1.id and c1.product_category=pc1.id and c2.technician=t1.id and c1.service_type=s2.id and c1.warranty!=2 and c2.status=? and  c2.service_center_id=?");
+                $stmt = $this->con->prepare("SELECT c1.*,c2.*,s1.name as service_center_name,pc1.name as product_category_name,t1.name as technician_name,s2.name as service_type_name FROM customer_reg c1,call_allocation c2,service_center s1,product_category pc1,technician t1 ,service_type s2 WHERE c2.complaint_no=c1.complaint_no and c2.service_center_id=s1.id and c1.product_category=pc1.id and c2.technician=t1.id and c1.service_type=s2.id and  c2.status=? and  c2.service_center_id=?");
                 $stmt->bind_param("si", $type,$service_center);
             }
             else if($type=="allocated")
             {
-                $stmt = $this->con->prepare("SELECT c1.*,c2.*,s1.name as service_center_name,pc1.name as product_category_name ,t1.name as technician_name,s2.name as service_type_name FROM customer_reg c1,call_allocation c2,service_center s1,product_category pc1,technician t1 ,service_type s2 WHERE c2.complaint_no=c1.complaint_no and c2.service_center_id=s1.id and c1.product_category=pc1.id and c2.technician=t1.id  and c1.service_type=s2.id and c1.warranty!=2 and c2.status=? and  c2.service_center_id=? and c2.complaint_no not in (select complaint_no from call_history )");
+                $stmt = $this->con->prepare("SELECT c1.*,c2.*,s1.name as service_center_name,pc1.name as product_category_name ,t1.name as technician_name,s2.name as service_type_name FROM customer_reg c1,call_allocation c2,service_center s1,product_category pc1,technician t1 ,service_type s2 WHERE c2.complaint_no=c1.complaint_no and c2.service_center_id=s1.id and c1.product_category=pc1.id and c2.technician=t1.id  and c1.service_type=s2.id and c2.status=? and  c2.service_center_id=? and c2.complaint_no not in (select complaint_no from call_history )");
                 $stmt->bind_param("si", $type,$service_center);
             }
             else if($type=="closed")
             {
-                $stmt = $this->con->prepare("SELECT c1.*,c2.*,s1.name as service_center_name,pc1.name as product_category_name,t1.name as technician_name,s2.name as service_type_name FROM customer_reg c1,call_allocation c2,service_center s1,product_category pc1,technician t1,service_type s2 WHERE c2.complaint_no=c1.complaint_no and c2.service_center_id=s1.id and c1.product_category=pc1.id and c2.technician=t1.id and c1.service_type=s2.id and ( c2.status=? or c2.status='cancelled') and c1.date >= '".date('Y-m-01')."' and c1.date<='".date('Y-m-t')."' and c2.service_center_id=? and c1.warranty!=2");
+                $stmt = $this->con->prepare("SELECT c1.*,c2.*,s1.name as service_center_name,pc1.name as product_category_name,t1.name as technician_name,s2.name as service_type_name FROM customer_reg c1,call_allocation c2,service_center s1,product_category pc1,technician t1,service_type s2 WHERE c2.complaint_no=c1.complaint_no and c2.service_center_id=s1.id and c1.product_category=pc1.id and c2.technician=t1.id and c1.service_type=s2.id and ( c2.status=? or c2.status='cancelled') and c1.date >= '".date('Y-m-01')."' and c1.date<='".date('Y-m-t')."' and c2.service_center_id=?");
                 $stmt->bind_param("si", $type,$service_center);
             }
             else
             {
                 
-                $stmt = $this->con->prepare("SELECT c1.*,c2.*,s1.name as service_center_name,pc1.name as product_category_name,t1.name as technician_name,s2.name as service_type_name FROM customer_reg c1,call_allocation c2,service_center s1,product_category pc1,technician t1,service_type s2  WHERE c2.complaint_no=c1.complaint_no and c2.service_center_id=s1.id and c1.product_category=pc1.id and c2.technician=t1.id and c1.service_type=s2.id and c1.warranty!=2 and c2.status=? and c2.service_center_id=? ");
+                $stmt = $this->con->prepare("SELECT c1.*,c2.*,s1.name as service_center_name,pc1.name as product_category_name,t1.name as technician_name,s2.name as service_type_name FROM customer_reg c1,call_allocation c2,service_center s1,product_category pc1,technician t1,service_type s2  WHERE c2.complaint_no=c1.complaint_no and c2.service_center_id=s1.id and c1.product_category=pc1.id and c2.technician=t1.id and c1.service_type=s2.id and  c2.status=? and c2.service_center_id=? ");
                 $stmt->bind_param("si", $type,$service_center);
                 
             }
@@ -417,8 +415,8 @@ class DbOperation
 
     public function call_history($complaint_no)
     {
-        // updated by jay
-        $stmt = $this->con->prepare("SELECT `id`, `complaint_no`, `service_center`, `technician`, `parts_used`, `call_type`, `service_charge`, `parts_charge`, `status`, `reason`, DATE_FORMAT(date_time, '%d-%m-%Y %h:%i %p') as date_time FROM `call_history` WHERE complaint_no=?");
+        
+        $stmt = $this->con->prepare("SELECT * FROM call_history where  complaint_no=?");
         $stmt->bind_param("s",$complaint_no);
         $stmt->execute();
         $data = $stmt->get_result();

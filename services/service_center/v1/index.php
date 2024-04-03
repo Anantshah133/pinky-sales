@@ -524,7 +524,7 @@ $app->post('/call_allocation_add','authenticateUser', function () use ($app) {
         $serial_no_img = $complaint_no . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["serial_no_img"]["tmp_name"], "../../../images/product_model_img/" . $serial_no_img)) {
+        if (move_uploaded_file($_FILES["serial_no_img"]["tmp_name"], "../../../images/serial_no_img/" . $serial_no_img)) {
             $response->serial_no_img = "success";
         } else {
             $response->serial_no_img = "fail";
@@ -562,7 +562,7 @@ $app->post('/call_allocation_add','authenticateUser', function () use ($app) {
         $purchase_date_img = $complaint_no . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["purchase_date_img"]["tmp_name"], "../../../images/product_model_img/" . $purchase_date_img)) {
+        if (move_uploaded_file($_FILES["purchase_date_img"]["tmp_name"], "../../../images/purchase_date_img/" . $purchase_date_img)) {
             $response->purchase_date_img = "success";
         } else {
             $response->purchase_date_img = "fail";
@@ -642,7 +642,7 @@ $app->post('/call_allocation_add','authenticateUser', function () use ($app) {
      }
 
         $data['result'] = true;
-        $data['message'] = "Call updated successfully";
+        $data['message'] = "Call allocated successfully";
         $data['response'] = $response;
 
         echoResponse(201, $data);

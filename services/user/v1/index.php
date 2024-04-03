@@ -51,14 +51,25 @@ $app->post('/customer_registeration', function () use ($app) {
     $year = Date("y");
     $db = new DbOperation();
     
+    $barcodeFlag=$db->checkBarcode($barcode,$service_type);
+    
+    if($barcodeFlag==0) // added by jay 30-03-24
+    {
 
     $maxno = $db->getmaxcustomer();
-    $row_max = $maxno->fetch_assoc();
+   // $row_max = $maxno->fetch_assoc();
     $dailicounter=$db->get_dailycounter();
     $row_dailycounter = $dailicounter->fetch_assoc();
     // echo "daily=".$row_dailycounter["customer_id"];
-    $dailycounter=(int)$row_dailycounter["customer_id"];
     
+    if($row_dailycounter["customer_id"]==null)
+    {
+        $dailycounter=1;
+    }
+    else
+    {
+        $dailycounter=(int)$row_dailycounter["customer_id"];
+    }
     
      $string=str_pad($dailycounter, 4, '0', STR_PAD_LEFT); 
 
@@ -77,9 +88,25 @@ $app->post('/customer_registeration', function () use ($app) {
      // get service center from zipcode
      
    // $complaint_no = "ORP".$day . $month . $year . $row_max["customer_id"].$string;
-     $complaint_no = "ONL".$day . $month . $year .$string;
-    $res = $db->do_reg_customer($fname, $lname, $email, $contact, $alternate_contact, $city, $zipcode, $address, $service_type, $product_category, $dealer_name, $complaint_no,$description,$barcode,$source,$map_location);
+   
+   
+   $warranty_flag=0;
+   if($service_type==23) // added by Jay 30-03-2024
+   {
+    $warranty_flag=2;
+   }
+   else if($barcode!="")
+   {
+     $warranty_flag = $db->checkWarranty($barcode,$product_category);  
+   }
+   
+   
+    $complaint_no = "ONL".$day . $month . $year .$string;
+    $res = $db->do_reg_customer($fname, $lname, $email, $contact, $alternate_contact, $city, $zipcode, $address, $service_type, $product_category, $dealer_name, $complaint_no,$description,$barcode,$source,$map_location,$warranty_flag);
 
+   
+    
+    
 
     if ($res == 0) {
         // get sercive center
@@ -172,10 +199,27 @@ $app->post('/customer_registeration', function () use ($app) {
     } else if ($res == 1) {
 
         $data['result'] = false;
-        $data['message'] = "Oops! An error occurred while registereing";
+        $data['message'] = "Oops! An error occurred while registering";
         $data['response'] = $response;
 
         echoResponse(200, $data);
+    }
+    }
+    else if($barcodeFlag==-1)
+    {
+        $data['result'] = false;
+        $data['message'] = "Please scan the barcode to avail warranty!";
+        $data['response'] = $response;
+
+        echoResponse(200, $data); 
+    }
+     else
+    {
+        $data['result'] = false;
+        $data['message'] = "Warranty entry already exists for this Product!";
+        $data['response'] = $response;
+
+        echoResponse(200, $data); 
     }
 
 
