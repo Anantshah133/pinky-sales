@@ -114,7 +114,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                     '<?php echo $row["customer_name"]; ?>',
                                     '<?php echo $row["complaint_no"]; ?>',
                                     '<?php echo $row["product"]; ?>',
-                                    '<strong><?php echo $row["barcode"]; ?></strong>',
+                                    `<strong><?php echo $row["barcode"]; ?></strong>`,
                                     `<span class="badge badge-outline-secondary">
                                         <?php echo date("d-m-Y", strtotime($row["date"])); ?>
                                     </span>`,

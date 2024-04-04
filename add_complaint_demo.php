@@ -159,7 +159,7 @@ if (isset($_POST['save'])) {
                 } else {
                     $warranty_status = 0;
                 }
-            } else if($service_type != 23 || 2 == 2) {
+            } else if($service_type != 23 && trim($barcode) != "") {
                 $warranty_status = 3;
             } else {
                 $warranty_status = 2;
