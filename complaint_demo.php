@@ -112,8 +112,8 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                         $date = date_create($row['datetime']);
                                         echo date_format($date, "d-m-Y h:i A");
                                      ?>',
-                                    `<span class="badge badge-outline-<?php echo $row['warranty'] == 1 ? 'success' : ($row['warranty'] == 2 ? 'warning' : 'danger') ?>">
-                                        <?php echo $row['warranty'] == 1 ? 'In-Warranty' : ($row['warranty'] == 2 ? 'Warranty-start' : 'Out-of-Warranty') ?>
+                                    `<span class="badge badge-outline-<?php echo $row['warranty'] == 1 ? 'success' : ($row['warranty'] == 3 ? 'secondary' : 'danger') ?>">
+                                        <?php echo $row['warranty'] == 1 ? 'In-Warranty' : ($row['warranty'] == 3 ? 'N / A' : 'Out-of-Warranty') ?>
                                     </span>`,
                                     `<span class="badge badge-outline-<?php
                                         switch ($row["status"]) {

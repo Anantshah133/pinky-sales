@@ -80,11 +80,12 @@ if (isset($_POST['save'])) {
     // $stmt = $obj->con1->prepare("select IFNULL(count(id)+1,1) as customer_id from customer_reg where date ='" . date("Y-m-d", strtotime($complaint_date)) . "'");
 
     try {
-        $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg` WHERE barcode=? AND service_type=?");
-        $stmt->bind_param("si", $barcode, $service_type);
+        $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg` WHERE barcode=? AND service_type=23");
+        // $stmt->bind_param("si", $barcode, $service_type);
+        $stmt->bind_param("s", $barcode);
         $stmt->execute();
         $bar = $stmt->get_result();
-        if($bar->num_rows){
+        if($bar->num_rows >= 1){
             setcookie("msg", "warranty", time() + 3600, "/");
             header("location:add_complaint_demo.php");
             exit();
@@ -97,8 +98,12 @@ if (isset($_POST['save'])) {
     $stmt->execute();
     $row_dailycounter = $stmt->get_result()->fetch_assoc();
     $stmt->close();
-
-    $dailycounter = (int) $row_dailycounter["customer_id"];
+ 
+    if(!isset($row_dailycounter["customer_id"])){
+        $dailycounter = 1;
+    } else {
+        $dailycounter = (int) $row_dailycounter["customer_id"];
+    }
     $string = str_pad($dailycounter, 4, '0', STR_PAD_LEFT);
     $complaint_no = "ONL" . $joined_date . $string;
 
@@ -123,7 +128,7 @@ if (isset($_POST['save'])) {
         }
         $stmt->close();
 
-        if(trim($barcode) !== ""){
+        if(trim($barcode) != ""){
             $stmt = $obj->con1->prepare("SELECT * FROM customer_reg WHERE barcode=? AND service_type=23 AND product_category=?");
             $stmt->bind_param("si", $barcode, $product_category);
             $stmt->execute();
@@ -131,16 +136,17 @@ if (isset($_POST['save'])) {
             $war_data = $Res->fetch_assoc();
             $stmt->close();
 
-            $pr_category = $war_data['product_category'];
-
+            
             if($Res->num_rows >= 1){
+                $pr_category = $war_data['product_category'];
+
                 $stmt = $obj->con1->prepare("SELECT * FROM product_category WHERE id=?");
                 $stmt->bind_param("i", $pr_category);
                 $stmt->execute();
                 $Resi = $stmt->get_result();
                 $pr_data = $Resi->fetch_assoc();
                 $stmt->close();
-
+                
                 $old_date = strtotime($war_data['date']);
                 $check_date = strtotime($new_complaint_date);
                 $warranty_period = $pr_data['warranty_period'];
@@ -149,12 +155,14 @@ if (isset($_POST['save'])) {
                 $warranty_duration = $warranty_period * 30 * 24 * 60 * 60;
 
                 if($difference <= $warranty_duration){
-                    echo "In: - ". $warranty_status = 1;
+                    $warranty_status = 1;
                 } else {
-                    echo "In: - ". $warranty_status = 0;
+                    $warranty_status = 0;
                 }
+            } else if($service_type != 23 || 2 == 2) {
+                $warranty_status = 3;
             } else {
-                echo "Out: - ". $warranty_status = 2;
+                $warranty_status = 2;
             }
         } else {
             $warranty_status = 3;
@@ -215,7 +223,7 @@ if (isset($_POST['save'])) {
             throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
         }
 
-        $subject = "Onelife Complaint No: ". $complaint_no;
+        $subject = "Onelife Complaint Registered: ". $complaint_no;
         $body = "Dear $fname $lname,
         Your complaint has been registered successfully. Your complaint number is : $complaint_no
         Techinician will be allocated soon.

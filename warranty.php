@@ -2,6 +2,28 @@
 include "header.php";
 setcookie("editId", "", time() - 3600);
 setcookie("viewId", "", time() - 3600);
+
+if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
+    try {
+        $stmt_del = $obj->con1->prepare(
+            "delete from customer_reg where id='" . $_REQUEST["n_complaintid"] . "'"
+        );
+        $Resp = $stmt_del->execute();
+        if (!$Resp) {
+            if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row") {
+                throw new Exception("Data is already in use");
+            }
+        }
+        $stmt_del->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
+    }
+
+    if ($Resp) {
+        setcookie("msg", "data_del", time() + 3600, "/");
+        header("location:warranty.php");
+    }
+}
 ?>
 
 <div class='p-6' x-data='exportTable'>
@@ -38,11 +60,27 @@ setcookie("viewId", "", time() - 3600);
             </a>
         </li>
         <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="">
+            <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(${id}, '${name}')">
                 <i class="ri-delete-bin-line text-danger"></i>
             </a>
         </li>
     </ul>`
+    }
+
+    function showAlert(id, number) {
+        new window.Swal({
+            title: 'Are you sure?',
+            text: `You want to delete Call :- ${number} !`,
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            padding: '2em',
+        }).then((result) => {
+            console.log(result)
+            if (result.isConfirmed) {
+                var loc = "warranty.php?flg=del&n_complaintid=" + id;
+                window.location = loc;
+            }
+        });
     }
     
     document.addEventListener('alpine:init', () => {
@@ -77,7 +115,7 @@ setcookie("viewId", "", time() - 3600);
                                     '<?php echo $row["complaint_no"]; ?>',
                                     '<?php echo $row["product"]; ?>',
                                     '<strong><?php echo $row["barcode"]; ?></strong>',
-                                    `<span class="badge badge-outline-primary">
+                                    `<span class="badge badge-outline-secondary">
                                         <?php echo date("d-m-Y", strtotime($row["date"])); ?>
                                     </span>`,
                                     getActions(<?php echo $row["id"]; ?>, '<?php echo $row["complaint_no"]; ?>')
