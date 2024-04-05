@@ -27,6 +27,7 @@ if (isset($_COOKIE['viewId'])) {
     $query->execute();
     $Res = $query->get_result();
     $data = $Res->fetch_assoc();
+    $cno = $data['complaint_no'];
     $query->close();
 }
 
@@ -381,7 +382,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 }
 ?>
 
-<?php if (isset($mode) && $mode != 'view') { ?>
+<?php // if (isset($mode) && $mode != 'view') { ?>
     <div class='px-6 py-4' x-data='exportTable'>
         <div class="panel">
             <div class='flex items-center justify-between mb-3'>
@@ -402,7 +403,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
             <table id="myTable" class="table-hover whitespace-nowrap"></table>
         </div>
     </div>
-<?php } ?>
+<?php // } ?>
 <script>
     function changeStatus(tech, statusId){
         const statusSelect = document.getElementById(statusId);
@@ -443,21 +444,23 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                     <i class="ri-eye-line text-primary"></i>
                 </a>
             </li>
-            <li>
-                <a href="javascript:updateCallRecord(${id}, 'add_call_history.php');" class='text-xl' x-tooltip="Edit">
-                    <i class="ri-pencil-line text text-success"></i>
-                </a>
-            </li>
-            <li>
-                <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(${id}, '${number}')">
-                    <i class="ri-delete-bin-line text-danger"></i>
-                </a>
-            </li>
+            <?php if (isset($mode) && $mode != "view") { ?>
+                <li>
+                    <a href="javascript:updateCallRecord(${id}, 'add_call_history.php');" class='text-xl' x-tooltip="Edit">
+                        <i class="ri-pencil-line text text-success"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;" class='text-xl' x-tooltip="Delete" @click="showAlert(${id}, '${number}')">
+                        <i class="ri-delete-bin-line text-danger"></i>
+                    </a>
+                </li>
+            <?php } ?>
         </ul>`
     }
 
     document.addEventListener('alpine:init', () => {
-        <?php if (isset($mode) && $mode != "view") { ?>
+        <?php // if (isset($mode) && $mode != "view") { ?>
             Alpine.data('exportTable', () => ({
                 datatable: null,
                 init() {
@@ -466,11 +469,11 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                         data: {
                             headings: <?php 
                                 if(isset($_SESSION['type_center'])){
-                                    echo "['Sr.no', 'Complaint No.', 'Technician',
+                                    echo "['Sr.no', 'Technician',
                                     'Parts Used', 'Call Type', 'Service Charges', 'Parts Charges',
                                     'Status', 'Reason', 'Date Time', 'Action']";
                                 } else {
-                                    echo "['Sr.no', 'Complaint No.', 'Service Center', 'Technician',
+                                    echo "['Sr.no', 'Technician',
                                     'Parts Used', 'Call Type', 'Service Charges', 'Parts Charges',
                                     'Status', 'Reason', 'Date Time', 'Action']";
                                 }
@@ -487,10 +490,6 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                 ?>
                                     [
                                         <?php echo $id ?>,
-                                        '<?php echo $row['complaint_no'] ?>',
-                                        <?php if(!isset($_SESSION['type_center'])){ ?>
-                                            '<?php echo $row['service_center_name'] ?>',
-                                        <?php } ?>
                                         '<?php echo $row['technician_name'] ?>',
                                         '<?php echo $row['parts_used'] ?>',
                                         '<?php echo $row['call_type'] ?>',
@@ -562,7 +561,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                     },
                 }
             ));
-        <?php } ?>
+        <?php // } ?>
         let todayDate = new Date();
         let formattedToday = todayDate.toLocaleDateString('en-GB', {
             day: '2-digit',

@@ -174,6 +174,10 @@ if (isset($_POST['save'])) {
         $Resp = $stmt->execute();
         $stmt->close();
 
+        if(!$Resp){
+            throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
+        }
+
         // echo "<br/> Insert Customer_reg :- INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `barcode`,`source`, `date`, `time`) VALUES (". $fname.", ". $lname.", ". $email.", ". $contact.", ". $alt_contact.", ". $map_location.", ". $address.", ". $pincode.", ". $complaint_no.", ". $service_type.", ". $product_category.", ". $dealer_name.", ". $description.", ". $barcode.", ". $source.", ". $new_complaint_date.", ". $complaint_time.")";
 
         // ------- get service center from city by anant

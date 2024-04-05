@@ -10,8 +10,8 @@ $stmt = $obj->con1->prepare("SELECT
     SUM(CASE WHEN status='allocated' THEN 1 ELSE 0 END) AS allocated_num,
     SUM(CASE WHEN status='pending' THEN 1 ELSE 0 END) AS pending_num,
     SUM(CASE WHEN status='closed' THEN 1 ELSE 0 END) AS closed_num
-    FROM call_allocation, customer_reg c2 WHERE service_center_id=? AND c1.complaint_no=c2.complaint_no AND c2.warranty!=2");
-    $stmt->bind_param("i",$_SESSION["scid"]);
+    FROM call_allocation c1, customer_reg c2 WHERE service_center_id=? AND c1.complaint_no=c2.complaint_no AND c2.warranty!=2");
+    $stmt->bind_param("i", $_SESSION["scid"]);
 }
 else{
     $stmt = $obj->con1->prepare("SELECT 

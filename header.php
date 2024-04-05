@@ -45,7 +45,7 @@ if (isset($_SESSION['type_admin']) && $_SESSION['type_admin']) {
 } elseif (isset($_SESSION['type_center']) && $_SESSION['type_center']) {
     $allowed_pages = array(
         "index.php",
-        "user_profile.php",
+        // "user_profile.php",
         "call_allocation.php",
         "complaint_demo.php",
         "technician.php",
@@ -524,7 +524,7 @@ if (isset($_REQUEST['logout'])) {
                                         </span>
                                     </a>
                                     <ul x-cloak x-show="open" x-transition x-transition.duration.300ms
-                                        class="top-11 w-[300px] divide-y !py-0 text-dark ltr:-right-2 rtl:-left-2 dark:divide-white/10 dark:text-white-dark sm:w-[350px]">
+                                        class="top-11 w-[300px] divide-y !py-0 text-dark ltr:-right-2 rtl:-left-2 dark:divide-white/10 dark:text-white-dark sm:w-[350px]" style="overflow-y: scroll; height: 600px;">
                                         <li>
                                             <div class="flex items-center justify-between px-4 py-2 font-semibold hover:!bg-transparent">
                                                 <h4 class="text-lg">Notification</h4>
@@ -614,17 +614,20 @@ if (isset($_REQUEST['logout'])) {
                                                 </div>
                                             </div>
                                         </li>
-                                        <li>
-                                            <a href="user_profile.php" class="dark:hover:text-white" @click="toggle">
-                                                <svg class="h-4.5 w-4.5 shrink-0 ltr:mr-2 rtl:ml-2" width="18" height="18"
-                                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <circle cx="12" cy="6" r="4" stroke="currentColor" stroke-width="1.5" />
-                                                    <path opacity="0.5"
-                                                        d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z"
-                                                        stroke="currentColor" stroke-width="1.5" />
-                                                </svg>
-                                                Profile</a>
-                                        </li>
+                                        <?php if(!isset($_SESSION['type_center'])){ ?>
+                                            <li>
+                                                <a href="user_profile.php" class="dark:hover:text-white" @click="toggle">
+                                                    <svg class="h-4.5 w-4.5 shrink-0 ltr:mr-2 rtl:ml-2" width="18" height="18"
+                                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <circle cx="12" cy="6" r="4" stroke="currentColor" stroke-width="1.5" />
+                                                        <path opacity="0.5"
+                                                            d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z"
+                                                            stroke="currentColor" stroke-width="1.5" />
+                                                    </svg>
+                                                    Profile
+                                                </a>
+                                            </li>
+                                        <?php } ?>
                                         <li class="border-t border-white-light dark:border-white-light/10">
                                             <a href="?logout" class="!py-3 text-danger" @click="toggle">
                                                 <svg class="h-4.5 w-4.5 shrink-0 rotate-90 ltr:mr-2 rtl:ml-2" width="18"
