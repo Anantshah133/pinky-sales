@@ -226,14 +226,14 @@ if (isset($_POST['save'])) {
 
         $subject = "Onelife Complaint Registered: " . $complaint_no;
         $body = "
-        <h3>
+        <h1>
         Dear <b>$fname $lname</b>,
         Your complaint has been registered successfully. Your complaint number is : <b>$complaint_no</b>
         Techinician will be allocated soon.
         
         Regards,
         OneLife Team.
-        </h3>";
+        </h1>";
         $from = "test@pragmanxt.com";
         $from_name = "Onelife";
 

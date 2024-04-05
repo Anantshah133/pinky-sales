@@ -3,7 +3,6 @@
 	$obj = new DB_Connect();
     $selected_date = date("Y-m-d", strtotime($_REQUEST['date']));
     $barcode = $_REQUEST['barcode'];
-    // $service_type = $_REQUEST['service_type'];
     $service_type = 23;
     $product_category = $_REQUEST['product_category'];
 

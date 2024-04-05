@@ -10,16 +10,16 @@ $stmt = $obj->con1->prepare("SELECT
     SUM(CASE WHEN status='allocated' THEN 1 ELSE 0 END) AS allocated_num,
     SUM(CASE WHEN status='pending' THEN 1 ELSE 0 END) AS pending_num,
     SUM(CASE WHEN status='closed' THEN 1 ELSE 0 END) AS closed_num
-    FROM call_allocation where service_center_id=?");
-     $stmt->bind_param("i",$_SESSION["scid"]);
+    FROM call_allocation, customer_reg c2 WHERE service_center_id=? AND c1.complaint_no=c2.complaint_no AND c2.warranty!=2");
+    $stmt->bind_param("i",$_SESSION["scid"]);
 }
 else{
     $stmt = $obj->con1->prepare("SELECT 
-    SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) AS new_num,
-    SUM(CASE WHEN status='allocated' THEN 1 ELSE 0 END) AS allocated_num,
-    SUM(CASE WHEN status='pending' THEN 1 ELSE 0 END) AS pending_num,
-    SUM(CASE WHEN status='closed' THEN 1 ELSE 0 END) AS closed_num
-    FROM call_allocation");
+    ifnull(SUM(CASE WHEN status='new' THEN 1 ELSE 0 END),0) AS new_num,
+    ifnull(SUM(CASE WHEN status='allocated' THEN 1 ELSE 0 END),0) AS allocated_num,
+    ifnull(SUM(CASE WHEN status='pending' THEN 1 ELSE 0 END),0) AS pending_num,
+    ifnull(SUM(CASE WHEN status='closed' THEN 1 ELSE 0 END),0) AS closed_num
+    FROM call_allocation c1, customer_reg c2 WHERE c1.complaint_no= c2.complaint_no AND c2.warranty!=2");
 }
 $stmt->execute();
 $Resp = $stmt->get_result();
@@ -31,56 +31,60 @@ $stmt->close();
     <div class="pt-5">
         <div class="mb-6 grid grid-cols-1 gap-6 text-white sm:grid-cols-2 xl:grid-cols-4">
             <!-- Users Visit -->
-            <div class="panel bg-gradient-to-r from-cyan-500 to-cyan-400">
-                <div class="flex justify-between">
-                    <div class="text-md font-semibold ltr:mr-1 rtl:ml-1">New calls</div>
-                </div>
-                <div class="mt-5 flex items-center">
-                    <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">
-                        <?php echo $data["new_num"]; ?>
+            <a href="call_allocation.php?">
+                <div class="panel bg-gradient-to-r from-cyan-500 to-cyan-400">
+                    <div class="flex justify-between">
+                        <div class="text-md font-semibold ltr:mr-1 rtl:ml-1">New calls</div>
                     </div>
-                    <!-- <div class="badge bg-white/30">+ 2.35%</div> -->
+                    <div class="mt-5 flex items-center">
+                        <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">
+                            <?php echo $data["new_num"]; ?>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </a>
 
             <!-- Sessions -->
-            <div class="panel bg-gradient-to-r from-violet-500 to-violet-400">
-                <div class="flex justify-between">
-                    <div class="text-md font-semibold ltr:mr-1 rtl:ml-1">Allocated Call</div>
-                </div>
-                <div class="mt-5 flex items-center">
-                    <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">
-                        <?php echo $data["allocated_num"]; ?>
+            <a href="call_allocation.php">
+                <div class="panel bg-gradient-to-r from-violet-500 to-violet-400">
+                    <div class="flex justify-between">
+                        <div class="text-md font-semibold ltr:mr-1 rtl:ml-1">Allocated Call</div>
                     </div>
-                    <!-- <div class="badge bg-white/30">- 2.35%</div> -->
+                    <div class="mt-5 flex items-center">
+                        <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">
+                            <?php echo $data["allocated_num"]; ?>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </a>
 
             <!-- Time On-Site -->
-            <div class="panel bg-gradient-to-r from-blue-500 to-blue-400">
-                <div class="flex justify-between">
-                    <div class="text-md font-semibold ltr:mr-1 rtl:ml-1">Pending Call</div>
-                </div>
-                <div class="mt-5 flex items-center">
-                    <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">
-                        <?php echo $data["pending_num"]; ?>
+            <a href="call_allocation.php">
+                <div class="panel bg-gradient-to-r from-blue-500 to-blue-400">
+                    <div class="flex justify-between">
+                        <div class="text-md font-semibold ltr:mr-1 rtl:ml-1">Pending Call</div>
                     </div>
-                    <!-- <div class="badge bg-white/30">+ 1.35%</div> -->
+                    <div class="mt-5 flex items-center">
+                        <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">
+                            <?php echo $data["pending_num"]; ?>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </a>
 
             <!-- Bounce Rate -->
-            <div class="panel bg-gradient-to-r from-fuchsia-500 to-fuchsia-400">
-                <div class="flex justify-between">
-                    <div class="text-md font-semibold ltr:mr-1 rtl:ml-1">Closed call</div>
-                </div>
-                <div class="mt-5 flex items-center">
-                    <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">
-                        <?php echo $data["closed_num"]; ?>
+            <a href="call_allocation.php">
+                <div class="panel bg-gradient-to-r from-fuchsia-500 to-fuchsia-400">
+                    <div class="flex justify-between">
+                        <div class="text-md font-semibold ltr:mr-1 rtl:ml-1">Closed call</div>
                     </div>
-                    <!-- <div class="badge bg-white/30">- 0.35%</div> -->
+                    <div class="mt-5 flex items-center">
+                        <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">
+                            <?php echo $data["closed_num"]; ?>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
     <div class='mb-6 grid gap-6 xl:grid-cols-3'>
