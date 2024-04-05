@@ -90,18 +90,18 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 console.log('Initalizing datatable')
                 this.datatable = new simpleDatatables.DataTable('#myTable', {
                     data: {
-                        headings: ['Sr.No.', 'Customer Name', 'Warranty No.', 'Product Name', 'Barcode', 'Warranty Starting Date', 'Action'],
+                        headings: ['Sr.No.', 'Customer Name', 'Warranty No.', 'Product Name', 'Barcode', 'Warranty Starting Date', 'Source', 'Action'],
                         data: [
                             <?php
                                 if(isset($_SESSION['type_center'])){
                                     $center_id = $_SESSION['scid'];
-                                    $stmt = $obj->con1->prepare("SELECT p1.name AS product, c1.id, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, c1.date, c1.complaint_no, c1.barcode FROM customer_reg c1, product_category p1, call_allocation ca1 WHERE warranty=2 AND c1.complaint_no=ca1.complaint_no AND ca1.service_center_id=? AND p1.id=c1.product_category ORDER BY id DESC");
+                                    $stmt = $obj->con1->prepare("SELECT p1.name AS product, c1.id, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, c1.source, c1.date, c1.complaint_no, c1.barcode FROM customer_reg c1, product_category p1, call_allocation ca1 WHERE warranty=2 AND c1.complaint_no=ca1.complaint_no AND ca1.service_center_id=? AND p1.id=c1.product_category ORDER BY id DESC");
                                     $stmt->bind_param("i", $center_id);
                                     $stmt->execute();
                                     $Resp = $stmt->get_result();
                                     $stmt->close();
                                 } else if(isset($_SESSION['type_admin'])){
-                                    $stmt = $obj->con1->prepare("SELECT p1.name AS product, c1.id, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, c1.date, c1.complaint_no, c1.barcode FROM customer_reg c1, product_category p1 WHERE warranty=2 AND p1.id=c1.product_category ORDER BY id DESC");
+                                    $stmt = $obj->con1->prepare("SELECT p1.name AS product, c1.id, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, c1.source, c1.date, c1.complaint_no, c1.barcode FROM customer_reg c1, product_category p1 WHERE warranty=2 AND p1.id=c1.product_category ORDER BY id DESC");
                                     $stmt->execute();
                                     $Resp = $stmt->get_result();
                                     $stmt->close();
@@ -114,9 +114,12 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                     '<?php echo $row["customer_name"]; ?>',
                                     '<?php echo $row["complaint_no"]; ?>',
                                     '<?php echo $row["product"]; ?>',
-                                    '<strong><?php echo $row["barcode"]; ?></strong>',
+                                    `<strong><?php echo $row["barcode"]; ?></strong>`,
                                     `<span class="badge badge-outline-secondary">
                                         <?php echo date("d-m-Y", strtotime($row["date"])); ?>
+                                    </span>`,
+                                    `<span class="badge badge-outline-<?php echo $row['source'] == 'web' ? 'secondary' : 'danger' ?>">
+                                        <?php echo ucfirst($row['source']) ?>
                                     </span>`,
                                     getActions(<?php echo $row["id"]; ?>, '<?php echo $row["complaint_no"]; ?>')
                                 ],

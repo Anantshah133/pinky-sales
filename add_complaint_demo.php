@@ -80,15 +80,17 @@ if (isset($_POST['save'])) {
     // $stmt = $obj->con1->prepare("select IFNULL(count(id)+1,1) as customer_id from customer_reg where date ='" . date("Y-m-d", strtotime($complaint_date)) . "'");
 
     try {
-        $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg` WHERE barcode=? AND service_type=23");
-        // $stmt->bind_param("si", $barcode, $service_type);
-        $stmt->bind_param("s", $barcode);
-        $stmt->execute();
-        $bar = $stmt->get_result();
-        if($bar->num_rows >= 1){
-            setcookie("msg", "warranty", time() + 3600, "/");
-            header("location:add_complaint_demo.php");
-            exit();
+        if($service_type == 23){
+            $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg` WHERE barcode=? AND service_type=23");
+            // $stmt->bind_param("si", $barcode, $service_type);
+            $stmt->bind_param("s", $barcode);
+            $stmt->execute();
+            $bar = $stmt->get_result();
+            if($bar->num_rows >= 1){
+                setcookie("msg", "warranty", time() + 3600, "/");
+                header("location:add_complaint_demo.php");
+                exit();
+            }
         }
     } catch (\Exception $e) {
         setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
@@ -136,7 +138,6 @@ if (isset($_POST['save'])) {
             $war_data = $Res->fetch_assoc();
             $stmt->close();
 
-            
             if($Res->num_rows >= 1){
                 $pr_category = $war_data['product_category'];
 
@@ -159,7 +160,7 @@ if (isset($_POST['save'])) {
                 } else {
                     $warranty_status = 0;
                 }
-            } else if($service_type != 23 || 2 == 2) {
+            } else if($service_type != 23 && trim($barcode) != "") {
                 $warranty_status = 3;
             } else {
                 $warranty_status = 2;
@@ -223,13 +224,16 @@ if (isset($_POST['save'])) {
             throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
         }
 
-        $subject = "Onelife Complaint Registered: ". $complaint_no;
-        $body = "Dear $fname $lname,
-        Your complaint has been registered successfully. Your complaint number is : $complaint_no
+        $subject = "Onelife Complaint Registered: " . $complaint_no;
+        $body = "
+        <h1>
+        Dear <b>$fname $lname</b>,
+        Your complaint has been registered successfully. Your complaint number is : <b>$complaint_no</b>
         Techinician will be allocated soon.
         
         Regards,
-        OneLife Team.";
+        OneLife Team.
+        </h1>";
         $from = "test@pragmanxt.com";
         $from_name = "Onelife";
 
