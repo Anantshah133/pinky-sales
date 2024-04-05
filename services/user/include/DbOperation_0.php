@@ -23,41 +23,22 @@ class DbOperation
         return $faculty;
     }
     
-    public function checkBarcode($barcode,$service_type,$product_category) //added by jay 30-03-24
+    public function checkBarcode($barcode,$service_type) //added by jay 30-03-24
     {
-        if($barcode!="")
-        {
-            $stmt = $this->con->prepare("SELECT  product_category FROM `customer_reg` WHERE barcode=?");
-            $stmt->bind_param("s", $barcode);
-            $stmt->execute();
-           
-            if($row = $stmt->get_result()->fetch_assoc())
-            {
-            
-                if($product_category!=$row["product_category"])
-                {
-                    return -2;
-                }
-            }    
-            
-             $stmt->close();
-        }
+        
        if($service_type==23 && $barcode!="")
        {
-            $stmt = $this->con->prepare("SELECT count(*) as cnt FROM `customer_reg` WHERE barcode=? and warranty=2");
+            $stmt = $this->con->prepare("SELECT count(*) as cnt FROM `customer_reg` WHERE barcode=?");
             $stmt->bind_param("s", $barcode);
             $stmt->execute();
             $row = $stmt->get_result()->fetch_assoc();
             $stmt->close();
             return $row["cnt"]; 
-            
        }
        else if($barcode=="" && $service_type==23)
        {
             return -1;
        }
-       
-       
        return 0;
     
     }
@@ -76,7 +57,7 @@ class DbOperation
             $warranty_period = $row["warranty_period"];
             $stmt->close();
             
-            if($row["date"]==null || $row["warranty_period"]==0)
+            if($row["date"]==null)
             {
                 return 0;
             }
