@@ -285,7 +285,7 @@ function uploadImage($inputName, $uploadDirectory)
                     <div class="w-6/12 px-3 space-y-5">
                         <div x-data="purchaseDate">
                             <label for="purchase_date">Purchase Date </label>
-                            <input x-model="date1" name="purchase_date" id="purchase_date" class="form-input" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> value="<?php echo isset($mode) && isset($data['purchase_data']) ? $data['purchase_data'] : '' ?>" />
+                            <input type="date" name="purchase_date" id="purchase_date" class="form-input" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> value="<?php echo isset($mode) && isset($data['purchase_data']) ? $data['purchase_data'] : '' ?>" />
                         </div>
                         <div>
                             <label for="purchase_date_img">Purchase Date Image</label>
@@ -570,15 +570,15 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         }).split('/').join('-');
 
 
-        Alpine.data("purchaseDate", () => ({
-            date1: formattedToday,
-            init() {
-                flatpickr(document.getElementById('purchase_date'), {
-                    dateFormat: 'd-m-Y',
-                    defaultDate: this.date1,
-                })
-            }
-        }));
+        // Alpine.data("purchaseDate", () => ({
+        //     date1: formattedToday,
+        //     init() {
+        //         flatpickr(document.getElementById('purchase_date'), {
+        //             dateFormat: 'd-m-Y',
+        //             defaultDate: this.date1,
+        //         })
+        //     }
+        // }));
 
         Alpine.data("allocationDate", () => ({
             date2: '<?php echo isset($mode) && trim($data["allocation_date"]) != "" ? date("d-m-Y", strtotime($data["allocation_date"])) : date("d-m-Y") ?>',
