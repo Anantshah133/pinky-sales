@@ -20,7 +20,7 @@ service center reg
 method:post
 */
 
-$app->post('/service_center_reg','authenticateUser', function () use ($app) {
+$app->post('/service_center_reg', function () use ($app) {
 
     $data = array();
 
@@ -38,7 +38,7 @@ $app->post('/service_center_reg','authenticateUser', function () use ($app) {
     $password = $req_data->password;
 
     $area = $req_data->area;
-    $status='enable';
+    $status='Enable';
 
    
     $db = new DbOperation();
@@ -70,7 +70,7 @@ technician reg
 method:post
 */
 
-$app->post('/technician_reg','authenticateUser', function () use ($app) {
+$app->post('/technician_reg', function () use ($app) {
 
     $data = array();
 
@@ -87,7 +87,7 @@ $app->post('/technician_reg','authenticateUser', function () use ($app) {
     $password = $req_data->password;
 
     $service_center = $req_data->service_center;
-    $status='enable';
+    $status='Enable';
 
    
     $db = new DbOperation();
@@ -99,7 +99,7 @@ $app->post('/technician_reg','authenticateUser', function () use ($app) {
         $MainFileName = $userid . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["id_proof"]["tmp_name"], "../../../images/technician_idproof/" . $MainFileName)) {
+        if (move_uploaded_file($_FILES["id_proof"]["tmp_name"], "../../../orpel/uploads/" . $MainFileName)) {
             $response->image_upload = "success";
         } else {
             $response->image_upload = "fail";
@@ -162,54 +162,21 @@ $app->post('/login', function () use ($app) {
     if ($db->Login($userid, $password)) {
         $user = $db->get_service_center($userid);
 
-        if (strtolower($user['status']) == 'enable') {
-            //generate api key
-            $api_key=$db->generateApiKey();
-
-            $insert_device = $db->insert_service_center_device($user["id"],$tokenid,$type,$api_key);
+        if ($user['status'] == 'Enable') {
             $data['result'] = true;
             $data['message'] = "";
             $response->id = $user['id'];
             $response->name = $user['name'];            
             $response->email = $user['email'];
             $response->contact = $user['contact'];
-            $response->user_role="service_center";
-            $response->api_key=$api_key;
 
-           
+            $insert_device = $db->insert_service_center_device($user["id"],$tokenid,$type);
         } else {
             $data['result'] = false;
             $data['message'] = "You are disabled";
         }
 
-    }
-    else if($db->Login_admin($userid, $password)) // check if admin login
-    {
-        $user_admin = $db->get_admin($userid);
-
-
-        if (strtolower($user_admin['status']) == 'enable') {
-
-            //generate api key
-            $api_key=$db->generateApiKey();
-
-            $insert_device = $db->insert_admin_device($user_admin["srno"],$tokenid,$type,$api_key);
-            $data['result'] = true;
-            $data['message'] = "";
-            $response->id = $user_admin['srno'];
-            $response->name = $user_admin['name'];            
-            $response->email = $user_admin['email'];
-            $response->contact = $user_admin['phno'];
-            $response->user_role="admin";
-            $response->api_key=$api_key;
-
-           
-        } else {
-            $data['result'] = false;
-            $data['message'] = "You are disabled";
-        }
-    }
-     else {
+    } else {
         $data['result'] = false;
         $data['message'] = "Invalid userid or password";
     }
@@ -233,22 +200,13 @@ $app->post('/logout', function () use ($app) {
     $keys = array_keys(json_decode($app->request->post('data'), true));   
 
     verifyRequiredParams_json(array('id','fcm_token'),$keys);
-    $role_type="";
-    foreach (getallheaders() as $name => $value) {
-        
-       
-       if($name=="role_type")
-       {
-            $role_type=$value;
-       }
-    }
 
     $uid = $req_data->id;
     $tokenid = $req_data->fcm_token;
     
 
     $db = new DbOperation();
-    $res = $db->logout($uid,$tokenid,$role_type);
+    $res = $db->logout($uid,$tokenid);
 
     if($res==1){
 
@@ -274,36 +232,24 @@ call list
 method:post
 */
 
-$app->post('/call_list', 'authenticateUser', function () use ($app) {
+$app->post('/call_list', function () use ($app) {
 
     $data = array();
 
     $response = new stdClass();
-    //print_r(apache_request_headers());
-  //  echo $role_type = $_SERVER['role_type'];
 
     $req_data = json_decode($app->request->post('data'));
     $keys = array_keys(json_decode($app->request->post('data'), true));   
-    $role_type="";
-    verifyRequiredParams_json(array('type','service_center'),$keys);
-    
-    foreach (getallheaders() as $name => $value) {
-        
-       
-       if($name=="role_type")
-       {
-            $role_type=$value;
-       }
-    }
 
+    verifyRequiredParams_json(array('date','type','service_center'),$keys);
 
-    $date = isset($req_data->date)?$req_data->date:"";
+    $date = $req_data->date;
     $type = $req_data->type;
     $service_center = ($req_data->service_center!="")?$req_data->service_center:"3";
      
     $db = new DbOperation();
     
-    $res = $db->call_list($date, $type,$service_center,$role_type);
+    $res = $db->call_list($date, $type,$service_center);
 
 if ($res->num_rows > 0) {
 
@@ -316,33 +262,22 @@ if ($res->num_rows > 0) {
             $response = new stdClass();
             foreach ($call_list as $key => $value) {
                 $response->$key = strval($value);
-                if($key=="product_model_img" && $value!="")
-                {
-                    $response->$key = strval("product_model_img/".$value);
-                }
-                if($key=="serial_no_img" && $value!="")
-                {
-                    $response->$key = "serial_no_img/".strval($value);
-                }
-                if($key=="purchase_date_img" && $value!="")
-                {
-                    $response->$key = "purchase_date_img/".strval($value);
-                }
+
                 
 
             }
             // call history
-            $response_call = array();
-            $res_call_history=$db->call_history($call_list["complaint_no"]);
-            while ($call_hisotry = $res_call_history->fetch_assoc()) {
+                $response_call = array();
+                $res_call_history=$db->call_history($call_list["complaint_no"]);
+                while ($call_hisotry = $res_call_history->fetch_assoc()) {
 
-                $response_call_history = new stdClass();
-                foreach ($call_hisotry as $key => $value) {
-                    $response_call_history->$key = strval($value);
+                    $response_call_history = new stdClass();
+                    foreach ($call_hisotry as $key => $value) {
+                        $response_call_history->$key = strval($value);
+                    }
+
+                    array_push($response_call, $response_call_history);
                 }
-
-                array_push($response_call, $response_call_history);
-            }
             $response->call_history=$response_call;
             array_push($data["response"], $response);
         }
@@ -396,7 +331,7 @@ $app->post('/call_allocation_add_old', function () use ($app) {
         $serial_no_img = $complaint_no . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["serial_no_img"]["tmp_name"], "../../../images/product_model_img/" . $serial_no_img)) {
+        if (move_uploaded_file($_FILES["serial_no_img"]["tmp_name"], "../../../orpel/uploads/" . $serial_no_img)) {
             $response->serial_no_img = "success";
         } else {
             $response->serial_no_img = "fail";
@@ -415,7 +350,7 @@ $app->post('/call_allocation_add_old', function () use ($app) {
         $product_model_img = $complaint_no . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["product_model_img"]["tmp_name"], "../../../images/product_model_img/" . $product_model_img)) {
+        if (move_uploaded_file($_FILES["product_model_img"]["tmp_name"], "../../../orpel/uploads/" . $product_model_img)) {
             $response->product_model_img = "success";
         } else {
             $response->product_model_img = "fail";
@@ -434,7 +369,7 @@ $app->post('/call_allocation_add_old', function () use ($app) {
         $purchase_date_img = $complaint_no . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["purchase_date_img"]["tmp_name"], "../../../images/product_model_img/" . $purchase_date_img)) {
+        if (move_uploaded_file($_FILES["purchase_date_img"]["tmp_name"], "../../../orpel/uploads/" . $purchase_date_img)) {
             $response->purchase_date_img = "success";
         } else {
             $response->purchase_date_img = "fail";
@@ -474,7 +409,7 @@ call allocation 2
 method:post
 */
 
-$app->post('/call_allocation_add','authenticateUser', function () use ($app) {
+$app->post('/call_allocation_add', function () use ($app) {
 
     $data = array();
 
@@ -497,10 +432,10 @@ $app->post('/call_allocation_add','authenticateUser', function () use ($app) {
     $allocation_time_in_24  = date("H:i:s");  
     $parts_used = isset($req_data->parts_used)?$req_data->parts_used:"";
     $call_type = isset($req_data->call_type)?$req_data->call_type:"";
-    $service_charge = (isset($req_data->service_charge) && $req_data->service_charge!="")?$req_data->service_charge:"0";
-    $parts_charge = (isset($req_data->parts_charge) && $req_data->service_charge!="")?$req_data->parts_charge:"0";
-    $history_status = isset($req_data->history_status)?strtolower($req_data->history_status):"";    
-    $status=(isset($req_data->history_status) && $req_data->history_status!="") ?strtolower($req_data->history_status):'allocated';
+    $service_charge = isset($req_data->service_charge)?$req_data->service_charge:"";
+    $parts_charge = isset($req_data->parts_charge)?$req_data->parts_charge:"";
+    $history_status = isset($req_data->history_status)?$req_data->history_status:"";    
+    $status=(isset($req_data->history_status) && $req_data->history_status!="") ?$req_data->history_status:'allocated';
     $reason = isset($req_data->reason)?$req_data->reason:"";   
     $db = new DbOperation();
 
@@ -524,7 +459,7 @@ $app->post('/call_allocation_add','authenticateUser', function () use ($app) {
         $serial_no_img = $complaint_no . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["serial_no_img"]["tmp_name"], "../../../images/serial_no_img/" . $serial_no_img)) {
+        if (move_uploaded_file($_FILES["serial_no_img"]["tmp_name"], "../../../orpel/uploads/" . $serial_no_img)) {
             $response->serial_no_img = "success";
         } else {
             $response->serial_no_img = "fail";
@@ -543,7 +478,7 @@ $app->post('/call_allocation_add','authenticateUser', function () use ($app) {
         $product_model_img = $complaint_no . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["product_model_img"]["tmp_name"], "../../../images/product_model_img/" . $product_model_img)) {
+        if (move_uploaded_file($_FILES["product_model_img"]["tmp_name"], "../../../orpel/uploads/" . $product_model_img)) {
             $response->product_model_img = "success";
         } else {
             $response->product_model_img = "fail";
@@ -562,7 +497,7 @@ $app->post('/call_allocation_add','authenticateUser', function () use ($app) {
         $purchase_date_img = $complaint_no . "_" . $Arr[0] . "." . $Arr[1];
 
 
-        if (move_uploaded_file($_FILES["purchase_date_img"]["tmp_name"], "../../../images/purchase_date_img/" . $purchase_date_img)) {
+        if (move_uploaded_file($_FILES["purchase_date_img"]["tmp_name"], "../../../orpel/uploads/" . $purchase_date_img)) {
             $response->purchase_date_img = "success";
         } else {
             $response->purchase_date_img = "fail";
@@ -626,19 +561,19 @@ $app->post('/call_allocation_add','authenticateUser', function () use ($app) {
      if($status=="completed")
      {
         // get customer contact no
-        // $customer_data=$db->get_customer($complaint_no);
-        // $api_key = '461583564CE48B';
-        // $contacts=$customer_data["contact"];
-        // $from = 'DPRFCT';
-        // $smsstring='Dear customer, your complaint has been completed. PERFECT DISTRIBUTORS';
-        // $sms_text = urlencode($smsstring);
-        // $ch = curl_init();
-        // curl_setopt($ch,CURLOPT_URL, "http://sms.autobysms.com/app/smsapi/index.php");
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        // curl_setopt($ch, CURLOPT_POST, 1);
-        // curl_setopt($ch, CURLOPT_POSTFIELDS, "key=".$api_key."&campaign=0&routeid=9&type=text&contacts=".$contacts."&senderid=".$from."&msg=".$sms_text."&template_id=1707164321962255287");
-        //  $res = curl_exec($ch);
-        // curl_close($ch);
+        $customer_data=$db->get_customer($complaint_no);
+        $api_key = '461583564CE48B';
+        $contacts=$customer_data["contact"];
+        $from = 'DPRFCT';
+        $smsstring='Dear customer, your complaint has been completed. PERFECT DISTRIBUTORS';
+        $sms_text = urlencode($smsstring);
+        $ch = curl_init();
+        curl_setopt($ch,CURLOPT_URL, "http://sms.autobysms.com/app/smsapi/index.php");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "key=".$api_key."&campaign=0&routeid=9&type=text&contacts=".$contacts."&senderid=".$from."&msg=".$sms_text."&template_id=1707164321962255287");
+         $res = curl_exec($ch);
+        curl_close($ch);
      }
 
         $data['result'] = true;
@@ -662,7 +597,7 @@ $app->post('/call_allocation_add','authenticateUser', function () use ($app) {
  *  param:
  *  method:post
  */
-$app->post('/homepage','authenticateUser', function () use ($app) {
+$app->post('/homepage', function () use ($app) {
 
    $data = array();
 
@@ -670,17 +605,8 @@ $app->post('/homepage','authenticateUser', function () use ($app) {
 
     $req_data = json_decode($app->request->post('data'));
     $keys = array_keys(json_decode($app->request->post('data'), true));   
-    
+
     verifyRequiredParams_json(array('date','service_center_id'),$keys);
-    $role_type="";
-    foreach (getallheaders() as $name => $value) {
-        
-       
-       if($name=="role_type")
-       {
-            $role_type=$value;
-       }
-    }
 
     $date = $req_data->date;
     $service_center_id = $req_data->service_center_id;
@@ -688,13 +614,13 @@ $app->post('/homepage','authenticateUser', function () use ($app) {
     
 
     $db = new DbOperation();
-    $homepage_resp = $db->homepage($date,$service_center_id,$role_type);
+    $homepage_resp = $db->homepage($date,$service_center_id);
     if ($homepage_resp->num_rows > 0) {
 
 
         $data['result'] = true;
         $data['message'] = "";
-        $data["response"] = new stdClass();
+        $data["response"] = array();
 
         while ($call_list = $homepage_resp->fetch_assoc()) {
 
@@ -703,51 +629,6 @@ $app->post('/homepage','authenticateUser', function () use ($app) {
                 $response->$key = $value;
             }
 
-          
-        }
-        $data["response"]=$response;
-
-    } else {
-        $data['result'] = false;
-        $data['message'] = "Data not found";
-
-    }
-    echoResponse(200, $data);
-});
-
-//service center list
-
-$app->post('/service_center_list','authenticateUser', function () use ($app) {
-
-    
-    $role_type="";
-    foreach (getallheaders() as $name => $value) {
-        
-       
-       if($name=="role_type")
-       {
-            $role_type=$value;
-       }
-    }
-
-   
-    $db = new DbOperation();
-    $data = array();
-
-    $service_center = $db->service_center_list();
-    if ($service_center->num_rows > 0) {
-
-
-        $data['result'] = true;
-        $data['message'] = "";
-        $data["response"] = array();
-
-        while ($service_center_list = $service_center->fetch_assoc()) {
-
-            $response = new stdClass();
-            foreach ($service_center_list as $key => $value) {
-                $response->$key = $value;
-            }
             array_push($data["response"], $response);
         }
 
@@ -761,7 +642,7 @@ $app->post('/service_center_list','authenticateUser', function () use ($app) {
 
 
 //technician list
-$app->post('/technician_list','authenticateUser', function () use ($app) {
+$app->post('/technician_list', function () use ($app) {
 
     //verifyRequiredParams(array(''));
     //data={service_center_id:}
@@ -769,69 +650,12 @@ $app->post('/technician_list','authenticateUser', function () use ($app) {
     $keys = array_keys(json_decode($app->request->post('data'), true));   
 
     verifyRequiredParams_json(array('service_center_id'),$keys);
-    $role_type="";
-    foreach (getallheaders() as $name => $value) {
-        
-       
-       if($name=="role_type")
-       {
-            $role_type=$value;
-       }
-    }
 
     $service_center_id = $req_data->service_center_id;
     $db = new DbOperation();
     $data = array();
 
-    $techinician = $db->techinician_list($service_center_id,$role_type);
-    if ($techinician->num_rows > 0) {
-
-
-        $data['result'] = true;
-        $data['message'] = "";
-        $data["response"] = array();
-
-        while ($techinician_listi = $techinician->fetch_assoc()) {
-
-            $response = new stdClass();
-            foreach ($techinician_listi as $key => $value) {
-                $response->$key = $value;
-            }
-            array_push($data["response"], $response);
-        }
-
-    } else {
-        $data['result'] = false;
-        $data['message'] = "Data not found";
-
-    }
-    echoResponse(200, $data);
-});
-
-//technician list new
-$app->post('/technician_list_new','authenticateUser', function () use ($app) {
-
-    //verifyRequiredParams(array(''));
-    //data={service_center_id:}
-    $req_data = json_decode($app->request->post('data'));
-    $keys = array_keys(json_decode($app->request->post('data'), true));   
-
-    verifyRequiredParams_json(array('service_center_id'),$keys);
-    $role_type="";
-    foreach (getallheaders() as $name => $value) {
-        
-       
-       if($name=="role_type")
-       {
-            $role_type=$value;
-       }
-    }
-
-    $service_center_id = $req_data->service_center_id;
-    $db = new DbOperation();
-    $data = array();
-
-    $techinician = $db->techinician_list_new($service_center_id,$role_type);
+    $techinician = $db->techinician_list($service_center_id);
     if ($techinician->num_rows > 0) {
 
 
@@ -858,7 +682,7 @@ $app->post('/technician_list_new','authenticateUser', function () use ($app) {
 
 
 //product list
-$app->get('/product_category_list','authenticateUser', function () use ($app) {
+$app->get('/product_category_list', function () use ($app) {
 
    
 
@@ -890,45 +714,6 @@ $app->get('/product_category_list','authenticateUser', function () use ($app) {
     }
     echoResponse(200, $data);
 });
-
-function authenticateUser(\Slim\Route $route)
-{
-    $headers = apache_request_headers();
-    $data = array();
-    $app = \Slim\Slim::getInstance();
-   // print_r($headers);
-    if (isset($headers['Apikey'])) {
-        $role_type=$headers["Roletype"];
-        $db = new DbOperation();
-        $api_key = $headers['Apikey'];
-        if($role_type=="admin")
-        {
-            if (!$db->isValidAdmin($api_key)) {
-            $data["success"] = false;
-            $data["message"] = "Access Denied. Invalid Api key";
-            echoResponse(401, $data);
-            $app->stop();
-        }
-
-        }
-        else
-        {
-            if (!$db->isValidUser($api_key)) {
-            $data["success"] = false;
-            $data["message"] = "Access Denied. Invalid Api key";
-            echoResponse(401, $data);
-            $app->stop();
-        }
-
-       }
-        
-    } else {
-        $data["success"] = false;
-        $data["message"] = "Api key is misssing";
-        echoResponse(400, $data);
-        $app->stop();
-    }
-}
 
 function send_notification($data, $reg_ids)
 {

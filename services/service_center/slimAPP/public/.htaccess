@@ -8,3 +8,5 @@ RewriteEngine On
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [QSA,L]
+SetEnvIfNoCase^Accept.Encoding$^(.*)$ fix_accept_encoding=$1
+RequestHeader set Accept-Encoding%{fix_accept_encoding}e env=fix_accept_encoding

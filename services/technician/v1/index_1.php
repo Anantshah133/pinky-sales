@@ -375,8 +375,8 @@ $app->post('/call_allocation_add', 'authenticateUser', function () use ($app) {
     $allocation_time_in_24  = date("H:i:s", strtotime($allocation_time));  
     $parts_used = isset($req_data->parts_used)?$req_data->parts_used:"";
     $call_type = isset($req_data->call_type)?$req_data->call_type:"";
-    $service_charge = (isset($req_data->service_charge) && $req_data->service_charge!="")?$req_data->service_charge:"0";
-    $parts_charge = (isset($req_data->parts_charge) && $req_data->service_charge!="")?$req_data->parts_charge:"0";
+    $service_charge = isset($req_data->service_charge)?$req_data->service_charge:"";
+    $parts_charge = isset($req_data->parts_charge)?$req_data->parts_charge:"";
     $history_status = isset($req_data->history_status)?strtolower($req_data->history_status):""; 
     $reason = isset($req_data->reason)?$req_data->reason:"";     
     $status=(isset($req_data->history_status) && $req_data->history_status!="") ?strtolower($req_data->history_status):'allocated';
