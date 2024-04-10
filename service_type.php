@@ -19,6 +19,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         $stmt_del->close();
     } catch (\Exception $e) {
         setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
+        setcookie("msg", "cant_delete", time() + 3600, "/");
     }
 
     if ($Resp) {

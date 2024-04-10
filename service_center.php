@@ -2,6 +2,7 @@
 include "header.php";
 setcookie("editId", "", time() - 3600);
 setcookie("viewId", "", time() - 3600);
+
 if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     try {
         $stmt_del = $obj->con1->prepare(
@@ -16,6 +17,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         $stmt_del->close();
     } catch (\Exception $e) {
         setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
+        setcookie("msg", "cant_delete", time() + 3600, "/");
     }
 
     if ($Resp) {
@@ -24,6 +26,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     header("location:service_center.php");
 }
 ?>
+
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-2">
         <div class='flex items-center justify-between mb-3'>

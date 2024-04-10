@@ -524,7 +524,7 @@ if (isset($_REQUEST['logout'])) {
                                         </span>
                                     </a>
                                     <ul x-cloak x-show="open" x-transition x-transition.duration.300ms
-                                        class="top-11 w-[300px] divide-y !py-0 text-dark ltr:-right-2 rtl:-left-2 dark:divide-white/10 dark:text-white-dark sm:w-[350px]" style="overflow-y: scroll; height: 600px;">
+                                        class="top-11 w-[300px] divide-y !py-0 text-dark ltr:-right-2 rtl:-left-2 dark:divide-white/10 dark:text-white-dark sm:w-[350px]" style="overflow-y: scroll; height: 500px;">
                                         <li>
                                             <div class="flex items-center justify-between px-4 py-2 font-semibold hover:!bg-transparent">
                                                 <h4 class="text-lg">Notification</h4>
