@@ -65,7 +65,7 @@ function checkCookies(){
         return;
     }
     if(result == "cant_delete"){
-        coloredToast("danger", "Data is already in use can't delete it");
+        coloredToast("danger", "Record is in use can't delete it.");
         eraseCookie("msg")
         return;
     }

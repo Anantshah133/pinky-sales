@@ -182,26 +182,28 @@ if (isset($_POST['save'])) {
 
         // ------- get service center from city by anant
         
-        $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE area=?");
-        $stmt->bind_param("i", $fetched_city_id);
-        $stmt->execute();
-        $service_center = $stmt->get_result()->fetch_assoc();
-        $stmt->close();
+        if($warranty_status != 2){
+            $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE area=?");
+            $stmt->bind_param("i", $fetched_city_id);
+            $stmt->execute();
+            $service_center = $stmt->get_result()->fetch_assoc();
+            $stmt->close();
 
-        // insert into call allocation
-        $product_serial_no = "";
-        $product_model = "";
-        $purchase_date = "";
-        $techinician = 0;
-        $allocation_date = "";
-        $allocation_time = "";
-        $status = "new";
-        //---------------//
+            // insert into call allocation
+            $product_serial_no = "";
+            $product_model = "";
+            $purchase_date = "";
+            $techinician = 0;
+            $allocation_date = "";
+            $allocation_time = "";
+            $status = "new";
+            //---------------//
 
-        $stmt = $obj->con1->prepare("INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("sisssisss", $complaint_no, $service_center["id"], $product_serial_no, $product_model, $purchase_date, $techinician, $allocation_date, $allocation_time, $status);
-        $result = $stmt->execute();
-        $stmt->close();
+            $stmt = $obj->con1->prepare("INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (?,?,?,?,?,?,?,?,?)");
+            $stmt->bind_param("sisssisss", $complaint_no, $service_center["id"], $product_serial_no, $product_model, $purchase_date, $techinician, $allocation_date, $allocation_time, $status);
+            $result = $stmt->execute();
+            $stmt->close();
+        }
 
         //  echo "<br/> Insert Call allocation :- INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (" . $complaint_no . " " . $service_center['id'] . " " . $product_serial_no . " " . $product_model . " " . $purchase_date . " " . $techinician . " " . $allocation_date . " " . $allocation_time . " " . $status . ")";
 

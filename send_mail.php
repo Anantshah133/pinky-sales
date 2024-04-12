@@ -7,17 +7,16 @@ $obj = new DB_Connect();
 $stmt = $obj->con1->prepare("SELECT c1.*, c1.complaint_no AS c_num FROM send_mail s1, customer_reg c1 WHERE s1.complaint_no=c1.complaint_no");
 $stmt->execute();
 $Res = $stmt->get_result();
-$data = $Res->fetch_assoc();
 
-if ($Res->num_rows >= 1) {
+while ($data = $Res->fetch_assoc()) {
     $from = "test@pragmanxt.com";
     $from_name = "Onelife";
-    echo $complaint_no = $data['c_num'];
-    echo $customer_name = $data['fname'] . " " . $data['lname'];
-    echo $email = $data['email'];
-    echo $date = date("d-m-Y", strtotime($data['date']));
+    $complaint_no = $data['c_num'];
+    $customer_name = $data['fname'] . " " . $data['lname'];
+    $email = $data['email'];
+    $date = date("d-m-Y", strtotime($data['date']));
     if($data['warranty']!=2){
-        echo $subject = "Onelife Complaint Registered : " . $complaint_no;
+        $subject = "Onelife Complaint Registered : " . $complaint_no;
         $body = "<h1>
         Dear <b>$customer_name</b>,
         Your complaint has been registered successfully. Your complaint number is : <b>$complaint_no</b>
@@ -27,7 +26,7 @@ if ($Res->num_rows >= 1) {
         OneLife Team.
         </h1>";
     } else {
-        echo $subject = "Onelife Product Registered : " . $complaint_no;
+        $subject = "Onelife Product Registered : " . $complaint_no;
         $body = "<h1>
         Dear <b>$fname $lname</b>,
         Your Product has been registered successfully. Your Warranty number is : <b>$complaint_no</b>
@@ -45,6 +44,7 @@ if ($Res->num_rows >= 1) {
         setcookie("mail", urlencode($mail_res), time() + 3600, "/");
     }
 }
+
 function smtpmailer($subject, $body, $to, $from, $from_name)
 {
     global $error;

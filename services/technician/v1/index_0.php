@@ -39,8 +39,9 @@ $app->post('/technician_reg', function () use ($app) {
     $password = $req_data->password;
 
     $service_center = $req_data->service_center;
-    $status='enable';
-    
+    $status='Enable';
+
+   
     $db = new DbOperation();
     if ($_FILES["id_proof"]["name"] != "") {
 
@@ -111,20 +112,15 @@ $app->post('/login', function () use ($app) {
     if ($db->Login($userid, $password)) {
         $user = $db->get_technician($userid);
 
-        if (strtolower($user['status']) == 'enable') {
-
-            //generate api key
-            $api_key=$db->generateApiKey();
-
-
+        if (strtolower($user['status'] )== 'enable') {
             $data['result'] = true;
             $data['message'] = "";
             $response->id = $user['id'];
             $response->name = $user['name'];            
             $response->email = $user['email'];
             $response->contact = $user['contact'];
-            $response->api_key=$api_key;
-            $insert_device = $db->insert_technician_device($user["id"],$tokenid,$type,$api_key);
+
+            $insert_device = $db->insert_technician_device($user["id"],$tokenid,$type);
         } else {
             $data['result'] = false;
             $data['message'] = "You are disabled";
@@ -180,7 +176,7 @@ $app->post('/logout', function () use ($app) {
 });
 
 //technician list
-$app->post('/technician_list', 'authenticateUser', function () use ($app) {
+$app->post('/technician_list', function () use ($app) {
 
     //verifyRequiredParams(array(''));
     //data={service_center_id:}
@@ -218,7 +214,7 @@ $app->post('/technician_list', 'authenticateUser', function () use ($app) {
     echoResponse(200, $data);
 });
 
-$app->post('/homepage', 'authenticateUser', function () use ($app) {
+$app->post('/homepage', function () use ($app) {
 
    $data = array();
 
@@ -241,7 +237,7 @@ $app->post('/homepage', 'authenticateUser', function () use ($app) {
 
         $data['result'] = true;
         $data['message'] = "";
-        $data["response"] = new stdClass();
+        $data["response"] = array();
 
         while ($call_list = $homepage_resp->fetch_assoc()) {
 
@@ -250,9 +246,8 @@ $app->post('/homepage', 'authenticateUser', function () use ($app) {
                 $response->$key = $value;
             }
 
-            
+            array_push($data["response"], $response);
         }
-        $data["response"]=$response;
 
     } else {
         $data['result'] = false;
@@ -262,7 +257,7 @@ $app->post('/homepage', 'authenticateUser', function () use ($app) {
     echoResponse(200, $data);
 });
 
-$app->post('/call_list', 'authenticateUser', function () use ($app) {
+$app->post('/call_list', function () use ($app) {
 
     $data = array();
 
@@ -293,21 +288,6 @@ if ($res->num_rows > 0) {
             $contact="";
             foreach ($call_list as $key => $value) {
                 $response->$key = strval($value); 
-                
-                 if($key=="product_model_img" && $value!="")   // added by jay
-                {
-                    $response->$key = strval("product_model_img/".$value);
-                }
-                if($key=="serial_no_img" && $value!="")
-                {
-                    $response->$key = "serial_no_img/".strval($value);
-                }
-                if($key=="purchase_date_img" && $value!="")
-                {
-                    $response->$key = "purchase_date_img/".strval($value);
-                }
-                
-                
                 if($key=="fname")
                 {
                     $name=$value;
@@ -353,7 +333,7 @@ if ($res->num_rows > 0) {
 echoResponse(200, $data);
 });
 
-$app->post('/call_allocation_add', 'authenticateUser', function () use ($app) {
+$app->post('/call_allocation_add', function () use ($app) {
 
    $data = array();
 
@@ -375,11 +355,11 @@ $app->post('/call_allocation_add', 'authenticateUser', function () use ($app) {
     $allocation_time_in_24  = date("H:i:s", strtotime($allocation_time));  
     $parts_used = isset($req_data->parts_used)?$req_data->parts_used:"";
     $call_type = isset($req_data->call_type)?$req_data->call_type:"";
-    $service_charge = (isset($req_data->service_charge) && $req_data->service_charge!="")?$req_data->service_charge:"0";
-    $parts_charge = (isset($req_data->parts_charge) && $req_data->service_charge!="")?$req_data->parts_charge:"0";
-    $history_status = isset($req_data->history_status)?strtolower($req_data->history_status):""; 
+    $service_charge = isset($req_data->service_charge)?$req_data->service_charge:"";
+    $parts_charge = isset($req_data->parts_charge)?$req_data->parts_charge:"";
+    $history_status = isset($req_data->history_status)?$req_data->history_status:""; 
     $reason = isset($req_data->reason)?$req_data->reason:"";     
-    $status=(isset($req_data->history_status) && $req_data->history_status!="") ?strtolower($req_data->history_status):'allocated';
+    $status=(isset($req_data->history_status) && $req_data->history_status!="") ?$req_data->history_status:'allocated';
   
     $db = new DbOperation();
     $noti_resp="";
@@ -526,7 +506,7 @@ $app->post('/call_allocation_add', 'authenticateUser', function () use ($app) {
 
 
 //product list
-$app->get('/product_category_list', 'authenticateUser', function () use ($app) {
+$app->get('/product_category_list', function () use ($app) {
 
    
 
@@ -558,33 +538,6 @@ $app->get('/product_category_list', 'authenticateUser', function () use ($app) {
     }
     echoResponse(200, $data);
 });
-
-function authenticateUser(\Slim\Route $route)
-{
-    $headers = apache_request_headers();
-    $data = array();
-    $app = \Slim\Slim::getInstance();
-   // print_r($headers);
-    if (isset($headers['Apikey'])) {
-        
-        $db = new DbOperation();
-        $api_key = $headers['Apikey'];
-       
-            if (!$db->isValidTechnician($api_key)) {
-            $data["success"] = false;
-            $data["message"] = "Access Denied. Invalid Api key";
-            echoResponse(401, $data);
-            $app->stop();
-
-       }
-        
-    } else {
-        $data["success"] = false;
-        $data["message"] = "Api key is misssing";
-        echoResponse(400, $data);
-        $app->stop();
-    }
-}
 function send_notification($data, $reg_ids)
 {
     //$reg_id[0]="c9beC3MaCzE:APA91bEytaqMetycls1bkCtEV1cLuiXfypk8SrT3mlJWEpfYh8FMzBQw6dl4eKqMUtB3drOOdSfn4J8udzqg8WTEqdxiYcIjg5g6T1ZUjVpSSgXumhDvvqXn-KpemjmBCMrfDHIQntlX";

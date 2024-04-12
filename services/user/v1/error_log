@@ -1,0 +1,478 @@
+[19-Aug-2021 04:33:59 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[19-Aug-2021 04:35:27 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[19-Aug-2021 04:35:58 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[19-Aug-2021 04:56:17 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[19-Aug-2021 04:57:58 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[19-Aug-2021 04:59:55 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[19-Aug-2021 05:34:57 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[19-Aug-2021 16:41:25 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[19-Aug-2021 16:48:11 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[19-Aug-2021 16:52:27 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[19-Aug-2021 16:57:01 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[19-Aug-2021 17:03:31 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[19-Aug-2021 17:04:15 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[19-Aug-2021 17:06:29 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[09-Sep-2021 13:00:11 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 13:10:33 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 13:10:34 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 13:10:41 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 13:44:26 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 13:50:17 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 14:06:40 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 14:12:40 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 14:12:42 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 14:14:45 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 14:14:47 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 14:14:47 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 14:14:48 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 14:14:49 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 14:14:50 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 14:14:51 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 14:14:52 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 14:14:56 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 14:15:06 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 14:18:07 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined function mysqli_stmt_get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:108
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/serv in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 108
+[09-Sep-2021 14:18:08 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined function mysqli_stmt_get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:108
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/serv in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 108
+[09-Sep-2021 14:24:45 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined function mysqli_stmt_get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:109
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/serv in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 109
+[09-Sep-2021 14:24:47 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined function mysqli_stmt_get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:109
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/serv in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 109
+[09-Sep-2021 14:26:51 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined function mysqli_stmt_get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:109
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/serv in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 109
+[09-Sep-2021 14:27:13 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined function mysqli_stmt_get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:109
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/serv in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 109
+[09-Sep-2021 14:27:15 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined function mysqli_stmt_get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:109
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/serv in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 109
+[09-Sep-2021 14:28:53 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 14:28:55 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 14:38:04 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[09-Sep-2021 15:47:52 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[13-Sep-2021 10:54:50 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::get_result() in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:107
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(185): DbOperation->get_product_category()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 107
+[17-Sep-2021 16:29:22 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:55
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(64): DbOperation->do_reg_customer('a1', 'a1', 'rachna@gmail.co...', '9558876055', '9825557616', '1', '395010', 'adajan', 'demo', '1', 'rachna', 'ORP17092021531')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/servi in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 55
+[25-Sep-2021 17:37:38 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method DbOperation::get_service_center() in /home/e9a333twsmej/public_html/services/user/v1/index.php:63
+Stack trace:
+#0 [internal function]: {closure}()
+#1 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#7 /home/e9a333twsmej/public_html/services/user/v1/index.php(474): Slim\Slim->run()
+#8 {main}
+  thrown in /home/e9a333twsmej/public_html/services/user/v1/index.php on line 63
+[07-Oct-2021 10:57:51 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function execute() on bool in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:40
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(48): DbOperation->get_dailycounter()
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/services/user/v1/i in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 40
+[19-Dec-2021 22:10:06 Asia/Kolkata] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function send_notification_android(), 2 passed in /home/e9a333twsmej/public_html/services/user/v1/index.php on line 112 and exactly 4 expected in /home/e9a333twsmej/public_html/services/user/v1/index.php:424
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(112): send_notification_android(Object(stdClass), Array)
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/pu in /home/e9a333twsmej/public_html/services/user/v1/index.php on line 424
+[28-Dec-2021 18:20:40 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php:121
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/user/v1/index.php(192): DbOperation->call_detail('ORP0712210004')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#8 /home/e9a333twsmej/public_html/ser in /home/e9a333twsmej/public_html/services/user/include/DbOperation.php on line 121
+[03-Feb-2022 20:09:51 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method DbOperation::get_led_product_category() in /home/e9a333twsmej/public_html/services/user/v1/index.php:293
+Stack trace:
+#0 [internal function]: {closure}()
+#1 /home/e9a333twsmej/public_html/services/user/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#2 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#3 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#4 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#5 /home/e9a333twsmej/public_html/services/user/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#6 /home/e9a333twsmej/public_html/services/user/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#7 /home/e9a333twsmej/public_html/services/user/v1/index.php(586): Slim\Slim->run()
+#8 {main}
+  thrown in /home/e9a333twsmej/public_html/services/user/v1/index.php on line 293
+[15-Jun-2023 08:53:27 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/pragmanxt/public_html/orpelcall.in/services/user/v1/index.php on line 183
+[15-Jun-2023 08:53:30 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/pragmanxt/public_html/orpelcall.in/services/user/v1/index.php on line 183
+[15-Jun-2023 08:53:31 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/pragmanxt/public_html/orpelcall.in/services/user/v1/index.php on line 183
+[15-Jun-2023 08:53:40 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/pragmanxt/public_html/orpelcall.in/services/user/v1/index.php on line 183
+[15-Jun-2023 08:54:09 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/pragmanxt/public_html/orpelcall.in/services/user/v1/index.php on line 183
+[15-Oct-2023 14:37:01 Asia/Kolkata] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/pragmanxt/public_html/orpelcall.in/services/user/v1/index.php on line 528
+[21-Feb-2024 11:43:43 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[21-Feb-2024 17:34:08 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 203
+[21-Feb-2024 18:40:18 Asia/Kolkata] PHP Fatal error:  Call to a member function execute() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 147
+[23-Feb-2024 12:51:10 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 4037
+[23-Feb-2024 12:52:24 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 4037
+[23-Feb-2024 12:53:11 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 4037
+[23-Feb-2024 12:53:38 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 4037
+[23-Feb-2024 12:54:24 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 4037
+[23-Feb-2024 12:54:26 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 4037
+[23-Feb-2024 12:55:34 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 4037
+[23-Feb-2024 12:57:17 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 4037
+[23-Feb-2024 12:58:32 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 4037
+[23-Feb-2024 13:00:58 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 4037
+[23-Feb-2024 13:01:59 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 4037
+[23-Feb-2024 13:02:19 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 4037
+[23-Feb-2024 13:02:19 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 4037
+[23-Feb-2024 13:02:55 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 4037
+[23-Feb-2024 13:03:07 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 4037
+[23-Feb-2024 13:04:20 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 4037
+[23-Feb-2024 13:08:21 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 4037
+[25-Feb-2024 13:48:24 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[26-Feb-2024 07:44:31 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[26-Feb-2024 17:08:55 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[26-Feb-2024 17:09:18 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[27-Feb-2024 16:54:37 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[27-Feb-2024 16:58:37 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[29-Feb-2024 18:30:00 Asia/Kolkata] PHP Fatal error:  Call to undefined method DbOperation::getmaxcustomer() in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 55
+[29-Feb-2024 18:31:35 Asia/Kolkata] PHP Fatal error:  Call to undefined method DbOperation::getmaxcustomer() in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 55
+[29-Feb-2024 18:31:38 Asia/Kolkata] PHP Fatal error:  Call to undefined method DbOperation::getmaxcustomer() in /home/pragmanxt/public_html/onelife/services/user/v1/index.php on line 55
+[03-Mar-2024 10:45:29 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 123
+[03-Mar-2024 10:45:29 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 123
+[03-Mar-2024 10:45:30 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 123
+[03-Mar-2024 10:45:30 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 123
+[03-Mar-2024 10:45:33 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 123
+[03-Mar-2024 10:45:37 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 123
+[03-Mar-2024 10:45:48 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 123
+[03-Mar-2024 13:15:32 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 123
+[03-Mar-2024 15:16:03 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 123
+[03-Mar-2024 16:59:14 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 123
+[03-Mar-2024 18:06:30 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 123
+[03-Mar-2024 18:06:54 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 123
+[03-Mar-2024 18:06:54 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 123
+[03-Mar-2024 18:07:42 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 123
+[03-Mar-2024 18:07:43 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 123
+[03-Mar-2024 18:07:45 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 123
+[03-Mar-2024 22:44:09 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/user/include/DbOperation.php on line 123
+[17-Mar-2024 18:19:01 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[17-Mar-2024 18:21:13 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[26-Mar-2024 18:14:46 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[26-Mar-2024 18:35:02 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0
+[29-Mar-2024 11:55:43 UTC] PHP Deprecated:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in Unknown on line 0

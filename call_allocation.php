@@ -47,27 +47,25 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 <!-- script -->
 
 <script>
-    
-
     function getActions(id, complaint_no) {
-    return `<ul class="flex items-center justify-center gap-4">
-        <li>
-            <a href="javascript:viewRecord('${id}', 'add_call_allocation.php')" class='text-xl' x-tooltip="View">
-                <i class="ri-eye-line text-primary"></i>
-            </a>
-        </li>
-        <li>
-            <a href="javascript:updateRecord('${id}', 'add_call_allocation.php')" class='text-xl' x-tooltip="Edit">
-                <i class="ri-pencil-line text text-success"></i>
-            </a>
-        </li>
-        <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Delete"  @click="showAlert(${id},'${complaint_no}')">
-                <i class="ri-delete-bin-line text-danger"></i>
-            </a>
-        </li>
-    </ul>`;
-}
+        return `<ul class="flex items-center justify-center gap-4">
+            <li>
+                <a href="javascript:viewRecord('${id}', 'add_call_allocation.php')" class='text-xl' x-tooltip="View">
+                    <i class="ri-eye-line text-primary"></i>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:updateRecord('${id}', 'add_call_allocation.php')" class='text-xl' x-tooltip="Edit">
+                    <i class="ri-pencil-line text text-success"></i>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;" class='text-xl' x-tooltip="Delete"  @click="showAlert(${id},'${complaint_no}')">
+                    <i class="ri-delete-bin-line text-danger"></i>
+                </a>
+            </li>
+        </ul>`;
+    }
 
 
     function updateRecord(id) {

@@ -265,7 +265,7 @@ else if($_REQUEST['action']=="update_category")
     $stat=$_REQUEST["status"];
     $vendor_id=$_REQUEST["vendor_id"];
     $data = json_decode(base64_decode($_REQUEST["data"]));
-    $updatesqls="update food_category set stats='".$stat."',added_by='".$vendor_id."',operation='Updated',user_type='service_center' where id='".$cat_id."' and v_id='".$vendor_id."'";
+    $updatesqls="update food_category set stats='".$stat."',added_by='".$vendor_id."',operation='Updated',user_type='vendor' where id='".$cat_id."' and v_id='".$vendor_id."'";
     $res_sqls=$obj->update($updatesqls);
     $Rowuser_s=mysqli_fetch_array($res_sqls);
     $RowCount_s=mysqli_affected_rows($obj->con1);
@@ -274,7 +274,7 @@ else if($_REQUEST['action']=="update_category")
 
    foreach ($data->Data as $i=>$value) {
         
-     $updatesqls="update menu set stats='".$value->status."',operation='Updated',user_type='service_center' where id='".$value->id."'";
+     $updatesqls="update menu set stats='".$value->status."',operation='Updated',user_type='vendor' where id='".$value->id."'";
     $res_sqls=$obj->update($updatesqls);
     $productCount_s=mysqli_affected_rows($obj->con1);
 }
@@ -306,8 +306,8 @@ else  if($_REQUEST['action']=="update_product")
   // $sizeItem=$_REQUEST["sizeItem"];
   // $sizePrice=$_REQUEST["sizePrice"];
  //  $mandatorySize=$_REQUEST["mandatorySize"];
-    /*$updatesqls="update menu set stats='".$_REQUEST["status"]."',main_price='".$_REQUEST["main_price"]."',operation='Updated',user_type='service_center' where id='".$menu."'";*/
-    $updatesqls="update menu set stats='".$_REQUEST["status"]."',operation='Updated',user_type='service_center' where id='".$menu."'";
+    /*$updatesqls="update menu set stats='".$_REQUEST["status"]."',main_price='".$_REQUEST["main_price"]."',operation='Updated',user_type='vendor' where id='".$menu."'";*/
+    $updatesqls="update menu set stats='".$_REQUEST["status"]."',operation='Updated',user_type='vendor' where id='".$menu."'";
 	$res_sqls=$obj->update($updatesqls);
 	$Rowuser_s=mysqli_fetch_array($res_sqls);
 	$RowCount_s=mysqli_affected_rows($obj->con1);
@@ -318,11 +318,11 @@ else  if($_REQUEST['action']=="update_product")
 	if($RowCount_s>0)
 	{
 		$status['value']="valid";
-	 	/*$update_size_pro_qry = "CALL size_pro_disable('" . $menu . "','" . $service_center . "')";
+	 	/*$update_size_pro_qry = "CALL size_pro_disable('" . $menu . "','" . $vendor . "')";
                 $res_size_pro = $obj->update($update_size_pro_qry);
-                $update_extra_addone_qry = "CALL extra_addone_disable('" . $service_center . "','" . $menu . "')";
+                $update_extra_addone_qry = "CALL extra_addone_disable('" . $vendor . "','" . $menu . "')";
                 $res_extra_Addone = $obj->update($update_extra_addone_qry);
-				$insertSizeProc = "CALL new_sizepro('" . $service_center . "','" . $menu . "','" . base64_encode($sizeItem) . "','" . $sizePrice . "','Enabled','" . $datetime . "','" . $service_center . "','Saved','" . $mandatorySize . "')";
+				$insertSizeProc = "CALL new_sizepro('" . $vendor . "','" . $menu . "','" . base64_encode($sizeItem) . "','" . $sizePrice . "','Enabled','" . $datetime . "','" . $vendor . "','Saved','" . $mandatorySize . "')";
 				$resultInsertSizeProc = $obj->insert($insertSizeProc);*/
 			
 	}
@@ -1342,7 +1342,7 @@ function forgotpass($query2, $client,$username)
 		  if($count==0)
 		  {
 		 
-			$count_insert="insert into forgotcount values('','".$res_row['id']."','service_center',now())";
+			$count_insert="insert into forgotcount values('','".$res_row['id']."','vendor',now())";
 			$res_insert=$obj->insert($count_insert);
 			$mail_msg="<html><p>Dear ".str_replace("*","'",$name).",</p></br>
 	<div>This e-mail is in response to your recent request to recover your forgotten password.<br>
@@ -1388,7 +1388,7 @@ function forgotpass($query2, $client,$username)
 		{
 			
 			
-			$count_insert="insert into forgotcount values('','".$pass_data['id']."','service_center',now())";
+			$count_insert="insert into forgotcount values('','".$pass_data['id']."','vendor',now())";
 			$res_insert=$obj->insert($count_insert);
 			$mail_msg="<html><p>Dear ".str_replace("*","'",$name).",</p></br>
 	<div>This e-mail is in response to your recent request to recover a forgotten password.<br>

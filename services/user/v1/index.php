@@ -51,7 +51,7 @@ $app->post('/customer_registeration', function () use ($app) {
     $year = Date("y");
     $db = new DbOperation();
     
-    $barcodeFlag=$db->checkBarcode($barcode,$service_type);
+    $barcodeFlag=$db->checkBarcode($barcode,$service_type,$product_category);
     
     if($barcodeFlag==0) // added by jay 30-03-24
     {
@@ -121,7 +121,7 @@ $app->post('/customer_registeration', function () use ($app) {
         }
        
         
-        //insert into call allocation
+        //insert into call allocation   
         $product_serial_no="";
         $product_model="";
         $purchase_date="";
@@ -129,7 +129,10 @@ $app->post('/customer_registeration', function () use ($app) {
         $allocation_date="";
         $allocation_time="";
         $status="new";
-        $res = $db->call_allocation_add($complaint_no,$service_center_id, $product_serial_no, $product_model, $purchase_date, $techinician,$allocation_date,$allocation_time,$status);
+        if($service_type!=23) // added by Jay 30-03-2024
+        {
+            $res = $db->call_allocation_add($complaint_no,$service_center_id, $product_serial_no, $product_model, $purchase_date, $techinician,$allocation_date,$allocation_time,$status);
+        }
 
         $user = $db->getUser($contact);
 

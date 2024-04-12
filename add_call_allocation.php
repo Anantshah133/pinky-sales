@@ -256,11 +256,11 @@ function uploadImage($inputName, $uploadDirectory)
                             </select>
                         </div>
                         <div>
-                            <label for="product_srno"> Product Serial NO. </label>
-                            <input name="product_srno" id="product_srno" type="text" class="form-input" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['product_serial_no'] : '' ?>" />
+                            <label for="product_srno"> Product Serial No. </label>
+                            <input name="product_srno" id="product_srno" type="text" class="form-input" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['product_serial_no'] : '' ?>" />
                         </div>
                         <div>
-                            <label for="srno_img">Serial NO. Image</label>
+                            <label for="srno_img">Serial No. Image</label>
                             <input name="srno_img" id="srno_img" type="file" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary" value="<?php echo isset($mode) ? $data['serial_no_img'] : "" ?>" <?php echo isset($mode) ? '' : 'required' ?> onchange="readURL(this, 'srNoImg', 'errSrNoImg')">
 
                             <img src="<?php echo isset($mode) && isset($data['serial_no_img']) ? 'images/serial_no_img/' . $data['serial_no_img'] : '' ?>"
@@ -270,7 +270,7 @@ function uploadImage($inputName, $uploadDirectory)
                         </div>
                         <div>
                             <label for="product_model"> Product Model </label>
-                            <input name="product_model" id="product_model" type="text" class="form-input" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) && isset($data['product_model']) ? $data['product_model'] : "" ?>" />
+                            <input name="product_model" id="product_model" type="text" class="form-input" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) && isset($data['product_model']) ? $data['product_model'] : "" ?>" />
                         </div>
                         <div>
                             <label for="product_model_img"> Product Model Image </label>

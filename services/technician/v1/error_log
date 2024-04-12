@@ -1039,3 +1039,480 @@ Stack trace:
 #3 /home/pragmanxt/public_html/myct.store/Mobile_Services/vendor/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
 #4 /home/pragmanxt/public_html/myct.store/Mobile_Services/vendor/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
 #5 /home/pragmanxt/public_html/myct.store/Mo in /home/pragmanxt/public_html/myct.store/Mobile_Services/vendor/include/DbOperation.php on line 2008
+[01-Nov-2021 06:57:24 UTC] PHP Parse error:  syntax error, unexpected 'pending' (T_STRING), expecting ')' in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 600
+[01-Nov-2021 12:37:25 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to undefined method DbOperation::call_history() in /home/e9a333twsmej/public_html/services/technician/v1/index.php:242
+Stack trace:
+#0 [internal function]: {closure}()
+#1 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyExceptions->call()
+#7 /home/e9a333twsmej/public_html/services/technician/v1/index.php(435): Slim\Slim->run()
+#8 {main}
+  thrown in /home/e9a333twsmej/public_html/services/technician/v1/index.php on line 242
+[31-Dec-2021 14:57:37 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:440
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(234): DbOperation->homepage('2021-12-31', '2')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyException in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 440
+[31-Dec-2021 14:57:49 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:440
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(234): DbOperation->homepage('2021-12-31', '2')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyException in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 440
+[31-Dec-2021 14:58:02 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:440
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(234): DbOperation->homepage('2021-12-31', '2')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyException in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 440
+[31-Dec-2021 14:58:09 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:440
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(234): DbOperation->homepage('2021-12-13', '2')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyException in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 440
+[31-Dec-2021 14:58:55 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:440
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(234): DbOperation->homepage('2021-12-13', '2')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyException in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 440
+[31-Dec-2021 15:00:32 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:440
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(234): DbOperation->homepage('2021-12-13', '2')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyException in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 440
+[31-Dec-2021 15:01:06 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:440
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(234): DbOperation->homepage('2021-12-13', '2')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\PrettyException in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 440
+[29-Apr-2022 15:07:44 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-29', 'allocated', '45')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\ in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[29-Apr-2022 15:08:03 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:465
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-29', 'pending', '45')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\Pr in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 465
+[29-Apr-2022 15:08:13 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:476
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-29', 'closed', '45')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\Pre in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 476
+[29-Apr-2022 15:08:18 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-29', 'allocated', '45')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\ in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[29-Apr-2022 15:08:24 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-29', 'allocated', '45')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\ in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[29-Apr-2022 15:10:44 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-29', 'allocated', '45')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\ in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[29-Apr-2022 15:54:51 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-29', 'allocated', '9')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[29-Apr-2022 15:56:43 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-29', 'allocated', '9')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[29-Apr-2022 15:57:07 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-29', 'allocated', '9')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[29-Apr-2022 15:57:18 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-29', 'allocated', '9')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[30-Apr-2022 10:07:18 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-30', 'allocated', '9')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[30-Apr-2022 10:07:40 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-30', 'allocated', '9')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[30-Apr-2022 10:08:29 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-30', 'allocated', '9')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[30-Apr-2022 10:10:15 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-30', 'allocated', '9')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[30-Apr-2022 10:31:19 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-30', 'allocated', '42')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\ in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[30-Apr-2022 10:32:03 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-30', 'allocated', '42')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\ in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[30-Apr-2022 10:32:07 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:465
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-30', 'pending', '42')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\Pr in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 465
+[30-Apr-2022 10:40:37 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-30', 'allocated', '8')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[30-Apr-2022 11:33:54 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-30', 'allocated', '9')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[30-Apr-2022 16:27:19 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-30', 'allocated', '9')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[30-Apr-2022 16:27:27 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-30', 'allocated', '9')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[30-Apr-2022 23:08:33 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-30', 'allocated', '42')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\ in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[30-Apr-2022 23:10:12 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-30', 'allocated', '42')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\ in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[30-Apr-2022 23:10:30 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:482
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-30', 'cancelled', '42')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\ in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 482
+[30-Apr-2022 23:13:16 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-04-30', 'allocated', '42')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\ in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[01-May-2022 00:08:43 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-05-01', 'allocated', '42')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\ in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[01-May-2022 00:09:34 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:465
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-05-01', 'pending', '42')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\Pr in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 465
+[01-May-2022 00:09:43 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:465
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-05-01', 'pending', '42')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\Pr in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 465
+[01-May-2022 08:11:46 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-05-01', 'allocated', '9')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[01-May-2022 09:27:29 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-05-01', 'allocated', '42')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\ in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[01-May-2022 11:45:58 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-05-01', 'allocated', '9')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[01-May-2022 14:48:18 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-05-01', 'allocated', '9')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[01-May-2022 14:48:23 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-05-01', 'allocated', '9')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[02-May-2022 10:09:34 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-05-02', 'allocated', '8')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[02-May-2022 10:10:43 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-05-02', 'allocated', '8')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[02-May-2022 10:11:01 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-05-02', 'allocated', '8')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[02-May-2022 10:11:18 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:471
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-05-02', 'allocated', '8')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\P in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 471
+[02-May-2022 10:41:11 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:465
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-05-02', 'pending', '45')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\Pr in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 465
+[02-May-2022 10:43:55 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function bind_param() on bool in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php:465
+Stack trace:
+#0 /home/e9a333twsmej/public_html/services/technician/v1/index.php(277): DbOperation->call_list('2022-05-02', 'pending', '1')
+#1 [internal function]: {closure}()
+#2 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#3 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1357): Slim\Route->dispatch()
+#4 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#5 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#6 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Middleware/PrettyExceptions.php(67): Slim\Middleware\MethodOverride->call()
+#7 /home/e9a333twsmej/public_html/services/technician/libs/Slim/Slim.php(1302): Slim\Middleware\Pre in /home/e9a333twsmej/public_html/services/technician/include/DbOperation.php on line 465
+[03-Nov-2023 16:08:02 Asia/Kolkata] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/pragmanxt/public_html/orpelcall.in/services/technician/v1/index.php on line 483
+[15-Mar-2024 16:35:17 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/technician/include/DbOperation.php on line 488
+[15-Mar-2024 16:35:31 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/technician/include/DbOperation.php on line 488
+[17-Mar-2024 16:44:06 Asia/Kolkata] PHP Fatal error:  Call to a member function bind_param() on boolean in /home/pragmanxt/public_html/onelife/services/technician/include/DbOperation.php on line 488
