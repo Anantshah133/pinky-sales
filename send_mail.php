@@ -16,25 +16,25 @@ while ($data = $Res->fetch_assoc()) {
     $email = $data['email'];
     $date = date("d-m-Y", strtotime($data['date']));
     if($data['warranty']!=2){
-        $subject = "Onelife Complaint Registered : " . $complaint_no;
-        $body = "<h1>
+        $subject = "New Complaint Registered : " . $complaint_no;
+        $body = "
         Dear <b>$customer_name</b>,
         Your complaint has been registered successfully. Your complaint number is : <b>$complaint_no</b>
-        Techinician will be allocated soon.
+        Techinician will be allocated soon.<br/>
         
         Regards,
         OneLife Team.
-        </h1>";
+        ";
     } else {
-        $subject = "Onelife Product Registered : " . $complaint_no;
-        $body = "<h1>
+        $subject = "New Product Registered : " . $complaint_no;
+        $body = "
         Dear <b>$fname $lname</b>,
         Your Product has been registered successfully. Your Warranty number is : <b>$complaint_no</b>
-        Your warranty has been started from today ($date)
+        Your warranty has been started from today ($date).<br/>
         
         Regards,
         OneLife Team.
-        </h1>";
+        ";
     }
 
     $mail_res = smtpmailer($subject, $body, $email, $from, $from_name);
