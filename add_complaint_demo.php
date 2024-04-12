@@ -82,7 +82,6 @@ if (isset($_POST['save'])) {
     try {
         if($service_type == 23){
             $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg` WHERE barcode=? AND service_type=23");
-            // $stmt->bind_param("si", $barcode, $service_type);
             $stmt->bind_param("s", $barcode);
             $stmt->execute();
             $bar = $stmt->get_result();
@@ -182,7 +181,7 @@ if (isset($_POST['save'])) {
 
         // ------- get service center from city by anant
         
-        if($warranty_status != 2){
+        if($warranty_status != 2 && $service_type != 16){
             $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE area=?");
             $stmt->bind_param("i", $fetched_city_id);
             $stmt->execute();

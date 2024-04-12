@@ -53,26 +53,6 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 <!-- script -->
 <script>
 
-function getActions(id, service) {
-    return `<ul class="flex items-center gap-4">
-        <li>
-            <a href="javascript:viewRecord(${id}, 'add_service_type.php')" class='text-xl' x-tooltip="View">
-                <i class="ri-eye-line text-primary"></i>
-            </a>
-        </li>
-        <li>
-            <a href="javascript:updateRecord(${id}, 'add_service_type.php');" class='text-xl' x-tooltip="Edit">
-                <i class="ri-pencil-line text text-success"></i>
-            </a>
-        </li>
-        <li>
-            <a href="javascript:;" class='text-xl' x-tooltip="Delete"  @click="showAlert(${id}, '${service}')">
-                <i class="ri-delete-bin-line text-danger"></i>
-            </a>
-        </li>
-    </ul>`
-}
-
 document.addEventListener('alpine:init', () => {
     Alpine.data('exportTable', () => ({
         datatable: null,
@@ -80,7 +60,7 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.No.', 'Name', 'Status', 'Action'],
+                    headings: ['Sr.No.', 'Name', 'Status'],
                     data: [
                         <?php
                             $stmt = $obj->con1->prepare(
@@ -98,7 +78,7 @@ document.addEventListener('alpine:init', () => {
                                 `<span class="badge badge-outline-<?php echo $row["status"] == "enable" ? 'success' : 'danger'?>">
                                     <?php echo ucfirst($row["status"]); ?>
                                 </span>`,
-                                getActions('<?php echo $row["id"]; ?>', '<?php echo $row["name"]?>')
+                                //getActions('<?php // echo $row["id"]; ?>', '<?php //echo $row["name"] ?>')
                             ],
                         <?php
                             $i++;}

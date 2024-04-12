@@ -31,7 +31,7 @@ $stmt->close();
     <div class="pt-5">
         <div class="mb-6 grid grid-cols-1 gap-6 text-white sm:grid-cols-2 xl:grid-cols-4">
             <!-- Users Visit -->
-            <a href="call_allocation.php?">
+            <a href="call_allocation.php">
                 <div class="panel bg-gradient-to-r from-cyan-500 to-cyan-400">
                     <div class="flex justify-between">
                         <div class="text-md font-semibold ltr:mr-1 rtl:ml-1">New calls</div>
