@@ -175,8 +175,7 @@ function uploadImage($inputName, $uploadDirectory)
                     <div
                         class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
                         +91</div>
-                    <input name="contact_num" id="contact_num" type="tel" placeholder="1234567890"
-                        class="form-input ltr:rounded-l-none rtl:rounded-r-none"
+                    <input name="contact_num" id="contact_num" type="tel" class="form-input ltr:rounded-l-none rtl:rounded-r-none"
                         onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                         value="<?php echo (isset($mode)) ? $data['contact'] : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> maxlength="10" minlength="10" pattern="[0-9]+"
                         title="Please enter numbers only" required />

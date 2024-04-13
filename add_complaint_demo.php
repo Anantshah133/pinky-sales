@@ -81,9 +81,31 @@ if (isset($_POST['save'])) {
 
     try {
         if($service_type == 23){
-            $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg` WHERE barcode=? AND service_type=23");
+            // $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg` WHERE barcode=? AND service_type=23");
+            $stmt = $obj->con1->prepare("SELECT * FROM `customer_reg` WHERE barcode=?");
             $stmt->bind_param("s", $barcode);
             $stmt->execute();
+            if($row = $stmt->get_result()->fetch_assoc()){
+                echo var_dump($row);
+                if($product_category!=$row["product_category"]){
+                    setcookie("msg", "other-product", time() + 3600, "/");
+                    header("location:add_complaint_demo.php");    
+                }
+            }
+            $stmt->close();
+
+            if($barcode!=""){
+                $stmt = $obj->con1->prepare("SELECT count(*) as cnt FROM `customer_reg` WHERE barcode=? AND warranty=2");
+                $stmt->bind_param("s", $barcode);
+                $stmt->execute();
+                $row = $stmt->get_result()->fetch_assoc();
+                $stmt->close();
+                if($row["cnt"] >= 1){
+                    setcookie("msg", "warranty", time() + 3600, "/");
+                    header("location:add_complaint_demo.php");
+                    exit();
+                }
+            }
             $bar = $stmt->get_result();
             if($bar->num_rows >= 1){
                 setcookie("msg", "warranty", time() + 3600, "/");
@@ -95,176 +117,176 @@ if (isset($_POST['save'])) {
         setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
     }
 
-    $stmt = $obj->con1->prepare("select 10000-(9999-right(complaint_no,4)) as customer_id from customer_reg where date='".date("Y-m-d")."' order by id desc limit 1");
-    $stmt->execute();
-    $row_dailycounter = $stmt->get_result()->fetch_assoc();
-    $stmt->close();
+    // $stmt = $obj->con1->prepare("select 10000-(9999-right(complaint_no,4)) as customer_id from customer_reg where date='".date("Y-m-d")."' order by id desc limit 1");
+    // $stmt->execute();
+    // $row_dailycounter = $stmt->get_result()->fetch_assoc();
+    // $stmt->close();
  
-    if(!isset($row_dailycounter["customer_id"])){
-        $dailycounter = 1;
-    } else {
-        $dailycounter = (int) $row_dailycounter["customer_id"];
-    }
-    $string = str_pad($dailycounter, 4, '0', STR_PAD_LEFT);
-    $complaint_no = "ONL" . $joined_date . $string;
+    // if(!isset($row_dailycounter["customer_id"])){
+    //     $dailycounter = 1;
+    // } else {
+    //     $dailycounter = (int) $row_dailycounter["customer_id"];
+    // }
+    // $string = str_pad($dailycounter, 4, '0', STR_PAD_LEFT);
+    // $complaint_no = "ONL" . $joined_date . $string;
 
-    //--------------//
-    $new_complaint_date = date("Y-m-d", strtotime($complaint_date));
+    // //--------------//
+    // $new_complaint_date = date("Y-m-d", strtotime($complaint_date));
     
-    try {
-        // allocate call - added by Rachna
-        // ------- get city by anant
-        $stmt = $obj->con1->prepare("SELECT c1.ctnm,a1.* FROM area_pincode a1, city c1 WHERE a1.city_id=c1.srno AND a1.pincode=?");
-        $stmt->bind_param("s", $pincode);
-        $stmt->execute();
-        $res_area=$stmt->get_result();
-        $num_area=$res_area->num_rows;
-        $city_data = $res_area->fetch_assoc();
-        if($num_area>0)
-        {
-            $fetched_city_id = $city_data["city_id"];
-        }
-        else{
-            $fetched_city_id = 0;
-        }
-        $stmt->close();
+    // try {
+    //     // allocate call - added by Rachna
+    //     // ------- get city by anant
+    //     $stmt = $obj->con1->prepare("SELECT c1.ctnm,a1.* FROM area_pincode a1, city c1 WHERE a1.city_id=c1.srno AND a1.pincode=?");
+    //     $stmt->bind_param("s", $pincode);
+    //     $stmt->execute();
+    //     $res_area=$stmt->get_result();
+    //     $num_area=$res_area->num_rows;
+    //     $city_data = $res_area->fetch_assoc();
+    //     if($num_area>0)
+    //     {
+    //         $fetched_city_id = $city_data["city_id"];
+    //     }
+    //     else{
+    //         $fetched_city_id = 0;
+    //     }
+    //     $stmt->close();
 
-        if(trim($barcode) != ""){
-            $stmt = $obj->con1->prepare("SELECT * FROM customer_reg WHERE barcode=? AND service_type=23 AND product_category=?");
-            $stmt->bind_param("si", $barcode, $product_category);
-            $stmt->execute();
-            $Res = $stmt->get_result();
-            $war_data = $Res->fetch_assoc();
-            $stmt->close();
+    //     if(trim($barcode) != ""){
+    //         $stmt = $obj->con1->prepare("SELECT * FROM customer_reg WHERE barcode=? AND service_type=23 AND product_category=?");
+    //         $stmt->bind_param("si", $barcode, $product_category);
+    //         $stmt->execute();
+    //         $Res = $stmt->get_result();
+    //         $war_data = $Res->fetch_assoc();
+    //         $stmt->close();
 
-            if($Res->num_rows >= 1){
-                $pr_category = $war_data['product_category'];
+    //         if($Res->num_rows >= 1){
+    //             $pr_category = $war_data['product_category'];
 
-                $stmt = $obj->con1->prepare("SELECT * FROM product_category WHERE id=?");
-                $stmt->bind_param("i", $pr_category);
-                $stmt->execute();
-                $Resi = $stmt->get_result();
-                $pr_data = $Resi->fetch_assoc();
-                $stmt->close();
+    //             $stmt = $obj->con1->prepare("SELECT * FROM product_category WHERE id=?");
+    //             $stmt->bind_param("i", $pr_category);
+    //             $stmt->execute();
+    //             $Resi = $stmt->get_result();
+    //             $pr_data = $Resi->fetch_assoc();
+    //             $stmt->close();
                 
-                $old_date = strtotime($war_data['date']);
-                $check_date = strtotime($new_complaint_date);
-                $warranty_period = $pr_data['warranty_period'];
+    //             $old_date = strtotime($war_data['date']);
+    //             $check_date = strtotime($new_complaint_date);
+    //             $warranty_period = $pr_data['warranty_period'];
 
-                $difference = $check_date - $old_date;
-                $warranty_duration = $warranty_period * 30 * 24 * 60 * 60;
+    //             $difference = $check_date - $old_date;
+    //             $warranty_duration = $warranty_period * 30 * 24 * 60 * 60;
 
-                if($difference <= $warranty_duration){
-                    $warranty_status = 1;
-                } else {
-                    $warranty_status = 0;
-                }
-            } else if($service_type != 23 && trim($barcode) != "") {
-                $warranty_status = 3;
-            } else {
-                $warranty_status = 2;
-            }
-        } else {
-            $warranty_status = 3;
-        }
+    //             if($difference <= $warranty_duration){
+    //                 $warranty_status = 1;
+    //             } else {
+    //                 $warranty_status = 0;
+    //             }
+    //         } else if($service_type != 23 && trim($barcode) != "") {
+    //             $warranty_status = 3;
+    //         } else {
+    //             $warranty_status = 2;
+    //         }
+    //     } else {
+    //         $warranty_status = 3;
+    //     }
 
-        $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `area`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `barcode`, `source`, `warranty`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("sssssissssiissssiss", $fname, $lname, $email, $contact, $alt_contact, $fetched_city_id, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $barcode, $source, $warranty_status, $new_complaint_date, $complaint_time);
-        $Resp = $stmt->execute();
-        $stmt->close();
+    //     $stmt = $obj->con1->prepare("INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `area`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `barcode`, `source`, `warranty`, `date`, `time`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    //     $stmt->bind_param("sssssissssiissssiss", $fname, $lname, $email, $contact, $alt_contact, $fetched_city_id, $map_location, $address, $pincode, $complaint_no, $service_type, $product_category, $dealer_name, $description, $barcode, $source, $warranty_status, $new_complaint_date, $complaint_time);
+    //     $Resp = $stmt->execute();
+    //     $stmt->close();
 
-        if(!$Resp){
-            throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
-        }
+    //     if(!$Resp){
+    //         throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
+    //     }
 
-        // echo "<br/> Insert Customer_reg :- INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `barcode`,`source`, `date`, `time`) VALUES (". $fname.", ". $lname.", ". $email.", ". $contact.", ". $alt_contact.", ". $map_location.", ". $address.", ". $pincode.", ". $complaint_no.", ". $service_type.", ". $product_category.", ". $dealer_name.", ". $description.", ". $barcode.", ". $source.", ". $new_complaint_date.", ". $complaint_time.")";
+    //     // echo "<br/> Insert Customer_reg :- INSERT INTO `customer_reg`(`fname`, `lname`, `email`, `contact`, `alternate_contact`, `map_location`, `address`, `zipcode`, `complaint_no`, `service_type`, `product_category`, `dealer_name`, `description`, `barcode`,`source`, `date`, `time`) VALUES (". $fname.", ". $lname.", ". $email.", ". $contact.", ". $alt_contact.", ". $map_location.", ". $address.", ". $pincode.", ". $complaint_no.", ". $service_type.", ". $product_category.", ". $dealer_name.", ". $description.", ". $barcode.", ". $source.", ". $new_complaint_date.", ". $complaint_time.")";
 
-        // ------- get service center from city by anant
+    //     // ------- get service center from city by anant
         
-        if($warranty_status != 2 && $service_type != 16){
-            $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE area=?");
-            $stmt->bind_param("i", $fetched_city_id);
-            $stmt->execute();
-            $service_center = $stmt->get_result()->fetch_assoc();
-            $stmt->close();
+    //     if($warranty_status != 2 && $service_type != 16){
+    //         $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE area=?");
+    //         $stmt->bind_param("i", $fetched_city_id);
+    //         $stmt->execute();
+    //         $service_center = $stmt->get_result()->fetch_assoc();
+    //         $stmt->close();
 
-            // insert into call allocation
-            $product_serial_no = "";
-            $product_model = "";
-            $purchase_date = "";
-            $techinician = 0;
-            $allocation_date = "";
-            $allocation_time = "";
-            $status = "new";
-            //---------------//
+    //         // insert into call allocation
+    //         $product_serial_no = "";
+    //         $product_model = "";
+    //         $purchase_date = "";
+    //         $techinician = 0;
+    //         $allocation_date = "";
+    //         $allocation_time = "";
+    //         $status = "new";
+    //         //---------------//
 
-            $stmt = $obj->con1->prepare("INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (?,?,?,?,?,?,?,?,?)");
-            $stmt->bind_param("sisssisss", $complaint_no, $service_center["id"], $product_serial_no, $product_model, $purchase_date, $techinician, $allocation_date, $allocation_time, $status);
-            $result = $stmt->execute();
-            $stmt->close();
-        }
+    //         $stmt = $obj->con1->prepare("INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (?,?,?,?,?,?,?,?,?)");
+    //         $stmt->bind_param("sisssisss", $complaint_no, $service_center["id"], $product_serial_no, $product_model, $purchase_date, $techinician, $allocation_date, $allocation_time, $status);
+    //         $result = $stmt->execute();
+    //         $stmt->close();
+    //     }
 
-        //  echo "<br/> Insert Call allocation :- INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (" . $complaint_no . " " . $service_center['id'] . " " . $product_serial_no . " " . $product_model . " " . $purchase_date . " " . $techinician . " " . $allocation_date . " " . $allocation_time . " " . $status . ")";
+    //     //  echo "<br/> Insert Call allocation :- INSERT INTO `call_allocation`(`complaint_no`, `service_center_id`, `product_serial_no`, `product_model`, `purchase_date`, `technician`, `allocation_date`, `allocation_time`, `status`) VALUES (" . $complaint_no . " " . $service_center['id'] . " " . $product_serial_no . " " . $product_model . " " . $purchase_date . " " . $techinician . " " . $allocation_date . " " . $allocation_time . " " . $status . ")";
 
-        $stmt = $obj->con1->prepare("SELECT name FROM service_type WHERE id=?");
-        $stmt->bind_param("i", $service_type);
-        $Name = $stmt->execute();
-        $service = $stmt->get_result()->fetch_assoc();
-        $stmt->close();
+    //     $stmt = $obj->con1->prepare("SELECT name FROM service_type WHERE id=?");
+    //     $stmt->bind_param("i", $service_type);
+    //     $Name = $stmt->execute();
+    //     $service = $stmt->get_result()->fetch_assoc();
+    //     $stmt->close();
 
-        $noti_msg = "New Complaint recieved ";
-        $noti_type = $service['name'];
-        $admin_status = isset($_SESSION['type_admin']) ? 1 : 0;
-        $admin_play_status = 1;
-        $service_status = 1;
-        $service_play_status = 1;
+    //     $noti_msg = "New Complaint recieved ";
+    //     $noti_type = $service['name'];
+    //     $admin_status = isset($_SESSION['type_admin']) ? 1 : 0;
+    //     $admin_play_status = 1;
+    //     $service_status = 1;
+    //     $service_play_status = 1;
 
-        $stmt = $obj->con1->prepare("INSERT INTO `notification`(`complaint_no`, `type`, `msg`, `admin_status`, `admin_play_status`, `service_status`, `service_play_status`) VALUES (?,?,?,?,?,?,?)");
-        $stmt->bind_param("sssiiii", $complaint_no, $noti_type, $noti_msg, $admin_status, $admin_play_status, $service_status, $service_play_status);
-        $Response = $stmt->execute();
-        $stmt->close();
+    //     $stmt = $obj->con1->prepare("INSERT INTO `notification`(`complaint_no`, `type`, `msg`, `admin_status`, `admin_play_status`, `service_status`, `service_play_status`) VALUES (?,?,?,?,?,?,?)");
+    //     $stmt->bind_param("sssiiii", $complaint_no, $noti_type, $noti_msg, $admin_status, $admin_play_status, $service_status, $service_play_status);
+    //     $Response = $stmt->execute();
+    //     $stmt->close();
 
-        if(!$Response){
-            echo $obj->con1->error;
-            throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
-        }
+    //     if(!$Response){
+    //         echo $obj->con1->error;
+    //         throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
+    //     }
 
-        $subject = "Onelife Complaint Registered: " . $complaint_no;
-        $body = "
-        <h1>
-        Dear <b>$fname $lname</b>,
-        Your complaint has been registered successfully. Your complaint number is : <b>$complaint_no</b>
-        Techinician will be allocated soon.
+    //     $subject = "Onelife Complaint Registered: " . $complaint_no;
+    //     $body = "
+    //     <h1>
+    //     Dear <b>$fname $lname</b>,
+    //     Your complaint has been registered successfully. Your complaint number is : <b>$complaint_no</b>
+    //     Techinician will be allocated soon.
         
-        Regards,
-        OneLife Team.
-        </h1>";
-        $from = "test@pragmanxt.com";
-        $from_name = "Onelife";
+    //     Regards,
+    //     OneLife Team.
+    //     </h1>";
+    //     $from = "test@pragmanxt.com";
+    //     $from_name = "Onelife";
 
-        $mail_res = smtpmailer($subject, $body, $email, $from, $from_name);
-        if($mail_res == 1){
-            setcookie("mail", "successfull", time() + 3600, "/");
-        } else {
-            setcookie("mail", urlencode($mail_res), time() + 3600, "/");
-        }
+    //     $mail_res = smtpmailer($subject, $body, $email, $from, $from_name);
+    //     if($mail_res == 1){
+    //         setcookie("mail", "successfull", time() + 3600, "/");
+    //     } else {
+    //         setcookie("mail", urlencode($mail_res), time() + 3600, "/");
+    //     }
 
-        if (!$Resp) {
-            echo $obj->con1->error;
-            throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
-        }
-    } catch (\Exception $e) {
-        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
-        echo "<br/>".urlencode($e->getMessage());
-    }
+    //     if (!$Resp) {
+    //         echo $obj->con1->error;
+    //         throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
+    //     }
+    // } catch (\Exception $e) {
+    //     setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
+    //     echo "<br/>".urlencode($e->getMessage());
+    // }
 
-    if ($Resp) {
-        setcookie("msg", "data", time() + 3600, "/");
-        header("location:complaint_demo.php");
-    } else {
-        setcookie("msg", "fail", time() + 3600, "/");
-        header("location:complaint_demo.php");
-    }
+    // if ($Resp) {
+    //     setcookie("msg", "data", time() + 3600, "/");
+    //     header("location:complaint_demo.php");
+    // } else {
+    //     setcookie("msg", "fail", time() + 3600, "/");
+    //     header("location:complaint_demo.php");
+    // }
 }
 
 function smtpmailer($subject, $body, $to, $from, $from_name){
@@ -335,14 +357,14 @@ function smtpmailer($subject, $body, $to, $from, $from_name){
                             <label for="contact_num">Contact </label>
                             <div class="flex">
                                 <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">+91</div>
-                                <input name="contact_num" id="contact_num" type="tel" placeholder="1234567890" class="form-input ltr:rounded-l-none rtl:rounded-r-none" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo isset($mode) ? $data['contact'] : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> maxlength="10" minlength="10" pattern="[0-9]+" title="Please enter numbers only" required />
+                                <input name="contact_num" id="contact_num" type="tel" class="form-input ltr:rounded-l-none rtl:rounded-r-none" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo isset($mode) ? $data['contact'] : '' ?>" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> maxlength="10" minlength="10" pattern="[0-9]+" title="Please enter numbers only" required />
                             </div>
                         </div>
                         <div>
                             <label for="alt_contact_num"> Alternate Contact </label>
                             <div class="flex">
                                 <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">+91</div>
-                                <input name="alt_contact_num" id="alt_contact_num" type="tel" placeholder="1234567890" class="form-input ltr:rounded-l-none rtl:rounded-r-none"
+                                <input name="alt_contact_num" id="alt_contact_num" type="tel" class="form-input ltr:rounded-l-none rtl:rounded-r-none"
                                     onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<?php echo isset($mode) ? $data['alternate_contact'] : '' ?>" <?php echo isset ($mode) && $mode == 'view' ? 'readonly' : '' ?> maxlength="10" minlength="10" pattern="[0-9]+" title="Please enter numbers only" />
                             </div>
                         </div>
@@ -360,7 +382,7 @@ function smtpmailer($subject, $body, $to, $from, $from_name){
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
                             <label for="product_category">Product Category </label>
-                            <select name="product_category" id="product_category" class="form-select " <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> required onchange="getServiceType(this.value)">
+                            <select name="product_category" id="product_category" class="form-select" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> required onchange="getServiceType(this.value)">
                                 <option value="">Choose Product Category</option>
                                 <?php
                                     $query = $obj->con1->prepare("SELECT * FROM `product_category`");
@@ -379,7 +401,7 @@ function smtpmailer($subject, $body, $to, $from, $from_name){
                         </div>
                         <div>
                             <label for="service_type"> Service Type </label>
-                            <select name="service_type" id="service_type" class="form-select " required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> onchange="requireBarcode(this, 'barcode');">
+                            <select name="service_type" id="service_type" class="form-select" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> onchange="requireBarcode(this, 'barcode');">
                                 <option value=""><?php echo isset($mode) && $mode == 'view' ? $data["service_type_name"] : 'Choose Service Type' ?></option>
                             </select>
                         </div>

@@ -80,19 +80,19 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 console.log('Initalizing datatable')
                 this.datatable = new simpleDatatables.DataTable('#call-table', {
                     data: {
-                        headings: ['Sr.No.', 'Complaint No.','Customer Name', 'Customer Contact', 'Product Category', 'Service Center', 'Technician', 'Allocation Date Time', 'Warranty Status', 'Call Status', 'Action'],
+                        headings: ['Sr.No.', 'Complaint No.','Customer Name', 'Customer Contact', 'Product Category', 'Service Center', 'Technician', 'Barcode', 'Allocation Date Time', 'Warranty Status', 'Call Status', 'Action'],
                         data: [
                             <?php
                             if (isset($_SESSION['type_center']) && $_SESSION['type_center']) {
                                 $center_id = $_SESSION['scid'];
-                                $stmt = $obj->con1->prepare("SELECT tbl.*,t1.name AS technician_name FROM (SELECT c1.*,s1.name AS service_center_name,p1.name AS product_category_name, c2.warranty AS warranty_status, CONCAT(c2.fname,' ',c2.lname) AS customer_name,c2.contact AS customer_contact, CONCAT(c1.allocation_date, ' ', c1.allocation_time) AS allocation_datetime FROM call_allocation c1,customer_reg c2,service_center s1,product_category p1 WHERE c1.complaint_no=c2.complaint_no AND c2.warranty!=2 AND c1.service_center_id=s1.id AND c2.product_category=p1.id AND s1.id=?) AS tbl LEFT JOIN technician t1 on tbl.technician=t1.id order by tbl.id DESC");
+                                $stmt = $obj->con1->prepare("SELECT tbl.*,t1.name AS technician_name FROM (SELECT c1.*,s1.name AS service_center_name,p1.name AS product_category_name, c2.barcode, c2.warranty AS warranty_status, CONCAT(c2.fname,' ',c2.lname) AS customer_name,c2.contact AS customer_contact, CONCAT(c1.allocation_date, ' ', c1.allocation_time) AS allocation_datetime FROM call_allocation c1,customer_reg c2,service_center s1,product_category p1 WHERE c1.complaint_no=c2.complaint_no AND c2.warranty!=2 AND c1.service_center_id=s1.id AND c2.product_category=p1.id AND s1.id=?) AS tbl LEFT JOIN technician t1 on tbl.technician=t1.id order by tbl.id DESC");
                                 $stmt->bind_param("i", $center_id);
                                 $stmt->execute();
                                 $Resp = $stmt->get_result();
                                 $stmt->close();
                                 $i = 1;
                             } else {
-                                $stmt = $obj->con1->prepare("SELECT tbl.*,t1.name AS technician_name FROM (SELECT c1.*,s1.name AS service_center_name,p1.name AS product_category_name, c2.warranty AS warranty_status, CONCAT(c2.fname,' ',c2.lname) AS customer_name, c2.contact AS customer_contact, CONCAT(c1.allocation_date, ' ', c1.allocation_time) AS allocation_datetime FROM call_allocation c1, customer_reg c2, service_center s1, product_category p1 WHERE c1.complaint_no=c2.complaint_no AND c2.warranty!=2 AND c1.service_center_id=s1.id AND c2.product_category=p1.id) AS tbl LEFT JOIN technician t1 ON tbl.technician=t1.id ORDER BY tbl.id DESC");
+                                $stmt = $obj->con1->prepare("SELECT tbl.*,t1.name AS technician_name FROM (SELECT c1.*,s1.name AS service_center_name,p1.name AS product_category_name, c2.barcode, c2.warranty AS warranty_status, CONCAT(c2.fname,' ',c2.lname) AS customer_name, c2.contact AS customer_contact, CONCAT(c1.allocation_date, ' ', c1.allocation_time) AS allocation_datetime FROM call_allocation c1, customer_reg c2, service_center s1, product_category p1 WHERE c1.complaint_no=c2.complaint_no AND c2.warranty!=2 AND c1.service_center_id=s1.id AND c2.product_category=p1.id) AS tbl LEFT JOIN technician t1 ON tbl.technician=t1.id ORDER BY tbl.id DESC");
                                 $stmt->execute();
                                 $Resp = $stmt->get_result();
                                 $stmt->close();
@@ -108,6 +108,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                     '<?php echo $row['product_category_name'] ?>',
                                     '<?php echo $row['service_center_name'] ?>',
                                     '<?php echo $row['technician_name'] ?>',
+                                    '<?php echo $row['barcode'] ?>',
                                     '<?php
                                         $fetch_date = trim($row['allocation_datetime']) != "" ? date_format(date_create($row['allocation_datetime']), "d-m-Y h:i A") : '';
                                         echo $fetch_date;
@@ -142,8 +143,8 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                     getActions(<?php echo $row['id'] ?>, '<?php echo $row['complaint_no'] ?>')
                                 ],
                                 <?php
-                                $i++;
-                            }
+                                    $i++;
+                                }
                             ?>
                         ],
                     },

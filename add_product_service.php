@@ -130,6 +130,8 @@ if (isset($_REQUEST["save"])) {
                     </select>
                 </div>
                 <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
+                <input type="hidden" id="sid" value="<?php echo isset($mode) ? $data["sid"] : "" ?>">
+                <input type="hidden" id="pid" value="<?php echo isset($mode) ? $data["pid"] : "" ?>">
                 <div>
                     <label for="gridStatus">Status</label>
                     <label class="inline-flex mr-3">
@@ -168,24 +170,33 @@ if (isset($_REQUEST["save"])) {
     function localValidate(){
         let form = document.getElementById('mainForm');
         let product_id = document.getElementById('product_id');
+        let pid = document.getElementById('pid').value;
+        let sid = document.getElementById('sid').value;
         let service_id = document.getElementById('service_id');
         let submitButton = document.getElementById('save');
+
         <?php if (isset($mode)) { ?>
+            if(product_id.value == pid && service_id.value == sid){
+                setTimeout(() => {
+                    submitButton.disabled = true;
+                }, 0);
+                return true;
+            }
             if(form.checkValidity() && check_product_service(product_id.value,service_id.value,'<?php echo $data['srno'] ?>')){
-                console.log("if")
+                //console.log("if")
                 setTimeout(() => {
                     submitButton.disabled = true;
                 }, 0);
                 return true;
             }
         <?php } else { ?>
-                console.log("else")
-                if(form.checkValidity()){
+            //console.log("else")
+            if(form.checkValidity()){
                 setTimeout(() => {
-                    submitButton.disabled = true;
+                    submitButton.disabled = false;
                 }, 0);
                 return true;
-        }
+            }
         <?php } ?>
     }
 
@@ -213,10 +224,12 @@ if (isset($_REQUEST["save"])) {
             console.log(x);
             document.getElementById('service_id').value = "";
             if (x >= 1) {
+                console.log("if")
                 document.getElementById("demo").innerHTML = "Sorry this Product Service Already Exist!";
                 return false;
             }
             else {
+                console.log("else")
                 document.getElementById("demo").innerHTML = "";
                 return true;
             }
