@@ -81,7 +81,7 @@ document.addEventListener('alpine:init', () => {
             console.log('Initalizing datatable')
             this.datatable = new simpleDatatables.DataTable('#myTable', {
                 data: {
-                    headings: ['Sr.No.', 'Name', '	Email', '	Contact',
+                    headings: ['Sr.No.', 'Name', 'User Id', 'Contact',
                         'Service Center', 'Status','Date Time',
                         'Action'
                     ],
@@ -111,7 +111,7 @@ document.addEventListener('alpine:init', () => {
                             [
                                 '<?php echo $id; ?>',
                                 '<?php echo $row["name"]; ?>',
-                                '<?php echo $row["email"]; ?>', 
+                                '<?php echo $row["userid"]; ?>', 
                                 '<?php echo $row["contact"]; ?>',
                                 '<?php echo $row["service_center_name"]; ?>',
                                 `<span class="badge badge-outline-<?php echo trim($row["status"]) == "enable" ? 'success' : 'danger' ?>">

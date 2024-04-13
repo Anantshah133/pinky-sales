@@ -6,19 +6,19 @@ setcookie("viewId", "", time() - 3600);
 if(isset($_SESSION["scid"]))
 {
 $stmt = $obj->con1->prepare("SELECT 
-    SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) AS new_num,
-    SUM(CASE WHEN status='allocated' THEN 1 ELSE 0 END) AS allocated_num,
-    SUM(CASE WHEN status='pending' THEN 1 ELSE 0 END) AS pending_num,
-    SUM(CASE WHEN status='closed' THEN 1 ELSE 0 END) AS closed_num
+    IFNULL(SUM(CASE WHEN status='new' THEN 1 ELSE 0 END),0) AS new_num,
+    IFNULL(SUM(CASE WHEN status='allocated' THEN 1 ELSE 0 END),0) AS allocated_num,
+    IFNULL(SUM(CASE WHEN status='pending' THEN 1 ELSE 0 END),0) AS pending_num,
+    IFNULL(SUM(CASE WHEN status='closed' THEN 1 ELSE 0 END),0) AS closed_num
     FROM call_allocation c1, customer_reg c2 WHERE service_center_id=? AND c1.complaint_no=c2.complaint_no AND c2.warranty!=2");
     $stmt->bind_param("i", $_SESSION["scid"]);
 }
 else{
     $stmt = $obj->con1->prepare("SELECT 
-    ifnull(SUM(CASE WHEN status='new' THEN 1 ELSE 0 END),0) AS new_num,
-    ifnull(SUM(CASE WHEN status='allocated' THEN 1 ELSE 0 END),0) AS allocated_num,
-    ifnull(SUM(CASE WHEN status='pending' THEN 1 ELSE 0 END),0) AS pending_num,
-    ifnull(SUM(CASE WHEN status='closed' THEN 1 ELSE 0 END),0) AS closed_num
+    IFNULL(SUM(CASE WHEN status='new' THEN 1 ELSE 0 END),0) AS new_num,
+    IFNULL(SUM(CASE WHEN status='allocated' THEN 1 ELSE 0 END),0) AS allocated_num,
+    IFNULL(SUM(CASE WHEN status='pending' THEN 1 ELSE 0 END),0) AS pending_num,
+    IFNULL(SUM(CASE WHEN status='closed' THEN 1 ELSE 0 END),0) AS closed_num
     FROM call_allocation c1, customer_reg c2 WHERE c1.complaint_no= c2.complaint_no AND c2.warranty!=2");
 }
 $stmt->execute();

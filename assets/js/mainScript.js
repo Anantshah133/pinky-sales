@@ -99,6 +99,11 @@ function checkCookies(){
         eraseCookie("msg")
         return;
     }
+    if(result == "other-product"){
+        coloredToast("danger", 'Barcode is used in other Product');
+        eraseCookie("msg")
+        return;
+    }
 }
 
 function validateAndDisable() {
