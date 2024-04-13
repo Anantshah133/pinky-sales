@@ -99,6 +99,11 @@ function checkCookies(){
         eraseCookie("msg")
         return;
     }
+    if(result == "barcode"){
+        coloredToast("danger", 'Please add barcode to Avail warranty !');
+        eraseCookie("msg")
+        return;
+    }
     if(result == "other-product"){
         coloredToast("danger", 'Barcode is used in other Product');
         eraseCookie("msg")

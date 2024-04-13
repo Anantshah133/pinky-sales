@@ -4,7 +4,7 @@ include "header.php";
 if (isset($_COOKIE['editId'])) {
     $mode = 'edit';
     $editId = $_COOKIE['editId'];
-    $stmt = $obj->con1->prepare("SELECT p1.name AS product, c1.id, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, c1.date, c1.complaint_no, c1.barcode FROM customer_reg c1, product_category p1 WHERE c1.service_type=16 AND p1.id=c1.product_category AND c1.id=?");
+    $stmt = $obj->con1->prepare("SELECT p1.name AS product, c1.id, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, c1.date, c1.description, c1.complaint_no, c1.barcode FROM customer_reg c1, product_category p1 WHERE c1.service_type=16 AND p1.id=c1.product_category AND c1.id=?");
     $stmt->bind_param("i", $editId);
     $stmt->execute();
     $Resp = $stmt->get_result();
@@ -15,7 +15,7 @@ if (isset($_COOKIE['editId'])) {
 if (isset($_COOKIE['viewId'])) {
     $mode = 'view';
     $viewId = $_COOKIE['viewId'];
-    $stmt = $obj->con1->prepare("SELECT p1.name AS product, c1.id, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, c1.date, c1.complaint_no, c1.barcode FROM customer_reg c1, product_category p1 WHERE c1.service_type=16 AND p1.id=c1.product_category AND c1.id=?");
+    $stmt = $obj->con1->prepare("SELECT p1.name AS product, c1.id, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, c1.date, c1.description, c1.complaint_no, c1.barcode FROM customer_reg c1, product_category p1 WHERE c1.service_type=16 AND p1.id=c1.product_category AND c1.id=?");
     $stmt->bind_param("i", $viewId);
     $stmt->execute();
     $Resp = $stmt->get_result();
@@ -73,10 +73,10 @@ if (isset($_REQUEST['update'])) {
                     <label for="barcode" class="font-bold">Product Barcode</label>
                     <input id="barcode" name="barcode" type="text" class="form-input" pattern="^\s*\S.*$" required value="<?php echo isset($mode) ? $data['barcode'] : '' ?>" readonly />
                 </div>
-                <!-- <div x-data="warrantyDate">
-                    <label class="font-bold">Warranty Start Date</label>
-                    <input x-model="date2" name="warranty_date" id="warranty_date" class="form-input" required <?php // echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> />
-                </div> -->
+                <div>
+                    <label for="barcode" class="font-bold">Product Barcode</label>
+                    <textarea autocomplete="on" name="address" id="address" class="form-textarea" rows="3" value="" required readonly><?php echo isset($mode) ? $data['description'] : '' ?></textarea>
+                </div>
 
                 <div class="relative inline-flex align-middle gap-3 mt-4">
                     <?php if(isset($mode) && $mode == "edit"){ ?>

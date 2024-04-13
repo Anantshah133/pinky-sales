@@ -95,7 +95,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                             <?php
                                 if(isset($_SESSION['type_center'])){
                                     $center_id = $_SESSION['scid'];
-                                    $stmt = $obj->con1->prepare("SELECT p1.name AS product, c1.id, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, c1.source, c1.date, c1.complaint_no, c1.barcode FROM customer_reg c1, product_category p1, call_allocation ca1 WHERE warranty=2 AND c1.complaint_no=ca1.complaint_no AND ca1.service_center_id=? AND p1.id=c1.product_category ORDER BY id DESC");
+                                    $stmt = $obj->con1->prepare("SELECT p1.name AS product, c1.id, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, c1.source, c1.date, c1.complaint_no, c1.barcode FROM customer_reg c1, product_category p1, call_allocation ca1 WHERE warranty=2 AND c1.complaint_no=ca1.complaint_no AND ca1.service_center_id=? AND p1.id=c1.product_category ORDER BY id DESCs");
                                     $stmt->bind_param("i", $center_id);
                                     $stmt->execute();
                                     $Resp = $stmt->get_result();

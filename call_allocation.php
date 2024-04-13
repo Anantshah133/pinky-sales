@@ -80,7 +80,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 console.log('Initalizing datatable')
                 this.datatable = new simpleDatatables.DataTable('#call-table', {
                     data: {
-                        headings: ['Sr.No.', 'Complaint No.','Customer Name', 'Customer Contact', 'Product Category', 'Service Center', 'Technician', 'Barcode', 'Allocation Date Time', 'Warranty Status', 'Call Status', 'Action'],
+                        headings: ['Sr.No.', 'Complaint No.','Customer Name', 'Customer Contact', 'Product Category', 'Service Center', 'Technician', 'Barcode', 'Warranty Status', 'Call Status', 'Action'],
                         data: [
                             <?php
                             if (isset($_SESSION['type_center']) && $_SESSION['type_center']) {
@@ -109,10 +109,6 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                     '<?php echo $row['service_center_name'] ?>',
                                     '<?php echo $row['technician_name'] ?>',
                                     '<?php echo $row['barcode'] ?>',
-                                    '<?php
-                                        $fetch_date = trim($row['allocation_datetime']) != "" ? date_format(date_create($row['allocation_datetime']), "d-m-Y h:i A") : '';
-                                        echo $fetch_date;
-                                    ?>',
                                     `<span class="badge badge-outline-<?php echo $row['warranty_status'] == 1 ? 'success' : ($row['warranty_status'] == 3 ? 'secondary' : 'danger') ?>">
                                         <?php echo $row['warranty_status'] == 1 ? 'In-Warranty' : ($row['warranty_status'] == 3 ? 'N / A' : 'Out-of-Warranty') ?>
                                     </span>`,
