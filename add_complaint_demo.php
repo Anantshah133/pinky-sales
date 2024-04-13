@@ -360,7 +360,7 @@ function smtpmailer($subject, $body, $to, $from, $from_name){
                     <div class="w-6/12 px-3 space-y-5">
                         <div>
                             <label for="product_category">Product Category </label>
-                            <select name="product_category" id="product_category" class="form-select text-white-dark" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> required onchange="getServiceType(this.value)">
+                            <select name="product_category" id="product_category" class="form-select " <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> required onchange="getServiceType(this.value)">
                                 <option value="">Choose Product Category</option>
                                 <?php
                                     $query = $obj->con1->prepare("SELECT * FROM `product_category`");
@@ -379,7 +379,7 @@ function smtpmailer($subject, $body, $to, $from, $from_name){
                         </div>
                         <div>
                             <label for="service_type"> Service Type </label>
-                            <select name="service_type" id="service_type" class="form-select text-white-dark" required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> onchange="requireBarcode(this, 'barcode');">
+                            <select name="service_type" id="service_type" class="form-select " required <?php echo isset($mode) && $mode == 'view' ? 'disabled' : ''?> onchange="requireBarcode(this, 'barcode');">
                                 <option value=""><?php echo isset($mode) && $mode == 'view' ? $data["service_type_name"] : 'Choose Service Type' ?></option>
                             </select>
                         </div>
