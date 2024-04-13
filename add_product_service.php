@@ -111,7 +111,7 @@ if (isset($_REQUEST["save"])) {
                         <?php
                             if(isset($mode)){
                                 $stmt = $obj->con1->prepare(
-                                    "SELECT * FROM `service_type`"
+                                    "SELECT * FROM `service_type` where status='enable'"
                                 );
                                 $stmt->execute();
                                 $Resp = $stmt->get_result();
