@@ -4,10 +4,29 @@ setcookie("editId", "", time() - 3600);
 setcookie("viewId", "", time() - 3600);
 
 if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
+    $complaint_id = $_REQUEST["n_complaintid"];
+
     try {
-        $stmt_del = $obj->con1->prepare(
-            "delete from customer_reg where id='" . $_REQUEST["n_complaintid"] . "'"
-        );
+        $stmt = $obj->con1->prepare("SELECT complaint_no FROM `customer_reg` WHERE id=?");
+        $stmt->bind_param("s", $complaint_id);
+        $stmt->execute();
+        $Result = $stmt->get_result()->fetch_assoc();
+        $complaint_no = $Result['complaint_no'];
+
+        if(!$Result){
+            throw new Exception("Problem in deleting ! " . strtok($obj->con1->error, '('));
+        }
+
+        $stmt_del = $obj->con1->prepare("DELETE FROM call_allocation WHERE complaint_no=?");
+        $stmt_del->bind_param("s", $complaint_no);
+        $Res = $stmt_del->execute();
+
+        if(!$Res){
+            throw new Exception("Problem in deleting ! " . strtok($obj->con1->error, '('));
+        }
+
+        $stmt_del = $obj->con1->prepare("DELETE FROM customer_reg WHERE id=?");
+        $stmt_del->bind_param("s", $complaint_id);
         $Resp = $stmt_del->execute();
         if (!$Resp) {
             if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row") {
@@ -17,11 +36,12 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         $stmt_del->close();
     } catch (\Exception $e) {
         setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
+        setcookie("msg", "fail", time() + 3600, "/");
     }
 
     if ($Resp) {
         setcookie("msg", "data_del", time() + 3600, "/");
-        header("location:warranty.php");
+        header("location:returned.php");
     }
 }
 ?>
@@ -77,7 +97,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         }).then((result) => {
             console.log(result)
             if (result.isConfirmed) {
-                var loc = "warranty.php?flg=del&n_complaintid=" + id;
+                var loc = "returned.php?flg=del&n_complaintid=" + id;
                 window.location = loc;
             }
         });
@@ -90,7 +110,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 console.log('Initalizing datatable')
                 this.datatable = new simpleDatatables.DataTable('#myTable', {
                     data: {
-                        headings: ['Sr.No.', 'Customer Name', 'Warranty No.', 'Product Name', 'Barcode', 'Source', 'Action'],
+                        headings: ['Sr.No.', 'Customer Name', 'Complaint No.', 'Product Name', 'Barcode', 'Source', 'Action'],
                         data: [
                             <?php
                                 if(isset($_SESSION['type_center'])){

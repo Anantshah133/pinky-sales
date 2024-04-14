@@ -290,25 +290,36 @@ if (isset($_POST['save'])) {
             throw new Exception("Problem in adding! " . strtok($obj->con1->error, '('));
         }
 
-        $subject = "Onelife Complaint Registered: " . $complaint_no;
-        $body = "
-        <h1>
-        Dear <b>$fname $lname</b>,
-        Your complaint has been registered successfully. Your complaint number is : <b>$complaint_no</b>
-        Techinician will be allocated soon.
-        
-        Regards,
-        OneLife Team.
-        </h1>";
-        $from = "test@pragmanxt.com";
-        $from_name = "Onelife";
+        $stmt = $obj->con1->prepare("INSERT INTO `send_mail` (`complaint_no`) VALUES (?)");
+        $stmt->bind_param("s", $complaint_no);
+        $Mail_res = $stmt->execute();
+        $stmt->close();
 
-        $mail_res = smtpmailer($subject, $body, $email, $from, $from_name);
-        if($mail_res == 1){
+        if($Mail_res){
             setcookie("mail", "successfull", time() + 3600, "/");
         } else {
             setcookie("mail", urlencode($mail_res), time() + 3600, "/");
         }
+        
+        // $subject = "Onelife Complaint Registered: " . $complaint_no;
+        // $body = "
+        // <h1>
+        // Dear <b>$fname $lname</b>,
+        // Your complaint has been registered successfully. Your complaint number is : <b>$complaint_no</b>
+        // Techinician will be allocated soon.
+        
+        // Regards,
+        // OneLife Team.
+        // </h1>";
+        // $from = "test@pragmanxt.com";
+        // $from_name = "Onelife";
+
+        // $mail_res = smtpmailer($subject, $body, $email, $from, $from_name);
+        // if($mail_res == 1){
+        //     setcookie("mail", "successfull", time() + 3600, "/");
+        // } else {
+        //     setcookie("mail", urlencode($mail_res), time() + 3600, "/");
+        // }
 
         if (!$Resp) {
             echo $obj->con1->error;
@@ -446,7 +457,7 @@ function smtpmailer($subject, $body, $to, $from, $from_name){
                         </div>
                         <div>
                             <label for="description">Description </label>
-                            <input name="description" id="description" type="text" class="form-input" value="<?php echo isset($mode) ? $data['description'] : '' ?>" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> />
+                            <textarea autocomplete="on" row="2" name="description" id="description" class="form-input" required <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?>><?php echo isset($mode) ? $data['description'] : '' ?></textarea>
                         </div>
                         <div>
                             <label for="dealer_name">Dealer Name </label>

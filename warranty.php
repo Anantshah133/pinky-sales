@@ -4,10 +4,29 @@ setcookie("editId", "", time() - 3600);
 setcookie("viewId", "", time() - 3600);
 
 if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
+    $complaint_id = $_REQUEST["n_complaintid"];
+
     try {
-        $stmt_del = $obj->con1->prepare(
-            "delete from customer_reg where id='" . $_REQUEST["n_complaintid"] . "'"
-        );
+        $stmt = $obj->con1->prepare("SELECT complaint_no FROM `customer_reg` WHERE id=?");
+        $stmt->bind_param("s", $complaint_id);
+        $stmt->execute();
+        $Result = $stmt->get_result()->fetch_assoc();
+        $complaint_no = $Result['complaint_no'];
+
+        if(!$Result){
+            throw new Exception("Problem in deleting ! " . strtok($obj->con1->error, '('));
+        }
+
+        $stmt_del = $obj->con1->prepare("DELETE FROM call_allocation WHERE complaint_no=?");
+        $stmt_del->bind_param("s", $complaint_no);
+        $Res = $stmt_del->execute();
+
+        if(!$Res){
+            throw new Exception("Problem in deleting ! " . strtok($obj->con1->error, '('));
+        }
+
+        $stmt_del = $obj->con1->prepare("DELETE FROM customer_reg WHERE id=?");
+        $stmt_del->bind_param("s", $complaint_id);
         $Resp = $stmt_del->execute();
         if (!$Resp) {
             if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row") {
@@ -17,6 +36,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         $stmt_del->close();
     } catch (\Exception $e) {
         setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
+        setcookie("msg", "fail", time() + 3600, "/");
     }
 
     if ($Resp) {
@@ -95,7 +115,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                             <?php
                                 if(isset($_SESSION['type_center'])){
                                     $center_id = $_SESSION['scid'];
-                                    $stmt = $obj->con1->prepare("SELECT p1.name AS product, c1.id, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, c1.source, c1.date, c1.complaint_no, c1.barcode FROM customer_reg c1, product_category p1, call_allocation ca1 WHERE warranty=2 AND c1.complaint_no=ca1.complaint_no AND ca1.service_center_id=? AND p1.id=c1.product_category ORDER BY id DESCs");
+                                    $stmt = $obj->con1->prepare("SELECT p1.name AS product, c1.id, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, c1.source, c1.date, c1.complaint_no, c1.barcode FROM customer_reg c1, product_category p1, call_allocation ca1 WHERE warranty=2 AND c1.complaint_no=ca1.complaint_no AND ca1.service_center_id=? AND p1.id=c1.product_category ORDER BY id DESC");
                                     $stmt->bind_param("i", $center_id);
                                     $stmt->execute();
                                     $Resp = $stmt->get_result();

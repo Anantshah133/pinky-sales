@@ -121,7 +121,7 @@ document.addEventListener('alpine:init', () => {
                         <?php
                                 if (isset($_SESSION['type_center']) && $_SESSION['type_center']) {
                                     $city_id = $_SESSION['sc_city'];
-                                    $stmt = $obj->con1->prepare("select c1.*, ca.status, s1.name as service_type, p1.name as product_category, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1, service_type s1, product_category p1, call_allocation ca where c1.warranty!=2 AND c1.service_type=s1.id and c1.complaint_no=ca.complaint_no and c1.product_category=p1.id and c1.area=? order by c1.id DESC");
+                                    $stmt = $obj->con1->prepare("SELECT c1.*, ca.status, s1.name AS service_type, p1.name AS product_category, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime FROM customer_reg c1, service_type s1, product_category p1, call_allocation ca WHERE c1.warranty!=2 AND c1.service_type!=16 AND c1.service_type=s1.id AND c1.complaint_no=ca.complaint_no AND c1.product_category=p1.id AND c1.area=? order by c1.id DESC");
                                     $stmt->bind_param("i", $city_id);
                                     $stmt->execute();
                                     $Resp = $stmt->get_result();
@@ -129,7 +129,7 @@ document.addEventListener('alpine:init', () => {
 
                                     $id = 1;
                                 } else {
-                                    $stmt = $obj->con1->prepare("select c1.*, ca.status, s1.name as service_type, p1.name as product_category, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime from customer_reg c1, service_type s1, product_category p1, call_allocation ca where c1.warranty!=2 AND c1.service_type=s1.id and c1.complaint_no=ca.complaint_no and c1.product_category=p1.id order by c1.id DESC");
+                                    $stmt = $obj->con1->prepare("SELECT c1.*, ca.status, s1.name AS service_type, p1.name AS product_category, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, CONCAT(c1.date, ' ', c1.time) AS datetime FROM customer_reg c1, service_type s1, product_category p1, call_allocation ca WHERE c1.warranty!=2 AND c1.service_type!=16 AND c1.service_type=s1.id and c1.complaint_no=ca.complaint_no AND c1.product_category=p1.id ORDER BY c1.id DESC");
                                     $stmt->execute();
                                     $Resp = $stmt->get_result();
                                     $id = 1;

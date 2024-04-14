@@ -18,11 +18,7 @@ $cno = "";
 if (isset($_COOKIE['viewId'])) {
     $mode = 'view';
     $viewId = $_COOKIE['viewId'];
-    $query = $obj->con1->prepare("SELECT c1.*, sc1.name AS service_center, t1.name AS tech 
-    FROM call_allocation c1 
-        INNER JOIN service_center sc1 ON c1.service_center_id = sc1.id
-        LEFT JOIN technician t1 ON (c1.technician != 0 AND c1.technician = t1.id)
-    WHERE c1.id=?");
+    $query = $obj->con1->prepare("SELECT c1.*, c2.barcode, sc1.name AS service_center, t1.name AS tech FROM call_allocation c1 INNER JOIN service_center sc1 ON c1.service_center_id = sc1.id LEFT JOIN technician t1 ON (c1.technician != 0 AND c1.technician = t1.id), customer_reg c2 WHERE c1.id=? AND c2.complaint_no=c1.complaint_no");
     $query->bind_param("i", $viewId);
     $query->execute();
     $Res = $query->get_result();
@@ -34,11 +30,7 @@ if (isset($_COOKIE['viewId'])) {
 if (isset($_COOKIE['editId'])) {
     $mode = 'edit';
     $editId = $_COOKIE['editId'];
-    $query = $obj->con1->prepare("SELECT c1.*, sc1.name AS service_center, t1.name AS tech 
-    FROM call_allocation c1 
-        INNER JOIN service_center sc1 ON c1.service_center_id=sc1.id
-        LEFT JOIN technician t1 ON (c1.technician != 0 AND c1.technician=t1.id)
-    WHERE c1.id=?");
+    $query = $obj->con1->prepare("SELECT c1.*, c2.barcode, sc1.name AS service_center, t1.name AS tech FROM call_allocation c1 INNER JOIN service_center sc1 ON c1.service_center_id=sc1.id LEFT JOIN technician t1 ON (c1.technician != 0 AND c1.technician=t1.id), customer_reg c2 WHERE c1.id=? AND c2.complaint_no=c1.complaint_no");
     $query->bind_param("i", $editId);
     $query->execute();
     $Res = $query->get_result();
@@ -256,8 +248,11 @@ function uploadImage($inputName, $uploadDirectory)
                             </select>
                         </div>
                         <div>
-                            <label for="product_srno"> Product Serial No. </label>
-                            <input name="product_srno" id="product_srno" type="text" class="form-input" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['product_serial_no'] : '' ?>" />
+                            <label for="purchase_date_img">Purchase Date Image</label>
+                            <input id="purchase_date_img" name="purchase_date_img" type="file" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary" value="<?php echo isset($mode) ? $data['purchase_date_img'] : "" ?>" <?php echo isset($mode) ? '' : 'required' ?> onchange="readURL(this, 'purDateImg', 'errPurDateImg')" />
+
+                            <img src="<?php echo isset($mode) && isset($data['purchase_date_img']) ? 'images/purchase_date_img/' . $data['purchase_date_img'] : '' ?>" class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img" alt="" id="purDateImg">
+                            <h6 id='errPurDateImg' class='error-elem'></h6>
                         </div>
                         <div>
                             <label for="srno_img">Serial No. Image</label>
@@ -269,10 +264,6 @@ function uploadImage($inputName, $uploadDirectory)
                             <h6 id='errSrNoImg' class='error-elem'></h6>
                         </div>
                         <div>
-                            <label for="product_model"> Product Model </label>
-                            <input name="product_model" id="product_model" type="text" class="form-input" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) && isset($data['product_model']) ? $data['product_model'] : "" ?>" />
-                        </div>
-                        <div>
                             <label for="product_model_img"> Product Model Image </label>
                             <input name="product_model_img" id="product_model_img" type="file" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary" value="<?php echo isset($mode) ? $data['product_model_img'] : "" ?>" <?php echo isset($mode) ? '' : 'required' ?> onchange="readURL(this, 'previewModalImage', 'errModalImg')" />
 
@@ -281,18 +272,23 @@ function uploadImage($inputName, $uploadDirectory)
                                 alt="" id="previewModalImage">
                             <h6 id='errModalImg' class='error-elem'></h6>
                         </div>
-                    </div>
-                    <div class="w-6/12 px-3 space-y-5">
+                        <div>
+                            <label for="barcode">Barcode </label>
+                            <input name="barcode" id="barcode" type="text" class="form-input" value="<?php echo isset($mode) ? $data['barcode'] : '' ?>" readonly />
+                        </div>
                         <div x-data="purchaseDate">
                             <label for="purchase_date">Purchase Date </label>
                             <input type="date" name="purchase_date" id="purchase_date" class="form-input" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> value="<?php echo isset($mode) && isset($data['purchase_data']) ? $data['purchase_data'] : '' ?>" />
                         </div>
+                    </div>
+                    <div class="w-6/12 px-3 space-y-5">
                         <div>
-                            <label for="purchase_date_img">Purchase Date Image</label>
-                            <input id="purchase_date_img" name="purchase_date_img" type="file" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 file:text-white file:hover:bg-primary" value="<?php echo isset($mode) ? $data['purchase_date_img'] : "" ?>" <?php echo isset($mode) ? '' : 'required' ?> onchange="readURL(this, 'purDateImg', 'errPurDateImg')" />
-
-                            <img src="<?php echo isset($mode) && isset($data['purchase_date_img']) ? 'images/purchase_date_img/' . $data['purchase_date_img'] : '' ?>" class="mt-8 <?php echo isset($mode) && isset($data['serial_no_img']) ? '' : 'hidden' ?> w-80 preview-img" alt="" id="purDateImg">
-                            <h6 id='errPurDateImg' class='error-elem'></h6>
+                            <label for="product_srno"> Product Serial No. </label>
+                            <input name="product_srno" id="product_srno" type="text" class="form-input" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) ? $data['product_serial_no'] : '' ?>" />
+                        </div>
+                        <div>
+                            <label for="product_model"> Product Model </label>
+                            <input name="product_model" id="product_model" type="text" class="form-input" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> value="<?php echo isset($mode) && isset($data['product_model']) ? $data['product_model'] : "" ?>" />
                         </div>
                         <div>
                             <label for="technician">Technician</label>
@@ -340,7 +336,7 @@ function uploadImage($inputName, $uploadDirectory)
                         </div>
                     </div>
                 </div>
-                <div class="relative inline-flex align-middle gap-3 mt-4">
+                <div class="relative inline-flex align-middle gap-3 mt-8">
                     <!-- Save/Update button -->
                     <?php if(isset($mode) && $mode != "view" || !isset($mode)){ ?>
                         <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
