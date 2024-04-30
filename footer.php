@@ -74,10 +74,10 @@
                         }
                     }
                 }
-                this.getNotifications();
-                setInterval(() => {
-                    this.getNotifications();
-                }, 6000);
+                // this.getNotifications();
+                // setInterval(() => {
+                //     this.getNotifications();
+                // }, 6000);
             },
 
             getNotifications() {

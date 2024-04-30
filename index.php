@@ -1,31 +1,5 @@
 <?php
 include "header.php";
-setcookie("editId", "", time() - 3600);
-setcookie("viewId", "", time() - 3600);
-
-if(isset($_SESSION["scid"]))
-{
-$stmt = $obj->con1->prepare("SELECT 
-    IFNULL(SUM(CASE WHEN status='new' THEN 1 ELSE 0 END),0) AS new_num,
-    IFNULL(SUM(CASE WHEN status='allocated' THEN 1 ELSE 0 END),0) AS allocated_num,
-    IFNULL(SUM(CASE WHEN status='pending' THEN 1 ELSE 0 END),0) AS pending_num,
-    IFNULL(SUM(CASE WHEN status='closed' THEN 1 ELSE 0 END),0) AS closed_num
-    FROM call_allocation c1, customer_reg c2 WHERE service_center_id=? AND c1.complaint_no=c2.complaint_no AND c2.warranty!=2");
-    $stmt->bind_param("i", $_SESSION["scid"]);
-}
-else{
-    $stmt = $obj->con1->prepare("SELECT 
-    IFNULL(SUM(CASE WHEN status='new' THEN 1 ELSE 0 END),0) AS new_num,
-    IFNULL(SUM(CASE WHEN status='allocated' THEN 1 ELSE 0 END),0) AS allocated_num,
-    IFNULL(SUM(CASE WHEN status='pending' THEN 1 ELSE 0 END),0) AS pending_num,
-    IFNULL(SUM(CASE WHEN status='closed' THEN 1 ELSE 0 END),0) AS closed_num
-    FROM call_allocation c1, customer_reg c2 WHERE c1.complaint_no= c2.complaint_no AND c2.warranty!=2");
-}
-$stmt->execute();
-$Resp = $stmt->get_result();
-$data = $Resp->fetch_assoc();
-$stmt->close();
-
 ?>
 <main class='p-6' x-data="sales">
     <div class="pt-5">
@@ -38,7 +12,7 @@ $stmt->close();
                     </div>
                     <div class="mt-5 flex items-center">
                         <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">
-                            <?php echo $data["new_num"]; ?>
+                            
                         </div>
                     </div>
                 </div>
@@ -52,7 +26,7 @@ $stmt->close();
                     </div>
                     <div class="mt-5 flex items-center">
                         <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">
-                            <?php echo $data["allocated_num"]; ?>
+                            
                         </div>
                     </div>
                 </div>
@@ -66,7 +40,7 @@ $stmt->close();
                     </div>
                     <div class="mt-5 flex items-center">
                         <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">
-                            <?php echo $data["pending_num"]; ?>
+                            
                         </div>
                     </div>
                 </div>
@@ -80,7 +54,7 @@ $stmt->close();
                     </div>
                     <div class="mt-5 flex items-center">
                         <div class="text-3xl font-bold ltr:mr-3 rtl:ml-3">
-                            <?php echo $data["closed_num"]; ?>
+                            
                         </div>
                     </div>
                 </div>
@@ -167,10 +141,10 @@ document.addEventListener('alpine:init', () => {
         get salesByCategoryOptions() {
             return {
                 series: [
-                    <?php echo $data["new_num"]; ?>,
-                    <?php echo $data["allocated_num"]; ?>,
-                    <?php echo $data["pending_num"]; ?>,
-                    <?php echo $data["closed_num"]; ?>
+                    0,
+                    10,
+                    20,
+                    30
                 ],
                 chart: {
                     type: 'donut',

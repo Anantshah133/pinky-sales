@@ -1,72 +1,15 @@
 <?php
 include "header.php";
-setcookie("editId", "", time() - 3600);
-setcookie("viewId", "", time() - 3600);
-
-if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
-    try {
-        $stmt_del = $obj->con1->prepare(
-            "delete from customer_reg where id='" . $_REQUEST["n_complaintid"] . "'"
-        );
-        $Resp = $stmt_del->execute();
-        if (!$Resp) {
-            if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row") {
-                throw new Exception("City is already in use!");
-            }
-        }
-        $stmt_del->close();
-    } catch (\Exception $e) {
-        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
-    }
-
-    if ($Resp) {
-        setcookie("msg", "data_del", time() + 3600, "/");
-    }
-    header("location:complaint_demo.php");
-}
 ?>
 
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-2">
         <div class='flex items-center justify-between mb-3'>
             <h1 class='text-primary text-2xl font-semibold'>Complaint / Demo</h1>
-            <div class="flex gap-5 items-center mt-3">
-                <div class="">
-                    <label class="flex items-center cursor-pointer">
-                        <input type="checkbox" class="form-checkbox" checked />
-                        <span class>New</span>
-                    </label>
-                </div>
-                <div class="">
-                    <label class="flex items-center cursor-pointer">
-                        <input type="checkbox" class="form-checkbox"  />
-                        <span class>Pending</span>
-                    </label>
-                </div>
-                <div class="">
-                    <label class="flex items-center cursor-pointer">
-                        <input type="checkbox" class="form-checkbox"  />
-                        <span class>Allocated</span>
-                    </label>
-                </div>
-                <div class="">
-                    <label class="flex items-center cursor-pointer">
-                        <input type="checkbox" class="form-checkbox"  />
-                        <span class>Closed</span>
-                    </label>
-                </div>
-                <div class="">
-                    <label class="flex items-center cursor-pointer">
-                        <input type="checkbox" class="form-checkbox"  />
-                        <span class>Cancelled</span>
-                    </label>
-                </div>
-            </div>
-
             <div class="flex flex-wrap items-center">
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1"
                     onclick="location.href='add_complaint_demo.php'">
-                    <i class="ri-add-line mr-1"></i> Add Complaint
+                    <i class="ri-add-line mr-1"></i> Add Product
                 </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
@@ -75,8 +18,6 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                     <i class="ri-file-line mr-1"></i> CSV
                 </button>
             </div>
-
-
         </div>
         <table id="myTable" class="table-hover whitespace-nowrap"></table>
     </div>

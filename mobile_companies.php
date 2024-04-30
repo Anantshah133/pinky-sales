@@ -4,54 +4,38 @@ setcookie("editId", "", time() - 3600);
 setcookie("viewId", "", time() - 3600);
 
 if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
-    $complaint_id = $_REQUEST["n_complaintid"];
-
     try {
-        $stmt = $obj->con1->prepare("SELECT complaint_no FROM `customer_reg` WHERE id=?");
-        $stmt->bind_param("s", $complaint_id);
-        $stmt->execute();
-        $Result = $stmt->get_result()->fetch_assoc();
-        $complaint_no = $Result['complaint_no'];
-
-        if(!$Result){
-            throw new Exception("Problem in deleting ! " . strtok($obj->con1->error, '('));
-        }
-
-        $stmt_del = $obj->con1->prepare("DELETE FROM call_allocation WHERE complaint_no=?");
-        $stmt_del->bind_param("s", $complaint_no);
-        $Res = $stmt_del->execute();
-
-        if(!$Res){
-            throw new Exception("Problem in deleting ! " . strtok($obj->con1->error, '('));
-        }
-
-        $stmt_del = $obj->con1->prepare("DELETE FROM customer_reg WHERE id=?");
-        $stmt_del->bind_param("s", $complaint_id);
+        $company_id = $_REQUEST["companyId"];
+        $stmt_del = $obj->con1->prepare("DELETE FROM mobile_companies WHERE id=?");
+        $stmt_del->bind_param("i", $company_id);
         $Resp = $stmt_del->execute();
         if (!$Resp) {
             if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row") {
-                throw new Exception("Data is already in use");
+                setcookie("msg", "cant_delete", time() + 3600, "/");
+                throw new Exception("Company is already in use!");
             }
         }
         $stmt_del->close();
     } catch (\Exception $e) {
         setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
-        setcookie("msg", "fail", time() + 3600, "/");
     }
 
     if ($Resp) {
         setcookie("msg", "data_del", time() + 3600, "/");
-        header("location:returned.php");
     }
+    header("location:mobile_companies.php");
 }
 ?>
 
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-2">
         <div class='flex items-center justify-between mb-3'>
-            <h1 class='text-primary text-2xl font-semibold'>Returned Products</h1>
+            <h1 class='text-primary text-2xl font-semibold'>Mobile Companies</h1>
 
             <div class="flex flex-wrap items-center">
+                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_mobile_company.php'">
+                    <i class="ri-add-line mr-1"></i> Add Company
+                </button>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
                 </button>
@@ -63,19 +47,18 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         <table id="myTable" class="table-hover whitespace-nowrap"></table>
     </div>
 </div>
-
 <!-- script -->
 <script>
     
     function getActions(id, name) {
         return `<ul class="flex items-center gap-4">
         <li>
-            <a href="javascript:viewRecord(${id}, 'edit_return.php')" class='text-xl' x-tooltip="View">
+            <a href="javascript:viewRecord(${id}, 'add_mobile_company.php')" class='text-xl' x-tooltip="View">
                 <i class="ri-eye-line text-primary"></i>
             </a>
         </li>
         <li>
-            <a href="javascript:updateRecord(${id}, 'edit_return.php');" class='text-xl' x-tooltip="Edit">
+            <a href="javascript:updateRecord(${id}, 'add_mobile_company.php');" class='text-xl' x-tooltip="Edit">
                 <i class="ri-pencil-line text text-success"></i>
             </a>
         </li>
@@ -86,22 +69,6 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         </li>
     </ul>`
     }
-
-    function showAlert(id, number) {
-        new window.Swal({
-            title: 'Are you sure?',
-            text: `You want to delete Call :- ${number} !`,
-            showCancelButton: true,
-            confirmButtonText: 'Delete',
-            padding: '2em',
-        }).then((result) => {
-            console.log(result)
-            if (result.isConfirmed) {
-                var loc = "returned.php?flg=del&n_complaintid=" + id;
-                window.location = loc;
-            }
-        });
-    }
     
     document.addEventListener('alpine:init', () => {
         Alpine.data('exportTable', () => ({
@@ -110,39 +77,23 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 console.log('Initalizing datatable')
                 this.datatable = new simpleDatatables.DataTable('#myTable', {
                     data: {
-                        headings: ['Sr.No.', 'Customer Name', 'Complaint No.', 'Product Name', 'Barcode', 'Source', 'Action'],
+                        headings: ['Sr.No.', 'Name', 'Action'],
                         data: [
                             <?php
-                                if(isset($_SESSION['type_center'])){
-                                    $center_id = $_SESSION['scid'];
-                                    $stmt = $obj->con1->prepare("SELECT p1.name AS product, c1.id, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, c1.source, c1.date, c1.complaint_no, c1.barcode FROM customer_reg c1, product_category p1, call_allocation ca1 WHERE c1.service_type=16 AND c1.complaint_no=ca1.complaint_no AND ca1.service_center_id=? AND p1.id=c1.product_category ORDER BY id DESC");
-                                    $stmt->bind_param("i", $center_id);
-                                    $stmt->execute();
-                                    $Resp = $stmt->get_result();
-                                    $stmt->close();
-                                } else if(isset($_SESSION['type_admin'])){
-                                    $stmt = $obj->con1->prepare("SELECT p1.name AS product, c1.id, CONCAT(c1.fname, ' ', c1.lname) AS customer_name, c1.source, c1.date, c1.complaint_no, c1.barcode FROM customer_reg c1, product_category p1 WHERE c1.service_type=16 AND p1.id=c1.product_category ORDER BY id DESC");
-                                    $stmt->execute();
-                                    $Resp = $stmt->get_result();
-                                    $stmt->close();
-                                }
-                                $i = 1;
-                                while ($row = mysqli_fetch_array($Resp)) {
-                            ?>
+                            $stmt = $obj->con1->prepare("SELECT * FROM `mobile_companies`");
+                            $stmt->execute();
+                            $Resp = $stmt->get_result();
+                            $i = 1;
+                            while ($row = mysqli_fetch_array($Resp)) {
+                                ?>
                                 [
-                                    <?php echo $i; ?>,
-                                    '<?php echo $row["customer_name"]; ?>',
-                                    '<?php echo $row["complaint_no"]; ?>',
-                                    '<?php echo $row["product"]; ?>',
-                                    `<strong><?php echo $row["barcode"]; ?></strong>`,
-                                    `<span class="badge badge-outline-<?php echo $row['source'] == 'web' ? 'secondary' : 'danger' ?>">
-                                        <?php echo ucfirst($row['source']) ?>
-                                    </span>`,
-                                    getActions(<?php echo $row["id"]; ?>, '<?php echo $row["complaint_no"]; ?>')
+                                <?php echo $i; ?>,
+                                '<strong><?php echo $row["name"]; ?></strong>',
+                                getActions(<?php echo $row["id"]; ?>, '<?php echo $row["name"]; ?>')
                                 ],
-                            <?php
-                                    $i++;
-                                }
+                                <?php
+                                $i++;
+                            }
                             ?>
                         ],
                     },
@@ -171,7 +122,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
             exportTable(eType) {
                 var data = {
                     type: eType,
-                    filename: 'state',
+                    filename: 'companies',
                     download: true,
                 };
 
@@ -198,6 +149,22 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
             },
         }));
     })
+
+    async function showAlert(id, name) {
+        new window.Swal({
+            title: 'Are you sure?',
+            text: `You want to delete Company :- ${name}`,
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            padding: '2em',
+        }).then((result) => {
+            console.log(result)
+            if (result.isConfirmed) {
+                var loc = "mobile_companies.php?flg=del&companyId=" + id;
+                window.location = loc;
+            }
+        });
+    }
 </script>
 
 <?php

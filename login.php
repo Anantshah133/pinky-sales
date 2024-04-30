@@ -8,7 +8,7 @@ if (isset($_REQUEST['save'])) {
     $userName = $_REQUEST['username'];
     $password = $_REQUEST['password'];
 
-    $stmt = $obj->con1->prepare("SELECT * FROM `superadmin` WHERE username=? AND BINARY password=?");
+    $stmt = $obj->con1->prepare("SELECT * FROM `superadmin` WHERE user_name=? AND BINARY admin_password=?");
     $stmt->bind_param("ss", $userName, $password);
     $stmt->execute();
     $Resp = $stmt->get_result();
@@ -17,33 +17,33 @@ if (isset($_REQUEST['save'])) {
 
     if ($admin_data) {
         $_SESSION['type_admin'] = true;
-        $_SESSION['admin_username'] = $admin_data['username'];
+        $_SESSION['admin_username'] = $admin_data['user_name'];
         $_SESSION['admin_name'] = $admin_data['name'];
         setcookie("msg", "login", time() + 3600, "/");
         header("location:index.php");
-    } else {
-        $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE userid=? AND BINARY password=?");
-        $stmt->bind_param("ss", $userName, $password);
-        $stmt->execute();
-        $Resp = $stmt->get_result();
-        $service_center_data = $Resp->fetch_assoc();
-        $stmt->close();
+    } // else {
+    //     $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE userid=? AND BINARY password=?");
+    //     $stmt->bind_param("ss", $userName, $password);
+    //     $stmt->execute();
+    //     $Resp = $stmt->get_result();
+    //     $service_center_data = $Resp->fetch_assoc();
+    //     $stmt->close();
 
-        if($service_center_data){
-            $_SESSION['type_center'] = true;
-            $_SESSION['username'] = $service_center_data['userid'];
-            $_SESSION['name'] = $service_center_data['name'];
-            $_SESSION['scid'] = $service_center_data['id'];
-            $_SESSION['sc_city'] = $service_center_data['area'];
+    //     if($service_center_data){
+    //         $_SESSION['type_center'] = true;
+    //         $_SESSION['username'] = $service_center_data['userid'];
+    //         $_SESSION['name'] = $service_center_data['name'];
+    //         $_SESSION['scid'] = $service_center_data['id'];
+    //         $_SESSION['sc_city'] = $service_center_data['area'];
             
-            setcookie("msg", "sc_login", time() + 3600, "/");
-            header("location:index.php");
-        } else {
-            setcookie("msg", "wrong_cred", time() + 3600, "/");
-            header("location:login.php");
-            exit;
-        }
-    }
+    //         setcookie("msg", "sc_login", time() + 3600, "/");
+    //         header("location:index.php");
+    //     } else {
+    //         setcookie("msg", "wrong_cred", time() + 3600, "/");
+    //         header("location:login.php");
+    //         exit;
+    //     }
+    // }
 }
 ?>
 
