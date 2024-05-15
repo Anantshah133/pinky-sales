@@ -16,7 +16,9 @@ if (isset($_SESSION['type_admin']) && $_SESSION['type_admin']) {
         "index.php",
         "user_profile.php",
         "mobile_companies.php",
-        "add_mobile_company.php"
+        "add_mobile_company.php",
+        "display_modal.php",
+        "add_display_modal.php",
     );
 } elseif (isset($_SESSION['type_center']) && $_SESSION['type_center']) {
     $allowed_pages = array(
@@ -188,7 +190,7 @@ if (isset($_REQUEST['logout'])) {
                             </a>
                         </li>
                         <li class="menu nav-item">
-                            <a href="call_allocation.php" class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "call_allocation.php" ? "active" : "" ?>">
+                            <a href="display_modal.php" class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "display_modal.php" ? "active" : "" ?>">
                                 <div class="flex items-center">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -200,8 +202,7 @@ if (isset($_REQUEST['logout'])) {
                                             fill="currentColor"></path>
                                     </svg>
                                     <span
-                                        class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Call
-                                        Allocation</span>
+                                        class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Display Modals</span>
                                 </div>
                             </a>
                         </li>

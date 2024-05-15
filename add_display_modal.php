@@ -12,7 +12,7 @@ if (isset($_COOKIE['viewId'])) {
     $stmt->close();
 }
 
-if(isset($_COOKIE['editId'])){
+if (isset($_COOKIE['editId'])) {
     $mode = 'edit';
     $editId = $_COOKIE['editId'];
     $stmt = $obj->con1->prepare("SELECT * FROM `mobile_companies` where id=?");
@@ -23,7 +23,7 @@ if(isset($_COOKIE['editId'])){
     $stmt->close();
 }
 
-if(isset($_REQUEST['update'])){
+if (isset($_REQUEST['update'])) {
     $editId = $_COOKIE['editId'];
     $company_name = $_REQUEST["company_name"];
 
@@ -68,39 +68,70 @@ if (isset($_REQUEST["save"])) {
     <div class="panel mt-2">
         <div class='flex items-center justify-between mb-3'>
             <h5 class="text-2xl text-primary font-semibold dark:text-white-light">
-                Mobile Company - <?php echo isset($mode) ? ($mode == 'view' ? 'View' : ($mode == 'edit' ? 'Edit' : 'Add')) : 'Add'; ?>
+                Display Modal -
+                <?php echo isset($mode) ? ($mode == 'view' ? 'View' : ($mode == 'edit' ? 'Edit' : 'Add')) : 'Add'; ?>
             </h5>
         </div>
         <div class="mb-5">
             <form class="space-y-5" method="post" id="mainForm">
                 <div>
-                    <label for="company_name" class="font-bold">Company Name </label>
-                    <input id="company_name" name="company_name" type="text" class="form-input" value="<?php echo isset($mode) ? $data["name"] : ""; ?>" pattern="^\s*\S.*$" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : ''?> required  onblur="checkCompany(this, <?php echo isset($mode) ? $data['id'] : 0 ?>)" />
+                    <label for="modal_name" class="font-bold">Display Modal Name </label>
+                    <input id="modal_name" name="modal_name" type="text" class="form-input"
+                        value="<?php echo isset($mode) ? $data["modal_name"] : ""; ?>" pattern="^\s*\S.*$" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> required onblur="" />
                     <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
                 </div>
+                <div>
+                    <label for="price" class="font-bold">Modal Price </label>
+                    <input id="price" name="price" type="text" class="form-input"
+                        value="<?php echo isset($mode) ? $data["price"] : ""; ?>" pattern="^\s*\S.*$" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> required onblur="" />
+                    <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
+                </div>
+
+                <div>
+                    <label for="company_name" class="font-bold">Display Company </label>
+                    <select name="company_name" id="company_name" class="form-select" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> required>
+                        <option value="">Choose Display Company</option>
+                        <?php
+                            $query = $obj->con1->prepare("SELECT * FROM `mobile_companies`");
+                            $query->execute();
+                            $Resp = $query->get_result();
+                            while ($row = mysqli_fetch_array($Resp)) {
+                        ?>
+                            <option value="<?php echo $row["id"]; ?>" <?php echo isset($mode) && $row['id'] == $data['company_id'] ? 'selected' : '' ?>>
+                                <?php echo $row["name"]; ?>
+                            </option>
+                        <?php
+                            }
+                            $query->close();
+                        ?>
+                    </select>
+                </div>
+
                 <div class="relative inline-flex align-middle gap-3 mt-4">
-                    <?php 
-                        if(isset($mode) && $mode != 'view' || !isset($mode)) {
-                    ?>
-                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success" onclick="return localValidate()">
+                    <?php
+                    if (isset($mode) && $mode != 'view' || !isset($mode)) {
+                        ?>
+                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
+                            id="save" class="btn btn-success" onclick="return localValidate()">
                             <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
                         </button>
-                    <?php 
-                        }
+                        <?php
+                    }
                     ?>
-                    <button type="button" class="btn btn-danger" onclick="window.location='mobile_companies.php'">Close</button>
+                    <button type="button" class="btn btn-danger"
+                        onclick="window.location='mobile_companies.php'">Close</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 <script>
-    function localValidate(){
+    function localValidate() {
         let form = document.getElementById('mainForm');
         let submitButton = document.getElementById('save');
         let company = document.getElementById('company_name');
 
-        if(form.checkValidity() && checkCompany(company, <?php echo isset($mode) ? $data['id'] : 0 ?>)){
+        if (form.checkValidity() && checkCompany(company, <?php echo isset($mode) ? $data['id'] : 0 ?>)){
             setTimeout(() => {
                 submitButton.disabled = true;
             }, 0);
@@ -108,21 +139,21 @@ if (isset($_REQUEST["save"])) {
         }
     }
 
-    function checkCompany(c1, id){
+    function checkCompany(c1, id) {
         let name = c1.value;
 
         const obj = new XMLHttpRequest();
-        obj.open("GET",`./ajax/check_company.php?name=${name}&id=${id}`, false);
+        obj.open("GET", `./ajax/check_company.php?name=${name}&id=${id}`, false);
         obj.send();
 
-        if(obj.status == 200){
+        if (obj.status == 200) {
             let x = obj.responseText;
-            if(x>=1){
-                c1.value="";
+            if (x >= 1) {
+                c1.value = "";
                 c1.focus();
                 document.getElementById("demo").innerHTML = "Sorry the company already exist!";
                 return false;
-            } else{  
+            } else {
                 document.getElementById("demo").innerHTML = "";
                 return true;
             }

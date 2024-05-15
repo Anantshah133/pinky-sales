@@ -339,45 +339,45 @@ if (isset($_POST['save'])) {
     }
 }
 
-function smtpmailer($subject, $body, $to, $from, $from_name){
-    global $error;
-    $mail = new PHPMailer();
-    $mail->IsSMTP();
-    $mail->SMTPAuth = true;
+// function smtpmailer($subject, $body, $to, $from, $from_name){
+//     global $error;
+//     $mail = new PHPMailer();
+//     $mail->IsSMTP();
+//     $mail->SMTPAuth = true;
    
-    $mail->SMTPKeepAlive = true;
-    $mail->Mailer = "smtp";
+//     $mail->SMTPKeepAlive = true;
+//     $mail->Mailer = "smtp";
    
-    $mail->Host = 'mail.pragmanxt.com';
-    $mail->Port = 465;
-    $mail->SMTPSecure = 'ssl';
-    $mail->Username = $from;
-    $mail->Password = "Pragma@12345";
+//     $mail->Host = 'mail.pragmanxt.com';
+//     $mail->Port = 465;
+//     $mail->SMTPSecure = 'ssl';
+//     $mail->Username = $from;
+//     $mail->Password = "Pragma@12345";
 
-    $mail->IsHTML(true);
-    $mail->SMTPDebug = 1;
+//     $mail->IsHTML(true);
+//     $mail->SMTPDebug = 1;
    
-    $mail->From = $from;
-    $mail->FromName = $from_name;
-    $mail->Sender = $from; // indicates ReturnPath header
-    $mail->AddReplyTo($from, $from_name); // indicates ReplyTo headers
+//     $mail->From = $from;
+//     $mail->FromName = $from_name;
+//     $mail->Sender = $from; // indicates ReturnPath header
+//     $mail->AddReplyTo($from, $from_name); // indicates ReplyTo headers
 
-    $mail->Subject = $subject;
-    $mail->Body = $body;
-    $mail->AddAddress($to);
+//     $mail->Subject = $subject;
+//     $mail->Body = $body;
+//     $mail->AddAddress($to);
 
-    $mail->Timeout = 60;
+//     $mail->Timeout = 60;
 
-    if (!$mail->Send()) {
-        $error = 'Mail error: ' . $mail->ErrorInfo;
-        echo $error;
-        return $error;
-    } else {
-        $error = 'Message sent!';
-        echo $error;
-        return "1";
-    }
-}
+//     if (!$mail->Send()) {
+//         $error = 'Mail error: ' . $mail->ErrorInfo;
+//         echo $error;
+//         return $error;
+//     } else {
+//         $error = 'Message sent!';
+//         echo $error;
+//         return "1";
+//     }
+// }
 ?>
 
 <div class='p-6'>
