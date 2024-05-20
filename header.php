@@ -67,7 +67,7 @@ if (isset($_REQUEST['logout'])) {
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Onecare - Admin</title>
+    <title>Pinky Sales</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -220,22 +220,6 @@ if (isset($_REQUEST['logout'])) {
                                 </div>
                             </a>
                         </li>
-                        <li class="menu nav-item">
-                            <a href="returned.php" class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "returned.php" ? "active" : "" ?>">
-                                <div class="flex items-center">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path opacity="0.5" d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12Z" fill="#1C274C"/>
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.3011 6.91463C9.58205 7.219 9.56307 7.69349 9.25871 7.97445L8.41824 8.75027H14.0385C16.3644 8.75027 18.25 10.6358 18.25 12.9618C18.25 15.2878 16.3644 17.1733 14.0385 17.1733H9.5C9.08579 17.1733 8.75 16.8376 8.75 16.4233C8.75 16.0091 9.08579 15.6733 9.5 15.6733H14.0385C15.536 15.6733 16.75 14.4593 16.75 12.9618C16.75 11.4643 15.536 10.2503 14.0385 10.2503H8.41824L9.25871 11.0261C9.56307 11.307 9.58205 11.7815 9.3011 12.0859C9.02015 12.3903 8.54565 12.4092 8.24129 12.1283L5.99129 10.0514C5.83748 9.90939 5.75 9.70959 5.75 9.50027C5.75 9.29094 5.83748 9.09114 5.99129 8.94916L8.24129 6.87224C8.54565 6.59129 9.02015 6.61027 9.3011 6.91463Z" fill="#1C274C"/>
-                                </svg>
-                                    <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Returned Products</span>
-                                </div>
-                            </a>
-                        </li>
-                        <!------ Both Visible ------>
-<!--                         
-                        <h2 class='-mx-4 mb-1 flex items-center bg-white-light/30 py-3 px-7 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]'>
-                            Admin Controls
-                        </h2> -->
                     </ul>
                 </div>
             </nav>
@@ -281,7 +265,7 @@ if (isset($_REQUEST['logout'])) {
                                             <path d="M8 17C8 17.5523 7.55228 18 7 18C6.44772 18 6 17.5523 6 17C6 16.4477 6.44772 16 7 16C7.55228 16 8 16.4477 8 17Z" fill="#1C274C"/>
                                             <path d="M8 13C8 13.5523 7.55228 14 7 14C6.44772 14 6 13.5523 6 13C6 12.4477 6.44772 12 7 12C7.55228 12 8 12.4477 8 13Z" fill="#1C274C"/>
                                         </svg>
-                                        <span class="ml-2 mt-1"><?php echo date('d-m-Y') ?></span>
+                                        <span class="ml-2 mr-3 mt-1"><?php echo date('d-m-Y') ?></span>
                                     </p>
                                 </div>
                             </div>
@@ -289,7 +273,7 @@ if (isset($_REQUEST['logout'])) {
                                 <h3 class="text-2xl margin-minus font-bold text-logo session-name"><?php echo isset($_SESSION['type_center']) && $_SESSION['type_center'] ? strtoupper($_SESSION["name"]) : 'Admin' ?></h3>
                             </div>
                             <div class="flex gap-2">
-                                <div class="dropdown" x-data="dropdown" @click.outside="open = false">
+                                <!-- <div class="dropdown" x-data="dropdown" @click.outside="open = false">
                                     <a href="javascript:;"
                                         class="relative block rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary dark:bg-dark/40 dark:hover:bg-dark/60"
                                         @click="toggle">
@@ -376,7 +360,7 @@ if (isset($_REQUEST['logout'])) {
                                             </li>
                                         </template>
                                     </ul>
-                                </div>
+                                </div> -->
                                 <div class="dropdown flex-shrink-0" x-data="dropdown" @click.outside="open = false">
                                     <a href="javascript:;" class="group relative" @click="toggle()">
                                         <span>

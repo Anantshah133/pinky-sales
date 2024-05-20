@@ -76,20 +76,19 @@ if (isset($_REQUEST["save"])) {
             <form class="space-y-5" method="post" id="mainForm">
                 <div>
                     <label for="manufacturer_name" class="font-bold">Manufacturer Name </label>
-                    <input id="manufacturer_name" name="manufacturer_name" type="text" class="form-input" value="<?php echo isset($mode) ? $data["manufacturer_name"] : ""; ?>" pattern="^\s*\S.*$" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> required onblur="" />
+                    <input id="manufacturer_name" name="manufacturer_name" type="text" class="form-input" value="<?php echo isset($mode) ? $data["manufacturer_name"] : ""; ?>" pattern="^\s*\S.*$" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> required onblur="checkCompany(this, <?php echo isset($mode) ? $data['id'] : 0 ?>)" />
                     <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
                 </div>
 
                 <div class="relative inline-flex align-middle gap-3 mt-4">
                     <?php
-                    if (isset($mode) && $mode != 'view' || !isset($mode)) {
-                        ?>
-                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
-                            id="save" class="btn btn-success" onclick="return localValidate()">
+                        if (isset($mode) && $mode != 'view' || !isset($mode)) {
+                    ?>
+                        <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>" id="save" class="btn btn-success" onclick="return localValidate()">
                             <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
                         </button>
-                        <?php
-                    }
+                    <?php
+                        }
                     ?>
                     <button type="button" class="btn btn-danger"
                         onclick="window.location='manufacturer_company.php'">Close</button>
@@ -103,7 +102,7 @@ if (isset($_REQUEST["save"])) {
     function localValidate() {
         let form = document.getElementById('mainForm');
         let submitButton = document.getElementById('save');
-        let company = document.getElementById('company_name');
+        let company = document.getElementById('manufacturer_name');
 
         if (form.checkValidity() && checkCompany(company, <?php echo isset($mode) ? $data['id'] : 0 ?>)){
             setTimeout(() => {
@@ -117,7 +116,7 @@ if (isset($_REQUEST["save"])) {
         let name = c1.value;
 
         const obj = new XMLHttpRequest();
-        obj.open("GET", `./ajax/check_company.php?name=${name}&id=${id}`, false);
+        obj.open("GET", `./ajax/check_manufacturer.php?name=${name}&id=${id}`, false);
         obj.send();
 
         if (obj.status == 200) {
