@@ -42,10 +42,14 @@ if (isset($_REQUEST['update'])) {
 }
 
 if (isset($_REQUEST["save"])) {
-    $company_name = $_REQUEST["company_name"];
+    $modal_name = $_REQUEST["modal_name"];
+    $company_id = $_REQUEST["company_name"];
+    $price = $_REQUEST["price"];
+    $manufacturer_id = $_REQUEST["manufacturer_name"];
+
     try {
-        $stmt = $obj->con1->prepare("INSERT INTO `mobile_companies`(`name`) VALUES (?)");
-        $stmt->bind_param("s", $company_name);
+        $stmt = $obj->con1->prepare("INSERT INTO `display_modals` (`modal_name`, `company_id`, `manufacturer_id`, `price`) VALUES (?,?,?,?)");
+        $stmt->bind_param("siis", $modal_name, $company_id, $manufacturer_id, $price);
         $Resp = $stmt->execute();
         if (!$Resp) {
             throw new Exception("Problem in adding! " . strtok($obj->con1->error, "("));
@@ -57,10 +61,10 @@ if (isset($_REQUEST["save"])) {
 
     if ($Resp) {
         setcookie("msg", "data", time() + 3600, "/");
-        header("location:mobile_companies.php");
+        header("location:display_modal.php");
     } else {
         setcookie("msg", "fail", time() + 3600, "/");
-        header("location:mobile_companies.php");
+        header("location:display_modal.php");
     }
 }
 ?>
@@ -86,7 +90,6 @@ if (isset($_REQUEST["save"])) {
                         value="<?php echo isset($mode) ? $data["price"] : ""; ?>" pattern="^\s*\S.*$" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> required onblur="" />
                     <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
                 </div>
-
                 <div>
                     <label for="company_name" class="font-bold">Display Company </label>
                     <select name="company_name" id="company_name" class="form-select" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> required>
@@ -97,8 +100,27 @@ if (isset($_REQUEST["save"])) {
                             $Resp = $query->get_result();
                             while ($row = mysqli_fetch_array($Resp)) {
                         ?>
-                            <option value="<?php echo $row["id"]; ?>" <?php echo isset($mode) && $row['id'] == $data['company_id'] ? 'selected' : '' ?>>
+                            <option value="<?php echo $row["id"]; ?>">
                                 <?php echo $row["name"]; ?>
+                            </option>
+                        <?php
+                            }
+                            $query->close();
+                        ?>
+                    </select>
+                </div>
+                <div>
+                    <label for="manufacturer_name" class="font-bold">Manufacturer Company </label>
+                    <select name="manufacturer_name" id="manufacturer_name" class="form-select" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> required>
+                        <option value="">Choose Display Company</option>
+                        <?php
+                            $query = $obj->con1->prepare("SELECT * FROM `manufacturer_companies`");
+                            $query->execute();
+                            $Resp = $query->get_result();
+                            while ($row = mysqli_fetch_array($Resp)) {
+                        ?>
+                            <option value="<?php echo $row["id"]; ?>" <?php echo isset($mode) && $row['id'] == $data['company_id'] ? 'selected' : '' ?>>
+                                <?php echo $row["manufacturer_name"]; ?>
                             </option>
                         <?php
                             }
@@ -109,17 +131,16 @@ if (isset($_REQUEST["save"])) {
 
                 <div class="relative inline-flex align-middle gap-3 mt-4">
                     <?php
-                    if (isset($mode) && $mode != 'view' || !isset($mode)) {
-                        ?>
+                        if (isset($mode) && $mode != 'view' || !isset($mode)) {
+                    ?>
                         <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
                             id="save" class="btn btn-success" onclick="return localValidate()">
                             <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
                         </button>
-                        <?php
-                    }
+                    <?php
+                        }
                     ?>
-                    <button type="button" class="btn btn-danger"
-                        onclick="window.location='mobile_companies.php'">Close</button>
+                    <button type="button" class="btn btn-danger" onclick="window.location='display_modal.php'">Close</button>
                 </div>
             </form>
         </div>

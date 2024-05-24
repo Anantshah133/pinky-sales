@@ -77,24 +77,27 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 console.log('Initalizing datatable')
                 this.datatable = new simpleDatatables.DataTable('#myTable', {
                     data: {
-                        headings: ['Sr.No.', 'Name', 'Action'],
+                        headings: ['Sr.No.', 'Name', 'Company Name', 'Manufacturer Company', 'Price', 'Action'],
                         data: [
-                            <?php
-                            $stmt = $obj->con1->prepare("SELECT * FROM `mobile_companies`");
+                        <?php
+                            $stmt = $obj->con1->prepare("SELECT dm1.*, m1.id AS mid, m1.manufacturer_name, mc1.id AS cid, mc1.name AS cname FROM `display_modals` dm1 JOIN `manufacturer_companies` m1 ON dm1.manufacturer_id = m1.id JOIN `mobile_companies` mc1 ON dm1.company_id = mc1.id;");
                             $stmt->execute();
                             $Resp = $stmt->get_result();
                             $i = 1;
                             while ($row = mysqli_fetch_array($Resp)) {
-                                ?>
-                                [
+                        ?>
+                            [
                                 <?php echo $i; ?>,
-                                '<strong><?php echo $row["name"]; ?></strong>',
-                                getActions(<?php echo $row["id"]; ?>, '<?php echo $row["name"]; ?>')
-                                ],
-                                <?php
+                                '<strong><?php echo $row["modal_name"]; ?></strong>',
+                                '<strong><?php echo $row["cname"]; ?><strong>',
+                                '<strong><?php echo $row["manufacturer_name"]; ?><strong>',
+                                '<strong>₹ <?php echo $row["price"]; ?><strong>',
+                                getActions(<?php echo $row["id"]; ?>, '<?php echo $row["modal_name"]; ?>')
+                            ],
+                        <?php
                                 $i++;
                             }
-                            ?>
+                        ?>
                         ],
                     },
                     perPage: 10,
