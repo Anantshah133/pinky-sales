@@ -4,25 +4,31 @@ setcookie("editId", "", time() - 3600);
 setcookie("viewId", "", time() - 3600);
 
 if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
+    // echo "ajhfgasjhgdaskjhgdjhkasgdajhsdgjashgdasjhdgasdd";
     try {
         $company_id = $_REQUEST["companyId"];
         $stmt_del = $obj->con1->prepare("DELETE FROM mobile_companies WHERE id=?");
         $stmt_del->bind_param("i", $company_id);
         $Resp = $stmt_del->execute();
-        if (!$Resp) {
-            if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row") {
-                setcookie("msg", "cant_delete", time() + 3600, "/");
-                throw new Exception("Company is already in use!");
-            }
-        }
+        setcookie("anant", "gandu", time() + 3600, "/");
+        // if (!$Resp) {
+        //     if (strpos($obj->con1->error, "foreign key constraint") != false) {
+        //         setcookie("msg", "cant_delete", time() + 3600, "/");
+        //         throw new Exception("Company is already in use!");
+        //     } else {
+        //         throw new Exception($obj->con1->error);
+        //     }
+        // } else {
+        //     setcookie("msg", "data_del", time() + 3600, "/");
+        // }
         $stmt_del->close();
     } catch (\Exception $e) {
-        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
+        // setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
     }
 
-    if ($Resp) {
-        setcookie("msg", "data_del", time() + 3600, "/");
-    }
+    // if ($Resp) {
+    //     setcookie("msg", "data_del", time() + 3600, "/");
+    // }
     header("location:mobile_companies.php");
 }
 ?>
@@ -33,9 +39,11 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
             <h1 class='text-primary text-2xl font-semibold'>Mobile Companies</h1>
 
             <div class="flex flex-wrap items-center">
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_mobile_company.php'">
+                <?php if(isset($_SESSION["type_admin"])){ ?> 
+                    <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_mobile_company.php'">
                     <i class="ri-add-line mr-1"></i> Add Company
                 </button>
+                <?php }?>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
                 </button>
@@ -77,7 +85,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 console.log('Initalizing datatable')
                 this.datatable = new simpleDatatables.DataTable('#myTable', {
                     data: {
-                        headings: ['Sr.No.', 'Name', 'Action'],
+                        headings: ['Sr.No.', 'Name', <?php if(isset($_SESSION['type_admin'])){ ?> 'Action' <?php } ?>],
                         data: [
                             <?php
                             $stmt = $obj->con1->prepare("SELECT * FROM `mobile_companies`");
@@ -89,7 +97,9 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                 [
                                 <?php echo $i; ?>,
                                 '<strong><?php echo $row["name"]; ?></strong>',
-                                getActions(<?php echo $row["id"]; ?>, '<?php echo $row["name"]; ?>')
+                                <?php if(isset($_SESSION["type_admin"])){ ?>
+                                    getActions(<?php echo $row["id"]; ?>, '<?php echo $row["name"]; ?>')
+                                <?php } ?>
                                 ],
                                 <?php
                                 $i++;

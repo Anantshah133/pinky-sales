@@ -33,9 +33,11 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
             <h1 class='text-primary text-2xl font-semibold'>Manufacturer Companies</h1>
 
             <div class="flex flex-wrap items-center">
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_manufacturer_company.php'">
-                    <i class="ri-add-line mr-1"></i> Add Company
-                </button>
+                <?php if(isset($_SESSION["type_admin"])){ ?> 
+                    <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_manufacturer_company.php'">
+                        <i class="ri-add-line mr-1"></i> Add Company
+                    </button>
+                <?php }?>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
                 </button>
@@ -77,7 +79,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 console.log('Initalizing datatable')
                 this.datatable = new simpleDatatables.DataTable('#myTable', {
                     data: {
-                        headings: ['Sr.No.', 'Name', 'Action'],
+                        headings: ['Sr.No.', 'Name', <?php if(isset($_SESSION["type_admin"])){ ?>  'Action' <?php }?>],
                         data: [
                             <?php
                             $stmt = $obj->con1->prepare("SELECT * FROM `manufacturer_companies`");
@@ -89,7 +91,9 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                 [
                                 <?php echo $i; ?>,
                                 '<strong><?php echo $row["manufacturer_name"]; ?></strong>',
-                                getActions(<?php echo $row["id"]; ?>, '<?php echo $row["manufacturer_name"]; ?>')
+                                <?php if(isset($_SESSION["type_admin"])){ ?> 
+                                    getActions(<?php echo $row["id"]; ?>, '<?php echo $row["manufacturer_name"]; ?>')
+                                <?php }?>
                                 ],
                                 <?php
                                 $i++;

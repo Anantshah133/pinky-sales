@@ -25,17 +25,10 @@ if (isset($_SESSION['type_admin']) && $_SESSION['type_admin']) {
 } elseif (isset($_SESSION['type_center']) && $_SESSION['type_center']) {
     $allowed_pages = array(
         "index.php",
-        "call_allocation.php",
-        "complaint_demo.php",
-        "technician.php",
-        "warranty.php",
-        "returned.php",
-        "edit_return.php",
-        "edit_view_warranty.php",
-        "add_call_allocation.php",
-        "add_complaint_demo.php",
-        "add_technician.php",
-        "add_call_history.php"
+        "user_profile.php",
+        "mobile_companies.php",
+        "display_modal.php",
+        "manufacturer_company.php",
     );
 }
 
@@ -270,7 +263,7 @@ if (isset($_REQUEST['logout'])) {
                                 </div>
                             </div>
                             <div>
-                                <h3 class="text-2xl margin-minus font-bold text-logo session-name"><?php echo isset($_SESSION['type_center']) && $_SESSION['type_center'] ? strtoupper($_SESSION["name"]) : 'Admin' ?></h3>
+                                <h3 class="text-2xl margin-minus font-bold text-logo session-name"><?php echo isset($_SESSION['type_center']) ? strtoupper($_SESSION["shop_name"]) : 'Admin' ?></h3>
                             </div>
                             <div class="flex gap-2">
                                 <!-- <div class="dropdown" x-data="dropdown" @click.outside="open = false">
@@ -377,11 +370,10 @@ if (isset($_REQUEST['logout'])) {
                                                         src="./profile.png" alt="image" />
                                                 </div>
                                                 <div class="truncate ltr:pl-4 rtl:pr-4">
-                                                    <h4 class="text-sm">Welcome <?php echo isset($_SESSION['type_admin']) ? $_SESSION['admin_name'] : 'Service Center' ?> !
-                                                        <span class="rounded bg-success-light px-1 text-xs text-success ltr:ml-2 rtl:ml-2">Pro</span>
+                                                    <h4 class="text-sm">Welcome <?php echo isset($_SESSION['type_admin']) ? $_SESSION['admin_name'] : 'User' ?>
                                                     </h4>
                                                     <a class="text-black/60 hover:text-primary dark:text-dark-light/60 dark:hover:text-white" href="javascript:;">
-                                                        <?php echo isset($_SESSION['admin_username']) && $_SESSION['admin_username'] ? $_SESSION['admin_username'] : $_SESSION['username'] ?>
+                                                        <?php echo isset($_SESSION['admin_username']) && $_SESSION['admin_username'] ? $_SESSION['admin_username'] : $_SESSION['shop_usernane'] ?>
                                                     </a>
                                                 </div>
                                             </div>

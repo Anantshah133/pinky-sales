@@ -5,14 +5,14 @@ setcookie("viewId", "", time() - 3600);
 
 if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     try {
-        $company_id = $_REQUEST["companyId"];
-        $stmt_del = $obj->con1->prepare("DELETE FROM mobile_companies WHERE id=?");
-        $stmt_del->bind_param("i", $company_id);
+        $display_modal_id = $_REQUEST["display_modal_id"];
+        $stmt_del = $obj->con1->prepare("DELETE FROM display_modals WHERE id = ?");
+        $stmt_del->bind_param("i", $display_modal_id);
         $Resp = $stmt_del->execute();
         if (!$Resp) {
             if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row") {
                 setcookie("msg", "cant_delete", time() + 3600, "/");
-                throw new Exception("Company is already in use!");
+                throw new Exception("Display Modal is already in use!");
             }
         }
         $stmt_del->close();
@@ -23,19 +23,21 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     if ($Resp) {
         setcookie("msg", "data_del", time() + 3600, "/");
     }
-    header("location:mobile_companies.php");
+    header("location:display_modal.php");
 }
 ?>
 
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-2">
         <div class='flex items-center justify-between mb-3'>
-            <h1 class='text-primary text-2xl font-semibold'>Mobile Companies</h1>
+            <h1 class='text-primary text-2xl font-semibold'>Display Modals</h1>
 
             <div class="flex flex-wrap items-center">
-                <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_display_modal.php'">
-                    <i class="ri-add-line mr-1"></i> Add Display Modal
-                </button>
+                <?php if(isset($_SESSION["type_admin"])){ ?> 
+                    <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_display_modal.php'">
+                        <i class="ri-add-line mr-1"></i> Add Display Modal
+                    </button>
+                <?php }?>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
                 </button>
@@ -77,7 +79,8 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 console.log('Initalizing datatable')
                 this.datatable = new simpleDatatables.DataTable('#myTable', {
                     data: {
-                        headings: ['Sr.No.', 'Name', 'Company Name', 'Manufacturer Company', 'Price', 'Action'],
+                        headings: ['Sr.No.', 'Name', 'Company Name', 'Manufacturer Company', 'Price',
+                        <?php if(isset($_SESSION["type_admin"])){ ?>  'Action' <?php }?>],
                         data: [
                         <?php
                             $stmt = $obj->con1->prepare("SELECT dm1.*, m1.id AS mid, m1.manufacturer_name, mc1.id AS cid, mc1.name AS cname FROM `display_modals` dm1 JOIN `manufacturer_companies` m1 ON dm1.manufacturer_id = m1.id JOIN `mobile_companies` mc1 ON dm1.company_id = mc1.id;");
@@ -92,7 +95,9 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                 '<strong><?php echo $row["cname"]; ?><strong>',
                                 '<strong><?php echo $row["manufacturer_name"]; ?><strong>',
                                 '<strong>₹ <?php echo $row["price"]; ?><strong>',
+                                <?php if(isset($_SESSION["type_admin"])){ ?> 
                                 getActions(<?php echo $row["id"]; ?>, '<?php echo $row["modal_name"]; ?>')
+                                <?php }?>
                             ],
                         <?php
                                 $i++;
@@ -163,7 +168,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         }).then((result) => {
             console.log(result)
             if (result.isConfirmed) {
-                var loc = "mobile_companies.php?flg=del&companyId=" + id;
+                var loc = "display_modal.php?flg=del&display_modal_id=" + id;
                 window.location = loc;
             }
         });
