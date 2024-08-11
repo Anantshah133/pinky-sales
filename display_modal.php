@@ -55,12 +55,12 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     function getActions(id, name) {
         return `<ul class="flex items-center gap-4">
         <li>
-            <a href="javascript:viewRecord(${id}, 'add_mobile_company.php')" class='text-xl' x-tooltip="View">
+            <a href="javascript:viewRecord(${id}, 'add_display_modal.php')" class='text-xl' x-tooltip="View">
                 <i class="ri-eye-line text-primary"></i>
             </a>
         </li>
         <li>
-            <a href="javascript:updateRecord(${id}, 'add_mobile_company.php');" class='text-xl' x-tooltip="Edit">
+            <a href="javascript:updateRecord(${id}, 'add_display_modal.php');" class='text-xl' x-tooltip="Edit">
                 <i class="ri-pencil-line text text-success"></i>
             </a>
         </li>

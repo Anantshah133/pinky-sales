@@ -4,7 +4,7 @@ include "header.php";
 if (isset($_COOKIE['viewId'])) {
     $mode = 'view';
     $viewId = $_COOKIE['viewId'];
-    $stmt = $obj->con1->prepare("SELECT * FROM `mobile_companies` where id=?");
+    $stmt = $obj->con1->prepare("SELECT * FROM `display_modals` where id=?");
     $stmt->bind_param("i", $viewId);
     $stmt->execute();
     $Resp = $stmt->get_result();
@@ -15,7 +15,7 @@ if (isset($_COOKIE['viewId'])) {
 if (isset($_COOKIE['editId'])) {
     $mode = 'edit';
     $editId = $_COOKIE['editId'];
-    $stmt = $obj->con1->prepare("SELECT * FROM `mobile_companies` where id=?");
+    $stmt = $obj->con1->prepare("SELECT * FROM `display_modals` where id=?");
     $stmt->bind_param("i", $editId);
     $stmt->execute();
     $Resp = $stmt->get_result();
@@ -24,20 +24,29 @@ if (isset($_COOKIE['editId'])) {
 }
 
 if (isset($_REQUEST['update'])) {
-    $editId = $_COOKIE['editId'];
-    $company_name = $_REQUEST["company_name"];
+    $modal_name = $_REQUEST["modal_name"];
+    $company_id = $_REQUEST["company_name"];
+    $manufacturer_id = $_REQUEST["manufacturer_name"];
+    $price = $_REQUEST["price"];
 
-    $stmt = $obj->con1->prepare("UPDATE `mobile_companies` SET name=? WHERE id=?");
-    $stmt->bind_param("si", $company_name, $editId);
-    $Res = $stmt->execute();
-    $stmt->close();
+    try {
+        $stmt = $obj->con1->prepare("UPDATE `display_modals` SET modal_name=?, company_id=?, manufacturer_id=?, price=? WHERE id=?");
+        $stmt->bind_param("siiii", $modal_name, $company_id, $manufacturer_id, $price, $editId);
+        $Res = $stmt->execute();
+        if (!$Res) {
+            throw new Exception("Problem in updating! " . strtok($obj->con1->error, "("));
+        }
+        $stmt->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/"); 
+    }
 
     if ($Res) {
         setcookie("msg", "update", time() + 3600, "/");
-        header("location:mobile_companies.php");
+        header("location:display_modal.php");
     } else {
         setcookie("msg", "fail", time() + 3600, "/");
-        header("location:mobile_companies.php");
+        header("location:display_modal.php");
     }
 }
 
@@ -81,7 +90,7 @@ if (isset($_REQUEST["save"])) {
                 <div>
                     <label for="modal_name" class="font-bold">Display Modal Name </label>
                     <input id="modal_name" name="modal_name" type="text" class="form-input"
-                        value="<?php echo isset($mode) ? $data["modal_name"] : ""; ?>" pattern="^\s*\S.*$" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> required onblur="" />
+                        value="<?php echo isset($mode) ? $data["modal_name"] : ""; ?>" pattern="^\s*\S.*$" <?php echo isset($mode) && $mode == 'view' ? 'readonly' : '' ?> required />
                     <p class="mt-3 text-danger text-base font-bold" id="demo"></p>
                 </div>
                 <div>
@@ -95,17 +104,17 @@ if (isset($_REQUEST["save"])) {
                     <select name="company_name" id="company_name" class="form-select" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> required>
                         <option value="">Choose Display Company</option>
                         <?php
-                            $query = $obj->con1->prepare("SELECT * FROM `mobile_companies`");
-                            $query->execute();
-                            $Resp = $query->get_result();
-                            while ($row = mysqli_fetch_array($Resp)) {
-                        ?>
-                            <option value="<?php echo $row["id"]; ?>">
+                        $query = $obj->con1->prepare("SELECT * FROM `mobile_companies`");
+                        $query->execute();
+                        $Resp = $query->get_result();
+                        while ($row = mysqli_fetch_array($Resp)) {
+                            ?>
+                            <option value="<?php echo $row["id"]; ?>" <?php echo $row["id"] == $data["company_id"] ? "selected" : "" ?>>
                                 <?php echo $row["name"]; ?>
                             </option>
-                        <?php
-                            }
-                            $query->close();
+                            <?php
+                        }
+                        $query->close();
                         ?>
                     </select>
                 </div>
@@ -114,33 +123,34 @@ if (isset($_REQUEST["save"])) {
                     <select name="manufacturer_name" id="manufacturer_name" class="form-select" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> required>
                         <option value="">Choose Display Company</option>
                         <?php
-                            $query = $obj->con1->prepare("SELECT * FROM `manufacturer_companies`");
-                            $query->execute();
-                            $Resp = $query->get_result();
-                            while ($row = mysqli_fetch_array($Resp)) {
-                        ?>
-                            <option value="<?php echo $row["id"]; ?>" <?php echo isset($mode) && $row['id'] == $data['company_id'] ? 'selected' : '' ?>>
+                        $query = $obj->con1->prepare("SELECT * FROM `manufacturer_companies`");
+                        $query->execute();
+                        $Resp = $query->get_result();
+                        while ($row = mysqli_fetch_array($Resp)) {
+                            ?>
+                            <option value="<?php echo $row["id"]; ?>" <?php echo isset($mode) && $row['id'] == $data['manufacturer_id'] ? 'selected' : '' ?>>
                                 <?php echo $row["manufacturer_name"]; ?>
                             </option>
-                        <?php
-                            }
-                            $query->close();
+                            <?php
+                        }
+                        $query->close();
                         ?>
                     </select>
                 </div>
 
                 <div class="relative inline-flex align-middle gap-3 mt-4">
                     <?php
-                        if (isset($mode) && $mode != 'view' || !isset($mode)) {
-                    ?>
+                    if (isset($mode) && $mode != 'view' || !isset($mode)) {
+                        ?>
                         <button type="submit" name="<?php echo isset($mode) && $mode == 'edit' ? 'update' : 'save' ?>"
                             id="save" class="btn btn-success" onclick="return localValidate()">
                             <?php echo isset($mode) && $mode == 'edit' ? 'Update' : 'Save' ?>
                         </button>
-                    <?php
-                        }
+                        <?php
+                    }
                     ?>
-                    <button type="button" class="btn btn-danger" onclick="window.location='display_modal.php'">Close</button>
+                    <button type="button" class="btn btn-danger"
+                        onclick="window.location='display_modal.php'">Close</button>
                 </div>
             </form>
         </div>
@@ -152,7 +162,7 @@ if (isset($_REQUEST["save"])) {
         let submitButton = document.getElementById('save');
         let company = document.getElementById('company_name');
 
-        if (form.checkValidity() && checkCompany(company, <?php echo isset($mode) ? $data['id'] : 0 ?>)){
+        if (form.checkValidity() && checkCompany(company, <?php echo isset($mode) ? $data['id'] : 0 ?>)) {
             setTimeout(() => {
                 submitButton.disabled = true;
             }, 0);
