@@ -39,10 +39,14 @@ if (!in_array(basename($_SERVER['PHP_SELF']), $allowed_pages)) {
 
 if (isset($_REQUEST['logout'])) {
     setcookie("msg", "logout", time() + 3600, "/");
-    if(isset($_SESSION['type_admin'])){
+    if(isset($_SESSION['type_admin']) || isset($_SESSION['type_center'])){
         unset($_SESSION['type_admin']);
+        unset($_SESSION['type_center']);
         unset($_SESSION['admin_username']);
+        unset($_SESSION['shop_username']);
         unset($_SESSION['admin_name']);
+        unset($_SESSION['shop_name']);
+
     } // else if(isset($_SESSION['type_center'])){
     //     unset($_SESSION['type_center']);
     //     unset($_SESSION['username']);
