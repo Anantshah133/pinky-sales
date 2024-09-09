@@ -21,33 +21,12 @@ if (isset($_REQUEST['save'])) {
         $_SESSION['admin_name'] = $admin_data['name'];
         setcookie("msg", "login", time() + 3600, "/");
         header("location:index.php");
-    } else if($userName == "pinky-sales" && $password == "ps@123") {
+    } else if($userName == "as" && $password == "as@123") {
         $_SESSION['type_center'] = true;
         $_SESSION['shop_usernane'] = $userName;
-        $_SESSION['shop_name'] = "Pinky Sales";
+        $_SESSION['shop_name'] = "AS Store - User";
         setcookie("msg", "login", time() + 3600, "/");
         header("location:index.php");
-        // $stmt = $obj->con1->prepare("SELECT * FROM `service_center` WHERE userid=? AND BINARY password=?");
-        // $stmt->bind_param("ss", $userName, $password);
-        // $stmt->execute();
-        // $Resp = $stmt->get_result();
-        // $service_center_data = $Resp->fetch_assoc();
-        // $stmt->close();
-
-        // if($service_center_data){
-        //     $_SESSION['type_center'] = true;
-        //     $_SESSION['username'] = $service_center_data['userid'];
-        //     $_SESSION['name'] = $service_center_data['name'];
-        //     $_SESSION['scid'] = $service_center_data['id'];
-        //     $_SESSION['sc_city'] = $service_center_data['area'];
-            
-        //     setcookie("msg", "sc_login", time() + 3600, "/");
-        //     header("location:index.php");
-        // } else {
-        //     setcookie("msg", "wrong_cred", time() + 3600, "/");
-        //     header("location:login.php");
-        //     exit;
-        // }
     } else {
         setcookie("msg", "wrong_cred", time() + 3600, "/");
         header("location:login.php");
@@ -62,7 +41,7 @@ if (isset($_REQUEST['save'])) {
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Onelife - Login</title>
+    <title>AS Store - Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -89,7 +68,7 @@ if (isset($_REQUEST['save'])) {
             <div class="panel m-6 w-full max-w-lg sm:w-[480px] shadow-3xl">
                 <div class="logo-login w-full flex items-center justify-center mb-6">
                     <!-- <img src="./assets/images/one_life/logo.png" alt="" class="w-8/12"> -->
-                     <h1 class="text-5xl text-primary font-bold">Pinky Sales</h1>
+                     <h1 class="text-5xl text-primary font-bold">AS Store</h1>
                 </div>
                 <div class="border-2 border-primary opacity-70 rounded-full"></div>
                 <h2 class="mb-3 mt-5 text-3xl font-bold">Sign In</h2>
