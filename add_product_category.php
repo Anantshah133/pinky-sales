@@ -4,7 +4,7 @@ include "header.php";
 if (isset($_COOKIE['viewId'])) {
     $mode = 'view';
     $viewId = $_COOKIE['viewId'];
-    $stmt = $obj->con1->prepare("SELECT * FROM `mobile_companies` where id=?");
+    $stmt = $obj->con1->prepare("SELECT * FROM `product_category` where id=?");
     $stmt->bind_param("i", $viewId);
     $stmt->execute();
     $Resp = $stmt->get_result();
@@ -15,7 +15,7 @@ if (isset($_COOKIE['viewId'])) {
 if(isset($_COOKIE['editId'])){
     $mode = 'edit';
     $editId = $_COOKIE['editId'];
-    $stmt = $obj->con1->prepare("SELECT * FROM `mobile_companies` where id=?");
+    $stmt = $obj->con1->prepare("SELECT * FROM `product_category` where id=?");
     $stmt->bind_param("i", $editId);
     $stmt->execute();
     $Resp = $stmt->get_result();
@@ -27,17 +27,24 @@ if(isset($_REQUEST['update'])){
     $editId = $_COOKIE['editId'];
     $category_name = $_REQUEST["category_name"];
 
-    $stmt = $obj->con1->prepare("UPDATE `mobile_companies` SET name=? WHERE id=?");
-    $stmt->bind_param("si", $category_name, $editId);
-    $Res = $stmt->execute();
-    $stmt->close();
+    try{
+        $stmt = $obj->con1->prepare("UPDATE `product_category` SET category_name=? WHERE id=?");
+        $stmt->bind_param("si", $category_name, $editId);
+        $Res = $stmt->execute();
+        if (!$Res) {
+            throw new Exception("Problem in updating! " . strtok($obj->con1->error, "("));
+        }
+        $stmt->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
+    }
 
     if ($Res) {
         setcookie("msg", "update", time() + 3600, "/");
-        header("location:mobile_companies.php");
+        header("location:product_category.php");
     } else {
         setcookie("msg", "fail", time() + 3600, "/");
-        header("location:mobile_companies.php");
+        header("location:product_category.php");
     }
 }
 

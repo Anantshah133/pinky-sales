@@ -3,28 +3,28 @@ include "header.php";
 setcookie("editId", "", time() - 3600);
 setcookie("viewId", "", time() - 3600);
 
-// if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
-//     try {
-//         $display_modal_id = $_REQUEST["display_modal_id"];
-//         $stmt_del = $obj->con1->prepare("DELETE FROM display_modals WHERE id = ?");
-//         $stmt_del->bind_param("i", $display_modal_id);
-//         $Resp = $stmt_del->execute();
-//         if (!$Resp) {
-//             if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row") {
-//                 setcookie("msg", "cant_delete", time() + 3600, "/");
-//                 throw new Exception("Display Modal is already in use!");
-//             }
-//         }
-//         $stmt_del->close();
-//     } catch (\Exception $e) {
-//         setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
-//     }
+if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
+    try {
+        $id = $_REQUEST["id"];
+        $stmt_del = $obj->con1->prepare("DELETE FROM product_category WHERE id = ?");
+        $stmt_del->bind_param("i", $id);
+        $Resp = $stmt_del->execute();
+        if (!$Resp) {
+            if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row") {
+                setcookie("msg", "cant_delete", time() + 3600, "/");
+                throw new Exception("Display Modal is already in use!");
+            }
+        }
+        $stmt_del->close();
+    } catch (\Exception $e) {
+        setcookie("sql_error", urlencode($e->getMessage()), time() + 3600, "/");
+    }
 
-//     if ($Resp) {
-//         setcookie("msg", "data_del", time() + 3600, "/");
-//     }
-//     header("location:display_modal.php");
-// }
+    if ($Resp) {
+        setcookie("msg", "data_del", time() + 3600, "/");
+    }
+    header("location:product_category.php");
+}
 ?>
 
 <div class='p-6' x-data='exportTable'>
@@ -55,12 +55,12 @@ setcookie("viewId", "", time() - 3600);
     function getActions(id, name) {
         return `<ul class="flex items-center gap-4">
         <li>
-            <a href="javascript:viewRecord(${id}, 'add_display_modal.php')" class='text-xl' x-tooltip="View">
+            <a href="javascript:viewRecord(${id}, 'add_product_category.php')" class='text-xl' x-tooltip="View">
                 <i class="ri-eye-line text-primary"></i>
             </a>
         </li>
         <li>
-            <a href="javascript:updateRecord(${id}, 'add_display_modal.php');" class='text-xl' x-tooltip="Edit">
+            <a href="javascript:updateRecord(${id}, 'add_product_category.php');" class='text-xl' x-tooltip="Edit">
                 <i class="ri-pencil-line text text-success"></i>
             </a>
         </li>
@@ -158,14 +158,14 @@ setcookie("viewId", "", time() - 3600);
     async function showAlert(id, name) {
         new window.Swal({
             title: 'Are you sure?',
-            text: `You want to delete Company :- ${name}`,
+            text: `You want to delete Category :- ${name}`,
             showCancelButton: true,
             confirmButtonText: 'Delete',
             padding: '2em',
         }).then((result) => {
             console.log(result)
             if (result.isConfirmed) {
-                // var loc = "product_category.php?flg=del&display_modal_id=" + id;
+                var loc = "product_category.php?flg=del&id=" + id;
                 window.location = loc;
             }
         });
