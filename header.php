@@ -20,7 +20,9 @@ if (isset($_SESSION['type_admin']) && $_SESSION['type_admin']) {
         "display_modal.php",
         "add_display_modal.php",
         "manufacturer_company.php",
-        "add_manufacturer_company.php"
+        "add_manufacturer_company.php",
+        "product_category.php",
+        "add_product_category.php"
     );
 } elseif (isset($_SESSION['type_center']) && $_SESSION['type_center']) {
     $allowed_pages = array(
@@ -120,11 +122,9 @@ if (isset($_REQUEST['logout'])) {
                 <div class="h-full bg-white dark:bg-[#0e1726]">
                     <div class="flex items-center justify-between px-4 py-3">
                         <a href="index.php" class="main-logo flex shrink-0 items-center justify-center">
-                            <!-- <img class="ml-[5px] logo flex-none" src="assets/images/one_life/logo.png" alt="image" /> -->
                             <h4 class="text-3xl font-bold text-logo">AS Store</h4>
                         </a>
-                        <a href="javascript:;"
-                            class="collapse-icon flex h-8 w-8 items-center rounded-full transition duration-300 hover:bg-gray-500/10 rtl:rotate-180 dark:text-white-light dark:hover:bg-dark-light/10"
+                        <a href="javascript:;" class="collapse-icon flex h-8 w-8 items-center rounded-full transition duration-300 hover:bg-gray-500/10 rtl:rotate-180 dark:text-white-light dark:hover:bg-dark-light/10"
                             @click="$store.app.toggleSidebar()">
                             <svg class="m-auto h-5 w-5" width="20" height="20" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -168,14 +168,11 @@ if (isset($_REQUEST['logout'])) {
                         <li class="menu nav-item">
                             <a href="mobile_companies.php" class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "mobile_companies.php" ? "active" : "" ?>">
                                 <div class="flex items-center">
-                                    <svg class="shrink-0 " width="20" height="20"
-                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle opacity="0.5" cx="15" cy="6" r="3" fill="currentColor"></circle>
-                                        <ellipse opacity="0.5" cx="16" cy="17" rx="5" ry="3" fill="currentColor">
-                                        </ellipse>
-                                        <circle cx="9.00098" cy="6" r="4" fill="currentColor"></circle>
-                                        <ellipse cx="9.00098" cy="17.001" rx="7" ry="4" fill="currentColor"></ellipse>
-                                    </svg>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.5" d="M5.17157 3.17157C4 4.34315 4 6.22876 4 10V14C4 17.7712 4 19.6569 5.17157 20.8284C6.34315 22 8.22876 22 12 22C15.7712 22 17.6569 22 18.8284 20.8284C20 19.6569 20 17.7712 20 14V10C20 6.22876 20 4.34315 18.8284 3.17157C17.6569 2 15.7712 2 12 2C8.22876 2 6.34315 2 5.17157 3.17157Z" fill="#1C274C"/>
+                                    <path d="M9 4.25C8.58579 4.25 8.25 4.58579 8.25 5C8.25 5.41421 8.58579 5.75 9 5.75H15C15.4142 5.75 15.75 5.41421 15.75 5C15.75 4.58579 15.4142 4.25 15 4.25H9Z" fill="#1C274C"/>
+                                    <path d="M12 19C13.1046 19 14 18.1046 14 17C14 15.8954 13.1046 15 12 15C10.8954 15 10 15.8954 10 17C10 18.1046 10.8954 19 12 19Z" fill="#1C274C"/>
+                                </svg>
                                     <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Display Company</span>
                                 </div>
                             </a>
@@ -183,17 +180,12 @@ if (isset($_REQUEST['logout'])) {
                         <li class="menu nav-item">
                             <a href="display_modal.php" class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "display_modal.php" ? "active" : "" ?>">
                                 <div class="flex items-center">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M18 14C18 18.4183 14.4183 22 10 22C8.76449 22 7.5944 21.7199 6.54976 21.2198C6.19071 21.0479 5.78393 20.9876 5.39939 21.0904L4.17335 21.4185C3.20701 21.677 2.32295 20.793 2.58151 19.8267L2.90955 18.6006C3.01245 18.2161 2.95209 17.8093 2.7802 17.4502C2.28008 16.4056 2 15.2355 2 14C2 9.58172 5.58172 6 10 6C14.4183 6 18 9.58172 18 14ZM6.5 15C7.05228 15 7.5 14.5523 7.5 14C7.5 13.4477 7.05228 13 6.5 13C5.94772 13 5.5 13.4477 5.5 14C5.5 14.5523 5.94772 15 6.5 15ZM10 15C10.5523 15 11 14.5523 11 14C11 13.4477 10.5523 13 10 13C9.44772 13 9 13.4477 9 14C9 14.5523 9.44772 15 10 15ZM13.5 15C14.0523 15 14.5 14.5523 14.5 14C14.5 13.4477 14.0523 13 13.5 13C12.9477 13 12.5 13.4477 12.5 14C12.5 14.5523 12.9477 15 13.5 15Z"
-                                            fill="currentColor"></path>
-                                        <path opacity="0.6"
-                                            d="M17.9842 14.5084C18.0921 14.4638 18.1986 14.4163 18.3035 14.3661C18.5952 14.2264 18.9257 14.1774 19.2381 14.261L20.2343 14.5275C21.0194 14.7376 21.7377 14.0193 21.5277 13.2342L21.2611 12.238C21.1775 11.9256 21.2266 11.595 21.3662 11.3033C21.7726 10.4545 22.0001 9.50385 22.0001 8.5C22.0001 4.91015 19.09 2 15.5001 2C12.7901 2 10.4674 3.6585 9.4917 6.0159C9.65982 6.00535 9.82936 6 10.0001 6C14.4184 6 18.0001 9.58172 18.0001 14C18.0001 14.1708 17.9948 14.3403 17.9842 14.5084Z"
-                                            fill="currentColor"></path>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M3.62731 14.5343C3.88455 14.8589 3.82989 15.3306 3.50523 15.5879C2.93157 16.0424 2.75 16.443 2.75 16.75C2.75 17.0165 2.88413 17.3495 3.29688 17.7337C3.71071 18.119 4.35043 18.5004 5.20371 18.8364C6.41418 19.313 7.97893 19.6686 9.75 19.8343V19.375C9.75 19.0807 9.9221 18.8137 10.1901 18.6921C10.4581 18.5705 10.7724 18.6168 10.9939 18.8106L12.4939 20.1231C12.6566 20.2655 12.75 20.4713 12.75 20.6875C12.75 20.9038 12.6566 21.1095 12.4939 21.252L10.9939 22.5645C10.7724 22.7582 10.4581 22.8046 10.1901 22.683C9.9221 22.5614 9.75 22.2943 9.75 22V21.3404C7.80576 21.1699 6.04974 20.7816 4.65415 20.2321C3.69779 19.8555 2.87304 19.3885 2.27482 18.8316C1.67551 18.2737 1.25 17.5709 1.25 16.75C1.25 15.7998 1.81667 15.012 2.5737 14.4122C2.89836 14.1549 3.37008 14.2096 3.62731 14.5343ZM20.3727 14.5343C20.6299 14.2096 21.1016 14.1549 21.4263 14.4122C22.1833 15.012 22.75 15.7998 22.75 16.75C22.75 18.1281 21.5819 19.1606 20.2034 19.8514C18.7617 20.5738 16.791 21.0851 14.5756 21.3097C14.1635 21.3514 13.7956 21.0512 13.7538 20.6391C13.7121 20.227 14.0123 19.8591 14.4244 19.8173C16.522 19.6047 18.3014 19.1267 19.5314 18.5103C20.8246 17.8623 21.25 17.2067 21.25 16.75C21.25 16.443 21.0684 16.0424 20.4948 15.5879C20.1701 15.3306 20.1155 14.8589 20.3727 14.5343Z" fill="#1C274C"/>
+                                        <path opacity="0.5" d="M19 9V19C19 19 14.8431 21 12 21C9.15694 21 5 19 5 19V9C5 6.19108 5 4.78661 5.67412 3.77772C5.96596 3.34096 6.34096 2.96596 6.77772 2.67412C7.78661 2 9.19108 2 12 2C14.8089 2 16.2134 2 17.2223 2.67412C17.659 2.96596 18.034 3.34096 18.3259 3.77772C19 4.78661 19 6.19108 19 9Z" fill="#1C274C"/>
+                                        <path d="M9 4.25C8.58579 4.25 8.25 4.58579 8.25 5C8.25 5.41421 8.58579 5.75 9 5.75H15C15.4142 5.75 15.75 5.41421 15.75 5C15.75 4.58579 15.4142 4.25 15 4.25H9Z" fill="#1C274C"/>
                                     </svg>
-                                    <span
-                                        class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Display Modals</span>
+                                    <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Display Modals</span>
                                 </div>
                             </a>
                         </li>
@@ -207,6 +199,23 @@ if (isset($_REQUEST['logout'])) {
                                         <path d="M15.7351 3.00079L15.1623 2.80472C13.595 2.26824 12.8114 2 12 2V8L21 11V10.4167C21 7.21907 21 5.62028 20.6225 5.08241C20.245 4.54454 18.7417 4.02996 15.7351 3.00079Z" fill="#1C274C"/>
                                     </svg>
                                     <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Manufacturer Company</span>
+                                </div>
+                            </a>
+                        </li>
+                        <h2 class='-mx-4 mb-1 flex items-center bg-white-light/30 py-3 px-7 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]'>
+                            Other Products
+                        </h2>
+                        <li class="menu nav-item">
+                            <a href="product_category.php" class="nav-link group <?php echo basename($_SERVER["PHP_SELF"]) == "product_category.php" ? "active" : "" ?>">
+                                <div class="flex items-center">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.5" d="M13 15.4C13 13.3258 13 12.2887 13.659 11.6444C14.318 11 15.3787 11 17.5 11C19.6213 11 20.682 11 21.341 11.6444C22 12.2887 22 13.3258 22 15.4V17.6C22 19.6742 22 20.7113 21.341 21.3556C20.682 22 19.6213 22 17.5 22C15.3787 22 14.318 22 13.659 21.3556C13 20.7113 13 19.6742 13 17.6V15.4Z" fill="#1C274C"/>
+                                        <path d="M2 8.6C2 10.6742 2 11.7113 2.65901 12.3556C3.31802 13 4.37868 13 6.5 13C8.62132 13 9.68198 13 10.341 12.3556C11 11.7113 11 10.6742 11 8.6V6.4C11 4.32582 11 3.28873 10.341 2.64437C9.68198 2 8.62132 2 6.5 2C4.37868 2 3.31802 2 2.65901 2.64437C2 3.28873 2 4.32582 2 6.4V8.6Z" fill="#1C274C"/>
+                                        <path d="M13 5.5C13 4.4128 13 3.8692 13.1713 3.44041C13.3996 2.86867 13.8376 2.41443 14.389 2.17761C14.8024 2 15.3266 2 16.375 2H18.625C19.6734 2 20.1976 2 20.611 2.17761C21.1624 2.41443 21.6004 2.86867 21.8287 3.44041C22 3.8692 22 4.4128 22 5.5C22 6.5872 22 7.1308 21.8287 7.55959C21.6004 8.13133 21.1624 8.58557 20.611 8.82239C20.1976 9 19.6734 9 18.625 9H16.375C15.3266 9 14.8024 9 14.389 8.82239C13.8376 8.58557 13.3996 8.13133 13.1713 7.55959C13 7.1308 13 6.5872 13 5.5Z" fill="#1C274C"/>
+                                        <path opacity="0.5" d="M2 18.5C2 19.5872 2 20.1308 2.17127 20.5596C2.39963 21.1313 2.83765 21.5856 3.38896 21.8224C3.80245 22 4.32663 22 5.375 22H7.625C8.67337 22 9.19755 22 9.61104 21.8224C10.1624 21.5856 10.6004 21.1313 10.8287 20.5596C11 20.1308 11 19.5872 11 18.5C11 17.4128 11 16.8692 10.8287 16.4404C10.6004 15.8687 10.1624 15.4144 9.61104 15.1776C9.19755 15 8.67337 15 7.625 15H5.375C4.32663 15 3.80245 15 3.38896 15.1776C2.83765 15.4144 2.39963 15.8687 2.17127 16.4404C2 16.8692 2 17.4128 2 18.5Z" fill="#1C274C"/>
+                                    </svg>
+
+                                    <span class="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">Product Category</span>
                                 </div>
                             </a>
                         </li>

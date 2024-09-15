@@ -12,7 +12,7 @@ class DB_Connect
     // Connecting to database
     public function connect()
     {
-        ($con = mysqli_connect("localhost", "root", "", "pinky_sales")) or
+        ($con = mysqli_connect("localhost", "root", "", "as_store")) or
             die("Connection Failed...!");
 
         if (!$con) {
