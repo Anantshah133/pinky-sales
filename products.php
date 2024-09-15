@@ -4,21 +4,16 @@ setcookie("editId", "", time() - 3600);
 setcookie("viewId", "", time() - 3600);
 
 if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
-    // echo "ajhfgasjhgdaskjhgdjhkasgdajhsdgjashgdasjhdgasdd";
     try {
-        $company_id = $_REQUEST["companyId"];
-        $stmt_del = $obj->con1->prepare("DELETE FROM mobile_companies WHERE id=?");
-        $stmt_del->bind_param("i", $company_id);
+        $id = $_REQUEST["id"];
+        $stmt_del = $obj->con1->prepare("DELETE FROM product_category WHERE id = ?");
+        $stmt_del->bind_param("i", $id);
         $Resp = $stmt_del->execute();
         if (!$Resp) {
-            if (strpos($obj->con1->error, "foreign key constraint") != false) {
+            if (strtok($obj->con1->error, ":") == "Cannot delete or update a parent row") {
                 setcookie("msg", "cant_delete", time() + 3600, "/");
-                throw new Exception("Company is already in use!");
-            } else {
-                throw new Exception($obj->con1->error);
+                throw new Exception("Display Modal is already in use!");
             }
-        } else {
-            setcookie("msg", "data_del", time() + 3600, "/");
         }
         $stmt_del->close();
     } catch (\Exception $e) {
@@ -28,20 +23,20 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     if ($Resp) {
         setcookie("msg", "data_del", time() + 3600, "/");
     }
-    header("location:mobile_companies.php");
+    header("location:product_category.php");
 }
 ?>
 
 <div class='p-6' x-data='exportTable'>
     <div class="panel mt-2">
         <div class='flex items-center justify-between mb-3'>
-            <h1 class='text-primary text-2xl font-semibold'>Mobile Companies</h1>
+            <h1 class='text-primary text-2xl font-semibold'>Other Products</h1>
 
             <div class="flex flex-wrap items-center">
                 <?php if(isset($_SESSION["type_admin"])){ ?> 
-                    <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_mobile_company.php'">
-                    <i class="ri-add-line mr-1"></i> Add Company
-                </button>
+                    <button type="button" class="p-2 btn btn-primary btn-sm m-1" onclick="location.href='add_products.php'">
+                        <i class="ri-add-line mr-1"></i> Add Product
+                    </button>
                 <?php }?>
                 <button type="button" class="p-2 btn btn-primary btn-sm m-1" @click="printTable">
                     <i class="ri-printer-line mr-1"></i> PRINT
@@ -60,12 +55,12 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     function getActions(id, name) {
         return `<ul class="flex items-center gap-4">
         <li>
-            <a href="javascript:viewRecord(${id}, 'add_mobile_company.php')" class='text-xl' x-tooltip="View">
+            <a href="javascript:viewRecord(${id}, 'add_products.php')" class='text-xl' x-tooltip="View">
                 <i class="ri-eye-line text-primary"></i>
             </a>
         </li>
         <li>
-            <a href="javascript:updateRecord(${id}, 'add_mobile_company.php');" class='text-xl' x-tooltip="Edit">
+            <a href="javascript:updateRecord(${id}, 'add_products.php');" class='text-xl' x-tooltip="Edit">
                 <i class="ri-pencil-line text text-success"></i>
             </a>
         </li>
@@ -84,25 +79,30 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 console.log('Initalizing datatable')
                 this.datatable = new simpleDatatables.DataTable('#myTable', {
                     data: {
-                        headings: ['Sr.No.', 'Name', <?php if(isset($_SESSION['type_admin'])){ ?> 'Action' <?php } ?>],
+                        headings: ['Sr.No.', 'Product Name', 'Product Company', 'Price', 'Product Category',
+                            <?php if(isset($_SESSION["type_admin"])){ ?>  'Action' <?php }?>
+                        ],
                         data: [
                             <?php
-                            $stmt = $obj->con1->prepare("SELECT * FROM `mobile_companies`");
-                            $stmt->execute();
-                            $Resp = $stmt->get_result();
-                            $i = 1;
-                            while ($row = mysqli_fetch_array($Resp)) {
-                                ?>
+                                $stmt = $obj->con1->prepare("SELECT * FROM `products`");
+                                $stmt->execute();
+                                $Resp = $stmt->get_result();
+                                $i = 1;
+                                while ($row = mysqli_fetch_array($Resp)) {
+                            ?>
                                 [
-                                <?php echo $i; ?>,
-                                '<strong><?php echo $row["name"]; ?></strong>',
-                                <?php if(isset($_SESSION["type_admin"])){ ?>
-                                    getActions(<?php echo $row["id"]; ?>, '<?php echo $row["name"]; ?>')
-                                <?php } ?>
+                                    '<strong><?php echo $i; ?></strong>',
+                                    '<strong><?php echo $row["product_name"]; ?></strong>',
+                                    '<?php echo $row["product_company"]; ?>',
+                                    '<strong>₹ <?php echo $row["product_price"]; ?></strong>',
+                                    '<?php echo $row["product_category"]; ?>',
+                                    <?php if(isset($_SESSION["type_admin"])){ ?> 
+                                        getActions(<?php echo $row["id"]; ?>, '<?php echo $row["product_name"]; ?>')
+                                    <?php }?>
                                 ],
-                                <?php
-                                $i++;
-                            }
+                            <?php
+                                    $i++;
+                                }
                             ?>
                         ],
                     },
@@ -162,14 +162,14 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     async function showAlert(id, name) {
         new window.Swal({
             title: 'Are you sure?',
-            text: `You want to delete Company :- ${name}`,
+            text: `You want to delete Product :- ${name}`,
             showCancelButton: true,
             confirmButtonText: 'Delete',
             padding: '2em',
         }).then((result) => {
             console.log(result)
             if (result.isConfirmed) {
-                var loc = "mobile_companies.php?flg=del&companyId=" + id;
+                var loc = "products.php?flg=del&id=" + id;
                 window.location = loc;
             }
         });
