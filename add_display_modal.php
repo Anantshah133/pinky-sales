@@ -104,17 +104,17 @@ if (isset($_REQUEST["save"])) {
                     <select name="company_name" id="company_name" class="form-select" <?php echo isset($mode) && $mode == 'view' ? 'disabled' : '' ?> required>
                         <option value="">Choose Display Company</option>
                         <?php
-                        $query = $obj->con1->prepare("SELECT * FROM `mobile_companies`");
-                        $query->execute();
-                        $Resp = $query->get_result();
-                        while ($row = mysqli_fetch_array($Resp)) {
-                            ?>
-                            <option value="<?php echo $row["id"]; ?>" <?php echo $row["id"] == $data["company_id"] ? "selected" : "" ?>>
+                            $query = $obj->con1->prepare("SELECT * FROM `mobile_companies`");
+                            $query->execute();
+                            $Resp = $query->get_result();
+                            while ($row = mysqli_fetch_array($Resp)) {
+                        ?>
+                            <option value="<?php echo $row["id"]; ?>" <?php echo isset($mode) && $row["id"] == $data["company_id"] ? "selected" : "" ?>>
                                 <?php echo $row["name"]; ?>
                             </option>
-                            <?php
-                        }
-                        $query->close();
+                        <?php
+                            }
+                            $query->close();
                         ?>
                     </select>
                 </div>

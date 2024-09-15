@@ -6,7 +6,7 @@ setcookie("viewId", "", time() - 3600);
 if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     try {
         $id = $_REQUEST["id"];
-        $stmt_del = $obj->con1->prepare("DELETE FROM product_category WHERE id = ?");
+        $stmt_del = $obj->con1->prepare("DELETE FROM products WHERE id = ?");
         $stmt_del->bind_param("i", $id);
         $Resp = $stmt_del->execute();
         if (!$Resp) {
@@ -23,7 +23,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
     if ($Resp) {
         setcookie("msg", "data_del", time() + 3600, "/");
     }
-    header("location:product_category.php");
+    header("location:products.php");
 }
 ?>
 
@@ -84,7 +84,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                         ],
                         data: [
                             <?php
-                                $stmt = $obj->con1->prepare("SELECT * FROM `products`");
+                                $stmt = $obj->con1->prepare("SELECT p1.*, p2.category_name FROM `products` p1, product_category p2 WHERE p2.id=p1.product_category");
                                 $stmt->execute();
                                 $Resp = $stmt->get_result();
                                 $i = 1;
@@ -95,7 +95,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                     '<strong><?php echo $row["product_name"]; ?></strong>',
                                     '<?php echo $row["product_company"]; ?>',
                                     '<strong>₹ <?php echo $row["product_price"]; ?></strong>',
-                                    '<?php echo $row["product_category"]; ?>',
+                                    '<?php echo $row["category_name"]; ?>',
                                     <?php if(isset($_SESSION["type_admin"])){ ?> 
                                         getActions(<?php echo $row["id"]; ?>, '<?php echo $row["product_name"]; ?>')
                                     <?php }?>
