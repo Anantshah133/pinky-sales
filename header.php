@@ -84,7 +84,6 @@ if (isset($_REQUEST['logout'])) {
     <script src="assets/js/sweetalert.min.js"></script>
     <script src="assets/js/nice-select2.js"></script>
     <script>
-        // let main;
         window.onload = () => {
             checkCookies();
         }
@@ -125,7 +124,7 @@ if (isset($_REQUEST['logout'])) {
                 <div class="h-full bg-white dark:bg-[#0e1726]">
                     <div class="flex items-center justify-between px-4 py-3">
                         <a href="index.php" class="main-logo flex shrink-0 items-center justify-center">
-                            <h4 class="text-3xl font-bold text-logo">AS Store</h4>
+                            <img class="ml-[5px] logo flex-none" src="./assets/images/asstore-logo.png" alt="image" />
                         </a>
                         <a href="javascript:;" class="collapse-icon flex h-8 w-8 items-center rounded-full transition duration-300 hover:bg-gray-500/10 rtl:rotate-180 dark:text-white-light dark:hover:bg-dark-light/10"
                             @click="$store.app.toggleSidebar()">
@@ -248,7 +247,7 @@ if (isset($_REQUEST['logout'])) {
                     <div class="relative flex w-full items-center bg-white px-5 py-2.5 dark:bg-[#0e1726]">
                         <div class="horizontal-logo flex items-center justify-between ltr:mr-2 rtl:ml-2 lg:hidden">
                             <a href="index.php" class="main-logo flex shrink-0 items-center justify-center">
-                                <h4 class="text-3xl font-bold text-logo">AS Store</h4>
+                                <img class="ml-[5px] logo flex-none" src="./assets/images/asstore-logo.png" alt="image" />
                             </a>
 
                             <a href="javascript:;"
