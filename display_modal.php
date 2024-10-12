@@ -46,7 +46,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 </button>
             </div>
         </div>
-        <table id="myTable" class="table-hover whitespace-nowrap"></table>
+        <table id="myTable" class="table-hover"></table>
     </div>
 </div>
 <!-- script -->
@@ -76,7 +76,6 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
         Alpine.data('exportTable', () => ({
             datatable: null,
             init() {
-                console.log('Initalizing datatable')
                 this.datatable = new simpleDatatables.DataTable('#myTable', {
                     data: {
                         headings: ['Sr.No.', 'Name', 'Company Name', 'Manufacturer Company', 'Price',
@@ -94,7 +93,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                                 '<strong><?php echo $row["modal_name"]; ?></strong>',
                                 '<strong><?php echo $row["cname"]; ?><strong>',
                                 '<strong><?php echo $row["manufacturer_name"]; ?><strong>',
-                                '<strong>₹ <?php echo $row["price"]; ?><strong>',
+                                '<strong><?php echo $row["price"]; ?><strong>',
                                 <?php if(isset($_SESSION["type_admin"])){ ?> 
                                 getActions(<?php echo $row["id"]; ?>, '<?php echo $row["modal_name"]; ?>')
                                 <?php }?>
@@ -107,11 +106,11 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                     },
                     perPage: 10,
                     perPageSelect: [10, 20, 30, 50, 100],
-                    columns: [{
+                    columns: [
+                    {
                         select: 0,
                         sort: 'asc',
-                    },
-                    ],
+                    }],
                     firstLast: true,
                     firstText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M13 19L7 12L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M16.9998 19L10.9998 12L16.9998 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
                     lastText: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 rtl:rotate-180"> <path d="M11 19L17 12L11 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path opacity="0.5" d="M6.99976 19L12.9998 12L6.99976 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>',
@@ -130,7 +129,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
             exportTable(eType) {
                 var data = {
                     type: eType,
-                    filename: 'companies',
+                    filename: 'display-modals',
                     download: true,
                 };
 

@@ -4,7 +4,6 @@ setcookie("editId", "", time() - 3600);
 setcookie("viewId", "", time() - 3600);
 
 if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
-    // echo "ajhfgasjhgdaskjhgdjhkasgdajhsdgjashgdasjhdgasdd";
     try {
         $company_id = $_REQUEST["companyId"];
         $stmt_del = $obj->con1->prepare("DELETE FROM mobile_companies WHERE id=?");
@@ -51,7 +50,7 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
                 </button>
             </div>
         </div>
-        <table id="myTable" class="table-hover whitespace-nowrap"></table>
+        <table id="myTable" class="table-hover"></table>
     </div>
 </div>
 <!-- script -->
@@ -131,14 +130,18 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
             exportTable(eType) {
                 var data = {
                     type: eType,
-                    filename: 'companies',
+                    filename: 'display-companies',
                     download: true,
                 };
 
                 if (data.type === 'csv') {
                     data.lineDelimiter = '\n';
-                    data.columnDelimiter = ';';
+                    data.columnDelimiter = ','
+                    data.modify = (value, column) => {
+                        return `"${value}"`;
+                    };
                 }
+
                 this.datatable.export(data);
             },
 
