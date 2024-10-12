@@ -136,8 +136,12 @@ if (isset($_REQUEST["flg"]) && $_REQUEST["flg"] == "del") {
 
                 if (data.type === 'csv') {
                     data.lineDelimiter = '\n';
-                    data.columnDelimiter = ';';
+                    data.columnDelimiter = ','
+                    data.modify = (value, column) => {
+                        return `"${value}"`;
+                    };
                 }
+
                 this.datatable.export(data);
             },
 
